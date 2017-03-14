@@ -1,0 +1,361 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+   <title>Welcome to the Elucidate Changelog</title>
+   <style type="text/css">
+      .style1
+      {
+         font-family: "Courier New" , Courier, monospace;
+      }
+      .style2
+      {
+         text-decoration: underline;
+      }
+      .style3
+      {
+         width: 84px;
+      }
+   </style>
+</head>
+<body>
+   <h1 style="font-family: Consolas; font-size: large; color: black; background: white;
+      text-decoration: underline; font-weight: bold;">
+      Welcome&nbsp;to&nbsp;the&nbsp;Elucidate&nbsp;Changelog</h1>
+   Keep&nbsp;an&nbsp;open&nbsp;eye&nbsp;on&nbsp;the&nbsp;<a href="http://Elucidate.codeplex.com/">http://Elucidate.codeplex.com/</a>&nbsp;site.<br />
+   &nbsp;<br />
+   <h2>
+      Some&nbsp;Helpful&nbsp;Information:</h2>
+   How&nbsp;to&nbsp;get&nbsp;an&nbsp;install&nbsp;log&nbsp;to&nbsp;send&nbsp;if&nbsp;you&nbsp;have&nbsp;a&nbsp;problem:<br />
+   To&nbsp;obtain&nbsp;a&nbsp;log&nbsp;of&nbsp;an&nbsp;installation&nbsp;use&nbsp;the&nbsp;command&nbsp;line&nbsp;msiexec&nbsp;tool:<br />
+   <span class="style1">msiexec&nbsp;/i&nbsp;Elucidate_Installer.msi&nbsp;/l*v&nbsp;MyLogFile.txt</span><br />
+   <br />
+   and&nbsp;this&nbsp;for&nbsp;uninstall&nbsp;issues<br />
+   <span class="style1">msiexec&nbsp;/l*v&nbsp;MyLogFile.txt&nbsp;/uninstall&nbsp;Elucidate_Installer.msi</span><br />
+   <br />
+   This&nbsp;will&nbsp;install&nbsp;your&nbsp;application&nbsp;and&nbsp;write&nbsp;a&nbsp;verbose&nbsp;log&nbsp;to&nbsp;MyLogFile.txt&nbsp;in&nbsp;the&nbsp;current&nbsp;directory.<br />
+   &nbsp;<br />
+   <span class="style2">Logs</span><br />
+   GUI&nbsp;logs&nbsp;will&nbsp;go&nbsp;into&nbsp;<span class="style1">&quot;${specialfolder:folder=CommonApplicationData}/Elucidate/Logs&quot;</span><br />
+   &nbsp;<br />
+   <h3>
+      Nice to Haves:</h3>
+   <ul>
+      <li>
+         Extend&nbsp;Preferences&nbsp;Form logic to prevent malicious usage 
+   scenarios<ul>
+            <li>Like trying to write parity to a FAT drive type</li>
+            <li>Like trying to backup a compressed file / directory</li>
+            <li>Like restoring to a compressed drive a source that wasn&#39;t from a compressed<br /></li>
+         </ul>
+      </li>
+   </ul>
+   <h3>
+      Done (Newest First):</h3>
+   <table border="1" width="100%">
+      <tr>
+         <td class="style3">
+            2015-03-##</td>
+         <td>
+            - <a href="https://elucidate.codeplex.com/workitem/12565">Progress Bar should display in taskbar area</a><br />
+            - <a href="https://elucidate.codeplex.com/workitem/13390">File name issues</a><br />
+            - Tinker with layout issues<br />
+            - <a href="https://elucidate.codeplex.com/workitem/12194">SR 4.0 Feature: New &#39;status&#39; command</a><br />
+            - Add new tab for new commands:<br />
+            - - <a href="https://elucidate.codeplex.com/workitem/12193">SR 4.0 Feature: New &#39;scrub&#39; command</a><br />
+            - - <a href="https://elucidate.codeplex.com/workitem/11502">Add the &quot;fix&quot; command to allow Q-Parity post creation</a> - in test<br />
+            - - <a href="https://elucidate.codeplex.com/workitem/10115">SnapRAID &quot;dup&quot; command to find all the duplicate files.</a><br />
+            - - Add Undelete (Variant of the Fix command)<br />
+            - Add drop shadow to main form.</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2015-02-20</td>
+         <td>
+            - Conversion to use .Net 4.5.1 and above.<br />
+            - <a href="https://elucidate.codeplex.com/workitem/11448"> replace the rounded tabs</a>.<br />
+            - Fix defect with the newer versions of snapraid (&gt;= 6.3) with the <a href="https://elucidate.codeplex.com/workitem/13270>">display of the finish text.</a><br />
+            - Use Packages to:<br />
+            -
+            - Scheduler thirdparty. <a href="https://elucidate.codeplex.com/workitem/12646">Be aware of windows 8.x etc.</a> and it&#39;s dependencies<br />
+            - - NLog<br />
+            - Remove the progress bar that allows the <a href="https://elucidate.codeplex.com/workitem/12565">progress in the taskbar area</a>. when calculating coverage.<br />
+            - Fix Copy From the log window</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2014-01-##</td>
+         <td>
+            - Some tinkering with license files<br />
+            - Tail window now has colors and better handling when button is clicked (And reclicked!)</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2013-02-##</td>
+         <td>
+            - &quot;Run Without Capture&quot; check box menu item added to main window. Still takes 
+            initial setting from the config file.<br />
+            - Add Following text to the Check button description: (use -a for hash only)<strong><br />
+            -
+            </strong>Add control to start the &quot;Guided Wizard&quot; task.</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2013-01-16</td>
+         <td>
+            - Add view of protection to the settings page.<br />
+            - Add click to toggle between GBytes and Percentage.<br />
+            - Add a new tab for the coverage display with the breakout titles of the sources 
+            and include the Parity areas as well.<br />
+            - Fix the Unsaved Chnages warning when loading a populated settings page.<br />
+            - Replace default left image in the installer</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2013-01-02 RC4 -Stable?</td>
+         <td>
+            - Fix The Run Without Capture setting storage and the log file retreval for the 
+            verbose settings.<br />
+            - Fix launching minimised the Run without capture</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2012-12-20<br />
+            RC3</td>
+         <td>
+            - Remove multiple &quot;Hidden files&quot; options<br />
+            - Fix the logging window<br />
+            - Tidy up the population of settings<br />
+            - Correct the name of the &quot;autosave&quot;<br />
+            - Detect multiple simultaneous app launches</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2012-12-18<br />
+            RC2</td>
+         <td>
+            - Add Command line extension text field<br />
+            - Change tooltip when creating 2nd parity<br />
+            - Add checks for the creation of the 1st config file, to allow &quot;Start from 
+            fresh&quot;<br />
+            - Add &quot;Run Without capture&quot;, which means that SnapRAID is run minimsed and logs 
+            are not captured in Elucidate.<br />
+            - Add an indication of the Blocksize Compared to installed memory</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2012-12-11<br />
+            Beta</td>
+         <td>
+            - Change the logging windows, so it sdoes not state StdErr, Stdout.<br />
+            - Change to only output x86 build to be compatible with the scheduler code 
+            (http://taskscheduler.codeplex.com/workitem/9855)<br />
+            - Update to the new version 1.9.2 of the scheduler binaries 
+            (http://taskscheduler.codeplex.com/releases/view/94616)<br />
+            - Investigate fix for the content files having the incorrect names on the parity 
+            drives<br />
+            - Rewire the noHidden to now be in the config file.<br />
+            - Add config output helper text for &quot;autoSave&quot;</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2012-03-21</td>
+         <td>
+            - Implement new option &quot;--filter-nohidden&quot; to exclude hidden files<br />
+            - Use new TaskScheduler release built for .Net 4 (Still not complete - 
+            http://taskscheduler.codeplex.com/workitem/9855)<br />
+            - Fix what is making it beep !<br />
+            - Massive speed improvement for the logging window, thus releasing the CPU 
+            cycles back to SnapRAID and the system</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2012-01-30</td>
+         <td>
+            - Fixed Need to protect against the same file being used in the output<br />
+            - Fixed Need to prevent the settings dialog from being opened while snapRAID is 
+            running</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2012-01-26</td>
+         <td>
+            - Remove mono workaround code from release.<br />
+            - Fix Code that does not update the Status text at the right time.<br />
+            - Add Settings upgrade<br />
+            - Add Tooltips to the &quot;Advanced settings&quot;<br />
+            - Improve handling of the Windows Location restore base class<br />
+            - Add clear to the log window<br />
+            - Ensure the browser window goes to the correct location, and add screen max 
+            toggle when it does<br />
+            - Add code to Abort / Pause(set to idle) / Show running status of the SnapRAID 
+            process<br />
+            - Add a &quot;Remove SnapRAID Output files&quot; button<br />
+            - Implemented a workaround for the &quot;Scheduling Edit Artifact&quot;&quot;</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2012-01-22</td>
+         <td>
+            - Fix incorrect loading of older config file that already specified a parity 
+            file<br />
+            - Simple Schedule control add tab, to allow easy setup of Sync command after 
+            logon and then dialy<br />
+            - Testing &quot;fix&quot; for thirdpartry schedule code, and adding some exception 
+            handling<br />
+            - Add window position restore when restarting<br />
+            - Add Schedule components to the installer</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2012-01-14</td>
+         <td>
+            - Make sure the GPLv2 License is displayed in the installer<br />
+            - Add Log File Location Setting<br />
+            - Added a CheckListBox for the advanced settings.<br />
+            - Add new options for the &quot;--find-by-name&quot; option.<br />
+            - Template code for the &quot;Known&quot; 1.8 option<br />
+            - Content files are now placed in every source and each parity (raid) location<br />
+            - Fix &quot;Raid Location&quot; selector buttons<br />
+            - Remove Confusing Recovery Tab Commands/Options<br />
+            - Fix Delete in &quot;Snap Shot Sources&quot; Settings page<br />
+            - Fix Help on Advanced settings</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-09-07</td>
+         <td>
+            - Fix 9151: Have to add the new target to the existing nLog configuration AND 
+            then reassign! 
+            <br />
+            - Implement 9152: Allow Form to be re-sized. Made initial size slightly wider.<br />
+            - 
+            Implement 9154: Copy Can be done via Ctrl+C or Ctrl+Insert dependent on users OS 
+            and scheme.<br />
+            - Fix 9490: Rounded Tab Redraw when not first tab shown<br />
+            - Implement 9153: Switch to Real-Time when running a command.</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-07-08</td>
+         <td>
+            - Start to add the changes required to deal with SnapRAID 1.5<br />
+            - New GUI Mode output<br />
+            - New Check command<br />
+            - Fix Text in the progress bar<br />
+            - &quot;Tune the colours&quot; in the Real-Time log view</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-07-06</td>
+         <td>
+            - Complete Gui re-think, to allow tabs to be used in main window, this allows 
+            the realtime log view to be displayed.<br />
+            - Allow number of lines in the realtime log view to be changed - (Global App 
+            Setting)<br />
+            - Designed and coded the &quot;Round tabs control&quot; and placed it into this project.<br />
+            - Some Changes to the Tab layout to remove the Group Box.<br />
+            - Fix strange transparency on some systems (e.g. App title goes all fuzzy!)<br />
+            - Start app after install complete.</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-06-26</td>
+         <td>
+            - Sort out the mono progress bar not drawing correctly.<br />
+            - Moved App.Config file to windows only, and create a mono derivative<br />
+            - Try to sort out why the Mono Menu strip does not look good (i.e. cut&#39;s the 
+            bottom off the text and no underlines!)</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-06-19</td>
+         <td>
+            - Remove the unused References, to make Mono easier to convert<br />
+            - Problems with the a known Mono .Net4 code needed to be removed from Settings 
+            form<br />
+            - Problems with the VistaProgressBar required a rewrite - now all code is in 
+            TextOverProgressBar<br />
+            - Mono 
+   solution (via MD 2.6.Beta3)<br />
+            - Linux installer<br />
+            - Some Windows x64 OS Testing</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-06-18</td>
+         <td>
+            - On restart it does not remember the SnapRaid Settings<br />
+            - Spaces in the Directories to be protected are lost (And everything after the 
+         fisrt one)<br />
+            - Improved error display in status<br />
+            - Add code to deal with Recover and Fix<br />
+            - F1 Interactive Help redirects<br />
+            - More informative MessageBox&#39;s (Replace with TaskDialog look-alikes)</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-06-16<br />
+            Beta 2</td>
+         <td>
+            - Allow SnapRAID to run in &quot;verbose mode&quot;<br />
+            - Add unsaved chnages question when exiting Settings Form<br />
+            - Correct a typo in the Check button (Add caution icon back)<br />
+            - Add shortcut (Accellerators) indicators to the CommandLink buttons<br />
+            - Decode the StdOut and StdErr to show updates on the screen (Cross Threading !)<br />
+            - The Redirect only dumps when the program is finishing ?!?<br />
+            - Add code to display text on the progress bar<br />
+            - Fix Initial Colouring of CommandLinks is not always correct</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-06-14<br />
+            Beta 1</td>
+         <td>
+            - Add the app to the startup group via the 
+   installer<br />
+            - Sort out the focus, Click on, And normal drawing of the Command Link Button, 
+            Also added Disabled and button click movement to this.<br />
+            - Add code to perform the launching of the SnapRAID Command-Line<br />
+            - Redirect output to the log files (UTF-8 from Stdout / Stderr)<br />
+            - Help redirect<br />
+            - Add&nbsp; version indicator in the top.</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-06-12
+         </td>
+         <td>
+            - Changed the button icons to be a little more related to their function(s)<br />
+            - Start to add the Settings form<br />
+            - Disable the Main form buttons by default<br />
+            - Layout to get the basic config file properties<br />
+            - Error provider icons<br />
+            - Read and Write the config file
+            <br />
+            - Updated NLog to the latest nightly build</td>
+      </tr>
+      <tr>
+         <td class="style3">
+            2011-06-10
+         </td>
+         <td>
+            - Added the code to do the CommandLink Buttons (Compatible with .Net 2)<br />
+            - Reused the code for the Progress bar to allow &quot;pretty&quot; drawing on all
+            paltforms<br />
+            - Posted Teaser layouts to the project site<br />
+            - Added code to handle uncontrolled exit<br />
+            - Converted Changelog to html to allow viewing on all platforms<br />
+            - Fixed Build versioning
+         </td>
+      </tr>
+      <tr>
+      <td class="style3">
+         2011-06-09
+      </td>
+      <td>
+         -&nbsp;Created&nbsp;Codeplex&nbsp;Project&nbsp;and&nbsp;checked&nbsp;this&nbsp;in
+      </td>
+      </tr>
+   </table>
+</body>
+</html>
