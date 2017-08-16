@@ -1,0 +1,51 @@
+<div class="wikidoc">
+<h2></h2>
+<h1>Beginners Guide -</h1>
+<p>Assassin has written a great step-by-step <strong>first time</strong> install guide here, please visit and give him some kudos..</p>
+<p><a href="http://assassinhtpcblog.com/server-snapraid/">http://assassinhtpcblog.com/server-snapraid/</a></p>
+<p>&nbsp;</p>
+<h1>How does it work ?</h1>
+The intention of Elucidate, is to make it easier and clearer on how to use the <a href="http://snapraid.sourceforge.net/manual.html">
+SnapRAID</a> Command-line application.<br>
+Lets take a look at the layout:<br>
+<table>
+<tbody>
+<tr>
+<th>Windows 7 x64 </th>
+</tr>
+<tr>
+<td><img title="Layout With Scheduling.png" alt="Layout With Scheduling.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=elucidate&DownloadId=334491"></td>
+</tr>
+</tbody>
+</table>
+<h1><u>Menu</u></h1>
+<h3><a href="/elucidate/wikipage?title=Settings&referringTitle=Documentation">Settings</a></h3>
+This will hold the preferences that have been setup for this application.<br>
+It will need to know the location of the SnapRAID executable.<br>
+On the first run this form will show and ask the user to fill in this location before enabling any of the buttons.<br>
+It also needs to generate or locate the config file for SnapRAID to use. Without this, SnapRAID will not work as expected.
+<i>More on this later.</i>
+<h3>View Log</h3>
+This will start up a viewer to look at the log files that Elucidate generates during it's processing. On Windows this will be WordPad.
+<h3>Help</h3>
+A brief intro, probably this page :-)
+<h1><u>Buttons</u></h1>
+<h3><u>D</u>ifferences</h3>
+This will switch to the Real-Time View and then run the &quot;diff&quot; command. It will list all the file changes that have occurred since the last
+<u>S</u>ync command.
+<h3><u>S</u>ync</h3>
+This will generate or refresh (synchronize) the snapshot parity data sets.
+<h3><u>C</u>heck</h3>
+If will read all your data, to check if it's correct.<br>
+If an error is found, you can use the &quot;fix&quot; command to fix it.
+<h3>Real-time View</h3>
+This is a tail of the current data being written to the log view.<br>
+It is marked up with colors to show the type of logging; So if you see red in the middle of a run, then that's probably bad!<br>
+<img title="Real Time Log.png" alt="Real Time Log.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=elucidate&DownloadId=256259">
+<h3>Status Bar</h3>
+<p><img title="Speed of 1.7 x64.png" alt="Speed of 1.7 x64.png" src="http://download-codeplex.sec.s-msft.com/Download?ProjectName=elucidate&DownloadId=335238"><br>
+The left side shows the locale time stamp Followed by the current status. </p>
+<p>This can also be used to <strong>Use Idle / Pause / Abort / Reset</strong> back to Running, the current SnapRaid process.
+</p>
+<p>The right show the progress percentages that come from SnapRAID.</p>
+</div><div class="ClearBoth"></div>
