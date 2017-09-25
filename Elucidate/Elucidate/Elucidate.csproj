@@ -133,38 +133,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\ThirdParty\Shared\CommandLinkButton.cs">
-      <Link>Shared\CommandLinkButton.cs</Link>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="..\ThirdParty\Shared\FlickerFreeRichEditTextBox.cs">
-      <Link>Shared\FlickerFreeRichEditTextBox.cs</Link>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="..\ThirdParty\Shared\MessageBoxExtForm.cs">
-      <Link>Shared\MessageBoxExtForm.cs</Link>
-    </Compile>
-    <Compile Include="..\ThirdParty\Shared\MessageBoxExtForm.designer.cs">
-      <Link>Shared\MessageBoxExtForm.designer.cs</Link>
-      <DependentUpon>MessageBoxExtForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="..\ThirdParty\Shared\TextOverProgressBar.cs">
-      <Link>Shared\TextOverProgressBar.cs</Link>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="..\ThirdParty\Shared\WaitCursor.cs">
-      <Link>Shared\WaitCursor.cs</Link>
-    </Compile>
-    <Compile Include="..\ThirdParty\Win7Progress\COMTypes.cs">
-      <Link>Shared\COMTypes.cs</Link>
-    </Compile>
-    <Compile Include="..\ThirdParty\Win7Progress\Windows7ProgressBar.cs">
-      <Link>Shared\Windows7ProgressBar.cs</Link>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="..\ThirdParty\Win7Progress\Windows7Taskbar.cs">
-      <Link>Shared\Windows7Taskbar.cs</Link>
-    </Compile>
     <Compile Include="AdvancedSettingsHelper.cs" />
     <Compile Include="CalculateBlockSize.cs">
       <SubType>Form</SubType>
@@ -172,6 +140,20 @@
     <Compile Include="CalculateBlockSize.Designer.cs">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </Compile>
+    <Compile Include="Shared\CommandLinkButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\FlickerFreeRichEditTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\MessageBoxExt.cs" />
+    <Compile Include="Shared\MessageBoxExtForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Shared\TextOverProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\WaitCursor.cs" />
     <Compile Include="Tabs\DriveSpaceDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -230,10 +212,14 @@
     <Compile Include="SnapRAIDThreading.cs">
       <SubType>Form</SubType>
     </Compile>
-    <EmbeddedResource Include="..\ThirdParty\Shared\MessageBoxExtForm.resx">
-      <Link>Shared\MessageBoxExtForm.resx</Link>
-      <DependentUpon>MessageBoxExtForm.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="wyDay.Controls\Windows7Taskbar.cs" />
+    <Compile Include="wyDay.Controls\CTaskbarList.cs" />
+    <Compile Include="wyDay.Controls\ITaskbarList3.cs" />
+    <Compile Include="wyDay.Controls\ProgressBarState.cs" />
+    <Compile Include="wyDay.Controls\ThumbnailProgressState.cs" />
+    <Compile Include="wyDay.Controls\Windows7ProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="CalculateBlockSize.resx">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </EmbeddedResource>
