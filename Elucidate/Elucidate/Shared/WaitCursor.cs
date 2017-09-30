@@ -4,115 +4,145 @@ using System.Windows.Forms;
 
 namespace Shared
 {
-    public class WaitCursor : IDisposable
-    {
-        private Control targetControl;
+   /// <summary>
+   /// Class to implement correctly restore of the previous cursor, Will default to the Cursors.WaitCursor if none specified
+   /// </summary>
+   /// <remarks>
+   /// Some code ideas stolen from 
+   /// - http://stackoverflow.com/questions/302663/cursor-current-vs-this-cursor-in-net-c
+   /// - http://wiert.me/2012/01/26/netc-using-idisposable-to-restore-temporary-settrings-example-temporarycursor-class/
+   /// </remarks>
+   public class WaitCursor : IDisposable
+   {
+      private Control targetControl;
+      //Private storage for replaced cursor. 
+      //Assures that nested usage also works
+      private readonly Cursor previousCursor;
+      private bool applicationWide;
+      private bool disposed;
 
-        private readonly Cursor previousCursor;
+      /// <summary>
+      /// A mode to enforce the the hourGlass cursor across the application
+      /// </summary>
+      /// <param name="applicationWide"></param>
+      public WaitCursor(bool applicationWide)
+      {
+         if (!applicationWide)
+            throw new ArgumentException("Application wide has to be set to true to use this constructor", "applicationWide");
+         SetApplicationWide(true);
+      }
 
-        private bool applicationWide;
+      protected void SetApplicationWide(bool value)
+      {
+         applicationWide = value;
+         if (value == Application.UseWaitCursor)
+         {
+            return;
+         }
 
-        private bool disposed;
+         Application.UseWaitCursor = value;
+         var handle = GetForegroundWindow();
+         SendMessage(handle, 0x20, handle, (IntPtr)1);
+      }
 
-        public WaitCursor(bool applicationWide)
-        {
-            if (!applicationWide)
-            {
-                throw new ArgumentException("Application wide has to be set to true to use this constructor", "applicationWide");
-            }
-            this.SetApplicationWide(true);
-        }
+      /// <summary>
+      /// Change Mouse Cursor to Cursors.WaitCursor
+      /// </summary>
+      public WaitCursor()
+         : this(Cursors.WaitCursor)
+      {
+      }
 
-        protected void SetApplicationWide(bool value)
-        {
-            this.applicationWide = value;
-            if (value == Application.UseWaitCursor)
-            {
-                return;
-            }
-            Application.UseWaitCursor = value;
-            IntPtr foregroundWindow = WaitCursor.GetForegroundWindow();
-            WaitCursor.SendMessage(foregroundWindow, 32, foregroundWindow, (IntPtr)1);
-        }
+      /// <summary>
+      /// Changes the target control to use the waitCursor
+      /// </summary>
+      /// <param name="target"></param>
+      // ReSharper disable once UnusedMember.Global
+      public WaitCursor(Control target)
+         : this(target, Cursors.WaitCursor)
+      {
+         if (null == targetControl)
+            throw new ArgumentNullException("target");
+      }
 
-        public WaitCursor() : this(Cursors.WaitCursor)
-        {
-        }
+      /// <summary>
+      /// Change to a specific cursor
+      /// </summary>
+      /// <param name="curs"></param>
+      // ReSharper disable once MemberCanBePrivate.Global
+      public WaitCursor(Cursor curs)
+         : this(null, curs)
+      {
+      }
 
-        public WaitCursor(Control target) : this(target, Cursors.WaitCursor)
-        {
-            if (this.targetControl == null)
-            {
-                throw new ArgumentNullException("target");
-            }
-        }
+      /// <summary>
+      /// Change the controls cursor until this or the control is destroyed
+      /// </summary>
+      /// <param name="target">can be null for default Win32.SetCursor usage</param>
+      /// <param name="curs"></param>
+      public WaitCursor(Control target, Cursor curs)
+      {
+         if (null == curs)
+            throw new ArgumentNullException("curs");
 
-        public WaitCursor(Cursor curs) : this(null, curs)
-        {
-        }
-
-        public WaitCursor(Control target, Cursor curs)
-        {
-            if (null == curs)
-            {
-                throw new ArgumentNullException("curs");
-            }
-            this.targetControl = target;
-            if (this.targetControl != null)
-            {
-                this.previousCursor = this.targetControl.Cursor;
-                this.targetControl.Cursor = curs;
-                this.targetControl.HandleDestroyed += new EventHandler(this.targetControl_HandleDestroyed);
-                return;
-            }
-            this.previousCursor = Cursor.Current;
+         this.targetControl = target;
+         if (targetControl != null)
+         {
+            previousCursor = targetControl.Cursor;
+            targetControl.Cursor = curs;
+            targetControl.HandleDestroyed += targetControl_HandleDestroyed;
+         }
+         else
+         {
+            previousCursor = Cursor.Current;
             Cursor.Current = curs;
-        }
+         }
+      }
 
-        ~WaitCursor()
-        {
-            this.Dispose(false);
-        }
+      // Finalizer
+      ~WaitCursor()
+      {
+         Dispose(false);
+      }
 
-        private void targetControl_HandleDestroyed(object sender, EventArgs e)
-        {
-            if (this.targetControl != null && !this.targetControl.RecreatingHandle)
+      private void targetControl_HandleDestroyed(object sender, EventArgs e)
+      {
+         if (null != targetControl)
+            if (!targetControl.RecreatingHandle)
+               targetControl = null;
+      }
+
+      public void Dispose()
+      {
+         Dispose(true);
+      }
+
+      //Change the Mouse Pointer back to the previous
+      protected virtual void Dispose(bool disposing)
+      {
+         if (!disposed)
+         {
+            if (null != targetControl)
             {
-                this.targetControl = null;
+               targetControl.HandleDestroyed -= targetControl_HandleDestroyed;
+               //  TODO: Should only be restored if it indeed still has that value
+               // if (curs == targetControl.Cursor)
+                  targetControl.Cursor = previousCursor;
+               targetControl = null;
             }
-        }
+            else if (applicationWide)
+               SetApplicationWide(false);
+            else
+               Cursor.Current = previousCursor;
+            disposed = true;
+         }
+      }
 
-        public void Dispose()
-        {
-            this.Dispose(true);
-        }
+      [DllImport("user32.dll")]
+      private static extern IntPtr GetForegroundWindow();
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (this.targetControl != null)
-                {
-                    this.targetControl.HandleDestroyed -= new EventHandler(this.targetControl_HandleDestroyed);
-                    this.targetControl.Cursor = this.previousCursor;
-                    this.targetControl = null;
-                }
-                else if (this.applicationWide)
-                {
-                    this.SetApplicationWide(false);
-                }
-                else
-                {
-                    Cursor.Current = this.previousCursor;
-                }
-                this.disposed = true;
-            }
-        }
+      [DllImport("user32.dll")]
+      private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
-    }
+   }
 }

@@ -1,271 +1,292 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using wyDay.Controls;
 
+// Stuff Resdharper comment here to prevent it trying to remove designer reflection methods
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
 namespace Shared
 {
-    public class TextOverProgressBar : Windows7ProgressBar
-    {
-        private readonly Timer marqueeTimer = new Timer();
+   /// <summary>
+   /// Color fill taken from http://stackoverflow.com/questions/778678/how-to-change-the-color-of-progressbar-in-c-net-3-5
+   /// Text overwrite taken from http://www.dreamincode.net/forums/blog/217/entry-2366-a-professional-looking-progressbar-with-percentage/
+   /// Sigma bell hints from http://www.c-sharpcorner.com/UploadFile/mahesh/759/
+   /// RoundRect from taken from http://www.codeproject.com/KB/GDI-plus/ExtendedGraphics.aspx?msg=2073988#xx2073988xx
+   /// Then modified by me to add some more settings
+   /// </summary>
+   public class TextOverProgressBar : Windows7ProgressBar
+   {
+      private readonly Timer marqueeTimer = new Timer();
 
-        private readonly Color black30 = Color.FromArgb(30, Color.Black);
+      public TextOverProgressBar()
+      {
+         SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint |
+            ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.SupportsTransparentBackColor, true);
+         marqueeTimer.Interval = 1000;
+         marqueeTimer.Tick += AnimateTimer_OnTick;
+         marqueeTimer.Enabled = (Style == ProgressBarStyle.Marquee);
+      }
 
-        private readonly Color black20 = Color.FromArgb(20, Color.Black);
+      [Category("Appearance")]
+      [DefaultValue(typeof(StringAlignment), "Near")]
+      public StringAlignment TextAlignment { get; set; }
 
-        private readonly Color white128 = Color.FromArgb(128, Color.White);
+      /// <summary>
+      /// Overrides System.Windows.Forms.Control.Text.
+      /// </summary>
+      [Category("Appearance")]
+      [DefaultValue(typeof(string), "ControlText")]
+      public string DisplayText
+      {
+         get { return Text; }
+         set
+         {
+            if (Text != value)
+            {
+               Text = value;
+               Invalidate();
+            }
 
-        [Category("Appearance"), DefaultValue(typeof(StringAlignment), "Near")]
-        public StringAlignment TextAlignment
-        {
-            get;
-            set;
-        }
+         }
+      }
 
-        [Category("Appearance"), DefaultValue(typeof(string), "ControlText")]
-        public string DisplayText
-        {
-            get
-            {
-                return this.Text;
-            }
-            set
-            {
-                if (this.Text != value)
-                {
-                    this.Text = value;
-                    base.Invalidate();
-                }
-            }
-        }
+      [Category("Appearance")]
+      [DefaultValue(typeof(SystemColors), "ControlText")]
+      public Color TextColor { get; set; }
 
-        [Category("Appearance"), DefaultValue(typeof(SystemColors), "ControlText")]
-        public Color TextColor
-        {
-            get;
-            set;
-        }
+      public new ProgressBarState State
+      {
+         get { return base.State; }
+         set
+         {
+            if (base.State != value)
+            {
+               base.State = value;
+               Color newColor;
+               switch (value)
+               {
+                  case ProgressBarState.Normal:
+                     newColor = Color.LimeGreen;
+                     break;
+                  case ProgressBarState.Pause:
+                     newColor = Color.FromArgb(210, 200, 0);
+                     break;
+                  case ProgressBarState.Error:
+                     newColor = Color.Red;
+                     break;
+                  default:
+                     throw new ArgumentOutOfRangeException("value");
+               }
+               ForeColor = Color.FromArgb(Enabled ? 255 : 128, newColor);
+            }
+         }
+      }
 
-        public new ProgressBarState State
-        {
-            get
-            {
-                return base.State;
-            }
-            set
-            {
-                if (base.State != value)
-                {
-                    base.State = value;
-                    Color baseColor;
-                    switch (value)
-                    {
-                        case ProgressBarState.Normal:
-                            baseColor = Color.LimeGreen;
-                            break;
-                        case ProgressBarState.Error:
-                            baseColor = Color.Red;
-                            break;
-                        case ProgressBarState.Pause:
-                            baseColor = Color.FromArgb(210, 200, 0);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException("value");
-                    }
-                    this.ForeColor = Color.FromArgb(base.Enabled ? 255 : 128, baseColor);
-                }
-            }
-        }
+      [EditorBrowsable(EditorBrowsableState.Always)]
+      [Browsable(true)]
+      [Category("CatBehavior")]
+      [Description("ProgressBarStyleDescr")]
+      [DefaultValue(ProgressBarStyle.Blocks)]
+      public new ProgressBarStyle Style
+      {
+         get
+         {
+            return base.Style;
+         }
+         set
+         {
+            if (base.Style == value)
+               return;
+            base.Style = value;
+            marqueeTimer.Interval = MarqueeAnimationSpeed;
+            marqueeTimer.Enabled = (base.Style == ProgressBarStyle.Marquee);
+         }
+      }
 
-        [Browsable(true), Category("CatBehavior"), DefaultValue(ProgressBarStyle.Blocks), Description("ProgressBarStyleDescr"), EditorBrowsable(EditorBrowsableState.Always)]
-        public new ProgressBarStyle Style
-        {
-            get
-            {
-                return base.Style;
-            }
-            set
-            {
-                if (base.Style == value)
-                {
-                    return;
-                }
-                base.Style = value;
-                this.marqueeTimer.Interval = base.MarqueeAnimationSpeed;
-                this.marqueeTimer.Enabled = (base.Style == ProgressBarStyle.Marquee);
-            }
-        }
+      private void PaintMarquee(PaintEventArgs e)
+      {
+         float stepWidthPixel = (float)Width / Maximum;
+         int localValue = (int)(Value * stepWidthPixel);
+         stepWidthPixel *= Step;
+         stepWidthPixel = Math.Max(stepWidthPixel, 5);
+         int left = Math.Max(Math.Min(localValue + 2, (int)(localValue + stepWidthPixel)), 2);
+         Rectangle rec = new Rectangle(left, 2, (int)stepWidthPixel * 2, Height);
+         rec.Height -= 3;
 
-        public TextOverProgressBar()
-        {
-            base.SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.SupportsTransparentBackColor | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
-            this.marqueeTimer.Interval = 1000;
-            this.marqueeTimer.Tick += new EventHandler(this.AnimateTimer_OnTick);
-            this.marqueeTimer.Enabled = (this.Style == ProgressBarStyle.Marquee);
-        }
+         // Create a linear gradient brush
+         using (LinearGradientBrush rgBrush = new LinearGradientBrush(rec, Color.Transparent, ForeColor, 0.0f, true))
+         {
+            // Set sigma bell shape
+            rgBrush.SetSigmaBellShape(0.5f, 1.0f);
+            // Set blend triangular shape
+            rgBrush.SetBlendTriangularShape(0.5f, 1.0f);
+            // Fill rectangle again
+            e.Graphics.FillRectangle(rgBrush, rec);
+         }
+      }
 
-        private void PaintMarquee(PaintEventArgs e)
-        {
-            float num = (float)base.Width / (float)base.Maximum;
-            int num2 = (int)((float)base.Value * num);
-            num *= (float)base.Step;
-            num = Math.Max(num, 5f);
-            int x = Math.Max(Math.Min(num2 + 2, (int)((float)num2 + num)), 2);
-            Rectangle rect = new Rectangle(x, 2, (int)num * 2, base.Height);
-            rect.Height -= 3;
-            using (LinearGradientBrush linearGradientBrush = new LinearGradientBrush(rect, Color.Transparent, this.ForeColor, 0f, true))
-            {
-                linearGradientBrush.SetSigmaBellShape(0.5f, 1f);
-                linearGradientBrush.SetBlendTriangularShape(0.5f, 1f);
-                e.Graphics.FillRectangle(linearGradientBrush, rect);
-            }
-        }
 
-        private void AnimateTimer_OnTick(object sender, EventArgs e)
-        {
-            if (this.marqueeTimer.Interval != base.MarqueeAnimationSpeed)
+      private void AnimateTimer_OnTick(object sender, EventArgs e)
+      {
+         if (marqueeTimer.Interval != MarqueeAnimationSpeed)
+            marqueeTimer.Interval = MarqueeAnimationSpeed;
+         if (Style == ProgressBarStyle.Marquee)
+         {
+            int localValue = Value;
+            if (State != ProgressBarState.Pause)
             {
-                this.marqueeTimer.Interval = base.MarqueeAnimationSpeed;
+               localValue += Step;
+               if ((localValue >= Maximum)
+                   || (localValue < Minimum)
+                  )
+               {
+                  localValue = Minimum;
+               }
+               Value = localValue;
             }
-            if (this.Style == ProgressBarStyle.Marquee)
-            {
-                int num = base.Value;
-                if (this.State != ProgressBarState.Pause)
-                {
-                    num += base.Step;
-                    if (num >= base.Maximum || num < base.Minimum)
-                    {
-                        num = base.Minimum;
-                    }
-                    base.Value = num;
-                }
-                this.Refresh();
-            }
-        }
+            Refresh();
+         }
 
-        public static GraphicsPath GetRoundedRect(RectangleF baseRect, float radiusX, float radiusY)
-        {
-            GraphicsPath graphicsPath = new GraphicsPath();
-            graphicsPath.StartFigure();
-            if (radiusX <= 0f || radiusY <= 0f)
-            {
-                graphicsPath.AddRectangle(baseRect);
-            }
-            else
-            {
-                PointF pointF = new PointF(Math.Min(radiusX * 2f, baseRect.Width), Math.Min(radiusY * 2f, baseRect.Height));
-                graphicsPath.AddArc(baseRect.X, baseRect.Y, pointF.X, pointF.Y, 180f, 90f);
-                graphicsPath.AddArc(baseRect.Right - pointF.X, baseRect.Y, pointF.X, pointF.Y, 270f, 90f);
-                graphicsPath.AddArc(baseRect.Right - pointF.X, baseRect.Bottom - pointF.Y, pointF.X, pointF.Y, 0f, 90f);
-                graphicsPath.AddArc(baseRect.X, baseRect.Bottom - pointF.Y, pointF.X, pointF.Y, 90f, 90f);
-            }
-            graphicsPath.CloseFigure();
-            return graphicsPath;
-        }
+      }
 
-        protected void NoRendererSupport(PaintEventArgs e, Rectangle rec)
-        {
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            rec.Inflate(-1, -1);
-            this.DrawBackground(e.Graphics, rec);
-            this.DrawBackgroundShadows(e.Graphics, rec);
-            this.DrawBarHighlight(e.Graphics, rec);
-        }
+      #region No Style implemented Workaround (i.e. via RDP)
 
-        private void DrawBackground(Graphics g, Rectangle rect)
-        {
-            using (GraphicsPath roundedRect = TextOverProgressBar.GetRoundedRect(rect, 2f, 2f))
-            {
-                using (Brush brush = new SolidBrush(this.BackColor))
-                {
-                    g.FillPath(brush, roundedRect);
-                }
-            }
-        }
+      /// <summary>
+      /// Taken from http://www.codeproject.com/KB/GDI-plus/ExtendedGraphics.aspx?msg=2073988#xx2073988xx
+      /// Creates the rounded rectangle path.
+      /// </summary>
+      /// <returns>The rounded rectangle path.</returns>
+      /// <param name='baseRect'> Rect.</param>
+      /// <param name="radiusX"></param>
+      /// <param name="radiusY"></param>
+      public static GraphicsPath GetRoundedRect(RectangleF baseRect, float radiusX, float radiusY)
+      {
+         GraphicsPath gp = new GraphicsPath();
+         gp.StartFigure();
 
-        private void DrawBarHighlight(Graphics g, Rectangle rect)
-        {
-            Rectangle rectangle = new Rectangle(rect.Left + 1, rect.Top + 1, rect.Width - 1, 6);
-            using (GraphicsPath roundedRect = TextOverProgressBar.GetRoundedRect(rectangle, 2f, 2f))
-            {
-                g.SetClip(roundedRect);
-                using (Brush brush = new LinearGradientBrush(rectangle, Color.WhiteSmoke, this.white128, LinearGradientMode.Vertical))
-                {
-                    g.FillPath(brush, roundedRect);
-                }
-                g.ResetClip();
-            }
-            Rectangle rectangle2 = new Rectangle(rect.Left + 1, rect.Bottom - 8, rect.Width - 1, 6);
-            using (GraphicsPath roundedRect2 = TextOverProgressBar.GetRoundedRect(rectangle2, 2f, 2f))
-            {
-                g.SetClip(roundedRect2);
-                using (Brush brush2 = new LinearGradientBrush(rectangle2, Color.Transparent, this.black20, LinearGradientMode.Vertical))
-                {
-                    g.FillPath(brush2, roundedRect2);
-                }
-                g.ResetClip();
-            }
-        }
+         if (radiusX <= 0.0F || radiusY <= 0.0F)
+         {
+            gp.AddRectangle(baseRect);
+         }
+         else
+         {
+            //arcs work with diameters (radius * 2)
+            PointF d = new PointF(Math.Min(radiusX * 2, baseRect.Width), Math.Min(radiusY * 2, baseRect.Height));
+            gp.AddArc(baseRect.X, baseRect.Y, d.X, d.Y, 180, 90);
+            gp.AddArc(baseRect.Right - d.X, baseRect.Y, d.X, d.Y, 270, 90);
+            gp.AddArc(baseRect.Right - d.X, baseRect.Bottom - d.Y, d.X, d.Y, 0, 90);
+            gp.AddArc(baseRect.X, baseRect.Bottom - d.Y, d.X, d.Y, 90, 90);
+         }
+         gp.CloseFigure();
+         return gp;
+      }
 
-        private void DrawBackgroundShadows(Graphics g, Rectangle rect)
-        {
-            Rectangle rect2 = new Rectangle(rect.Left + 2, rect.Top + 2, 10, rect.Height - 5);
-            using (Brush brush = new LinearGradientBrush(rect2, this.black30, Color.Transparent, LinearGradientMode.Horizontal))
-            {
-                rect2.X--;
-                g.FillRectangle(brush, rect2);
-            }
-            Rectangle rect3 = new Rectangle(rect.Right - 12, rect.Top + 2, 10, rect.Height - 5);
-            using (Brush brush2 = new LinearGradientBrush(rect3, Color.Transparent, this.black20, LinearGradientMode.Horizontal))
-            {
-                g.FillRectangle(brush2, rect3);
-            }
-        }
+      protected void NoRendererSupport(PaintEventArgs e, Rectangle rec)
+      {
+         e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+         e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            Rectangle rectangle = new Rectangle(0, 0, base.Width, base.Height);
-            if (ProgressBarRenderer.IsSupported)
+         rec.Inflate(-1, -1);
+         DrawBackground(e.Graphics, rec);
+         DrawBackgroundShadows(e.Graphics, rec);
+         DrawBarHighlight(e.Graphics, rec);
+      }
+      private void DrawBackground(Graphics g, Rectangle rect)
+      {
+         using (GraphicsPath backgroundPath = GetRoundedRect(rect, 2, 2))
+         {
+            using (Brush backBrush = new SolidBrush(BackColor))
+               g.FillPath(backBrush, backgroundPath);
+         }
+      }
+      private readonly Color black30 = Color.FromArgb(30, Color.Black);
+      private readonly Color black20 = Color.FromArgb(20, Color.Black);
+      private readonly Color white128 = Color.FromArgb(128, Color.White);
+      private void DrawBarHighlight(Graphics g, Rectangle rect)
+      {
+         Rectangle tr = new Rectangle(rect.Left + 1, rect.Top + 1, rect.Width - 1, 6);
+         using (GraphicsPath tp = GetRoundedRect(tr, 2, 2))
+         {
+            g.SetClip(tp);
+            using (Brush tg = new LinearGradientBrush(tr, Color.WhiteSmoke, white128, LinearGradientMode.Vertical))
+               g.FillPath(tg, tp);
+            g.ResetClip();
+         }
+
+         Rectangle br = new Rectangle(rect.Left + 1, rect.Bottom - 8, rect.Width - 1, 6);
+         using (GraphicsPath bp = GetRoundedRect(br, 2, 2))
+         {
+            g.SetClip(bp);
+            using (Brush bg = new LinearGradientBrush(br, Color.Transparent, black20, LinearGradientMode.Vertical))
+               g.FillPath(bg, bp);
+            g.ResetClip();
+         }
+      }
+
+      private void DrawBackgroundShadows(Graphics g, Rectangle rect)
+      {
+         Rectangle lr = new Rectangle(rect.Left + 2, rect.Top + 2, 10, rect.Height - 5);
+         using (Brush lg = new LinearGradientBrush(lr, black30, Color.Transparent, LinearGradientMode.Horizontal))
+         {
+            lr.X--;
+            g.FillRectangle(lg, lr);
+         }
+
+         Rectangle rr = new Rectangle(rect.Right - 12, rect.Top + 2, 10, rect.Height - 5);
+         using (Brush rg = new LinearGradientBrush(rr, Color.Transparent, black20, LinearGradientMode.Horizontal))
+            g.FillRectangle(rg, rr);
+      }
+      #endregion
+
+      protected override void OnPaint(PaintEventArgs e)
+      {
+         Rectangle rec = new Rectangle(0, 0, Width, Height);
+
+         if (ProgressBarRenderer.IsSupported)
+            ProgressBarRenderer.DrawHorizontalBar(e.Graphics, rec);
+         else
+            NoRendererSupport(e, rec);
+         switch (Style)
+         {
+            case ProgressBarStyle.Blocks:
+            case ProgressBarStyle.Continuous:
+               using (LinearGradientBrush brush = new LinearGradientBrush(rec, BackColor, ForeColor,
+                                                                        LinearGradientMode.Vertical))
+               {
+                  e.Graphics.FillRectangle(brush, 1, 1, (int)(rec.Width * ((double)Value / Maximum)) - 3, rec.Height - 3);
+               }
+               break;
+            case ProgressBarStyle.Marquee:
+               PaintMarquee(e);
+               break;
+            default:
+               throw new ArgumentOutOfRangeException();
+         }
+
+         using (SolidBrush sb = new SolidBrush(TextColor))
+         {
+            using (StringFormat sf = new StringFormat(StringFormatFlags.NoWrap)
             {
-                ProgressBarRenderer.DrawHorizontalBar(e.Graphics, rectangle);
+               Alignment = TextAlignment,
+               LineAlignment = StringAlignment.Center,
+               Trimming = StringTrimming.EllipsisWord
             }
-            else
+               )
             {
-                this.NoRendererSupport(e, rectangle);
+               rec.Inflate(-5, -2);
+               e.Graphics.DrawString(Text, Font, sb, rec, sf);
             }
-            switch (this.Style)
-            {
-                case ProgressBarStyle.Blocks:
-                case ProgressBarStyle.Continuous:
-                    using (LinearGradientBrush linearGradientBrush = new LinearGradientBrush(rectangle, this.BackColor, this.ForeColor, LinearGradientMode.Vertical))
-                    {
-                        e.Graphics.FillRectangle(linearGradientBrush, 1, 1, (int)((double)rectangle.Width * ((double)base.Value / (double)base.Maximum)) - 3, rectangle.Height - 3);
-                        goto IL_B0;
-                    }
-                    break;
-                case ProgressBarStyle.Marquee:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            this.PaintMarquee(e);
-            IL_B0:
-            using (SolidBrush solidBrush = new SolidBrush(this.TextColor))
-            {
-                using (StringFormat stringFormat = new StringFormat(StringFormatFlags.NoWrap)
-                {
-                    Alignment = this.TextAlignment,
-                    LineAlignment = StringAlignment.Center,
-                    Trimming = StringTrimming.EllipsisWord
-                })
-                {
-                    rectangle.Inflate(-5, -2);
-                    e.Graphics.DrawString(this.Text, this.Font, solidBrush, rectangle, stringFormat);
-                }
-            }
-        }
-    }
+         }
+      }
+
+
+   }
+
 }
+// ReSharper restore UnusedMember.Global
+// ReSharper restore UnusedAutoPropertyAccessor.Global
+// ReSharper restore MemberCanBePrivate.Global

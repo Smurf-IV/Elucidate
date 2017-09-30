@@ -146,10 +146,8 @@
     <Compile Include="Shared\FlickerFreeRichEditTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Shared\MessageBoxExt.cs" />
-    <Compile Include="Shared\MessageBoxExtForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Shared\MessageBoxExtForm.cs" />
+    <Compile Include="Shared\MessageBoxExtForm.Designer.cs" />
     <Compile Include="Shared\TextOverProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -212,17 +210,15 @@
     <Compile Include="SnapRAIDThreading.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="wyDay.Controls\COMTypes.cs" />
     <Compile Include="wyDay.Controls\Windows7Taskbar.cs" />
-    <Compile Include="wyDay.Controls\CTaskbarList.cs" />
-    <Compile Include="wyDay.Controls\ITaskbarList3.cs" />
-    <Compile Include="wyDay.Controls\ProgressBarState.cs" />
-    <Compile Include="wyDay.Controls\ThumbnailProgressState.cs" />
     <Compile Include="wyDay.Controls\Windows7ProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <EmbeddedResource Include="CalculateBlockSize.resx">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Shared\MessageBoxExtForm.resx" />
     <EmbeddedResource Include="Tabs\DriveSpaceDisplay.resx">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </EmbeddedResource>
@@ -263,8 +259,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="wyDay.Controls\Windows 7 Progress Bar, taskbar progress bar, open source C# control, .NET.website" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="wyDay.Controls\License.txt" />
     <None Include="ChangeLog.htm" />
     <Content Include="Elucidate.ico" />
     <None Include="Resources\cam_48.png" />
@@ -300,7 +298,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" BuildVersion_UseGlobalSettings="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
