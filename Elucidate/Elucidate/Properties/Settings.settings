@@ -38,5 +38,8 @@
     <Setting Name="RunWithoutCapture" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="Theme" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Office2010Silver</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

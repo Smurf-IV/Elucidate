@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Form1.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2015 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2017 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,8 +19,8 @@
 //  along with this program. If not, see http://www.gnu.org/licenses/.
 //  </copyright>
 //  <summary>
-//  Url: http://Elucidate.codeplex.com/
-//  Email: http://www.codeplex.com/site/users/view/smurfiv
+//  Url: https://github.com/Smurf-IV/Elucidate
+//  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -160,7 +160,7 @@ namespace Elucidate
 
       private void helpToolStripMenuItem_Click(object sender, EventArgs e)
       {
-         Process.Start(@"http://elucidate.codeplex.com/documentation");
+         Process.Start(@"https://github.com/Smurf-IV/Elucidatedocumentation");
       }
 
       private void changeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -172,7 +172,7 @@ namespace Elucidate
          catch
          {
             // Default to launching the checkin page :-!
-            Process.Start(@"http://elucidate.codeplex.com/SourceControl/list/changesets");
+            Process.Start(@"https://github.com/Smurf-IV/ElucidateSourceControl/list/changesets");
          }
       }
 

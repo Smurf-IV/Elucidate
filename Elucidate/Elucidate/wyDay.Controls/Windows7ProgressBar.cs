@@ -18,7 +18,7 @@ namespace wyDay.Controls
         private ProgressBarState m_State = ProgressBarState.Normal;
         ContainerControl ownerForm;
 
-        public Windows7ProgressBar () {}
+        public Windows7ProgressBar() { }
 
         public Windows7ProgressBar(ContainerControl parentControl)
         {
@@ -31,8 +31,10 @@ namespace wyDay.Controls
             {
                 ownerForm = value;
 
-                if(!ownerForm.Visible)
+                if (!ownerForm.Visible)
+                {
                     ((Form)ownerForm).Shown += Windows7ProgressBar_Shown;
+                }
             }
         }
         public override ISite Site
@@ -41,9 +43,15 @@ namespace wyDay.Controls
             {
                 // Runs at design time, ensures designer initializes ContainerControl
                 base.Site = value;
-                if (value == null) return;
+                if (value == null)
+                {
+                    return;
+                }
                 IDesignerHost service = value.GetService(typeof(IDesignerHost)) as IDesignerHost;
-                if (service == null) return;
+                if (service == null)
+                {
+                    return;
+                }
                 IComponent rootComponent = service.RootComponent;
 
                 ContainerControl = rootComponent as ContainerControl;
@@ -55,7 +63,9 @@ namespace wyDay.Controls
             if (ShowInTaskbar)
             {
                 if (Style != ProgressBarStyle.Marquee)
+                {
                     SetValueInTB();
+                }
 
                 SetStateInTB();
             }
@@ -85,7 +95,9 @@ namespace wyDay.Controls
                     if (ownerForm != null)
                     {
                         if (Style != ProgressBarStyle.Marquee)
+                        {
                             SetValueInTB();
+                        }
 
                         SetStateInTB();
                     }
@@ -149,20 +161,26 @@ namespace wyDay.Controls
 
                 bool wasMarquee = Style == ProgressBarStyle.Marquee;
 
-                if(wasMarquee)
-                    // sets the state to normal (and implicity calls SetStateInTB() )
+                if (wasMarquee)
+                // sets the state to normal (and implicity calls SetStateInTB() )
+                {
                     Style = ProgressBarStyle.Blocks;
+                }
 
                 // set the progress bar state (Normal, Error, Paused)
                 Windows7Taskbar.SendMessage(Handle, 0x410, (int)value, 0);
 
 
                 if (wasMarquee)
-                    // the Taskbar PB value needs to be reset
+                // the Taskbar PB value needs to be reset
+                {
                     SetValueInTB();
+                }
                 else
-                    // there wasn't a marquee, thus we need to update the taskbar
+                // there wasn't a marquee, thus we need to update the taskbar
+                {
                     SetStateInTB();
+                }
             }
         }
 
@@ -193,8 +211,8 @@ namespace wyDay.Controls
         {
             if (showInTaskbar)
             {
-                ulong maximum = (ulong) (Maximum - Minimum);
-                ulong progress = (ulong) (Value - Minimum);
+                ulong maximum = (ulong)(Maximum - Minimum);
+                ulong progress = (ulong)(Value - Minimum);
 
                 Windows7Taskbar.SetProgressValue(ownerForm.Handle, progress, maximum);
             }
@@ -202,18 +220,29 @@ namespace wyDay.Controls
 
         private void SetStateInTB()
         {
-            if (ownerForm == null) return;
+            if (ownerForm == null)
+            {
+                return;
+            }
 
             ThumbnailProgressState thmState = ThumbnailProgressState.Normal;
 
             if (!showInTaskbar)
+            {
                 thmState = ThumbnailProgressState.NoProgress;
+            }
             else if (Style == ProgressBarStyle.Marquee)
+            {
                 thmState = ThumbnailProgressState.Indeterminate;
+            }
             else if (m_State == ProgressBarState.Error)
+            {
                 thmState = ThumbnailProgressState.Error;
+            }
             else if (m_State == ProgressBarState.Pause)
+            {
                 thmState = ThumbnailProgressState.Paused;
+            }
 
             Windows7Taskbar.SetProgressState(ownerForm.Handle, thmState);
         }
@@ -228,12 +257,12 @@ namespace wyDay.Controls
         /// Indicates normal progress
         /// </summary>
         Normal = 1,
-        
+
         /// <summary>
         /// Indicates an error in the progress
         /// </summary>
         Error = 2,
-        
+
         /// <summary>
         /// Indicates paused progress
         /// </summary>

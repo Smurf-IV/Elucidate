@@ -19,8 +19,8 @@
 //  along with this program. If not, see http://www.gnu.org/licenses/.
 //  </copyright>
 //  <summary>
-//  Url: http://Elucidate.codeplex.com/
-//  Email: http://www.codeplex.com/site/users/view/smurfiv
+//  Url: https://github.com/Smurf-IV/Elucidate
+//  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -98,12 +98,12 @@ namespace Elucidate
             // Create a new task
             // Create a new task definition and assign properties
             TaskDefinition td = ts.NewTask();
-            td.Data = "http://elucidate.codeplex.com/documentation";
+            td.Data = "https://github.com/Smurf-IV/Elucidatedocumentation";
             //td.Principal.UserId = user;
             //td.Principal.LogonType = TaskLogonType.InteractiveToken;
             td.RegistrationInfo.Author = "Elucidate";
             td.RegistrationInfo.Description = "Performs the SnapRAID Sync command after a small delay after logon";
-            td.RegistrationInfo.Documentation = "http://elucidate.codeplex.com/documentation";
+            td.RegistrationInfo.Documentation = "https://github.com/Smurf-IV/Elucidatedocumentation";
             td.Settings.DisallowStartIfOnBatteries = true;
             td.Settings.Enabled = true;
             td.Settings.ExecutionTimeLimit = TimeSpan.FromDays(1);
@@ -121,10 +121,9 @@ namespace Elucidate
                lTrigger.UserId = user;
             }
             lTrigger.Repetition.Interval = TimeSpan.FromDays(1);
-            // Create an action which opens a log file in notepad
-            string appPath;
-            string args = FormatSnapRaidCommandArgs("Sync", out appPath);
-            td.Actions.Add(new ExecAction("cmd", string.Format("/k \"\"{0}\" {1}\"", appPath, args), null));
+                // Create an action which opens a log file in notepad
+                string args = FormatSnapRaidCommandArgs("Sync", out string appPath);
+                td.Actions.Add(new ExecAction("cmd", string.Format("/k \"\"{0}\" {1}\"", appPath, args), null));
             //if (newVer)
             //{
             //   // Create an action which shows a message to the interactive user
@@ -148,7 +147,7 @@ namespace Elucidate
          }
          catch (Exception ex)
          {
-            Log.Error("btnNew_Click has thrown: ", ex);
+            Log.Error(ex, "btnNew_Click has thrown: ");
             MessageBox.Show(this, ex.Message, "New Schedule Task");
          }
          finally
@@ -190,7 +189,7 @@ namespace Elucidate
          }
          catch (Exception ex)
          {
-            Log.Error("btnEdit_Click has thrown: ", ex);
+            Log.Error(ex, "btnEdit_Click has thrown: ");
             MessageBox.Show(this, ex.Message, "Edit Schedule Task");
          }
          finally
@@ -214,7 +213,7 @@ namespace Elucidate
          }
          catch (Exception ex)
          {
-            Log.Error("btnDelete_Click has thrown: ", ex);
+            Log.Error(ex, "btnDelete_Click has thrown: ");
             MessageBox.Show(this, ex.Message, "Delete Schedule Task");
          }
          finally

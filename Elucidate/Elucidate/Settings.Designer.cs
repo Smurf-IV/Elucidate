@@ -659,7 +659,7 @@ namespace Elucidate
          // 
          // helpProvider1
          // 
-         this.helpProvider1.HelpNamespace = "http://elucidate.codeplex.com/wikipage?title=Settings";
+         this.helpProvider1.HelpNamespace = "https://github.com/Smurf-IV/Elucidatewikipage?title=Settings";
          // 
          // Settings
          // 

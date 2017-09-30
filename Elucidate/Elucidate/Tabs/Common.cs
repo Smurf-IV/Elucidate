@@ -19,8 +19,8 @@
 //  along with this program. If not, see http://www.gnu.org/licenses/.
 //  </copyright>
 //  <summary>
-//  Url: http://Elucidate.codeplex.com/
-//  Email: http://www.codeplex.com/site/users/view/smurfiv
+//  Url: https://github.com/Smurf-IV/Elucidate
+//  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
 

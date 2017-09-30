@@ -19,8 +19,8 @@
 //  along with this program. If not, see http://www.gnu.org/licenses/.
 //  </copyright>
 //  <summary>
-//  Url: http://Elucidate.codeplex.com/
-//  Email: http://www.codeplex.com/site/users/view/smurfiv
+//  Url: https://github.com/Smurf-IV/Elucidate
+//  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -34,75 +34,77 @@ using System.Xml;
 
 namespace Elucidate
 {
-   public partial class LogFileLocation : Form
-   {
-      private const string configurationNlogVariableNameLogdirValue = @"/configuration/nlog/variable[@name='LogDir'][@value]";
+    public partial class LogFileLocation : Form
+    {
+        private const string configurationNlogVariableNameLogdirValue = @"/configuration/nlog/variable[@name='LogDir'][@value]";
 
-      public LogFileLocation()
-      {
-         InitializeComponent();
+        public LogFileLocation()
+        {
+            InitializeComponent();
 
-         // retrieve appSettings node
-         txtNewLocation.Text = txtCurrentLocation.Text = GetLogFileLocation();
-      }
+            // retrieve appSettings node
+            txtNewLocation.Text = txtCurrentLocation.Text = GetLogFileLocation();
+        }
 
-      private void btnDefault_Click(object sender, EventArgs e)
-      {
-         txtCurrentLocation.Text = txtNewLocation.Text = @"${specialfolder:folder=CommonApplicationData}/Elucidate/Logs";
-         WriteSetting(txtCurrentLocation.Text);
-      }
+        private void btnDefault_Click(object sender, EventArgs e)
+        {
+            txtCurrentLocation.Text = txtNewLocation.Text = @"${specialfolder:folder=CommonApplicationData}/Elucidate/Logs";
+            WriteSetting(txtCurrentLocation.Text);
+        }
 
-      private void btnCommit_Click(object sender, EventArgs e)
-      {
-         WriteSetting(txtNewLocation.Text);
-         txtCurrentLocation.Text = txtNewLocation.Text;
-      }
+        private void btnCommit_Click(object sender, EventArgs e)
+        {
+            WriteSetting(txtNewLocation.Text);
+            txtCurrentLocation.Text = txtNewLocation.Text;
+        }
 
-      private void btnLaunchBrowser_Click(object sender, EventArgs e)
-      {
-         if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
-            txtNewLocation.Text = folderBrowserDialog1.SelectedPath;
-      }
+        private void btnLaunchBrowser_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                txtNewLocation.Text = folderBrowserDialog1.SelectedPath;
+            }
+        }
 
-      public static void WriteSetting(string value)
-      {
-         try
-         {
+        public static void WriteSetting(string value)
+        {
+            try
+            {
+                XmlDocument doc = loadConfigDocument();
+                XmlAttribute att = doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"];
+                att.Value = value;
+                doc.Save(getConfigFilePath());
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public static string GetLogFileLocation()
+        {
             XmlDocument doc = loadConfigDocument();
-            XmlAttribute att = doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"];
-            att.Value = value;
-            doc.Save(getConfigFilePath());
-         }
-         catch
-         {
-            throw;
-         }
-      }
+            return doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"].Value;
+        }
 
-      public static string GetLogFileLocation()
-      {
-         XmlDocument doc = loadConfigDocument();
-         return doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"].Value;
-      }
+        private static XmlDocument loadConfigDocument()
+        {
+            XmlDocument doc = null;
+            try
+            {
+                doc = new XmlDocument();
+                doc.Load(getConfigFilePath());
+                return doc;
+            }
+            catch (FileNotFoundException e)
+            {
+                throw new Exception("No configuration file found.", e);
+            }
+        }
 
-      private static XmlDocument loadConfigDocument()
-      {
-         XmlDocument doc = null;
-         try
-         {
-            doc = new XmlDocument();
-            doc.Load(getConfigFilePath());
-            return doc;
-         }
-         catch (FileNotFoundException e)
-         {
-            throw new Exception("No configuration file found.", e);
-         }
-      }
-
-      private static string getConfigFilePath()
-      {
-         return Assembly.GetExecutingAssembly().Location + ".config";
-      }
-   }
+        private static string getConfigFilePath()
+        {
+            return Assembly.GetExecutingAssembly().Location + ".config";
+        }
+    }
 }

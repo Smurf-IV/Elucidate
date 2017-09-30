@@ -19,8 +19,8 @@
 //  along with this program. If not, see http://www.gnu.org/licenses/.
 //  </copyright>
 //  <summary>
-//  Url: http://Elucidate.codeplex.com/
-//  Email: http://www.codeplex.com/site/users/view/smurfiv
+//  Url: https://github.com/Smurf-IV/Elucidate
+//  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,85 +35,84 @@ using NLog;
 
 namespace Elucidate
 {
-   internal static class Program
-   {
-      private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    internal static class Program
+    {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-      /// <summary>
-      /// The main entry point for the application.
-      /// </summary>
-      [STAThread]
-      private static void Main()
-      {
-         try
-         {
-            AppDomain.CurrentDomain.UnhandledException += logUnhandledException;
-         }
-         catch (Exception ex)
-         {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        private static void Main()
+        {
             try
             {
-               Log.FatalException("Failed to attach unhandled exception handler...", ex);
+                AppDomain.CurrentDomain.UnhandledException += logUnhandledException;
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    Log.Fatal(ex, "Failed to attach unhandled exception handler...");
+                }
+                catch
+                {
+                }
+            }
+            try
+            {
+                Log.Error("=====================================================================");
+                Log.Error("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
+                CheckAndRunSingleApp();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Exception has not been caught by the rest of the application!");
+                MessageBox.Show(ex.Message, "Uncaught Exception - Exiting !");
+            }
+            finally
+            {
+                Log.Error("File Closing");
+                Log.Error("=====================================================================");
+            }
+        }
+
+        private static void CheckAndRunSingleApp()
+        {
+            string MutexName = string.Format("{0} [{1}]", Path.GetFileName(Application.ExecutablePath), Environment.UserName);
+            using (Mutex AppUserMutex = new Mutex(true, MutexName, out bool GrantedOwnership))
+            {
+                if (GrantedOwnership)
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new Elucidate());
+                }
+                else
+                {
+                    MessageBox.Show(MutexName + " is already running");
+                }
+            }
+        }
+
+        private static void logUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                Log.Fatal("Unhandled exception.\r\n{0}", e.ExceptionObject);
+                if (e.ExceptionObject is Exception ex)
+                {
+                    Log.Fatal(ex, "Exception details");
+                }
+                else
+                {
+                    Log.Fatal("Unexpected exception.");
+                }
             }
             catch
             {
+                // skipped
             }
-         }
-         try
-         {
-            Log.Error("=====================================================================");
-            Log.Error("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
-            CheckAndRunSingleApp();
-         }
-         catch (Exception ex)
-         {
-            Log.Fatal("Exception has not been caught by the rest of the application!", ex);
-            MessageBox.Show(ex.Message, "Uncaught Exception - Exiting !");
-         }
-         finally
-         {
-            Log.Error("File Closing");
-            Log.Error("=====================================================================");
-         }
-      }
-
-      private static void CheckAndRunSingleApp()
-      {
-         string MutexName = string.Format("{0} [{1}]", Path.GetFileName(Application.ExecutablePath), Environment.UserName);
-         bool GrantedOwnership;
-         using (Mutex AppUserMutex = new Mutex(true, MutexName, out GrantedOwnership))
-         {
-            if (GrantedOwnership)
-            {
-               Application.EnableVisualStyles();
-               Application.SetCompatibleTextRenderingDefault(false);
-               Application.Run(new Elucidate());
-            }
-            else
-            {
-               MessageBox.Show(MutexName + " is already running");
-            }
-         }
-      }
-
-      private static void logUnhandledException(object sender, UnhandledExceptionEventArgs e)
-      {
-         try
-         {
-            Log.Fatal("Unhandled exception.\r\n{0}", e.ExceptionObject);
-            Exception ex = e.ExceptionObject as Exception;
-            if (ex != null)
-            {
-               Log.FatalException("Exception details", ex);
-            }
-            else
-            {
-               Log.Fatal("Unexpected exception.");
-            }
-         }
-         catch
-         {
-         }
-      }
-   }
+        }
+    }
 }

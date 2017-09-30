@@ -20,7 +20,7 @@
         <Package Id="*" Keywords='Installer'
                  InstallScope='perMachine'
                  Description="$(var.ProductName)"
-                 Comments="Elucidate" InstallerVersion="401" Compressed="yes"
+                 Comments="Elucidate" InstallerVersion="500" Compressed="yes"
                  AdminImage='no'
                  Platform='x86'
                />
@@ -37,11 +37,17 @@
         <WixVariable Id="WixUILicenseRtf" Value="GPLv2.rtf" />
 
         <!-- Properties to allow detection of .Net installation -->
-        <PropertyRef Id="NETFRAMEWORK45"/>
-
-        <Condition Message="[ProductName] Requires .NET Framework 4.5.1 or greater to be installed">
-            <![CDATA[Installed OR (NETFRAMEWORK45 AND NETFRAMEWORK45 >= "#378675")]]>
+        <PropertyRef Id="NETFRAMEWORK45" />
+        <Condition Message="[ProductName] Requires .NET Framework 4.7 or later to be installed">
+            <![CDATA[Installed OR (NETFRAMEWORK45 AND NETFRAMEWORK45 >= "#460805")]]>
         </Condition>
+
+        <Property Id="WIX_IS_NETFRAMEWORK_47_OR_LATER_INSTALLED" Value="0" />
+        <!-- <PropertyRef Id="WIX_IS_NETFRAMEWORK_47_OR_LATER_INSTALLED" /> 
+      <Condition Message="[ProductName] Requires .NET Framework 4.7 or later to be installed">
+            <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_47_OR_LATER_INSTALLED]]>
+        </Condition>-->
+
         <Condition Message="You need to be an administrator to install this product.">
             Privileged
         </Condition>
@@ -84,10 +90,13 @@
             </Component>
 
             <Component>
+                <File Source="$(var.MgtSource)\ActiveDirectoryObjectPicker.dll" KeyPath="yes" />
+            </Component>
+            <Component>
                 <File Source="$(var.MgtSource)\AeroWizard.dll" KeyPath="yes" />
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\CubicOrange.Windows.Forms.ActiveDirectory.dll" KeyPath="yes" />
+                <File Source="$(var.MgtSource)\ComponentFactory.Krypton.Toolkit.dll" KeyPath="yes" />
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" />

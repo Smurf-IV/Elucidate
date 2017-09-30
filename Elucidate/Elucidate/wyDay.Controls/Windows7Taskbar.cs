@@ -49,8 +49,10 @@ namespace wyDay.Controls
         /// <param name="state">The progress state.</param>
         public static void SetProgressState(IntPtr hwnd, ThumbnailProgressState state)
         {
-            if(Windows7OrGreater)
+            if (Windows7OrGreater)
+            {
                 TaskbarList.SetProgressState(hwnd, state);
+            }
         }
         /// <summary>
         /// Sets the progress value of the specified window's
@@ -61,8 +63,10 @@ namespace wyDay.Controls
         /// <param name="maximum">The maximum value.</param>
         public static void SetProgressValue(IntPtr hwnd, ulong current, ulong maximum)
         {
-            if(Windows7OrGreater)
+            if (Windows7OrGreater)
+            {
                 TaskbarList.SetProgressValue(hwnd, current, maximum);
+            }
         }
 
 
