@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Smurf-IV")]
 [assembly: AssemblyProduct("Elucidate")]
-[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2015")]
+[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -54,5 +54,5 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("15.3.501.31")]
-[assembly: AssemblyFileVersion("15.3.501.31")]
+[assembly: AssemblyVersion("15.3.601.31")]
+[assembly: AssemblyFileVersion("15.3.601.31")]

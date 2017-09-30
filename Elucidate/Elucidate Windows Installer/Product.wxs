@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
+     >
+
+    <?define MgtSource=$(sys.SOURCEFILEDIR)..\Elucidate\bin\Release ?>
+
+    <!-- do not change this ever !-->
+    <?define UpgradeCode = "B015A529-67FB-4009-93A8-E7465CA191C1" ?>
+
+    <!-- Change this when creating new release YY-MM-DD.Build -->
+    <?define Version = "!(bind.FileVersion.Elucidate.exe)" ?>
+
+    <?define ProductName = "Elucidate: A GUI to drive the SnapRAID command line (via .Net)"?>
+
+    <Product Version="$(var.Version)" Id="*" UpgradeCode="$(var.UpgradeCode)"
+           Name="$(var.ProductName)" Language="1033" Manufacturer="https://github.com/Smurf-IV/Elucidate/" >
+
+        <Package Id="*" Keywords='Installer'
+                 InstallScope='perMachine'
+                 Description="$(var.ProductName)"
+                 Comments="Elucidate" InstallerVersion="401" Compressed="yes"
+                 AdminImage='no'
+                 Platform='x86'
+               />
+
+        <MajorUpgrade DowngradeErrorMessage="Downgrades are not allowed - Use add/remove from the control panel" />
+
+        <!-- Support Information shown in Add/Remove programs (this is optional) -->
+        <Property Id="ARPHELPLINK" Value="https://github.com/Smurf-IV/Elucidate/docs" />
+        <Property Id="ARPCOMMENTS" Value="https://github.com/Smurf-IV/Elucidate/issues"/>
+        <Property Id="ARPCONTACT" Value="Smurf-IV" />
+        <Property Id="ARPURLINFOABOUT" Value="https://github.com/Smurf-IV/Elucidate" />
+        <Icon Id="InstallerIcon" SourceFile="$(sys.SOURCEFILEDIR)..\Elucidate\Elucidate.ico" />
+        <Property Id="ARPPRODUCTICON" Value="InstallerIcon" />
+        <WixVariable Id="WixUILicenseRtf" Value="GPLv2.rtf" />
+
+        <!-- Properties to allow detection of .Net installation -->
+        <PropertyRef Id="NETFRAMEWORK45"/>
+
+        <Condition Message="[ProductName] Requires .NET Framework 4.5.1 or greater to be installed">
+            <![CDATA[Installed OR (NETFRAMEWORK45 AND NETFRAMEWORK45 >= "#378675")]]>
+        </Condition>
+        <Condition Message="You need to be an administrator to install this product.">
+            Privileged
+        </Condition>
+
+        <!--Allow 7z / zip compression to squeeze this tighter -->
+        <Media Id="1" Cabinet="Setup.cab" EmbedCab="yes" CompressionLevel="high" />
+
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="INSTALLDIR" Name="Elucidate">
+                    <Directory Id="ClientDIR" Name="Elucidate Client">
+                    </Directory>
+                    <Directory Id="ServiceDIR" Name="Elucidate Service">
+                    </Directory>
+                </Directory>
+            </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ProgramMenuDir" Name="Elucidate"/>
+                <Directory Id="StartupFolder" Name="Startup" />
+            </Directory>
+
+            <Directory Id="CommonAppDataFolder" Name="CommonAppData">
+                <Directory Id="ElucidateSvc_Data" Name="ElucidateSvc" >
+                    <Component Id="DataDir" Guid="01234567-7E98-44CE-B049-C477CC0A2B01" KeyPath="yes" />
+                </Directory>
+            </Directory>
+
+        </Directory>
+
+        <ComponentGroup Id="Client" Directory="ClientDIR">
+            <Component Id="Client" Guid="5EBF3F29-9CF1-44FE-A94C-CC1B4FE09367" >
+                <File Id="InstallerIcon" Name="Elucidate.ico" Source="$(sys.SOURCEFILEDIR)..\Elucidate\Elucidate.ico" />
+                <File Id="Elucidate.exe" Name="Elucidate.exe" Source="$(var.MgtSource)\Elucidate.exe" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(sys.SOURCEFILEDIR)..\Elucidate\ChangeLog.htm" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Elucidate.exe.config" KeyPath="yes" />
+            </Component>
+
+            <Component>
+                <File Source="$(var.MgtSource)\AeroWizard.dll" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\CubicOrange.Windows.Forms.ActiveDirectory.dll" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskScheduler.dll" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskSchedulerEditor.dll" KeyPath="yes" />
+            </Component>
+
+            <Component>
+                <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\TimeSpan2.dll" KeyPath="yes" />
+            </Component>
+        
+            <Component>
+                <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\wyDay.Controls\License.txt" KeyPath="yes" />
+            </Component>
+        </ComponentGroup>
+
+        <DirectoryRef Id="ProgramMenuDir">
+            <Component Id="ProgramMenuDir2" Guid="11234567-7E98-44CE-B049-C477CC0A2B01">
+                <Shortcut Id="Elucidate_Shortcut" Name="Elucidate MGT" Description="Elucidate Management Application" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
+                <Shortcut Id="Elucidate_Start" Name="Elucidate MGT" Directory="StartupFolder" Description="Elucidate MGT Application" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
+                <util:InternetShortcut Type="url" Id="Home" Name="Elucidate Forum" Target="[ARPHELPLINK]" />
+                <util:InternetShortcut Type="link" Id="Change" Name="Change Log" Target="[ClientDIR]ChangeLog.htm"/>
+                <util:InternetShortcut Type="url" Id="SnapRAID" Name="SnapRAID Forum" Target="https://sourceforge.net/projects/snapraid/forums/forum/1677233" />
+                <RemoveFolder Id="ProgramMenuDir" On="uninstall"/>
+                <RegistryValue Root="HKCU" Key="Software\Microsoft\Elucidate" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+            </Component>
+        </DirectoryRef>
+
+        <Feature Id="ProductFeature" Title="Elucidate_Setup" Level="1">
+            <ComponentRef Id="DataDir" />
+            <ComponentGroupRef Id="Client" />
+            <ComponentRef Id='ProgramMenuDir2'/>
+        </Feature>
+
+
+        <CustomAction Id="MgtApp" FileKey="Elucidate.exe" ExeCommand="" Return="asyncNoWait" />
+        <util:CloseApplication CloseMessage="yes" Id="CloseElucidate" Target="Elucidate.exe" RebootPrompt="no"/>
+
+        <InstallUISequence>
+            <Custom Action="WixCloseApplications" Before="LaunchConditions" />
+        </InstallUISequence>
+
+        <!-- Now to sequence these Custom Actions in the execute sequence -->
+        <InstallExecuteSequence>
+            <Custom Action="WixCloseApplications" Before="LaunchConditions" />
+
+            <Custom Action="MgtApp" After="InstallFinalize">Not Installed</Custom>
+        </InstallExecuteSequence>
+
+        <!-- Get the install to skip a few steps -->
+        <UIRef Id="WixUI_Common" />
+        <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+        <!-- This just adds 90K on top of the UI Extension.dll -->
+        <WixVariable Id="WixUIDialogBmp" Value="WixUIDialogBmp.bmp" />
+        <!-- This just adds 390K on top of the UI Extension.dll -->
+        <UI>
+            <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+            <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+            <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+            <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+
+            <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+            <Property Id="ARPNOMODIFY" Value="1" />
+
+            <DialogRef Id="BrowseDlg" />
+            <DialogRef Id="DiskCostDlg" />
+            <DialogRef Id="ErrorDlg" />
+            <DialogRef Id="FatalError" />
+            <DialogRef Id="FilesInUse" />
+            <DialogRef Id="MsiRMFilesInUse" />
+            <DialogRef Id="PrepareDlg" />
+            <DialogRef Id="ProgressDlg" />
+            <DialogRef Id="ResumeDlg" />
+            <DialogRef Id="UserExit" />
+
+            <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+            <Publish Dialog="WelcomeEulaDlg" Control="Install" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeEulaDlg" Order="1">NOT Installed</Publish>
+            <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed</Publish>
+
+            <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+            <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+            <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+            <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+        </UI>
+
+        <UIRef Id="WixUI_ErrorProgressText" />
+
+    </Product>
+</Wix>
