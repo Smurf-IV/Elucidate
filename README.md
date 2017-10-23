@@ -4,6 +4,7 @@
     - [Current](#current)
   - [FAQs](#faqs)
   - [Phases](#phases)
+  - [Screenshots](#screenshots)
 
 ## Project Description
 Definition: explain in detail
@@ -60,6 +61,9 @@ Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, ex
 <br/>
 <br/>
 
+## Screenshots
+
 ![Layout With Scheduling](Images/Layout_With_Scheduling_12.1.26.png)
+
 
 ![Coverage Tab](Images/CoverageTab_2.png)
