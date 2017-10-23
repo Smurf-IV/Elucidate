@@ -1,4 +1,10 @@
 # Elucidate
+  - [Project Description](#project-description)
+  - [OS Requirements:](#os-requirements)
+    - [Current](#current)
+  - [FAQs](#faqs)
+  - [Phases](#phases)
+
 ## Project Description
 Definition: explain in detail
 Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, exemplify, explicate, expound, get across, illuminate, illustrate, interpret, make perfectly clear
@@ -41,7 +47,7 @@ Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, ex
 * [ ] Phase III – (Restart for V.17-xx onwards)
   * [ ] New Compiler – **Installed**
   * [ ] Move to GitHub (MS removed all the old Code and issues – Oops) - **Done**
-  * [ ] Use Mark Down for GitHub – *Learning*
+  * [*] Use Mark Down for GitHub – *Learning*
   * [ ] New Layout and Theming – *Learning*
   * [ ] New SnapRaid 11.x – *Installing*
   * [ ] Translations.
@@ -54,6 +60,6 @@ Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, ex
 <br/>
 <br/>
 <br/>
-![GitHub Logo](images/Layout_With_Scheduling_12.1.26.png "Layout With Scheduling")
+![Layout With Scheduling](Images/Layout_With_Scheduling_12.1.26.png)
 
-![GitHub Logo](images/CoverageTab_2.png "Coverage Tab")
+![Coverage Tab](Images/CoverageTab_2.png)
