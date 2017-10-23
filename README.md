@@ -59,7 +59,7 @@ Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, ex
   * [ ] Show what could be recovered (This will require looking into the SnapRaid codebase to interpret the status file(s)). 
 <br/>
 <br/>
-<br/>
+
 ![Layout With Scheduling](Images/Layout_With_Scheduling_12.1.26.png)
 
 ![Coverage Tab](Images/CoverageTab_2.png)
