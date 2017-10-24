@@ -1,38 +1,36 @@
 # Elucidate
   - [Project Description](#project-description)
-  - [OS Requirements:](#os-requirements)
-    - [Current](#current)
+  - [System Requirements:](#os-requirements)
   - [FAQs](#faqs)
-  - [Phases](#phases)
+  - [roadmap](#roadmap)
   - [Screenshots](#screenshots)
 
 ## Project Description
 Definition: explain in detail
 Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, exemplify, explicate, expound, get across, illuminate, illustrate, interpret, make perfectly clear
 
-## OS Requirements:
-### Current
-- Use of the latest .Net 4.5 or higher
-- Latest SnapRaid *(Tested upto 10.0)*
+## System Requirements:
+- Windows Operating System
+- SnapRaid Version 10.x or lower
+- n mb Free Space on target drive
+- .Net Runtime 4.5 or higher
  
 ## FAQs
 
 **Q**: What is SnapRAID?<br/>
-**A**: I think it's best if you go and look for yourself -> http://snapraid.sourceforge.net/compare.html
+**A**: SnapRAID is a software-defined snapshot-parity engine for Windows and Linux operating systems.  On the most basic level, it offers protection to the contents of a filesystem under its umbrella by computing the hashes of its component filesand storing the results on a parity file.  In the event of a complete hard drive failure, this parity file can be used to reconstruct the lost data.  For full detail, visit SnapRAID's [official comparison of file protection engines.](http://snapraid.sourceforge.net/compare.html)
 
 **Q**: Why a GUI, the Command Line works!<br/>
-**A**: Sometimes, ‘point and clicks’ are easier for a novice to get going with, Also this project has some bigger targets in mind as well.
-
+**A**: Sometimes, ‘point and clicks’ are easier for a novice to get going with.  SnapRAID's somewhat vague documentation and deep configurability can make adopting it offputting to those looking to try it out!  Our larger goal is to create a feature-complete GUI with additional management features designed to aid a user in maintaining a functioning SnapRAID environment.
 
 **Q**: I’m still uncertain, is there more ?<br/>
 **A**: Yes, Have a look at the following documentation for pictures etc.
 
-**Q**: So what are these "Bigger Targets" ?<br/>
-**A**: I think this is best answered with a list of features that need to be done
-<br/>
-<br/>
+**Q**: So what are these "Larger Goals" ?<br/>
+**A**: See the roadmap below for a complete breakdown of what I mean by this.
 
-## Phases
+
+## Roadmap
 * [ ] Attempt to keep up with the minimum support of the latest SnapRAID. – **On-going.**
 * [x] Ease of use(Phase I) **[All Done]**
   * SnapRAID has three commands, so lets make them simple to access for a novice
@@ -48,7 +46,7 @@ Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, ex
 * [ ] Phase III – (Restart for V.17-xx onwards)
   * [ ] New Compiler – **Installed**
   * [ ] Move to GitHub (MS removed all the old Code and issues – Oops) - **Done**
-  * [*] Use Mark Down for GitHub – *Learning*
+  * [x] Use Mark Down for GitHub – *Learning*
   * [ ] New Layout and Theming – *Learning*
   * [ ] New SnapRaid 11.x – *Installing*
   * [ ] Translations.
@@ -58,8 +56,6 @@ Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, ex
 * [ ] Phase IV (Recovery and new SnapRAID Commands ?)
   * [ ] Extended Help with recovery – interactive guides etc..
   * [ ] Show what could be recovered (This will require looking into the SnapRaid codebase to interpret the status file(s)). 
-<br/>
-<br/>
 
 ## Screenshots
 
