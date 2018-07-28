@@ -247,7 +247,7 @@ namespace Elucidate
                 if (!(parentNode.Tag is DirectoryInfo root)) return;
                 Log.Debug("// Find all the subdirectories under this directory.");
                 DirectoryInfo[] subDirs = root.GetDirectories();
-                if (subDirs == null) return;
+                if (subDirs.Length == 0) return;
                 foreach (DirectoryInfo dirInfo in subDirs)
                 {
                     // Resursive call for each subdirectory.
@@ -260,6 +260,7 @@ namespace Elucidate
                     };
 
                     Log.Debug("If this is a folder item and has children then add a place holder node.");
+
                     try
                     {
                         DirectoryInfo[] subChildDirs = dirInfo.GetDirectories();
@@ -284,11 +285,9 @@ namespace Elucidate
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TreeNode tn = driveAndDirTreeView.SelectedNode;
-            if (tn != null)
-            {
-                driveAndDirTreeView.Nodes.Remove(tn);
-                UnsavedChangesMade = true;
-            }
+            if (tn == null) return;
+            driveAndDirTreeView.Nodes.Remove(tn);
+            UnsavedChangesMade = true;
         }
 
         private void driveAndDirTreeView_MouseDown(object sender, MouseEventArgs e)
@@ -361,23 +360,19 @@ namespace Elucidate
         private void DRUnit_NewNode_MenuItem_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog { Description = "Browse for directory manually" };
-            if (fbd.ShowDialog() == DialogResult.OK)
-            {
-                DirectoryInfo dirInfo = new DirectoryInfo(fbd.SelectedPath);
-                TreeNode tvwChild = new TreeNode { Text = dirInfo.Name, SelectedImageIndex = 8, ImageIndex = 7, Tag = dirInfo };
-                driveAndDirTreeView.Nodes.Add(tvwChild);
-                driveAndDirTreeView.SelectedNode = tvwChild;
-                PerformSnapShotSourceAdd(tvwChild);
-            }
+            if (fbd.ShowDialog() != DialogResult.OK) return;
+            DirectoryInfo dirInfo = new DirectoryInfo(fbd.SelectedPath);
+            TreeNode tvwChild = new TreeNode { Text = dirInfo.Name, SelectedImageIndex = 8, ImageIndex = 7, Tag = dirInfo };
+            driveAndDirTreeView.Nodes.Add(tvwChild);
+            driveAndDirTreeView.SelectedNode = tvwChild;
+            PerformSnapShotSourceAdd(tvwChild);
         }
 
         private void snapShotSourcesTreeView_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                Log.Debug("Select the clicked node");
-                snapShotSourcesTreeView.SelectedNode = snapShotSourcesTreeView.GetNodeAt(e.X, e.Y);
-            }
+            if (e.Button != MouseButtons.Right) return;
+            Log.Debug("Select the clicked node");
+            snapShotSourcesTreeView.SelectedNode = snapShotSourcesTreeView.GetNodeAt(e.X, e.Y);
         }
 
         #endregion snapShotSourcesTreeView
