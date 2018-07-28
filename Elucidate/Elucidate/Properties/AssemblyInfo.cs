@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Smurf-IV")]
 [assembly: AssemblyProduct("Elucidate")]
-[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2017")]
+[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
