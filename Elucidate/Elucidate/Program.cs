@@ -61,8 +61,8 @@ namespace Elucidate
             }
             try
             {
-                Log.Error("=====================================================================");
-                Log.Error("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
+                Log.Info("=====================================================================");
+                Log.Info("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
                 CheckAndRunSingleApp();
             }
             catch (Exception ex)
@@ -72,8 +72,8 @@ namespace Elucidate
             }
             finally
             {
-                Log.Error("File Closing");
-                Log.Error("=====================================================================");
+                Log.Info("File Closing");
+                Log.Info("=====================================================================");
             }
         }
 
