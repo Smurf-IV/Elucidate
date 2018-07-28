@@ -375,6 +375,10 @@ namespace Elucidate
                 case "Idle":
                     requested = ProcessPriorityClass.Idle;
                     break;
+
+                default:
+                    Log.Error("Invalid option for comboBox1_SelectedIndexChanged()");
+                    break;
             }
         }
     }
