@@ -485,14 +485,17 @@ namespace Elucidate
             {
                 if (Properties.Settings.Default.UseWindowsSettings)
                 {
-                    exludedFilesView.Rows.Add(@"\$RECYCLE.BIN\");
-                    exludedFilesView.Rows.Add(@"\System Volume Information\");
-                    exludedFilesView.Rows.Add(@"*.bak");
+                    exludedFilesView.Rows.Add(@"*.covefs");
+                    exludedFilesView.Rows.Add(@"*.unrecoverable");
                     exludedFilesView.Rows.Add(@"Thumbs.db");
+                    exludedFilesView.Rows.Add(@"\$RECYCLE.BIN");
+                    exludedFilesView.Rows.Add(@"\System Volume Information");
+                    exludedFilesView.Rows.Add(@"\Program Files\");
+                    exludedFilesView.Rows.Add(@"\Program Files(x86)\");
+                    exludedFilesView.Rows.Add(@"\Windows\");
                 }
                 else
                 {
-                    exludedFilesView.Rows.Add(@"*.bak");
                     exludedFilesView.Rows.Add(@"/lost+found/");
                     exludedFilesView.Rows.Add(@"/tmp/");
                 }
