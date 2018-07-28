@@ -70,59 +70,53 @@ namespace Elucidate
                 foreach (string line in File.ReadLines(ConfigPath))
                 {
                     string lineStart = line.TrimStart();
-                    if (!string.IsNullOrWhiteSpace(lineStart)
-                       && !lineStart.StartsWith("#")
-                       )
+                    if (string.IsNullOrWhiteSpace(lineStart) || lineStart.StartsWith("#")) continue;
+                    // Not a comment, so off we go.
+                    int splitIndex = lineStart.IndexOf(' ');
+                    string value = lineStart.Substring(splitIndex + 1);
+                    if (string.IsNullOrWhiteSpace(value))
                     {
-                        // Not a comment, so off we go.
-                        int splitIndex = lineStart.IndexOf(' ');
-                        string value = lineStart.Substring(splitIndex + 1);
-                        if (string.IsNullOrWhiteSpace(value))
-                        {
-                            continue;
-                        }
-                        switch (lineStart.Substring(0, splitIndex).ToLower())
-                        {
-                            case "parity":
-                                ParityFile = value;
-                                break;
+                        continue;
+                    }
+                    switch (lineStart.Substring(0, splitIndex).ToLower())
+                    {
+                        case "parity":
+                            ParityFile = value;
+                            break;
 
-                            case "q-parity":
-                                QParityFile = value;
-                                break;
+                        case "q-parity":
+                            QParityFile = value;
+                            break;
 
-                            case "content":
-                                ContentFiles.Add(value);
-                                break;
+                        case "content":
+                            ContentFiles.Add(value);
+                            break;
 
-                            case "disk":
-                                {
-                                    // Step over the disk name
-                                    int diskSplitIndex = value.IndexOf(' ');
-                                    SnapShotSources.Add(value.Substring(diskSplitIndex + 1));
-                                }
-                                break;
+                        case "disk":
+                            // Step over the disk name
+                            int diskSplitIndex = value.IndexOf(' ');
+                            SnapShotSources.Add(value.Substring(diskSplitIndex + 1));
+                            break;
 
-                            case "exclude":
-                                ExcludePatterns.Add(value);
-                                break;
+                        case "exclude":
+                            ExcludePatterns.Add(value);
+                            break;
 
-                            case "include":
-                                IncludePatterns.Add(value);
-                                break;
+                        case "include":
+                            IncludePatterns.Add(value);
+                            break;
 
-                            case "block_size":
-                                BlockSizeKB = uint.Parse(value);
-                                break;
+                        case "block_size":
+                            BlockSizeKB = uint.Parse(value);
+                            break;
 
-                            case "nohidden":
-                                Nohidden = true;
-                                break;
+                        case "nohidden":
+                            Nohidden = true;
+                            break;
 
-                            case "autosave":
-                                AutoSaveGB = uint.Parse(value);
-                                break;
-                        }
+                        case "autosave":
+                            AutoSaveGB = uint.Parse(value);
+                            break;
                     }
                 }
             }
