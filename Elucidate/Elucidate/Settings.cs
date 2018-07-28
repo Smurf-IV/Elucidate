@@ -138,41 +138,39 @@ namespace Elucidate
 
         private void FillInDirectoryType(TreeNode parentNode, DriveInfo di)
         {
-            if (di != null)
+            if (di == null) return;
+            TreeNode thisNode = new TreeNode { Text = di.Name, SelectedImageIndex = 8 };
+            switch (di.DriveType)
             {
-                TreeNode thisNode = new TreeNode { Text = di.Name, SelectedImageIndex = 8 };
-                switch (di.DriveType)
-                {
-                    //                     case DriveType.Unknown:
-                    //                     case DriveType.NoRootDirectory:
-                    default:
-                        thisNode.ImageIndex = 7;
-                        break;
+                //                     case DriveType.Unknown:
+                //                     case DriveType.NoRootDirectory:
+                default:
+                    thisNode.ImageIndex = 7;
+                    break;
 
-                    case DriveType.Removable:
-                        thisNode.ImageIndex = 6;
-                        break;
+                case DriveType.Removable:
+                    thisNode.ImageIndex = 6;
+                    break;
 
-                    case DriveType.Fixed:
-                        thisNode.ImageIndex = 3;
-                        break;
+                case DriveType.Fixed:
+                    thisNode.ImageIndex = 3;
+                    break;
 
-                    case DriveType.Network:
-                        thisNode.ImageIndex = 5;
-                        thisNode.SelectedImageIndex = 9;
-                        break;
+                case DriveType.Network:
+                    thisNode.ImageIndex = 5;
+                    thisNode.SelectedImageIndex = 9;
+                    break;
 
-                    case DriveType.CDRom:
-                        thisNode.ImageIndex = 4;
-                        break;
-                }
-                thisNode.Tag = di.RootDirectory;
-                if (di.IsReady)
-                {
-                    thisNode.Nodes.Add("PH");
-                }
-                parentNode.Nodes.Add(thisNode);
+                case DriveType.CDRom:
+                    thisNode.ImageIndex = 4;
+                    break;
             }
+            thisNode.Tag = di.RootDirectory;
+            if (di.IsReady)
+            {
+                thisNode.Nodes.Add("PH");
+            }
+            parentNode.Nodes.Add(thisNode);
         }
 
         private void driveAndDirTreeView_MouseUp(object sender, MouseEventArgs e)
