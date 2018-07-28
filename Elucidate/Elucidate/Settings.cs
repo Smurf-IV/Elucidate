@@ -175,24 +175,20 @@ namespace Elucidate
 
         private void driveAndDirTreeView_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                Log.Debug("Select the clicked node");
-                driveAndDirTreeView.SelectedNode = driveAndDirTreeView.GetNodeAt(e.X, e.Y);
-            }
+            if (e.Button != MouseButtons.Right) return;
+            Log.Debug("Select the clicked node");
+            driveAndDirTreeView.SelectedNode = driveAndDirTreeView.GetNodeAt(e.X, e.Y);
         }
 
         private void driveAndDirTreeView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button != MouseButtons.Left) return;
+            Log.Debug("Select the clicked node");
+            TreeNode selected = driveAndDirTreeView.GetNodeAt(e.X, e.Y);
+            driveAndDirTreeView.SelectedNode = selected;
+            if (selected != null)
             {
-                Log.Debug("Select the clicked node");
-                TreeNode selected = driveAndDirTreeView.GetNodeAt(e.X, e.Y);
-                driveAndDirTreeView.SelectedNode = selected;
-                if (selected != null)
-                {
-                    PerformSnapShotSourceAdd(selected);
-                }
+                PerformSnapShotSourceAdd(selected);
             }
         }
 
@@ -208,12 +204,10 @@ namespace Elucidate
         {
             string newPath = GetSelectedNodesPath(selected);
             // TODO: On Add check to make sure that the root (Or this) node have not already been covered.
-            if (!String.IsNullOrEmpty(newPath))
-            {
-                snapShotSourcesTreeView.Nodes.Add(new TreeNode(newPath, selected.ImageIndex, selected.ImageIndex));
-                UnsavedChangesMade = true;
-                driveSpace.StartProcessing((from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList());
-            }
+            if (String.IsNullOrEmpty(newPath)) return;
+            snapShotSourcesTreeView.Nodes.Add(new TreeNode(newPath, selected.ImageIndex, selected.ImageIndex));
+            UnsavedChangesMade = true;
+            driveSpace.StartProcessing((from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList());
         }
 
         private void refreshStripMenuItem_Click(object sender, EventArgs e)
@@ -250,39 +244,35 @@ namespace Elucidate
         {
             try
             {
-                if (parentNode.Tag is DirectoryInfo root)
+                if (!(parentNode.Tag is DirectoryInfo root)) return;
+                Log.Debug("// Find all the subdirectories under this directory.");
+                DirectoryInfo[] subDirs = root.GetDirectories();
+                if (subDirs == null) return;
+                foreach (DirectoryInfo dirInfo in subDirs)
                 {
-                    Log.Debug("// Find all the subdirectories under this directory.");
-                    DirectoryInfo[] subDirs = root.GetDirectories();
-                    if (subDirs != null)
+                    // Resursive call for each subdirectory.
+                    TreeNode tvwChild = new TreeNode
                     {
-                        foreach (DirectoryInfo dirInfo in subDirs)
-                        {
-                            // Resursive call for each subdirectory.
-                            TreeNode tvwChild = new TreeNode
-                            {
-                                Text = dirInfo.Name,
-                                SelectedImageIndex = 8,
-                                ImageIndex = 7,
-                                Tag = dirInfo
-                            };
+                        Text = dirInfo.Name,
+                        SelectedImageIndex = 8,
+                        ImageIndex = 7,
+                        Tag = dirInfo
+                    };
 
-                            Log.Debug("If this is a folder item and has children then add a place holder node.");
-                            try
-                            {
-                                DirectoryInfo[] subChildDirs = dirInfo.GetDirectories();
-                                if (subChildDirs.Length > 0)
-                                {
-                                    tvwChild.Nodes.Add("PH");
-                                }
-                            }
-                            catch (UnauthorizedAccessException uaex)
-                            {
-                                Log.Info(String.Concat("No Access to subdirs in ", tvwChild.Text), uaex);
-                            }
-                            parentNode.Nodes.Add(tvwChild);
+                    Log.Debug("If this is a folder item and has children then add a place holder node.");
+                    try
+                    {
+                        DirectoryInfo[] subChildDirs = dirInfo.GetDirectories();
+                        if (subChildDirs.Length > 0)
+                        {
+                            tvwChild.Nodes.Add("PH");
                         }
                     }
+                    catch (UnauthorizedAccessException uaex)
+                    {
+                        Log.Info(String.Concat("No Access to subdirs in ", tvwChild.Text), uaex);
+                    }
+                    parentNode.Nodes.Add(tvwChild);
                 }
             }
             catch (Exception ex)
