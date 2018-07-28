@@ -592,15 +592,11 @@ namespace Elucidate
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (UnsavedChangesMade
-               && (e.CloseReason == CloseReason.UserClosing)
-               )
+            if (!UnsavedChangesMade || (e.CloseReason != CloseReason.UserClosing)) return;
+            if (DialogResult.No == MessageBoxExt.Show(this, "You have made changes that have not been saved.\n\nDo you wish to discard and exit?",
+                    "Settings have changed..", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
             {
-                if (DialogResult.No == MessageBoxExt.Show(this, "You have made changes that have not been saved.\n\nDo you wish to discard and exit?",
-                                                       "Settings have changed..", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
-                {
-                    e.Cancel = true;
-                }
+                e.Cancel = true;
             }
         }
 
@@ -654,12 +650,10 @@ namespace Elucidate
         private void ShowToolTip()
         {
             ttIndex = checkedListBox1.IndexFromPoint(checkedListBox1.PointToClient(MousePosition));
-            if (ttIndex > -1)
-            {
-                PointToClient(MousePosition);
-                toolTip1.ToolTipTitle = advSettingsList[ttIndex].DisplayName;
-                toolTip1.SetToolTip(checkedListBox1, advSettingsList[ttIndex].TootTip);
-            }
+            if (ttIndex <= -1) return;
+            PointToClient(MousePosition);
+            toolTip1.ToolTipTitle = advSettingsList[ttIndex].DisplayName;
+            toolTip1.SetToolTip(checkedListBox1, advSettingsList[ttIndex].TootTip);
         }
 
         private void btnGetRecommended_Click(object sender, EventArgs e)
