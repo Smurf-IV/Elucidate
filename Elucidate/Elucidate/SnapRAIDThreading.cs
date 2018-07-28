@@ -145,22 +145,18 @@ namespace Elucidate
 
                     while (!WaitHandle.WaitAll(new WaitHandle[] { mreErrorDone, mreOutputDone, mreProcessExit }, 250))
                     {
-                        if (!process.HasExited)
+                        if (process.HasExited) continue;
+                        if (worker.CancellationPending)
                         {
-                            if (worker.CancellationPending)
-                            {
-                                Log.Fatal("Attempting process KILL");
-                                process.Kill();
-                            }
-                            else
-                            {
-                                ProcessPriorityClass current = process.PriorityClass;
-                                if (current != requested)
-                                {
-                                    Log.Fatal("Setting the processpriority to[{0}]", requested);
-                                    process.PriorityClass = requested;
-                                }
-                            }
+                            Log.Fatal("Attempting process KILL");
+                            process.Kill();
+                        }
+                        else
+                        {
+                            ProcessPriorityClass current = process.PriorityClass;
+                            if (current == requested) continue;
+                            Log.Fatal("Setting the processpriority to[{0}]", requested);
+                            process.PriorityClass = requested;
                         }
                     }
 
@@ -258,13 +254,11 @@ namespace Elucidate
                     if (!string.IsNullOrEmpty(buf = threadObject.cmdProcess.StandardOutput.ReadLine()))
                     {
                         Log.Info("StdOut[{0}]", buf);
-                        if (buf.Contains("%"))
+                        if (!buf.Contains("%")) continue;
+                        string[] splits = buf.Split('%');
+                        if (int.TryParse(splits[0], out int percentProgress))
                         {
-                            string[] splits = buf.Split('%');
-                            if (int.TryParse(splits[0], out int percentProgress))
-                            {
-                                threadObject.bgdWorker.ReportProgress(percentProgress, buf);
-                            }
+                            threadObject.bgdWorker.ReportProgress(percentProgress, buf);
                         }
                     }
                     else
@@ -362,27 +356,25 @@ namespace Elucidate
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (actionWorker.IsBusy)
+            if (!actionWorker.IsBusy) return;
+            switch (comboBox1.Text)
             {
-                switch (comboBox1.Text)
-                {
-                    case "Stopped":
-                        comboBox1.Text = "Abort";
-                        break;
+                case "Stopped":
+                    comboBox1.Text = "Abort";
+                    break;
 
-                    case "Running":
-                        requested = ProcessPriorityClass.Normal;
-                        break;
+                case "Running":
+                    requested = ProcessPriorityClass.Normal;
+                    break;
 
-                    case "Abort":
-                        actionWorker.CancelAsync();
-                        comboBox1.Enabled = false;
-                        break;
+                case "Abort":
+                    actionWorker.CancelAsync();
+                    comboBox1.Enabled = false;
+                    break;
 
-                    case "Idle":
-                        requested = ProcessPriorityClass.Idle;
-                        break;
-                }
+                case "Idle":
+                    requested = ProcessPriorityClass.Idle;
+                    break;
             }
         }
     }
