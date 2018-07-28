@@ -36,10 +36,10 @@ namespace Elucidate
 
       public string TootTip { get; private set; }
 
-      public AdvancedSettingsHelper(string displayName, bool CheckState, string tootTip)
+      public AdvancedSettingsHelper(string displayName, bool checkState, string tootTip)
       {
          DisplayName = displayName;
-         this.CheckState = CheckState;
+         this.CheckState = checkState;
          TootTip = tootTip;
       }
    }
