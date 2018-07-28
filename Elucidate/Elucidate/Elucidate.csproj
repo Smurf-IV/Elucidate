@@ -19,6 +19,18 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ShouldCreateLogs>True</ShouldCreateLogs>
+    <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <AssemblyVersionSettings>YearStamp.MonthStamp.IncrementOnDemand.DayStamp</AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>None.None.None.None</AssemblyFileVersionSettings>
+    <AssemblyInfoVersionSettings>
+    </AssemblyInfoVersionSettings>
+    <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
+    <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
+    <AssemblyVersion>2017.9.602.30</AssemblyVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -33,18 +45,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <ShouldCreateLogs>True</ShouldCreateLogs>
-    <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersionSettings>YearStamp.MonthStamp.IncrementOnDemand.DayStamp</AssemblyVersionSettings>
-    <AssemblyFileVersionSettings>None.None.None.None</AssemblyFileVersionSettings>
-    <AssemblyInfoVersionSettings>
-    </AssemblyInfoVersionSettings>
-    <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
-    <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>2017.9.602.30</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -112,11 +112,11 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ActiveDirectoryObjectPicker, Version=2.2.128.0, Culture=neutral, PublicKeyToken=515ab092c8839750, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tulpep.ActiveDirectoryObjectPicker.2.2.128\lib\net452\ActiveDirectoryObjectPicker.dll</HintPath>
+    <Reference Include="ActiveDirectoryObjectPicker, Version=2.2.129.0, Culture=neutral, PublicKeyToken=515ab092c8839750, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tulpep.ActiveDirectoryObjectPicker.2.2.129\lib\net452\ActiveDirectoryObjectPicker.dll</HintPath>
     </Reference>
-    <Reference Include="AeroWizard, Version=2.1.10.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
-      <HintPath>..\packages\AeroWizard.2.1.10\lib\net452\AeroWizard.dll</HintPath>
+    <Reference Include="AeroWizard, Version=2.1.11.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
+      <HintPath>..\packages\AeroWizard.2.1.11\lib\net452\AeroWizard.dll</HintPath>
     </Reference>
     <Reference Include="ComponentFactory.Krypton.Design, Version=4.7.0.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
       <HintPath>..\packages\KryptonSuite47b.4.7\lib\ComponentFactory.Krypton.Design.dll</HintPath>
@@ -139,22 +139,28 @@
     <Reference Include="GroupControls, Version=1.5.3.0, Culture=neutral, PublicKeyToken=3726d9da21b6ac8f, processorArchitecture=MSIL">
       <HintPath>..\packages\GroupControls.1.5.3\lib\net452\GroupControls.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=11.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.11.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=2018.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2018.2.1\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.6.1.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
-      <HintPath>..\packages\TaskScheduler.2.6.1\lib\net452\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.8.4.0, Culture=neutral, PublicKeyToken=c416bc1b32d97233, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskScheduler.2.8.4\lib\net452\Microsoft.Win32.TaskScheduler.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Win32.TaskSchedulerEditor, Version=2.6.1.0, Culture=neutral, PublicKeyToken=7be0d908c369d1a5, processorArchitecture=MSIL">
-      <HintPath>..\packages\TaskSchedulerEditor.2.6.1\lib\net452\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
+    <Reference Include="Microsoft.Win32.TaskSchedulerEditor, Version=2.8.4.0, Culture=neutral, PublicKeyToken=7be0d908c369d1a5, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskSchedulerEditor.2.8.4\lib\net452\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.7\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -331,7 +337,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseUniversalClock="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" BuildVersion_UseGlobalSettings="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UseUniversalClock="False" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
