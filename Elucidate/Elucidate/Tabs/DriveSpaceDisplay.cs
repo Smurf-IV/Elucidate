@@ -185,11 +185,15 @@ namespace GUIUtils
             {
                 return dir.GetFiles().Sum(fi => (ulong)fi.Length) + dir.GetDirectories().Sum(DirSize);
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                Log.Warn(String.Concat("No Access to ", dir.FullName), ex);
+            }
             catch (Exception ex)
             {
                 Log.Error(ex);
-                return 0;
             }
+            return 0;
         }
 
         private void AppendToSeries(string path, ulong rootBytesNotCoveredByPath, ulong pathUsedBytes, ulong freeBytesAvailable)
