@@ -181,7 +181,15 @@ namespace GUIUtils
         /// <returns></returns>
         public static ulong DirSize(DirectoryInfo dir)
         {
-            return dir.GetFiles().Sum(fi => (ulong)fi.Length) + dir.GetDirectories().Sum(DirSize);
+            try
+            {
+                return dir.GetFiles().Sum(fi => (ulong)fi.Length) + dir.GetDirectories().Sum(DirSize);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
+                return 0;
+            }
         }
 
         private void AppendToSeries(string path, ulong rootBytesNotCoveredByPath, ulong pathUsedBytes, ulong freeBytesAvailable)
