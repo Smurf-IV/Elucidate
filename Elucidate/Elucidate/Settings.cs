@@ -551,13 +551,13 @@ namespace Elucidate
 
                     string trim3 = parityLocation3.Text.Trim();
                     if (string.IsNullOrEmpty(trim3)) break;
-                    cfg.ParityFile2 = trim3;
+                    cfg.ParityFile3 = trim3;
                     fi = new FileInfo(trim3);
                     cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
 
                     string trim4 = parityLocation4.Text.Trim();
                     if (string.IsNullOrEmpty(trim4)) break;
-                    cfg.ParityFile4 = trim3;
+                    cfg.ParityFile4 = trim4;
                     fi = new FileInfo(trim4);
                     cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
 
@@ -581,7 +581,7 @@ namespace Elucidate
             try
             {
                 // backup current config
-                File.Copy(configFileLocation.Text, $"{configFileLocation.Text}.temp");
+                File.Copy(configFileLocation.Text, $"{configFileLocation.Text}.temp", overwrite: true);
 
                 string writeResult;
                 if (!string.IsNullOrEmpty(writeResult = cfg.Write()))
