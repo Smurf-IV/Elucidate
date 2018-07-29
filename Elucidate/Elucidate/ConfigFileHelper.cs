@@ -34,6 +34,8 @@ using NLog;
 
 namespace Elucidate
 {
+    // TODO: consider using nuget package "FileHelpers by Marco Meli" to work with the config file
+
     internal class ConfigFileHelper
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
