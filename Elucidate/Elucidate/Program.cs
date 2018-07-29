@@ -47,13 +47,13 @@ namespace Elucidate
         {
             try
             {
-                AppDomain.CurrentDomain.UnhandledException += logUnhandledException;
+                AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
             }
             catch (Exception ex)
             {
                 try
                 {
-                    Log.Fatal(ex, "Failed to attach unhandled exception handler...");
+                    ExceptionHandler.ReportException(ex, "Failed to attach unhandled exception handler...");
                 }
                 catch
                 {
@@ -67,8 +67,8 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Exception has not been caught by the rest of the application!");
-                MessageBox.Show(ex.Message, "Uncaught Exception - Exiting !");
+                ExceptionHandler.ReportException(ex, "Exception has not been caught by the rest of the application!");
+                MessageBox.Show(ex.Message, @"Uncaught Exception - Exiting !");
             }
             finally
             {
@@ -79,10 +79,10 @@ namespace Elucidate
 
         private static void CheckAndRunSingleApp()
         {
-            string MutexName = string.Format("{0} [{1}]", Path.GetFileName(Application.ExecutablePath), Environment.UserName);
-            using (Mutex AppUserMutex = new Mutex(true, MutexName, out bool GrantedOwnership))
+            string mutexName = $"{Path.GetFileName(Application.ExecutablePath)} [{Environment.UserName}]";
+            using (Mutex appUserMutex = new Mutex(true, mutexName, out bool grantedOwnership))
             {
-                if (GrantedOwnership)
+                if (grantedOwnership)
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
@@ -90,12 +90,12 @@ namespace Elucidate
                 }
                 else
                 {
-                    MessageBox.Show(MutexName + " is already running");
+                    MessageBox.Show($"{mutexName} is already running");
                 }
             }
         }
 
-        private static void logUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             try
             {
@@ -108,6 +108,7 @@ namespace Elucidate
                 {
                     Log.Fatal("Unexpected exception.");
                 }
+                ExceptionHandler.ReportException((Exception) e.ExceptionObject);
             }
             catch
             {

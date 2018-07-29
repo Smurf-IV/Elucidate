@@ -48,89 +48,83 @@ namespace Elucidate
             }
             else if (e.TabPage == coveragePage)
             {
-                if (Properties.Settings.Default.ConfigFileIsValid)
+                if (!Properties.Settings.Default.ConfigFileIsValid) return;
+                try
                 {
-                    try
+                    ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                    cfg.Read();
+                    List<string> displayLines = cfg.SnapShotSources;
+                    // Add the Parity lines to show the amount of drive space currently occupied by SnapRaid
+                    displayLines.Add(new FileInfo(cfg.ParityFile1).DirectoryName);
+                    if (!string.IsNullOrEmpty(cfg.ParityFile2))
                     {
-                        ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
-                        cfg.Read();
-                        List<string> displayLines = cfg.SnapShotSources;
-                        // Add the Parity lines to show the amount of drive space currently occupied by SnapRaid
-                        displayLines.Add(new FileInfo(cfg.ParityFile1).DirectoryName);
-                        if (!string.IsNullOrEmpty(cfg.ParityFile2))
-                        {
-                            displayLines.Add(new FileInfo(cfg.ParityFile2).DirectoryName);
-                        }
-                        driveSpace.StartProcessing(displayLines);
+                        displayLines.Add(new FileInfo(cfg.ParityFile2).DirectoryName);
                     }
-                    catch
-                    {
-                    }
+                    driveSpace.StartProcessing(displayLines);
+                }
+                catch
+                {
                 }
             }
         }
 
         private void tabControl1_Deselected(object sender, TabControlEventArgs e)
         {
-            if (e.TabPage == RecoveryOperations)
+            if (e.TabPage != RecoveryOperations) return;
+            if (WindowState == FormWindowState.Maximized)
             {
-                if (WindowState == FormWindowState.Maximized)
-                {
-                    WindowState = FormWindowState.Normal;
-                }
+                WindowState = FormWindowState.Normal;
             }
         }
 
         private void btnRemoveOutput_Click(object sender, EventArgs e)
         {
-            if (DialogResult.Yes == MessageBoxExt.Show(this, "Are you sure you want to perform this task ?",
-                           "Remove SnapRAID Output files.", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            if (DialogResult.Yes != MessageBoxExt.Show(this, @"Are you sure you want to perform this task ?",
+                    "Remove SnapRAID Output files.", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) return;
+            try
             {
-                try
+                ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                string readResult;
+                if (!string.IsNullOrEmpty(readResult = cfg.Read()))
                 {
-                    ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
-                    string readResult;
-                    if (!string.IsNullOrEmpty(readResult = cfg.Read()))
+                    MessageBoxExt.Show(this, readResult, "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    FileInfo fi;
+                    if (!string.IsNullOrEmpty(cfg.ParityFile1))
                     {
-                        MessageBoxExt.Show(this, readResult, "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    else
-                    {
-                        FileInfo fi;
-                        if (!string.IsNullOrEmpty(cfg.ParityFile1))
+                        fi = new FileInfo(cfg.ParityFile1);
+                        if (fi.Exists)
                         {
-                            fi = new FileInfo(cfg.ParityFile1);
+                            fi.Delete();
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(cfg.ParityFile2))
+                    {
+                        fi = new FileInfo(cfg.ParityFile2);
+                        if (fi.Exists)
+                        {
+                            fi.Delete();
+                        }
+                    }
+                    if (cfg.ContentFiles != null)
+                    {
+                        foreach (string contentFile in cfg.ContentFiles.Where(contentFile => !string.IsNullOrEmpty(contentFile)))
+                        {
+                            fi = new FileInfo(contentFile);
                             if (fi.Exists)
                             {
                                 fi.Delete();
                             }
                         }
-                        if (!string.IsNullOrEmpty(cfg.ParityFile2))
-                        {
-                            fi = new FileInfo(cfg.ParityFile2);
-                            if (fi.Exists)
-                            {
-                                fi.Delete();
-                            }
-                        }
-                        if (cfg.ContentFiles != null)
-                        {
-                            foreach (string contentFile in cfg.ContentFiles.Where(contentFile => !string.IsNullOrEmpty(contentFile)))
-                            {
-                                fi = new FileInfo(contentFile);
-                                if (fi.Exists)
-                                {
-                                    fi.Delete();
-                                }
-                            }
-                        }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "btnRemoveOutput_Click has thrown: ");
-                    MessageBox.Show(this, ex.Message, "Remove SnapRAID Output files.");
-                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.ReportException(ex, "btnRemoveOutput_Click has thrown: ");
+                MessageBox.Show(this, ex.Message, "Remove SnapRAID Output files.");
             }
         }
 

@@ -127,7 +127,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "StartTree Threw: ");
+                ExceptionHandler.ReportException(ex, "StartTree Threw: ");
             }
             finally
             {
@@ -231,7 +231,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "BeforeExpand has thrown: ");
+                ExceptionHandler.ReportException(ex, "BeforeExpand has thrown: ");
             }
             finally
             {
@@ -278,7 +278,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "RecurseAddChildren has thrown:");
+                ExceptionHandler.ReportException(ex, "RecurseAddChildren has thrown:");
             }
         }
 
@@ -292,20 +292,18 @@ namespace Elucidate
 
         private void driveAndDirTreeView_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button != MouseButtons.Left) return;
+            // Get the tree.
+            TreeView tree = (TreeView)sender;
+
+            // Get the node underneath the mouse.
+            TreeNode selected = tree.GetNodeAt(e.X, e.Y);
+            tree.SelectedNode = selected;
+
+            // Start the drag-and-drop operation with a cloned copy of the node.
+            if (selected != null)
             {
-                // Get the tree.
-                TreeView tree = (TreeView)sender;
-
-                // Get the node underneath the mouse.
-                TreeNode selected = tree.GetNodeAt(e.X, e.Y);
-                tree.SelectedNode = selected;
-
-                // Start the drag-and-drop operation with a cloned copy of the node.
-                if (selected != null)
-                {
-                    tree.DoDragDrop(selected, DragDropEffects.All);
-                }
+                tree.DoDragDrop(selected, DragDropEffects.All);
             }
         }
 
@@ -436,7 +434,7 @@ namespace Elucidate
             {
                 ofd.InitialDirectory = Path.GetFullPath(configFileLocation.Text);
                 Log.Info("configFileLocation from [{0}]", ofd.InitialDirectory);
-                ofd.Filter = "Snap Raid Config|SnapRAID.config|All Files|*.*";
+                ofd.Filter = @"Snap Raid Config|SnapRAID.config|All Files|*.*";
                 ofd.CheckFileExists = true;
                 ofd.RestoreDirectory = true;
                 if (DialogResult.OK == ofd.ShowDialog())
@@ -576,6 +574,8 @@ namespace Elucidate
                     cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
 
                     break;
+                default:
+                    break;
             }
 
             try
@@ -615,10 +615,8 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Error("Failed to save config file.");
-                Log.Error(ex);
+                ExceptionHandler.ReportException(ex, "Failed to save config file.");
             }
-            
         }
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
@@ -661,6 +659,7 @@ namespace Elucidate
                 parityLocation3.Text = folderBrowserDialog1.SelectedPath;
             }
         }
+
         private void findParity4_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
@@ -668,6 +667,7 @@ namespace Elucidate
                 parityLocation4.Text = folderBrowserDialog1.SelectedPath;
             }
         }
+
         private void findParity5_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
@@ -675,6 +675,7 @@ namespace Elucidate
                 parityLocation5.Text = folderBrowserDialog1.SelectedPath;
             }
         }
+
         private void findParity6_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)

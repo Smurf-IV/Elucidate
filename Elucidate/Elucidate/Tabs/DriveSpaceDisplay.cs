@@ -33,6 +33,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using Elucidate;
 using NLog;
 using Shared;
 
@@ -191,7 +192,7 @@ namespace GUIUtils
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                ExceptionHandler.ReportException(ex);
             }
             return 0;
         }

@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ExceptionReporting;
 using NLog;
 
 namespace Elucidate
@@ -156,6 +157,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
+                ExceptionHandler.ReportException(ex);
                 return ex.Message;
             }
             return string.Empty;
@@ -238,6 +240,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
+                ExceptionHandler.ReportException(ex);
                 return ex.Message;
             }
             return string.Empty;

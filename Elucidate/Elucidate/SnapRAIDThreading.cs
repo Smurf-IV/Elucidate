@@ -180,7 +180,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Thread closing abnormally");
+                ExceptionHandler.ReportException(ex, "Thread closing abnormally");
                 throw;
             }
             finally
@@ -238,7 +238,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "ReadStandardError: ");
+                ExceptionHandler.ReportException(ex, "Thread closing abnormally");
             }
             mreErrorDone.Set();
         }
@@ -271,7 +271,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "ReadStandardOutput: ");
+                ExceptionHandler.ReportException(ex, "ReadStandardOutput: ");
             }
             mreOutputDone.Set();
         }
