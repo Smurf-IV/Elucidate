@@ -13,7 +13,7 @@ Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, ex
 - Windows Operating System
 - SnapRaid Version 10.x or lower
 - n mb Free Space on target drive
-- .Net Runtime 4.5 or higher
+- .Net Runtime 4.7 or higher
  
 ## FAQs
 
