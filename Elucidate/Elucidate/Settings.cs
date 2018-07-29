@@ -578,26 +578,47 @@ namespace Elucidate
                     break;
             }
 
-            string writeResult;
-            if (!string.IsNullOrEmpty(writeResult = cfg.Write()))
+            try
             {
-                MessageBoxExt.Show(this, writeResult, "Config Write Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                Properties.Settings.Default.ConfigFileIsValid = ValidateData();
-                Properties.Settings.Default.SnapRAIDFileLocation = snapRAIDFileLocation.Text;
-                Properties.Settings.Default.ConfigFileLocation = configFileLocation.Text;
-                Properties.Settings.Default.UseVerboseMode = advSettingsList[1].CheckState;
-                Properties.Settings.Default.UseGUIMode = advSettingsList[2].CheckState;
-                Properties.Settings.Default.FindByNameInSync = advSettingsList[3].CheckState;
-                // https://github.com/Smurf-IV/Elucidateworkitem/10114
-                Properties.Settings.Default.HiddenFilesExcluded = advSettingsList[4].CheckState;
-                Properties.Settings.Default.RunWithoutCapture = advSettingsList[0].CheckState;
+                // backup current config
+                File.Copy(configFileLocation.Text, $"{configFileLocation.Text}.temp");
 
-                Properties.Settings.Default.Save();
-                UnsavedChangesMade = false;
+                string writeResult;
+                if (!string.IsNullOrEmpty(writeResult = cfg.Write()))
+                {
+                    MessageBoxExt.Show(this, writeResult, "Config Write Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    Properties.Settings.Default.ConfigFileIsValid = ValidateData();
+                    Properties.Settings.Default.SnapRAIDFileLocation = snapRAIDFileLocation.Text;
+                    Properties.Settings.Default.ConfigFileLocation = configFileLocation.Text;
+                    Properties.Settings.Default.UseVerboseMode = advSettingsList[1].CheckState;
+                    Properties.Settings.Default.UseGUIMode = advSettingsList[2].CheckState;
+                    Properties.Settings.Default.FindByNameInSync = advSettingsList[3].CheckState;
+                    // https://github.com/Smurf-IV/Elucidateworkitem/10114
+                    Properties.Settings.Default.HiddenFilesExcluded = advSettingsList[4].CheckState;
+                    Properties.Settings.Default.RunWithoutCapture = advSettingsList[0].CheckState;
+
+                    Properties.Settings.Default.Save();
+                    UnsavedChangesMade = false;
+
+                    // keep config backup - by day, otherwise include minute, otherwise include second
+                    var backupCconfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMdd}";
+                    if (File.Exists(backupCconfig))
+                        backupCconfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmm}";
+                    if (File.Exists(backupCconfig))
+                        backupCconfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmmss}";
+                    File.Copy($"{configFileLocation.Text}.temp", backupCconfig);
+                    File.Delete($"{configFileLocation.Text}.temp");
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to save config file.");
+                Log.Error(ex);
+            }
+            
         }
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
