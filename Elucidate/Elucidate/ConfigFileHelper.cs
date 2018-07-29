@@ -30,11 +30,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NLog;
 
 namespace Elucidate
 {
     internal class ConfigFileHelper
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private string ConfigPath { get; set; }
 
         /// <summary>
@@ -58,8 +61,12 @@ namespace Elucidate
         {
             try
             {
-                ParityFile = string.Empty;
-                QParityFile = string.Empty;
+                ParityFile1 = string.Empty;
+                ParityFile2 = string.Empty;
+                ParityFile3 = string.Empty;
+                ParityFile4 = string.Empty;
+                ParityFile5 = string.Empty;
+                ParityFile6 = string.Empty;
                 ContentFiles.Clear();
                 SnapShotSources.Clear();
                 ExcludePatterns.Clear();
@@ -81,11 +88,36 @@ namespace Elucidate
                     switch (lineStart.Substring(0, splitIndex).ToLower())
                     {
                         case "parity":
-                            ParityFile = value;
+                            ParityFile1 = value;
                             break;
 
                         case "q-parity":
-                            QParityFile = value;
+                            Log.Warn("'q-parity' entry in config file should be changed to '2-parity'");
+                            ParityFile2 = value;
+                            break;
+
+                        case "2-parity":
+                            // handle legacy 'q-parity' entry by giving it priority over any '2-parity' entry; saving config will rename 'q-parity' to '2-parity' and leave the path unchanged
+                            if (string.IsNullOrEmpty(ParityFile2))
+                            {
+                                ParityFile2 = value;
+                            }
+                            break;
+
+                        case "3-parity":
+                            ParityFile3 = value;
+                            break;
+
+                        case "4-parity":
+                            ParityFile4 = value;
+                            break;
+
+                        case "5-parity":
+                            ParityFile5 = value;
+                            break;
+
+                        case "6-parity":
+                            ParityFile6 = value;
                             break;
 
                         case "content":
@@ -141,19 +173,19 @@ namespace Elucidate
                                                 string.Empty,
                                                 "# Defines the file to use as Parity storage",
                                                 "# It must NOT be in a data disk",
-                                                "parity " + (Directory.Exists(ParityFile)? Path.Combine(ParityFile, "SnapRAID.parity"):ParityFile),
+                                                "parity " + (Directory.Exists(ParityFile1)? Path.Combine(ParityFile1, "SnapRAID.parity"):ParityFile1),
                                                 string.Empty,
-                                                "# Defines the file to use as Q-Parity storage",
+                                                "# Defines the file to use as 2-parity storage",
                                                 "# If specified, it enables a double failures protection like RAID6",
                                                 "# It must NOT be in a data disk"
                                              };
-                if (string.IsNullOrEmpty(QParityFile))
+                if (string.IsNullOrEmpty(ParityFile2))
                 {
-                    fileContents.Add(@"#q-parity F:\qar\q-parity\SnapRAID.Q.parity");
+                    fileContents.Add(@"#2-parity F:\SnapRAID.2.parity");
                 }
                 else
                 {
-                    fileContents.Add("q-parity " + (Directory.Exists(QParityFile) ? Path.Combine(QParityFile, "SnapRAID.Q.parity") : QParityFile));
+                    fileContents.Add("2-parity " + (Directory.Exists(ParityFile2) ? Path.Combine(ParityFile2, "SnapRAID.2.parity") : ParityFile2));
                 }
                 fileContents.Add(string.Empty);
                 fileContents.Add("# Defines the file to use as content list");
@@ -209,10 +241,18 @@ namespace Elucidate
             return string.Empty;
         }
 
-        public string ParityFile { get; set; }
+        public string ParityFile1 { get; set; }
 
-        public string QParityFile { get; set; }
+        public string ParityFile2 { get; set; }
 
+        public string ParityFile3 { get; set; }
+
+        public string ParityFile4 { get; set; }
+
+        public string ParityFile5 { get; set; }
+
+        public string ParityFile6 { get; set; }
+        
         public List<string> ContentFiles { get; private set; }
 
         public List<string> SnapShotSources { get; private set; }

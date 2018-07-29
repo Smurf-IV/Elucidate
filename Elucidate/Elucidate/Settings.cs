@@ -503,18 +503,17 @@ namespace Elucidate
                 {
                     snapShotSourcesTreeView.Nodes.Add(new TreeNode(source, 7, 7));
                 }
-                raid5Location.Text = cfg.ParityFile;
-                raid6Location.Text = cfg.QParityFile;
+                parityLocation1.Text = cfg.ParityFile1;
+                parityLocation2.Text = cfg.ParityFile2;
+                parityLocation3.Text = cfg.ParityFile3;
+                parityLocation4.Text = cfg.ParityFile4;
+                parityLocation5.Text = cfg.ParityFile5;
+                parityLocation6.Text = cfg.ParityFile6;
             }
             UnsavedChangesMade = false;
             driveSpace.StartProcessing((from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList());
         }
-
-        private void raid5Location_TextChanged(object sender, EventArgs e)
-        {
-            UnsavedChangesMade = true;
-        }
-
+        
         private void btnSave_Click(object sender, EventArgs e)
         {
             ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text)
@@ -537,16 +536,16 @@ namespace Elucidate
                 cfg.SnapShotSources.Add(text);
                 cfg.ContentFiles.Add(text);
             }
-            string trim5 = raid5Location.Text.Trim();
+            string trim5 = parityLocation1.Text.Trim();
             if (!string.IsNullOrEmpty(trim5))
             {
-                cfg.ParityFile = trim5;
+                cfg.ParityFile1 = trim5;
                 FileInfo fi = new FileInfo(trim5);
                 cfg.ContentFiles.Add(fi.DirectoryName);
-                string trim6 = raid6Location.Text.Trim();
+                string trim6 = parityLocation2.Text.Trim();
                 if (!string.IsNullOrEmpty(trim6))
                 {
-                    cfg.QParityFile = trim6;
+                    cfg.ParityFile2 = trim6;
                     fi = new FileInfo(trim6);
                     cfg.ContentFiles.Add(fi.DirectoryName);
                 }
@@ -588,36 +587,130 @@ namespace Elucidate
             advSettingsList[e.Index].CheckState = (e.NewValue == CheckState.Checked);
             UnsavedChangesMade = true;
         }
-
-        private void findRaid5_Click(object sender, EventArgs e)
+        
+        private void findParity1_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
             {
-                raid5Location.Text = folderBrowserDialog1.SelectedPath;
+                parityLocation1.Text = folderBrowserDialog1.SelectedPath;
             }
         }
 
-        private void findRaid6_Click(object sender, EventArgs e)
+        private void findParity2_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
             {
-                raid6Location.Text = folderBrowserDialog1.SelectedPath;
+                parityLocation2.Text = folderBrowserDialog1.SelectedPath;
             }
         }
 
-        private void raid6Location_TextChanged(object sender, EventArgs e)
+        private void findParity3_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                parityLocation3.Text = folderBrowserDialog1.SelectedPath;
+            }
+        }
+        private void findParity4_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                parityLocation4.Text = folderBrowserDialog1.SelectedPath;
+            }
+        }
+        private void findParity5_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                parityLocation5.Text = folderBrowserDialog1.SelectedPath;
+            }
+        }
+        private void findParity6_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
+            {
+                parityLocation6.Text = folderBrowserDialog1.SelectedPath;
+            }
+        }
+
+        private void parityLocation1_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
-            string tooltip = "Optional 2 disk failure protection root location.";
-            if (!string.IsNullOrEmpty(raid6Location.Text)
-               && !File.Exists(raid6Location.Text)
+        }
+
+        private void parityLocation2_TextChanged(object sender, EventArgs e)
+        {
+            UnsavedChangesMade = true;
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(parityLocation2.Text)
+               && !File.Exists(parityLocation2.Text)
                )
             {
-                tooltip = "To add second parity drive, after creating a single parity, you will need to run the \"fix\" command.";
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
-            toolTip1.SetToolTip(raid6Location, tooltip);
-            toolTip1.SetToolTip(findRaid6, tooltip);
-            toolTip1.SetToolTip(labelRaid6, tooltip);
+            toolTip1.SetToolTip(parityLocation2, tooltip);
+            toolTip1.SetToolTip(findParity2, tooltip);
+            toolTip1.SetToolTip(labelParity2, tooltip);
+        }
+        
+        private void parityLocation3_TextChanged(object sender, EventArgs e)
+        {
+            UnsavedChangesMade = true;
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(parityLocation3.Text)
+                && !File.Exists(parityLocation3.Text)
+            )
+            {
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
+            }
+            toolTip1.SetToolTip(parityLocation3, tooltip);
+            toolTip1.SetToolTip(findParity3, tooltip);
+            toolTip1.SetToolTip(labelParity3, tooltip);
+        }
+
+        private void parityLocation4_TextChanged(object sender, EventArgs e)
+        {
+            UnsavedChangesMade = true;
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(parityLocation4.Text)
+                && !File.Exists(parityLocation4.Text)
+            )
+            {
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
+            }
+            toolTip1.SetToolTip(parityLocation4, tooltip);
+            toolTip1.SetToolTip(findParity4, tooltip);
+            toolTip1.SetToolTip(labelParity4, tooltip);
+        }
+
+        private void parityLocation5_TextChanged(object sender, EventArgs e)
+        {
+            UnsavedChangesMade = true;
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(parityLocation5.Text)
+                && !File.Exists(parityLocation5.Text)
+            )
+            {
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
+            }
+            toolTip1.SetToolTip(parityLocation5, tooltip);
+            toolTip1.SetToolTip(findParity5, tooltip);
+            toolTip1.SetToolTip(labelParity5, tooltip);
+        }
+
+        private void parityLocation6_TextChanged(object sender, EventArgs e)
+        {
+            UnsavedChangesMade = true;
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(parityLocation6.Text)
+                && !File.Exists(parityLocation6.Text)
+            )
+            {
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
+            }
+            toolTip1.SetToolTip(parityLocation6, tooltip);
+            toolTip1.SetToolTip(findParity6, tooltip);
+            toolTip1.SetToolTip(labelParity6, tooltip);
         }
 
         private void checkedListBox1_MouseMove(object sender, MouseEventArgs e)
@@ -644,11 +737,11 @@ namespace Elucidate
             CalculateBlockSize calc = new CalculateBlockSize();
             List<string> snaps = snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text).Where(text => !string.IsNullOrWhiteSpace(text)).ToList();
             calc.SnapShotSources = snaps;
-            string trim5 = raid5Location.Text.Trim();
+            string trim5 = parityLocation1.Text.Trim();
             if (!string.IsNullOrEmpty(trim5))
             {
                 calc.RaidTargets.Add(trim5);
-                string trim6 = raid6Location.Text.Trim();
+                string trim6 = parityLocation2.Text.Trim();
                 if (!string.IsNullOrEmpty(trim6))
                 {
                     calc.RaidTargets.Add(trim6);

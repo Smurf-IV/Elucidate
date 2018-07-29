@@ -56,10 +56,10 @@ namespace Elucidate
                         cfg.Read();
                         List<string> displayLines = cfg.SnapShotSources;
                         // Add the Parity lines to show the amount of drive space currently occupied by SnapRaid
-                        displayLines.Add(new FileInfo(cfg.ParityFile).DirectoryName);
-                        if (!string.IsNullOrEmpty(cfg.QParityFile))
+                        displayLines.Add(new FileInfo(cfg.ParityFile1).DirectoryName);
+                        if (!string.IsNullOrEmpty(cfg.ParityFile2))
                         {
-                            displayLines.Add(new FileInfo(cfg.QParityFile).DirectoryName);
+                            displayLines.Add(new FileInfo(cfg.ParityFile2).DirectoryName);
                         }
                         driveSpace.StartProcessing(displayLines);
                     }
@@ -97,17 +97,17 @@ namespace Elucidate
                     else
                     {
                         FileInfo fi;
-                        if (!string.IsNullOrEmpty(cfg.ParityFile))
+                        if (!string.IsNullOrEmpty(cfg.ParityFile1))
                         {
-                            fi = new FileInfo(cfg.ParityFile);
+                            fi = new FileInfo(cfg.ParityFile1);
                             if (fi.Exists)
                             {
                                 fi.Delete();
                             }
                         }
-                        if (!string.IsNullOrEmpty(cfg.QParityFile))
+                        if (!string.IsNullOrEmpty(cfg.ParityFile2))
                         {
-                            fi = new FileInfo(cfg.QParityFile);
+                            fi = new FileInfo(cfg.ParityFile2);
                             if (fi.Exists)
                             {
                                 fi.Delete();

@@ -43,17 +43,28 @@ namespace Elucidate
             this.advancedSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListUnits = new System.Windows.Forms.ImageList(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.labelRaid6 = new System.Windows.Forms.Label();
-            this.raid6Location = new System.Windows.Forms.TextBox();
-            this.findRaid6 = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.raid5Location = new System.Windows.Forms.TextBox();
-            this.findRaid5 = new System.Windows.Forms.Button();
+            this.findParity6 = new System.Windows.Forms.Button();
+            this.findParity5 = new System.Windows.Forms.Button();
+            this.findParity4 = new System.Windows.Forms.Button();
+            this.parityLocation6 = new System.Windows.Forms.TextBox();
+            this.parityLocation5 = new System.Windows.Forms.TextBox();
+            this.parityLocation4 = new System.Windows.Forms.TextBox();
+            this.findParity3 = new System.Windows.Forms.Button();
+            this.labelParity6 = new System.Windows.Forms.Label();
+            this.labelParity5 = new System.Windows.Forms.Label();
+            this.labelParity4 = new System.Windows.Forms.Label();
+            this.labelParity3 = new System.Windows.Forms.Label();
+            this.parityLocation3 = new System.Windows.Forms.TextBox();
+            this.labelParity2 = new System.Windows.Forms.Label();
+            this.parityLocation2 = new System.Windows.Forms.TextBox();
+            this.findParity2 = new System.Windows.Forms.Button();
+            this.labelParity1 = new System.Windows.Forms.Label();
+            this.parityLocation1 = new System.Windows.Forms.TextBox();
+            this.findParity1 = new System.Windows.Forms.Button();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.snapShotSourcesTreeView = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.driveSpace = new GUIUtils.DriveSpaceDisplay();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnGetRecommended = new System.Windows.Forms.Button();
@@ -78,6 +89,7 @@ namespace Elucidate
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.driveSpace = new GUIUtils.DriveSpaceDisplay();
             this.drivesAndDirectoriesMenu.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SnapShotsMenu.SuspendLayout();
@@ -116,7 +128,7 @@ namespace Elucidate
             this.driveAndDirTreeView.Name = "driveAndDirTreeView";
             this.driveAndDirTreeView.SelectedImageIndex = 0;
             this.helpProvider1.SetShowHelp(this.driveAndDirTreeView, true);
-            this.driveAndDirTreeView.Size = new System.Drawing.Size(322, 357);
+            this.driveAndDirTreeView.Size = new System.Drawing.Size(322, 468);
             this.driveAndDirTreeView.TabIndex = 0;
             this.toolTip1.SetToolTip(this.driveAndDirTreeView, "Possible sources to be used for snap shot.");
             this.driveAndDirTreeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.driveAndDirTreeView_BeforeExpand);
@@ -173,100 +185,268 @@ namespace Elucidate
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.labelRaid6);
-            this.groupBox2.Controls.Add(this.raid6Location);
-            this.groupBox2.Controls.Add(this.findRaid6);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.raid5Location);
-            this.groupBox2.Controls.Add(this.findRaid5);
+            this.groupBox2.Controls.Add(this.findParity6);
+            this.groupBox2.Controls.Add(this.findParity5);
+            this.groupBox2.Controls.Add(this.findParity4);
+            this.groupBox2.Controls.Add(this.parityLocation6);
+            this.groupBox2.Controls.Add(this.parityLocation5);
+            this.groupBox2.Controls.Add(this.parityLocation4);
+            this.groupBox2.Controls.Add(this.findParity3);
+            this.groupBox2.Controls.Add(this.labelParity6);
+            this.groupBox2.Controls.Add(this.labelParity5);
+            this.groupBox2.Controls.Add(this.labelParity4);
+            this.groupBox2.Controls.Add(this.labelParity3);
+            this.groupBox2.Controls.Add(this.parityLocation3);
+            this.groupBox2.Controls.Add(this.labelParity2);
+            this.groupBox2.Controls.Add(this.parityLocation2);
+            this.groupBox2.Controls.Add(this.findParity2);
+            this.groupBox2.Controls.Add(this.labelParity1);
+            this.groupBox2.Controls.Add(this.parityLocation1);
+            this.groupBox2.Controls.Add(this.findParity1);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Font = new System.Drawing.Font("Tahoma", 9F);
             this.groupBox2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.groupBox2.Location = new System.Drawing.Point(3, 361);
+            this.groupBox2.Location = new System.Drawing.Point(3, 352);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(537, 80);
+            this.groupBox2.Size = new System.Drawing.Size(537, 200);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Parity file locations:";
             // 
-            // labelRaid6
+            // findParity6
             // 
-            this.labelRaid6.Location = new System.Drawing.Point(4, 47);
-            this.labelRaid6.Name = "labelRaid6";
-            this.labelRaid6.Size = new System.Drawing.Size(50, 25);
-            this.labelRaid6.TabIndex = 3;
-            this.labelRaid6.Text = "Raid &6:";
-            this.labelRaid6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.labelRaid6, "Optional 2 disk failure protection root location.");
+            this.findParity6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.findParity6.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.findParity6.Location = new System.Drawing.Point(496, 157);
+            this.findParity6.Name = "findParity6";
+            this.findParity6.Size = new System.Drawing.Size(35, 25);
+            this.findParity6.TabIndex = 12;
+            this.findParity6.Text = "...";
+            this.toolTip1.SetToolTip(this.findParity6, "Browse root location for disk protection ");
+            this.findParity6.UseVisualStyleBackColor = true;
+            this.findParity6.Click += new System.EventHandler(this.findParity6_Click);
             // 
-            // raid6Location
+            // findParity5
             // 
-            this.raid6Location.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.findParity5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.findParity5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.findParity5.Location = new System.Drawing.Point(496, 129);
+            this.findParity5.Name = "findParity5";
+            this.findParity5.Size = new System.Drawing.Size(35, 25);
+            this.findParity5.TabIndex = 10;
+            this.findParity5.Text = "...";
+            this.toolTip1.SetToolTip(this.findParity5, "Browse root location for disk protection ");
+            this.findParity5.UseVisualStyleBackColor = true;
+            this.findParity5.Click += new System.EventHandler(this.findParity5_Click);
+            // 
+            // findParity4
+            // 
+            this.findParity4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.findParity4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.findParity4.Location = new System.Drawing.Point(496, 101);
+            this.findParity4.Name = "findParity4";
+            this.findParity4.Size = new System.Drawing.Size(35, 25);
+            this.findParity4.TabIndex = 8;
+            this.findParity4.Text = "...";
+            this.toolTip1.SetToolTip(this.findParity4, "Browse root location for disk protection ");
+            this.findParity4.UseVisualStyleBackColor = true;
+            this.findParity4.Click += new System.EventHandler(this.findParity4_Click);
+            // 
+            // parityLocation6
+            // 
+            this.parityLocation6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.raid6Location.BackColor = System.Drawing.SystemColors.Window;
-            this.errorProvider1.SetError(this.raid6Location, "Config File does not exist");
-            this.helpProvider1.SetHelpKeyword(this.raid6Location, "ParityLocs");
-            this.helpProvider1.SetHelpNavigator(this.raid6Location, System.Windows.Forms.HelpNavigator.Topic);
-            this.raid6Location.Location = new System.Drawing.Point(60, 49);
-            this.raid6Location.Name = "raid6Location";
-            this.helpProvider1.SetShowHelp(this.raid6Location, true);
-            this.raid6Location.Size = new System.Drawing.Size(416, 22);
-            this.raid6Location.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.raid6Location, "Optional 2 disk failure protection root location.");
-            this.raid6Location.TextChanged += new System.EventHandler(this.raid6Location_TextChanged);
+            this.parityLocation6.BackColor = System.Drawing.SystemColors.Window;
+            this.errorProvider1.SetError(this.parityLocation6, "Config File does not exist");
+            this.helpProvider1.SetHelpKeyword(this.parityLocation6, "ParityLocs");
+            this.helpProvider1.SetHelpNavigator(this.parityLocation6, System.Windows.Forms.HelpNavigator.Topic);
+            this.parityLocation6.Location = new System.Drawing.Point(65, 159);
+            this.parityLocation6.Name = "parityLocation6";
+            this.helpProvider1.SetShowHelp(this.parityLocation6, true);
+            this.parityLocation6.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation6.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.parityLocation6, "Optional disk failure protection root location.");
+            this.parityLocation6.TextChanged += new System.EventHandler(this.parityLocation6_TextChanged);
             // 
-            // findRaid6
+            // parityLocation5
             // 
-            this.findRaid6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.findRaid6.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findRaid6.Location = new System.Drawing.Point(496, 47);
-            this.findRaid6.Name = "findRaid6";
-            this.findRaid6.Size = new System.Drawing.Size(35, 25);
-            this.findRaid6.TabIndex = 5;
-            this.findRaid6.Text = "...";
-            this.toolTip1.SetToolTip(this.findRaid6, "Optional 2 disk failure protection root location.");
-            this.findRaid6.UseVisualStyleBackColor = true;
-            this.findRaid6.Click += new System.EventHandler(this.findRaid6_Click);
-            // 
-            // label5
-            // 
-            this.label5.Location = new System.Drawing.Point(4, 17);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 25);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Raid &5:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.label5, "Mandatory root location for minimum protection");
-            // 
-            // raid5Location
-            // 
-            this.raid5Location.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.parityLocation5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.raid5Location.BackColor = System.Drawing.SystemColors.Window;
-            this.errorProvider1.SetError(this.raid5Location, "Executeable Not found");
-            this.helpProvider1.SetHelpKeyword(this.raid5Location, "ParityLocs");
-            this.helpProvider1.SetHelpNavigator(this.raid5Location, System.Windows.Forms.HelpNavigator.Topic);
-            this.raid5Location.Location = new System.Drawing.Point(60, 19);
-            this.raid5Location.Name = "raid5Location";
-            this.helpProvider1.SetShowHelp(this.raid5Location, true);
-            this.raid5Location.Size = new System.Drawing.Size(416, 22);
-            this.raid5Location.TabIndex = 1;
-            this.raid5Location.Text = "Z:\\";
-            this.toolTip1.SetToolTip(this.raid5Location, "Mandatory root location for minimum protection");
-            this.raid5Location.TextChanged += new System.EventHandler(this.raid5Location_TextChanged);
+            this.parityLocation5.BackColor = System.Drawing.SystemColors.Window;
+            this.errorProvider1.SetError(this.parityLocation5, "Config File does not exist");
+            this.helpProvider1.SetHelpKeyword(this.parityLocation5, "ParityLocs");
+            this.helpProvider1.SetHelpNavigator(this.parityLocation5, System.Windows.Forms.HelpNavigator.Topic);
+            this.parityLocation5.Location = new System.Drawing.Point(65, 131);
+            this.parityLocation5.Name = "parityLocation5";
+            this.helpProvider1.SetShowHelp(this.parityLocation5, true);
+            this.parityLocation5.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation5.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.parityLocation5, "Optional disk failure protection root location.");
+            this.parityLocation5.TextChanged += new System.EventHandler(this.parityLocation5_TextChanged);
             // 
-            // findRaid5
+            // parityLocation4
             // 
-            this.findRaid5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.findRaid5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findRaid5.Location = new System.Drawing.Point(496, 16);
-            this.findRaid5.Name = "findRaid5";
-            this.findRaid5.Size = new System.Drawing.Size(35, 26);
-            this.findRaid5.TabIndex = 2;
-            this.findRaid5.Text = "...";
-            this.toolTip1.SetToolTip(this.findRaid5, "Mandatory root location for minimum protection");
-            this.findRaid5.UseVisualStyleBackColor = true;
-            this.findRaid5.Click += new System.EventHandler(this.findRaid5_Click);
+            this.parityLocation4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.parityLocation4.BackColor = System.Drawing.SystemColors.Window;
+            this.errorProvider1.SetError(this.parityLocation4, "Config File does not exist");
+            this.helpProvider1.SetHelpKeyword(this.parityLocation4, "ParityLocs");
+            this.helpProvider1.SetHelpNavigator(this.parityLocation4, System.Windows.Forms.HelpNavigator.Topic);
+            this.parityLocation4.Location = new System.Drawing.Point(65, 103);
+            this.parityLocation4.Name = "parityLocation4";
+            this.helpProvider1.SetShowHelp(this.parityLocation4, true);
+            this.parityLocation4.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation4.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.parityLocation4, "Optional disk failure protection root location.");
+            this.parityLocation4.TextChanged += new System.EventHandler(this.parityLocation4_TextChanged);
+            // 
+            // findParity3
+            // 
+            this.findParity3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.findParity3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.findParity3.Location = new System.Drawing.Point(496, 73);
+            this.findParity3.Name = "findParity3";
+            this.findParity3.Size = new System.Drawing.Size(35, 25);
+            this.findParity3.TabIndex = 6;
+            this.findParity3.Text = "...";
+            this.toolTip1.SetToolTip(this.findParity3, "Browse root location for disk protection ");
+            this.findParity3.UseVisualStyleBackColor = true;
+            this.findParity3.Click += new System.EventHandler(this.findParity3_Click);
+            // 
+            // labelParity6
+            // 
+            this.labelParity6.Location = new System.Drawing.Point(6, 157);
+            this.labelParity6.Name = "labelParity6";
+            this.labelParity6.Size = new System.Drawing.Size(53, 25);
+            this.labelParity6.TabIndex = 15;
+            this.labelParity6.Text = "Parity &6:";
+            this.labelParity6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.labelParity6, "Optional root location for parity protection");
+            // 
+            // labelParity5
+            // 
+            this.labelParity5.Location = new System.Drawing.Point(6, 129);
+            this.labelParity5.Name = "labelParity5";
+            this.labelParity5.Size = new System.Drawing.Size(53, 25);
+            this.labelParity5.TabIndex = 14;
+            this.labelParity5.Text = "Parity &5:";
+            this.labelParity5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.labelParity5, "Optional root location for parity protection");
+            // 
+            // labelParity4
+            // 
+            this.labelParity4.Location = new System.Drawing.Point(6, 101);
+            this.labelParity4.Name = "labelParity4";
+            this.labelParity4.Size = new System.Drawing.Size(53, 25);
+            this.labelParity4.TabIndex = 13;
+            this.labelParity4.Text = "Parity &4:";
+            this.labelParity4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.labelParity4, "Optional root location for parity protection");
+            // 
+            // labelParity3
+            // 
+            this.labelParity3.Location = new System.Drawing.Point(6, 73);
+            this.labelParity3.Name = "labelParity3";
+            this.labelParity3.Size = new System.Drawing.Size(53, 25);
+            this.labelParity3.TabIndex = 12;
+            this.labelParity3.Text = "Parity &3:";
+            this.labelParity3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.labelParity3, "Optional root location for parity protection");
+            // 
+            // parityLocation3
+            // 
+            this.parityLocation3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.parityLocation3.BackColor = System.Drawing.SystemColors.Window;
+            this.errorProvider1.SetError(this.parityLocation3, "Config File does not exist");
+            this.helpProvider1.SetHelpKeyword(this.parityLocation3, "ParityLocs");
+            this.helpProvider1.SetHelpNavigator(this.parityLocation3, System.Windows.Forms.HelpNavigator.Topic);
+            this.parityLocation3.Location = new System.Drawing.Point(65, 75);
+            this.parityLocation3.Name = "parityLocation3";
+            this.helpProvider1.SetShowHelp(this.parityLocation3, true);
+            this.parityLocation3.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation3.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.parityLocation3, "Optional disk failure protection root location.");
+            this.parityLocation3.TextChanged += new System.EventHandler(this.parityLocation3_TextChanged);
+            // 
+            // labelParity2
+            // 
+            this.labelParity2.Location = new System.Drawing.Point(6, 45);
+            this.labelParity2.Name = "labelParity2";
+            this.labelParity2.Size = new System.Drawing.Size(53, 25);
+            this.labelParity2.TabIndex = 6;
+            this.labelParity2.Text = "Parity &2:";
+            this.labelParity2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.labelParity2, "Optional root location for parity protection");
+            // 
+            // parityLocation2
+            // 
+            this.parityLocation2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.parityLocation2.BackColor = System.Drawing.SystemColors.Window;
+            this.errorProvider1.SetError(this.parityLocation2, "Config File does not exist");
+            this.helpProvider1.SetHelpKeyword(this.parityLocation2, "ParityLocs");
+            this.helpProvider1.SetHelpNavigator(this.parityLocation2, System.Windows.Forms.HelpNavigator.Topic);
+            this.parityLocation2.Location = new System.Drawing.Point(65, 47);
+            this.parityLocation2.Name = "parityLocation2";
+            this.helpProvider1.SetShowHelp(this.parityLocation2, true);
+            this.parityLocation2.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation2.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.parityLocation2, "Optional disk failure protection root location.");
+            this.parityLocation2.TextChanged += new System.EventHandler(this.parityLocation2_TextChanged);
+            // 
+            // findParity2
+            // 
+            this.findParity2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.findParity2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.findParity2.Location = new System.Drawing.Point(496, 45);
+            this.findParity2.Name = "findParity2";
+            this.findParity2.Size = new System.Drawing.Size(35, 25);
+            this.findParity2.TabIndex = 4;
+            this.findParity2.Text = "...";
+            this.toolTip1.SetToolTip(this.findParity2, "Browse root location for disk protection ");
+            this.findParity2.UseVisualStyleBackColor = true;
+            this.findParity2.Click += new System.EventHandler(this.findParity2_Click);
+            // 
+            // labelParity1
+            // 
+            this.labelParity1.Location = new System.Drawing.Point(6, 17);
+            this.labelParity1.Name = "labelParity1";
+            this.labelParity1.Size = new System.Drawing.Size(53, 25);
+            this.labelParity1.TabIndex = 0;
+            this.labelParity1.Text = "Parity &1:";
+            this.labelParity1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.labelParity1, "Mandatory root location for minimum parity protection");
+            // 
+            // parityLocation1
+            // 
+            this.parityLocation1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.parityLocation1.BackColor = System.Drawing.SystemColors.Window;
+            this.errorProvider1.SetError(this.parityLocation1, "Executeable Not found");
+            this.helpProvider1.SetHelpKeyword(this.parityLocation1, "ParityLocs");
+            this.helpProvider1.SetHelpNavigator(this.parityLocation1, System.Windows.Forms.HelpNavigator.Topic);
+            this.parityLocation1.Location = new System.Drawing.Point(65, 19);
+            this.parityLocation1.Name = "parityLocation1";
+            this.helpProvider1.SetShowHelp(this.parityLocation1, true);
+            this.parityLocation1.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation1.TabIndex = 1;
+            this.parityLocation1.Text = "Z:\\";
+            this.toolTip1.SetToolTip(this.parityLocation1, "Mandatory root location for minimum protection");
+            this.parityLocation1.TextChanged += new System.EventHandler(this.parityLocation1_TextChanged);
+            // 
+            // findParity1
+            // 
+            this.findParity1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.findParity1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.findParity1.Location = new System.Drawing.Point(496, 16);
+            this.findParity1.Name = "findParity1";
+            this.findParity1.Size = new System.Drawing.Size(35, 26);
+            this.findParity1.TabIndex = 2;
+            this.findParity1.Text = "...";
+            this.toolTip1.SetToolTip(this.findParity1, "Browse mandatory disk root location for minimum protection");
+            this.findParity1.UseVisualStyleBackColor = true;
+            this.findParity1.Click += new System.EventHandler(this.findParity1_Click);
             // 
             // removeToolStripMenuItem
             // 
@@ -305,7 +485,7 @@ namespace Elucidate
             this.snapShotSourcesTreeView.ShowLines = false;
             this.snapShotSourcesTreeView.ShowPlusMinus = false;
             this.snapShotSourcesTreeView.ShowRootLines = false;
-            this.snapShotSourcesTreeView.Size = new System.Drawing.Size(228, 331);
+            this.snapShotSourcesTreeView.Size = new System.Drawing.Size(228, 322);
             this.snapShotSourcesTreeView.TabIndex = 0;
             this.toolTip1.SetToolTip(this.snapShotSourcesTreeView, "The order is relevant for parity, do not change it!");
             this.snapShotSourcesTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.snapShotSourcesTreeView_DragDrop);
@@ -322,22 +502,10 @@ namespace Elucidate
             this.groupBox1.ForeColor = System.Drawing.SystemColors.WindowText;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(537, 352);
+            this.groupBox1.Size = new System.Drawing.Size(537, 343);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "S&nap Shot Sources";
-            // 
-            // driveSpace
-            // 
-            this.driveSpace.Dock = System.Windows.Forms.DockStyle.Right;
-            this.driveSpace.Location = new System.Drawing.Point(234, 18);
-            this.driveSpace.Margin = new System.Windows.Forms.Padding(0);
-            this.driveSpace.Name = "driveSpace";
-            this.driveSpace.ShowXAxisText = false;
-            this.driveSpace.ShowYAxisText = false;
-            this.driveSpace.Size = new System.Drawing.Size(300, 331);
-            this.driveSpace.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.driveSpace, "Shows the space in GBytes");
             // 
             // splitContainer1
             // 
@@ -353,7 +521,7 @@ namespace Elucidate
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
-            this.splitContainer1.Size = new System.Drawing.Size(870, 534);
+            this.splitContainer1.Size = new System.Drawing.Size(870, 645);
             this.splitContainer1.SplitterDistance = 322;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 4;
@@ -367,7 +535,7 @@ namespace Elucidate
             this.groupBox3.Controls.Add(this.numBlockSizeKB);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox3.Location = new System.Drawing.Point(0, 357);
+            this.groupBox3.Location = new System.Drawing.Point(0, 468);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(322, 177);
             this.groupBox3.TabIndex = 1;
@@ -496,10 +664,10 @@ namespace Elucidate
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.49886F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(543, 534);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.50114F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(543, 645);
             this.tableLayoutPanel1.TabIndex = 7;
             // 
             // exludedFilesView
@@ -508,11 +676,10 @@ namespace Elucidate
             this.exludedFilesView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.exludedFilesView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ExcludedFilesPatterns});
-            this.exludedFilesView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.exludedFilesView.Font = new System.Drawing.Font("Tahoma", 9F);
             this.helpProvider1.SetHelpKeyword(this.exludedFilesView, "FilterExclusions");
             this.helpProvider1.SetHelpNavigator(this.exludedFilesView, System.Windows.Forms.HelpNavigator.Topic);
-            this.exludedFilesView.Location = new System.Drawing.Point(3, 447);
+            this.exludedFilesView.Location = new System.Drawing.Point(3, 558);
             this.exludedFilesView.Name = "exludedFilesView";
             this.exludedFilesView.ShowCellToolTips = false;
             this.helpProvider1.SetShowHelp(this.exludedFilesView, true);
@@ -661,11 +828,23 @@ namespace Elucidate
             // 
             this.helpProvider1.HelpNamespace = "https://github.com/Smurf-IV/Elucidatewikipage?title=Settings";
             // 
+            // driveSpace
+            // 
+            this.driveSpace.Dock = System.Windows.Forms.DockStyle.Right;
+            this.driveSpace.Location = new System.Drawing.Point(234, 18);
+            this.driveSpace.Margin = new System.Windows.Forms.Padding(0);
+            this.driveSpace.Name = "driveSpace";
+            this.driveSpace.ShowXAxisText = false;
+            this.driveSpace.ShowYAxisText = false;
+            this.driveSpace.Size = new System.Drawing.Size(300, 322);
+            this.driveSpace.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.driveSpace, "Shows the space in GBytes");
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(870, 599);
+            this.ClientSize = new System.Drawing.Size(870, 710);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.panel2);
             this.DoubleBuffered = true;
@@ -732,12 +911,11 @@ namespace Elucidate
       private Label label2;
       private TextBox snapRAIDFileLocation;
       private Button findExeFile;
-      private Label labelRaid6;
-      private TextBox raid6Location;
-      private Button findRaid6;
-      private Label label5;
-      private TextBox raid5Location;
-      private Button findRaid5;
+      private TextBox parityLocation2;
+      private Button findParity2;
+      private Label labelParity1;
+      private TextBox parityLocation1;
+      private Button findParity1;
       private DataGridViewTextBoxColumn ExcludedFilesPatterns;
       private Button btnReset;
       private Button btnSave;
@@ -751,8 +929,21 @@ namespace Elucidate
       private Label label6;
       private DriveSpaceDisplay driveSpace;
       private Button btnGetRecommended;
+        private Label labelParity2;
+        private Label labelParity6;
+        private Label labelParity5;
+        private Label labelParity4;
+        private Label labelParity3;
+        private TextBox parityLocation3;
+        private Button findParity3;
+        private TextBox parityLocation6;
+        private TextBox parityLocation5;
+        private TextBox parityLocation4;
+        private Button findParity6;
+        private Button findParity5;
+        private Button findParity4;
 
-      private List<string> IncludePatterns { get; set; }
+        private List<string> IncludePatterns { get; set; }
 
    }
 }
