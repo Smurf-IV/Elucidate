@@ -464,6 +464,7 @@ namespace Elucidate
             exludedFilesView.Rows.Clear();
             snapShotSourcesTreeView.Nodes.Clear();
 
+            ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text);
             if (!File.Exists(configFileLocation.Text))
             {
                 if (Properties.Settings.Default.UseWindowsSettings)
@@ -485,7 +486,6 @@ namespace Elucidate
             }
             else
             {
-                ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text);
                 string readResult;
                 if (!string.IsNullOrEmpty(readResult = cfg.Read()))
                 {
@@ -525,7 +525,7 @@ namespace Elucidate
             };
             foreach (DataGridViewRow row in exludedFilesView.Rows)
             {
-                string value = string.Format("{0}", row.Cells[0].Value);
+                string value = $"{row.Cells[0].Value}";
                 if (!string.IsNullOrWhiteSpace(value))
                 {
                     cfg.ExcludePatterns.Add(value);
@@ -536,20 +536,48 @@ namespace Elucidate
                 cfg.SnapShotSources.Add(text);
                 cfg.ContentFiles.Add(text);
             }
-            string trim5 = parityLocation1.Text.Trim();
-            if (!string.IsNullOrEmpty(trim5))
+
+            switch (!string.IsNullOrEmpty(parityLocation1.Text.Trim()))
             {
-                cfg.ParityFile1 = trim5;
-                FileInfo fi = new FileInfo(trim5);
-                cfg.ContentFiles.Add(fi.DirectoryName);
-                string trim6 = parityLocation2.Text.Trim();
-                if (!string.IsNullOrEmpty(trim6))
-                {
-                    cfg.ParityFile2 = trim6;
+                case true:
+                    var trim1 = parityLocation1.Text.Trim();
+                    cfg.ParityFile1 = trim1;
+                    FileInfo fi = new FileInfo(trim1);
+                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                    string trim2 = parityLocation2.Text.Trim();
+                    if (string.IsNullOrEmpty(trim2)) break;
+                    cfg.ParityFile2 = trim2;
+                    fi = new FileInfo(trim2);
+                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                    string trim3 = parityLocation3.Text.Trim();
+                    if (string.IsNullOrEmpty(trim3)) break;
+                    cfg.ParityFile2 = trim3;
+                    fi = new FileInfo(trim3);
+                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                    string trim4 = parityLocation4.Text.Trim();
+                    if (string.IsNullOrEmpty(trim4)) break;
+                    cfg.ParityFile4 = trim3;
+                    fi = new FileInfo(trim4);
+                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                    string trim5 = parityLocation5.Text.Trim();
+                    if (string.IsNullOrEmpty(trim5)) break;
+                    cfg.ParityFile5 = trim5;
+                    fi = new FileInfo(trim5);
+                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                    string trim6 = parityLocation6.Text.Trim();
+                    if (string.IsNullOrEmpty(trim6)) break;
+                    cfg.ParityFile6 = trim6;
                     fi = new FileInfo(trim6);
-                    cfg.ContentFiles.Add(fi.DirectoryName);
-                }
+                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                    break;
             }
+
             string writeResult;
             if (!string.IsNullOrEmpty(writeResult = cfg.Write()))
             {
@@ -593,6 +621,7 @@ namespace Elucidate
             if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
             {
                 parityLocation1.Text = folderBrowserDialog1.SelectedPath;
+                
             }
         }
 
