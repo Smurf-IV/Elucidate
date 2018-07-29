@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Forms;
 
-namespace Elucidate
+namespace GUIUtils
 {
    public partial class MiscTab : UserControl
    {
@@ -12,7 +12,7 @@ namespace Elucidate
          InitializeComponent();
       }
 
-      public Elucidate Elucidate { get; set; }
+      public Elucidate.Elucidate Elucidate { get; set; }
 
 
       public void EnableIfValid(bool enabled)
