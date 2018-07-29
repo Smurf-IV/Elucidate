@@ -284,7 +284,9 @@
     <EmbeddedResource Include="Tabs\MiscTab.resx">
       <DependentUpon>MiscTab.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\AdvancedSettingsHelper.datasource" />
     <None Include="Properties\Settings.settings">
@@ -299,6 +301,7 @@
     <None Include="wyDay.Controls\Windows 7 Progress Bar, taskbar progress bar, open source C# control, .NET.website" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="snapraid.conf.example" />
     <Content Include="wyDay.Controls\License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
