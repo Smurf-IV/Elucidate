@@ -8,6 +8,9 @@
 ## Project Description
 Elucidate is a GUI front-end for the command-line SnapRAID application.
 
+*This project is a fork of the great work done by Smurf-IV and other contributors. 
+
+
 ## System Requirements:
 - Windows Operating System
 - SnapRaid Version 11.2 or lower
