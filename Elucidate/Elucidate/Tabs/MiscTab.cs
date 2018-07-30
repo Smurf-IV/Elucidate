@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Forms;
 
-namespace GUIUtils
+namespace Elucidate.Tabs
 {
    public partial class MiscTab : UserControl
    {
@@ -12,7 +12,7 @@ namespace GUIUtils
          InitializeComponent();
       }
 
-      public Elucidate.Elucidate Elucidate { get; set; }
+      public Elucidate Elucidate { private get; set; }
 
 
       public void EnableIfValid(bool enabled)
@@ -29,8 +29,6 @@ namespace GUIUtils
          command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-p100 -o0");
          Elucidate.StartSnapRaidProcess(command.ToString());
       }
-
-
 
       private void btnFix_Click(object sender, EventArgs e)
       {
@@ -50,5 +48,6 @@ namespace GUIUtils
          command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-m");
          Elucidate.StartSnapRaidProcess(command.ToString());
       }
+
    }
 }
