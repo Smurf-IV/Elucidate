@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
+using Elucidate.Tabs;
 using GUIUtils;
 using Microsoft.Win32.TaskScheduler;
 using Shared;
@@ -65,7 +66,7 @@ namespace Elucidate
             this.menuRealTime = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteContentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copySelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.driveSpace = new GUIUtils.DriveSpaceDisplay();
+            this.driveSpace = new DriveSpaceDisplay();
             this.btnDiff = new Shared.CommandLinkButton();
             this.btnStatus = new Shared.CommandLinkButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();

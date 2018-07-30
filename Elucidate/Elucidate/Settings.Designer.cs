@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Elucidate.Tabs;
 using GUIUtils;
 
 namespace Elucidate
@@ -89,7 +90,7 @@ namespace Elucidate
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.driveSpace = new GUIUtils.DriveSpaceDisplay();
+            this.driveSpace = new DriveSpaceDisplay();
             this.drivesAndDirectoriesMenu.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SnapShotsMenu.SuspendLayout();

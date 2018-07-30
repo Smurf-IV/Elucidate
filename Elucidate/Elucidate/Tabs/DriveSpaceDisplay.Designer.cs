@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-namespace GUIUtils
+namespace Elucidate.Tabs
 {
     partial class DriveSpaceDisplay
     {

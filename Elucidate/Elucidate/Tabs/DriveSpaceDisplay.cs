@@ -32,11 +32,10 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using ByteSizeLib;
-using Elucidate;
 using Elucidate.Logging;
 using Shared;
 
-namespace GUIUtils
+namespace Elucidate.Tabs
 {
     public partial class DriveSpaceDisplay : UserControl
     {
