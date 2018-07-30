@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using Elucidate.Tabs;
-using GUIUtils;
 
 namespace Elucidate
 {

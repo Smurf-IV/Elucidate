@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Shared;
 
-namespace GUIUtils
+namespace Elucidate.Tabs
 {
    partial class MiscTab
    {

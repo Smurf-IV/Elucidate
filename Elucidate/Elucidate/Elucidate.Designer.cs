@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 using Elucidate.Tabs;
-using GUIUtils;
 using Microsoft.Win32.TaskScheduler;
 using Shared;
 
@@ -76,7 +75,7 @@ namespace Elucidate
             this.btnSync = new Shared.CommandLinkButton();
             this.realTimeOutputTabPage = new System.Windows.Forms.TabPage();
             this.miscTabPage = new System.Windows.Forms.TabPage();
-            this.miscTabCtrl = new GUIUtils.MiscTab();
+            this.miscTabCtrl = new Tabs.MiscTab();
             this.SchedulingPage = new System.Windows.Forms.TabPage();
             this.RecoveryOperations = new System.Windows.Forms.TabPage();
             this.label1 = new System.Windows.Forms.Label();
