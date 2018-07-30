@@ -167,25 +167,68 @@ namespace GUIUtils
             Invoke((MethodInvoker) AddDataToDisplayMethodInvoker);
         }
 
-        private void AddDataToDisplayMethodInvoker()
+        private string GetLargestWholenumberSymbolOfChartData()
         {
+            List<string> availableSymbols = new List<string> {"", "b", "B", "KB", "MB", "GB", "TB"};
+            string currentMaxSymbol = string.Empty;
             foreach (var item in ChartDataList)
             {
-                int offset = 0;
-                ulong[] points =
+                string[] symbols = { item.FreeBytesAvailable.LargestWholeNumberSymbol, item.PathUsedBytes.LargestWholeNumberSymbol, item.RootBytesNotCoveredByPath.LargestWholeNumberSymbol };
+                foreach (var symbol in symbols)
                 {
-                    // Scale the values into GBytes
-                    Convert.ToUInt64(item.RootBytesNotCoveredByPath.MegaBytes), Convert.ToUInt64(item.PathUsedBytes.MegaBytes), Convert.ToUInt64(item.FreeBytesAvailable.MegaBytes)
-                };
-                foreach (Series series in chart1.Series)
-                {
-                    series.Points.AddXY(item.Path, points[offset++]);
+                    if (availableSymbols.IndexOf(symbol) > availableSymbols.IndexOf(currentMaxSymbol))
+                    {
+                        currentMaxSymbol = symbol;
+                    }
                 }
+            }
+            Log.Instance.Debug($"GetLargestWholenumberSymbolOfChartData is {currentMaxSymbol}");
+            return currentMaxSymbol;
+        }
+
+        private void AddDataToDisplayMethodInvoker()
+        {
+            //string largestWholenumberSymbolOfChartData = GetLargestWholenumberSymbolOfChartData();
+            string largestWholenumberSymbolOfChartData = "GB";
+
+            foreach (var item in ChartDataList)
+            {
+                double[] points =
+                {
+                    // Scale the values
+                    Util.RoundUpToDecimalPlace(item.RootBytesNotCoveredByPath.GigaBytes, 2), Util.RoundUpToDecimalPlace(item.PathUsedBytes.GigaBytes, 2), Util.RoundUpToDecimalPlace(item.FreeBytesAvailable.GigaBytes, 2)
+                };
+
+                chart1.Series[0].Points.AddXY(item.Path, points[0]);
+                chart1.Series[1].Points.AddXY(item.Path, points[1]);
+                chart1.Series[2].Points.AddXY(item.Path, points[2]);
 
                 Log.Instance.Info("path[{0}], rootBytesNotCoveredByPath[{1}], pathUsedBytes[{2}], freeBytesAvailable[{3}]", item.Path, points[0], points[1], points[2]);
             }
-        }
 
+            // set formatting:
+            // do not display point labels that are 0
+            // set data size label
+            foreach (Series series in chart1.Series)
+            {
+                foreach (DataPoint dp in series.Points)
+                {
+                    foreach (double yValue in dp.YValues)
+                    {
+                        Log.Instance.Info(yValue);
+                        if (!(yValue > 0))
+                        {
+                            dp.IsValueShownAsLabel = false;
+                        }
+                        else
+                        {
+                            dp.Label = $"#VALY\n{largestWholenumberSymbolOfChartData}";
+                        }
+                    }
+                }
+            }
+        }
+        
         private void chart1_Click(object sender, EventArgs e)
         {
             _percentage = !_percentage;

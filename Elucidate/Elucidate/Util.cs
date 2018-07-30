@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Elucidate.Logging;
-using GUIUtils;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
@@ -12,7 +11,14 @@ namespace Elucidate
 {
     public static class Util
     {
-        
+        public static double RoundUpToDecimalPlace(double numToRound, int decimalPlace)
+        {
+            if (decimalPlace < 1) return numToRound; // return original nmber if 0 decimal places requested
+            string strX = $"1{new String('0', decimalPlace)}";
+            int intX = Convert.ToInt32(strX);
+            return Math.Ceiling(numToRound * intX) / intX;
+        }
+
         public static string SnapRaidLatestVersion()
         {
             try

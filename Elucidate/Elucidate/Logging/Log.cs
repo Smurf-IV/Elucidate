@@ -13,7 +13,7 @@ namespace Elucidate.Logging
         }
         static Log()
         {
-#if DEBUG
+#if !DEBUG
             DisableLogLevel(LogLevels.Trace);
             DisableLogLevel(LogLevels.Debug);
 #endif
