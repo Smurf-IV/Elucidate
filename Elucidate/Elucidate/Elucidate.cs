@@ -32,14 +32,11 @@ using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
-using NLog;
 
 namespace Elucidate
 {
     public sealed partial class Elucidate : Form
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
         public Elucidate()
         {
             InitializeComponent();

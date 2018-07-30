@@ -31,14 +31,12 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using NLog;
+using Elucidate.Logging;
 
 namespace Elucidate
 {
     internal static class Program
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -57,12 +55,13 @@ namespace Elucidate
                 }
                 catch
                 {
+                    // ignored
                 }
             }
             try
             {
-                Log.Info("=====================================================================");
-                Log.Info("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
+                Log.Instance.Info("=====================================================================");
+                Log.Instance.Info("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
                 CheckAndRunSingleApp();
             }
             catch (Exception ex)
@@ -72,8 +71,10 @@ namespace Elucidate
             }
             finally
             {
-                Log.Info("File Closing");
-                Log.Info("=====================================================================");
+                Log.Instance.Info("File Closing");
+                Log.Instance.Info("=====================================================================");
+                // shutdown log
+                Log.Shutdown(); // Flush and close down internal threads and timers
             }
         }
 
@@ -99,21 +100,22 @@ namespace Elucidate
         {
             try
             {
-                Log.Fatal("Unhandled exception.\r\n{0}", e.ExceptionObject);
+                Log.Instance.Fatal("Unhandled exception.\r\n{0}", e.ExceptionObject);
                 if (e.ExceptionObject is Exception ex)
                 {
-                    Log.Fatal(ex, "Exception details");
+                    Log.Instance.Fatal(ex, "Exception details");
                 }
                 else
                 {
-                    Log.Fatal("Unexpected exception.");
+                    Log.Instance.Fatal("Unexpected exception.");
                 }
                 ExceptionHandler.ReportException((Exception) e.ExceptionObject);
             }
             catch
             {
-                // skipped
+                // ignored
             }
         }
+
     }
 }

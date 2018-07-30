@@ -33,10 +33,11 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using wyDay.Controls;
+using Elucidate.Logging;
 using NLog;
 using NLog.Targets;
 using NLog.Targets.Wrappers;
-using wyDay.Controls;
 
 namespace Elucidate
 {
@@ -67,19 +68,19 @@ namespace Elucidate
         {
             try
             {
-                Log.Debug("actionWorker_DoWork");
+                Log.Instance.Debug("actionWorker_DoWork");
                 BackgroundWorker worker = sender as BackgroundWorker;
                 string command = e.Argument as string;
 
                 if (worker == null)
                 {
-                    Log.Error("Passed in worker is null");
+                    Log.Instance.Error("Passed in worker is null");
                     e.Cancel = true;
                     return;
                 }
                 else if (string.IsNullOrWhiteSpace(command))
                 {
-                    Log.Error("Passed in command is null");
+                    Log.Instance.Error("Passed in command is null");
                     e.Cancel = true;
                     return;
                 }
@@ -91,26 +92,26 @@ namespace Elucidate
                 string args = FormatSnapRaidCommandArgs(command, out string appPath);
                 if (runWithoutCaptureMenuItem.Checked)
                 {
-                    Log.Warn("Running without Capture mode");
+                    Log.Instance.Warn("Running without Capture mode");
 
                     FileTarget fileTarget = (FileTarget)((AsyncTargetWrapper)LogManager.Configuration.FindTargetByName("file")).WrappedTarget;
                     // Need to set timestamp here if filename uses date.
                     // For example - filename="${basedir}/logs/${shortdate}/trace.log"
                     LogEventInfo logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
                     FileInfo fi = new FileInfo(fileTarget.FileName.Render(logEventInfo));
-                    args += string.Format(" 2> \"{0}\\Verbose-{1}.log\"", fi.DirectoryName, DateTime.UtcNow.ToString("yyyy-MM-dd HH.mm"));
-                    Log.Info("Starting minimised {0} {1}", appPath, args);
+                    args += $" 2> \"{fi.DirectoryName}\\Verbose-{DateTime.UtcNow:yyyy-MM-dd HH.mm}.log\"";
+                    Log.Instance.Info("Starting minimised {0} {1}", appPath, args);
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         FileName = "CMD.exe",
-                        Arguments = string.Format(" /K \"{0} {1}\"", appPath, args),
+                        Arguments = $" /K \"{appPath} {args}\"",
                         WorkingDirectory = @"C:\windows\System32",
                         UseShellExecute = true,
                         WindowStyle = ProcessWindowStyle.Minimized,
                         ErrorDialog = true
                     };
                     Process process = Process.Start(startInfo);
-                    Log.Info("Process is running PID[{0}]", process.Id);
+                    Log.Instance.Info("Process is running PID[{0}]", process.Id);
                     return;
                 }
 
@@ -128,8 +129,8 @@ namespace Elucidate
                     EnableRaisingEvents = true
                 })
                 {
-                    Log.Info("Using: {0}", process.StartInfo.FileName);
-                    Log.Info("with: {0}", process.StartInfo.Arguments);
+                    Log.Instance.Info("Using: {0}", process.StartInfo.FileName);
+                    Log.Instance.Info("with: {0}", process.StartInfo.Arguments);
                     process.Exited += Exited;
 
                     process.Start();
@@ -148,20 +149,20 @@ namespace Elucidate
                         if (process.HasExited) continue;
                         if (worker.CancellationPending)
                         {
-                            Log.Fatal("Attempting process KILL");
+                            Log.Instance.Fatal("Attempting process KILL");
                             process.Kill();
                         }
                         else
                         {
                             ProcessPriorityClass current = process.PriorityClass;
                             if (current == requested) continue;
-                            Log.Fatal("Setting the processpriority to[{0}]", requested);
+                            Log.Instance.Fatal("Setting the processpriority to[{0}]", requested);
                             process.PriorityClass = requested;
                         }
                     }
 
                     exitCode = process.ExitCode;
-                    Log.Info("ExitCode=[{0}]", exitCode);
+                    Log.Instance.Info("ExitCode=[{0}]", exitCode);
                     process.Close();
                 }
                 switch (exitCode)
@@ -185,7 +186,7 @@ namespace Elucidate
             }
             finally
             {
-                Log.Info("We are exiting the status thread");
+                Log.Instance.Info("We are exiting the status thread");
             }
         }
 
@@ -193,7 +194,7 @@ namespace Elucidate
         {
             // Format according to this: http://snapraid.sourceforge.net/manual.html
             // e.g. "D:\snapraid-1.3-windows-x64\snapraid" -c "D:\snapraid-1.3-windows-x64\snapraid.conf" sync
-            appPath = string.Format("\"{0}\"", Properties.Settings.Default.SnapRAIDFileLocation);
+            appPath = $"\"{Properties.Settings.Default.SnapRAIDFileLocation}\"";
             // Find the meanings @ http://snapraid.sourceforge.net/manual.html  6 Options
             StringBuilder args = new StringBuilder(txtAddCommands.Text);
             args.Append(' ');
@@ -219,14 +220,14 @@ namespace Elucidate
         {
             try
             {
-                Log.Warn("Start Verbose handler");
+                Log.Instance.Warn("Start Verbose handler");
                 string buf;
                 do
                 {
                     if (!string.IsNullOrEmpty(buf = threadObject.cmdProcess.StandardError.ReadLine()))
                     {
                         lastError = buf;
-                        Log.Warn("Verbose[{0}]", buf);
+                        Log.Instance.Warn("Verbose[{0}]", buf);
                     }
                     else
                     {
@@ -247,13 +248,13 @@ namespace Elucidate
         {
             try
             {
-                Log.Info("Start StdOut handler");
+                Log.Instance.Info("Start StdOut handler");
                 string buf;
                 do
                 {
                     if (!string.IsNullOrEmpty(buf = threadObject.cmdProcess.StandardOutput.ReadLine()))
                     {
-                        Log.Info("StdOut[{0}]", buf);
+                        Log.Instance.Info("StdOut[{0}]", buf);
                         if (!buf.Contains("%")) continue;
                         string[] splits = buf.Split('%');
                         if (int.TryParse(splits[0], out int percentProgress))
@@ -278,7 +279,7 @@ namespace Elucidate
 
         private void Exited(object o, EventArgs e)
         {
-            Log.Info("Exited.");
+            Log.Instance.Info("Exited.");
             Thread.Sleep(1000);  // When the process has exited, the buffers are _still_ flushing
             mreProcessExit.Set();
         }
@@ -315,15 +316,15 @@ namespace Elucidate
             {
                 toolStripProgressBar1.State = ProgressBarState.Pause;
                 toolStripProgressBar1.DisplayText = "Cancelled";
-                Log.Error("The thread has been cancelled");
-                comboBox1.Text = "Abort";
+                Log.Instance.Error("The thread has been cancelled");
+                comboBox1.Text = @"Abort";
             }
             else if (e.Error != null)
             {
                 toolStripProgressBar1.State = ProgressBarState.Error;
                 toolStripProgressBar1.DisplayText = e.Error.Message;
-                Log.Error(e.Error, "Thread threw: ");
-                comboBox1.Text = "Abort";
+                Log.Instance.Error(e.Error, "Thread threw: ");
+                comboBox1.Text = @"Abort";
             }
             else
             {
@@ -331,9 +332,9 @@ namespace Elucidate
                 {
                     toolStripProgressBar1.DisplayText = "Completed";
                     toolStripProgressBar1.Value = 100;
-                    comboBox1.Text = "Stopped";
+                    comboBox1.Text = @"Stopped";
                 }
-                Log.Info("Completed");
+                Log.Instance.Info("Completed");
             }
             comboBox1.Enabled = false;
         }
@@ -343,7 +344,7 @@ namespace Elucidate
             EnableIfValid(false);
             tabControl1.SelectTab(realTimeOutputTabPage);
             comboBox1.Enabled = true;
-            comboBox1.Text = "Running";
+            comboBox1.Text = @"Running";
             requested = ProcessPriorityClass.Normal;
             actionWorker.RunWorkerAsync(command);
             UseWaitCursor = true;
@@ -360,7 +361,7 @@ namespace Elucidate
             switch (comboBox1.Text)
             {
                 case "Stopped":
-                    comboBox1.Text = "Abort";
+                    comboBox1.Text = @"Abort";
                     break;
 
                 case "Running":
@@ -377,9 +378,10 @@ namespace Elucidate
                     break;
 
                 default:
-                    Log.Error("Invalid option for comboBox1_SelectedIndexChanged()");
+                    Log.Instance.Error("Invalid option for comboBox1_SelectedIndexChanged()");
                     break;
             }
         }
+
     }
 }

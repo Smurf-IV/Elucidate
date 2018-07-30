@@ -32,6 +32,7 @@ using System.Security.Principal;
 using System.Windows.Forms;
 using Microsoft.Win32.TaskScheduler;
 using wyDay.Controls;
+using Elucidate.Logging;
 
 namespace Elucidate
 {
@@ -68,11 +69,11 @@ namespace Elucidate
                 {
                     // Display version and server state
                     Version ver = ts.HighestSupportedVersion;
-                    Log.Info("Highest version: {0}", ver);
-                    Log.Info("Server: {0} ({1})", ts.TargetServer, ts.Connected ? "Connected" : "Disconnected");
+                    Log.Instance.Info("Highest version: {0}", ver);
+                    Log.Instance.Info("Server: {0} ({1})", ts.TargetServer, ts.Connected ? "Connected" : "Disconnected");
                     // Output all the tasks in the root folder with their triggers and actions
                     TaskFolder tf = ts.RootFolder;
-                    Log.Info("Root folder tasks ({0}):", tf.Tasks.Count);
+                    Log.Instance.Info("Root folder tasks ({0}):", tf.Tasks.Count);
 
                     lstHistory.Tasks = tf.Tasks;
                     //lstHistory.Tasks = ts.FindAllTasks();

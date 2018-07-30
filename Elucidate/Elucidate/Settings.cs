@@ -33,19 +33,18 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
-using NLog;
 using Shared;
+using Elucidate.Logging;
 
 namespace Elucidate
 {
     public partial class Settings : Form
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private bool unsavedChangesMade;
 
         private bool UnsavedChangesMade
         {
-            get { return unsavedChangesMade; }
+            get => unsavedChangesMade;
             set
             {
                 unsavedChangesMade = value;
@@ -107,17 +106,17 @@ namespace Elucidate
                 UseWaitCursor = true;
                 driveAndDirTreeView.Nodes.Clear();
 
-                Log.Debug("Create the root node.");
+                Log.Instance.Debug("Create the root node.");
                 TreeNode tvwRoot = new TreeNode { Text = Environment.MachineName, ImageIndex = 0 };
                 tvwRoot.SelectedImageIndex = tvwRoot.ImageIndex;
                 driveAndDirTreeView.Nodes.Add(tvwRoot);
-                Log.Debug("Now we need to add any children to the root node.");
+                Log.Instance.Debug("Now we need to add any children to the root node.");
 
-                Log.Debug("Start with drives if you have to search the entire computer.");
+                Log.Instance.Debug("Start with drives if you have to search the entire computer.");
                 string[] drives = Environment.GetLogicalDrives();
                 foreach (string dr in drives)
                 {
-                    Log.Debug(dr);
+                    Log.Instance.Debug(dr);
                     DriveInfo di = new DriveInfo(dr);
 
                     FillInDirectoryType(tvwRoot, di);
@@ -176,14 +175,14 @@ namespace Elucidate
         private void driveAndDirTreeView_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right) return;
-            Log.Debug("Select the clicked node");
+            Log.Instance.Debug("Select the clicked node");
             driveAndDirTreeView.SelectedNode = driveAndDirTreeView.GetNodeAt(e.X, e.Y);
         }
 
         private void driveAndDirTreeView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left) return;
-            Log.Debug("Select the clicked node");
+            Log.Instance.Debug("Select the clicked node");
             TreeNode selected = driveAndDirTreeView.GetNodeAt(e.X, e.Y);
             driveAndDirTreeView.SelectedNode = selected;
             if (selected != null)
@@ -195,7 +194,7 @@ namespace Elucidate
         private string GetSelectedNodesPath(TreeNode selected)
         {
             DirectoryInfo shNode = selected.Tag as DirectoryInfo;
-            Log.Debug("Now we need to add any children to the root node.");
+            Log.Instance.Debug("Now we need to add any children to the root node.");
             string newPath = shNode != null ? shNode.FullName : selected.FullPath;
             return newPath;
         }
@@ -221,7 +220,7 @@ namespace Elucidate
             UseWaitCursor = true;
             try
             {
-                Log.Debug("Remove the placeholder node.");
+                Log.Instance.Debug("Remove the placeholder node.");
                 if (e.Node.Tag is DirectoryInfo root)
                 {
                     e.Node.Nodes.Clear();
@@ -245,7 +244,7 @@ namespace Elucidate
             try
             {
                 if (!(parentNode.Tag is DirectoryInfo root)) return;
-                Log.Debug("// Find all the subdirectories under this directory.");
+                Log.Instance.Debug("// Find all the subdirectories under this directory.");
                 DirectoryInfo[] subDirs = root.GetDirectories();
                 if (subDirs.Length == 0) return;
                 foreach (DirectoryInfo dirInfo in subDirs)
@@ -259,7 +258,7 @@ namespace Elucidate
                         Tag = dirInfo
                     };
 
-                    Log.Debug("If this is a folder item and has children then add a place holder node.");
+                    Log.Instance.Debug("If this is a folder item and has children then add a place holder node.");
 
                     try
                     {
@@ -271,7 +270,7 @@ namespace Elucidate
                     }
                     catch (UnauthorizedAccessException uaex)
                     {
-                        Log.Info(String.Concat("No Access to subdirs in ", tvwChild.Text), uaex);
+                        Log.Instance.Info(String.Concat("No Access to subdirs in ", tvwChild.Text), uaex);
                     }
                     parentNode.Nodes.Add(tvwChild);
                 }
@@ -357,7 +356,7 @@ namespace Elucidate
 
         private void DRUnit_NewNode_MenuItem_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog { Description = "Browse for directory manually" };
+            FolderBrowserDialog fbd = new FolderBrowserDialog { Description = @"Browse for directory manually" };
             if (fbd.ShowDialog() != DialogResult.OK) return;
             DirectoryInfo dirInfo = new DirectoryInfo(fbd.SelectedPath);
             TreeNode tvwChild = new TreeNode { Text = dirInfo.Name, SelectedImageIndex = 8, ImageIndex = 7, Tag = dirInfo };
@@ -369,7 +368,7 @@ namespace Elucidate
         private void snapShotSourcesTreeView_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right) return;
-            Log.Debug("Select the clicked node");
+            Log.Instance.Debug("Select the clicked node");
             snapShotSourcesTreeView.SelectedNode = snapShotSourcesTreeView.GetNodeAt(e.X, e.Y);
         }
 
@@ -411,8 +410,8 @@ namespace Elucidate
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.InitialDirectory = Path.GetFullPath(snapRAIDFileLocation.Text);
-                Log.Info("snapRAIDFileLocation from [{0}]", ofd.InitialDirectory);
-                ofd.Filter = "Snap Raid application|SnapRAID.exe";
+                Log.Instance.Info("snapRAIDFileLocation from [{0}]", ofd.InitialDirectory);
+                ofd.Filter = @"Snap Raid application|SnapRAID.exe";
                 ofd.CheckFileExists = true;
                 ofd.RestoreDirectory = true;
                 if (DialogResult.OK == ofd.ShowDialog())
@@ -433,7 +432,7 @@ namespace Elucidate
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.InitialDirectory = Path.GetFullPath(configFileLocation.Text);
-                Log.Info("configFileLocation from [{0}]", ofd.InitialDirectory);
+                Log.Instance.Info("configFileLocation from [{0}]", ofd.InitialDirectory);
                 ofd.Filter = @"Snap Raid Config|SnapRAID.config|All Files|*.*";
                 ofd.CheckFileExists = true;
                 ofd.RestoreDirectory = true;
@@ -788,14 +787,14 @@ namespace Elucidate
             CalculateBlockSize calc = new CalculateBlockSize();
             List<string> snaps = snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text).Where(text => !string.IsNullOrWhiteSpace(text)).ToList();
             calc.SnapShotSources = snaps;
-            string trim5 = parityLocation1.Text.Trim();
-            if (!string.IsNullOrEmpty(trim5))
+            string trim1 = parityLocation1.Text.Trim();
+            if (!string.IsNullOrEmpty(trim1))
             {
-                calc.RaidTargets.Add(trim5);
-                string trim6 = parityLocation2.Text.Trim();
-                if (!string.IsNullOrEmpty(trim6))
+                calc.ParityTargets.Add(trim1);
+                string trim2 = parityLocation2.Text.Trim();
+                if (!string.IsNullOrEmpty(trim2))
                 {
-                    calc.RaidTargets.Add(trim6);
+                    calc.ParityTargets.Add(trim2);
                 }
             }
 

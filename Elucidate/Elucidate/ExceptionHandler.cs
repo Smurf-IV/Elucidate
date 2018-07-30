@@ -1,19 +1,17 @@
 ﻿using System;
 using ExceptionReporting;
-using NLog;
+using Elucidate.Logging;
 
 namespace Elucidate
 {
     public static class ExceptionHandler
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
         public static void ReportException(Exception ex, string strMessage = null)
         {
             if (strMessage == null)
-                Log.Fatal(ex);
+                Log.Instance.Fatal(ex);
             else
-                Log.Fatal(ex, strMessage.Trim());
+                Log.Instance.Fatal(ex, strMessage.Trim());
             ExceptionReporter reporter = new ExceptionReporter();
             reporter.Config.AppName = "Elucidate";
             reporter.Config.CompanyName = "Elucidate";

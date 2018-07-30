@@ -66,14 +66,14 @@ namespace Elucidate
             }
         }
 
-        public static void WriteSetting(string value)
+        private static void WriteSetting(string value)
         {
             try
             {
-                XmlDocument doc = loadConfigDocument();
+                XmlDocument doc = LoadConfigDocument();
                 XmlAttribute att = doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"];
                 att.Value = value;
-                doc.Save(getConfigFilePath());
+                doc.Save(GetConfigFilePath());
             }
             catch
             {
@@ -81,19 +81,18 @@ namespace Elucidate
             }
         }
 
-        public static string GetLogFileLocation()
+        private static string GetLogFileLocation()
         {
-            XmlDocument doc = loadConfigDocument();
+            XmlDocument doc = LoadConfigDocument();
             return doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"].Value;
         }
 
-        private static XmlDocument loadConfigDocument()
+        private static XmlDocument LoadConfigDocument()
         {
-            XmlDocument doc = null;
             try
             {
-                doc = new XmlDocument();
-                doc.Load(getConfigFilePath());
+                var doc = new XmlDocument();
+                doc.Load(GetConfigFilePath());
                 return doc;
             }
             catch (FileNotFoundException e)
@@ -102,9 +101,10 @@ namespace Elucidate
             }
         }
 
-        private static string getConfigFilePath()
+        private static string GetConfigFilePath()
         {
-            return Assembly.GetExecutingAssembly().Location + ".config";
+            return $"{Assembly.GetExecutingAssembly().Location}.config";
         }
+
     }
 }

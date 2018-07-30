@@ -11,7 +11,7 @@ namespace Elucidate
     {
         public CalculateBlockSize()
         {
-            RaidTargets = new List<string>(2);
+            ParityTargets = new List<string>(2);
             InitializeComponent();
             ulong available = new ComputerInfo().TotalPhysicalMemory;
             const Decimal testValue = 1UL << 30; // Should be 1 GBytes 
@@ -62,7 +62,7 @@ namespace Elucidate
         }
 
         public List<string> SnapShotSources { get; set; }
-        public List<string> RaidTargets { get; set; }
+        public List<string> ParityTargets { get; set; }
 
         // Need to find 3 values, Total drive size, Root drive used, actual used by path
         // Need to be aware of UNC paths
@@ -95,7 +95,7 @@ namespace Elucidate
                     // 1st get the Minimum space that could be used for the Parity (Ignore the existing parity)
                     // For each parity target find min space after ignoring "existing" parity file
                     ulong maxParitySizeAvailable = ulong.MaxValue;
-                    foreach (string raidTarget in RaidTargets)
+                    foreach (string raidTarget in ParityTargets)
                     {
                         DriveSpaceDisplay.FreeBytesAvailable(out freeBytesAvailable, raidTarget, out pathUsedBytes, out rootBytesNotCoveredByPath);
                         ulong currentTarget = freeBytesAvailable + pathUsedBytes;
@@ -116,7 +116,6 @@ namespace Elucidate
                     // 4 - Find the Max covered, 
                     ulong maxFiles = 1 << 18;
 
-
                     // 5 - Make sure that Parity has enough room times the number of max files, 
                     // and add onto the left over space to find the min and max values.
                     ulong maxProjectedSource = 0;
@@ -133,12 +132,12 @@ namespace Elucidate
                     ulong maxParityNeeded = maxProjectedSource + (minFiles * ulong.Parse(txtCoverageMax.Text)) / 2;
                     if (maxParityNeeded > maxParitySizeAvailable)
                     {
-                        lblBadNews.Text = "Display badnews about theoretical projected value - maxParityNeeded > maxParitySizeAvailable";
+                        lblBadNews.Text = @"Display badnews about theoretical projected value - maxParityNeeded > maxParitySizeAvailable";
                     }
                     if (minParityNeeded > maxParitySizeAvailable)
                     {
-                        // Display badnews about theoretical projected value;
-                        lblBadNews.Text = "Display badnews about theoretical projected value - minParityNeeded > maxParitySizeAvailable";
+                        // Display bad news about theoretical projected value;
+                        lblBadNews.Text = @"Display badnews about theoretical projected value - minParityNeeded > maxParitySizeAvailable";
                     }
                 }
             }
@@ -146,7 +145,6 @@ namespace Elucidate
             {
                 Enabled = true;
             }
-
         }
 
     }

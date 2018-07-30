@@ -21,16 +21,18 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ShouldCreateLogs>True</ShouldCreateLogs>
     <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersionSettings>YearStamp.MonthStamp.IncrementOnDemand.DayStamp</AssemblyVersionSettings>
-    <AssemblyFileVersionSettings>None.None.None.None</AssemblyFileVersionSettings>
+    <AssemblyVersionSettings>
+    </AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>
+    </AssemblyFileVersionSettings>
     <AssemblyInfoVersionSettings>
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>2017.9.602.30</AssemblyVersion>
+    <AssemblyVersion>18.7.30.42</AssemblyVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -45,6 +47,9 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <UpdatePackageVersion>False</UpdatePackageVersion>
+    <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+    <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -110,6 +115,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>sign-blueblock.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ActiveDirectoryObjectPicker, Version=2.2.129.0, Culture=neutral, PublicKeyToken=515ab092c8839750, processorArchitecture=MSIL">
@@ -198,6 +206,7 @@
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </Compile>
     <Compile Include="ExceptionHandler.cs" />
+    <Compile Include="Logging\Log.cs" />
     <Compile Include="Shared\CommandLinkButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -320,6 +329,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="sign-blueblock.pfx" />
     <None Include="wyDay.Controls\Windows 7 Progress Bar, taskbar progress bar, open source C# control, .NET.website" />
   </ItemGroup>
   <ItemGroup>

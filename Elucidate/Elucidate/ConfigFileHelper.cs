@@ -31,14 +31,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NLog;
+using Elucidate.Logging;
 
 namespace Elucidate
 {
     internal class ConfigFileHelper
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
         private string ConfigPath { get; set; }
 
         /// <summary>
@@ -93,7 +91,7 @@ namespace Elucidate
                             break;
 
                         case "q-parity":
-                            Log.Warn("'q-parity' entry in config file should be changed to '2-parity'");
+                            Log.Instance.Warn("'q-parity' entry in config file should be changed to '2-parity'");
                             ParityFile2 = value;
                             break;
 
