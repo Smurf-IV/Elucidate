@@ -6,13 +6,12 @@
   - [Screenshots](#screenshots)
 
 ## Project Description
-Definition: explain in detail
-Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, exemplify, explicate, expound, get across, illuminate, illustrate, interpret, make perfectly clear
+Elucidate is a GUI front-end for the command-line SnapRAID application.
 
 ## System Requirements:
 - Windows Operating System
-- SnapRaid Version 10.x or lower
-- n mb Free Space on target drive
+- SnapRaid Version 11.2 or lower
+- 10MB Free Space on target drive
 - .Net Runtime 4.7 or higher
  
 ## FAQs
@@ -31,7 +30,7 @@ Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, ex
 
 
 ## Roadmap
-* [ ] Attempt to keep up with the minimum support of the latest SnapRAID. – **On-going.**
+* [ ] Keep up with the minimum support of the latest SnapRAID. – **On-going.**
 * [x] Ease of use(Phase I) **[All Done]**
   * SnapRAID has three commands, so lets make them simple to access for a novice
   * Progress indicator(s)
@@ -43,12 +42,10 @@ Synonyms: annotate, clarify, clear, clear up, decode, demonstrate, enlighten, ex
   * [x] Command Extension – Allow extra parameters to the defaults used.– **Done**
   * [x] Scheduling. – **Done**
   * [x] Graphical view(s) of the protected data.– **Done**
-* [ ] Phase III – (Restart for V.17-xx onwards)
-  * [ ] New Compiler – **Installed**
-  * [ ] Move to GitHub (MS removed all the old Code and issues – Oops) - **Done**
-  * [x] Use Mark Down for GitHub – *Learning*
-  * [ ] New Layout and Theming – *Learning*
-  * [ ] New SnapRaid 11.x – *Installing*
+* [ ] Phase III – (Restart for V.18-xx onwards)
+  * [x] New Compiler – **Done**
+  * [x] New SnapRaid 11.x – **Done**
+  * [ ] Fix file coverage display.
   * [ ] Translations.
   * [ ] New Commands.
   * [ ] Log view(s) diagnostics.
