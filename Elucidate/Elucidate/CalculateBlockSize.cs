@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using GUIUtils;
 using Microsoft.VisualBasic.Devices;
 using Shared;
 
@@ -52,24 +51,22 @@ namespace Elucidate
         private static string FindNextPow2(UInt64 val)
         {
             UInt64 positions = 64;
-
             while (positions < val)
             {
                 positions <<= 1;
             }
-
             return positions.ToString();
         }
 
-        public List<string> SnapShotSources { get; set; }
-        public List<string> ParityTargets { get; set; }
+        public List<string> SnapShotSources { private get; set; }
+        public List<string> ParityTargets { get; private set; }
 
         // Need to find 3 values, Total drive size, Root drive used, actual used by path
         // Need to be aware of UNC paths
         // Need to be aware of Junctions
         private static void FindAndAddDisplaySizes(string path, ref UInt64 min, ref UInt64 max)
         {
-            DriveSpaceDisplay.FreeBytesAvailable(out var freeBytesAvailable, path, out var pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+            Util.FreeBytesAvailable(path, out var freeBytesAvailable, out var pathUsedBytes, out ulong rootBytesNotCoveredByPath);
             min += pathUsedBytes;
             max += pathUsedBytes;
             max += freeBytesAvailable;
@@ -97,7 +94,7 @@ namespace Elucidate
                     ulong maxParitySizeAvailable = ulong.MaxValue;
                     foreach (string raidTarget in ParityTargets)
                     {
-                        DriveSpaceDisplay.FreeBytesAvailable(out freeBytesAvailable, raidTarget, out pathUsedBytes, out rootBytesNotCoveredByPath);
+                        Util.FreeBytesAvailable(raidTarget, out freeBytesAvailable, out pathUsedBytes, out rootBytesNotCoveredByPath);
                         ulong currentTarget = freeBytesAvailable + pathUsedBytes;
                         if (maxParitySizeAvailable > currentTarget)
                         {
@@ -121,7 +118,7 @@ namespace Elucidate
                     ulong maxProjectedSource = 0;
                     foreach (string path in SnapShotSources)
                     {
-                        DriveSpaceDisplay.FreeBytesAvailable(out freeBytesAvailable, path, out pathUsedBytes, out rootBytesNotCoveredByPath);
+                        Util.FreeBytesAvailable(path, out freeBytesAvailable, out pathUsedBytes, out rootBytesNotCoveredByPath);
                         ulong currentSource = freeBytesAvailable + pathUsedBytes;
                         if (maxProjectedSource < currentSource)
                         {

@@ -14,18 +14,20 @@
         .style3 {
             width: 84px;
         }
+        .auto-style1 {
+            width: 125px;
+        }
     </style>
 </head>
 <body>
     <h1 style="font-family: Consolas; font-size: large; color: black; background: white; text-decoration: underline; font-weight: bold;">Welcome&nbsp;to&nbsp;the&nbsp;Elucidate&nbsp;Changelog</h1>
-    Keep&nbsp;an&nbsp;open&nbsp;eye&nbsp;on&nbsp;the&nbsp;<a href="https://github.com/Smurf-IV/Elucidate">https://github.com/Smurf-IV/Elucidate</a>&nbsp;site.<br />
-    &nbsp;<br />
+    Keep&nbsp;an&nbsp;open&nbsp;eye&nbsp;on&nbsp;<a href="https://github.com/BlueBlock/Elucidate">https://github.com/BlueBlock/Elucidate</a> for updates.This is a fork of the great work done by Smurf-IV and other contributors.&nbsp;<br />
     <h2>Some&nbsp;Helpful&nbsp;Information:</h2>
     How&nbsp;to&nbsp;get&nbsp;an&nbsp;install&nbsp;log&nbsp;to&nbsp;send&nbsp;if&nbsp;you&nbsp;have&nbsp;a&nbsp;problem:<br />
     To&nbsp;obtain&nbsp;a&nbsp;log&nbsp;of&nbsp;an&nbsp;installation&nbsp;use&nbsp;the&nbsp;command&nbsp;line&nbsp;msiexec&nbsp;tool:<br />
     <span class="style1">msiexec&nbsp;/i&nbsp;Elucidate_Installer.msi&nbsp;/l*v&nbsp;MyLogFile.txt</span><br />
     <br />
-    and&nbsp;this&nbsp;for&nbsp;uninstall&nbsp;issues<br />
+    or for uninstall&nbsp;issues<br />
     <span class="style1">msiexec&nbsp;/l*v&nbsp;MyLogFile.txt&nbsp;/uninstall&nbsp;Elucidate_Installer.msi</span><br />
     <br />
     This&nbsp;will&nbsp;install&nbsp;your&nbsp;application&nbsp;and&nbsp;write&nbsp;a&nbsp;verbose&nbsp;log&nbsp;to&nbsp;MyLogFile.txt&nbsp;in&nbsp;the&nbsp;current&nbsp;directory.<br />
@@ -47,13 +49,28 @@
     <h3>Done (Newest First):</h3>
     <table border="1" width="100%">
         <tr>
-            <td class="style3">2017-10-##</td>
+            <td class="auto-style1">2018-07-30</td>
+            <td>- add preservation of SnapRAID config file (snapraid.conf.yyyyMMdd)<br />
+                - add logic to control debug/trace logging</td>
+        </tr>
+        <tr>
+            <td class="auto-style1">2018-07-29</td>
+            <td>- Initial fork by BlueBlock<br />
+                - Change to use SnapRAID v11.2 config file<br />
+                - Change parity drive choices from 2 to 6<br />
+                - Saving of config will update any entry for &quot;q-parity&quot; to &quot;2-parity&quot;<br />
+                - Add exception dialog for user to aid analysis of bugs
+                <br />
+                - Update packages</td>
+        </tr>
+        <tr>
+            <td class="auto-style1">2017-10-##</td>
             <td>- Move to .Net 4.7 (And detect in installer)<br />
                 - Update packages<br />
                 - Start to reformat code wrt .Net 4.7</td>
         </tr>
         <tr>
-            <td class="style3">2017-09-30</td>
+            <td class="auto-style1">2017-09-30</td>
             <td>- Move to Github<br />
                 - Make sure it still builds<br />
                 - Make sure current function ality works with SnapRaid 10.0<br />
@@ -61,7 +78,7 @@
                 - Use packag manager for external elements</td>
         </tr>
         <tr>
-            <td class="style3">2015-03-##</td>
+            <td class="auto-style1">2015-03-##</td>
             <td>- <a href="https://elucidate.codeplex.com/workitem/12565">Progress Bar should display in taskbar area</a><br />
                 - <a href="https://elucidate.codeplex.com/workitem/13390">File name issues</a><br />
                 - Tinker with layout issues<br />
@@ -74,7 +91,7 @@
                 - Add drop shadow to main form.</td>
         </tr>
         <tr>
-            <td class="style3">2015-02-20</td>
+            <td class="auto-style1">2015-02-20</td>
             <td>- Conversion to use .Net 4.5.1 and above.<br />
                 - <a href="https://elucidate.codeplex.com/workitem/11448">replace the rounded tabs</a>.<br />
                 - Fix defect with the newer versions of snapraid (&gt;= 6.3) with the <a href="https://elucidate.codeplex.com/workitem/13270>">display of the finish text.</a><br />
@@ -86,12 +103,12 @@
                 - Fix Copy From the log window</td>
         </tr>
         <tr>
-            <td class="style3">2014-01-##</td>
+            <td class="auto-style1">2014-01-##</td>
             <td>- Some tinkering with license files<br />
                 - Tail window now has colors and better handling when button is clicked (And reclicked!)</td>
         </tr>
         <tr>
-            <td class="style3">2013-02-##</td>
+            <td class="auto-style1">2013-02-##</td>
             <td>- &quot;Run Without Capture&quot; check box menu item added to main window. Still takes 
             initial setting from the config file.<br />
                 - Add Following text to the Check button description: (use -a for hash only)<strong><br />
@@ -99,7 +116,7 @@
                 </strong>Add control to start the &quot;Guided Wizard&quot; task.</td>
         </tr>
         <tr>
-            <td class="style3">2013-01-16</td>
+            <td class="auto-style1">2013-01-16</td>
             <td>- Add view of protection to the settings page.<br />
                 - Add click to toggle between GBytes and Percentage.<br />
                 - Add a new tab for the coverage display with the breakout titles of the sources 
@@ -108,13 +125,13 @@
                 - Replace default left image in the installer</td>
         </tr>
         <tr>
-            <td class="style3">2013-01-02 RC4 -Stable?</td>
+            <td class="auto-style1">2013-01-02 RC4 -Stable?</td>
             <td>- Fix The Run Without Capture setting storage and the log file retreval for the 
             verbose settings.<br />
                 - Fix launching minimised the Run without capture</td>
         </tr>
         <tr>
-            <td class="style3">2012-12-20<br />
+            <td class="auto-style1">2012-12-20<br />
                 RC3</td>
             <td>- Remove multiple &quot;Hidden files&quot; options<br />
                 - Fix the logging window<br />
@@ -123,7 +140,7 @@
                 - Detect multiple simultaneous app launches</td>
         </tr>
         <tr>
-            <td class="style3">2012-12-18<br />
+            <td class="auto-style1">2012-12-18<br />
                 RC2</td>
             <td>- Add Command line extension text field<br />
                 - Change tooltip when creating 2nd parity<br />
@@ -134,7 +151,7 @@
                 - Add an indication of the Blocksize Compared to installed memory</td>
         </tr>
         <tr>
-            <td class="style3">2012-12-11<br />
+            <td class="auto-style1">2012-12-11<br />
                 Beta</td>
             <td>- Change the logging windows, so it sdoes not state StdErr, Stdout.<br />
                 - Change to only output x86 build to be compatible with the scheduler code 
@@ -147,7 +164,7 @@
                 - Add config output helper text for &quot;autoSave&quot;</td>
         </tr>
         <tr>
-            <td class="style3">2012-03-21</td>
+            <td class="auto-style1">2012-03-21</td>
             <td>- Implement new option &quot;--filter-nohidden&quot; to exclude hidden files<br />
                 - Use new TaskScheduler release built for .Net 4 (Still not complete - 
             http://taskscheduler.codeplex.com/workitem/9855)<br />
@@ -156,13 +173,13 @@
             cycles back to SnapRAID and the system</td>
         </tr>
         <tr>
-            <td class="style3">2012-01-30</td>
+            <td class="auto-style1">2012-01-30</td>
             <td>- Fixed Need to protect against the same file being used in the output<br />
                 - Fixed Need to prevent the settings dialog from being opened while snapRAID is 
             running</td>
         </tr>
         <tr>
-            <td class="style3">2012-01-26</td>
+            <td class="auto-style1">2012-01-26</td>
             <td>- Remove mono workaround code from release.<br />
                 - Fix Code that does not update the Status text at the right time.<br />
                 - Add Settings upgrade<br />
@@ -177,7 +194,7 @@
                 - Implemented a workaround for the &quot;Scheduling Edit Artifact&quot;&quot;</td>
         </tr>
         <tr>
-            <td class="style3">2012-01-22</td>
+            <td class="auto-style1">2012-01-22</td>
             <td>- Fix incorrect loading of older config file that already specified a parity 
             file<br />
                 - Simple Schedule control add tab, to allow easy setup of Sync command after 
@@ -188,7 +205,7 @@
                 - Add Schedule components to the installer</td>
         </tr>
         <tr>
-            <td class="style3">2012-01-14</td>
+            <td class="auto-style1">2012-01-14</td>
             <td>- Make sure the GPLv2 License is displayed in the installer<br />
                 - Add Log File Location Setting<br />
                 - Added a CheckListBox for the advanced settings.<br />
@@ -201,7 +218,7 @@
                 - Fix Help on Advanced settings</td>
         </tr>
         <tr>
-            <td class="style3">2011-09-07</td>
+            <td class="auto-style1">2011-09-07</td>
             <td>- Fix 9151: Have to add the new target to the existing nLog configuration AND 
             then reassign! 
             <br />
@@ -213,7 +230,7 @@
                 - Implement 9153: Switch to Real-Time when running a command.</td>
         </tr>
         <tr>
-            <td class="style3">2011-07-08</td>
+            <td class="auto-style1">2011-07-08</td>
             <td>- Start to add the changes required to deal with SnapRAID 1.5<br />
                 - New GUI Mode output<br />
                 - New Check command<br />
@@ -221,7 +238,7 @@
                 - &quot;Tune the colours&quot; in the Real-Time log view</td>
         </tr>
         <tr>
-            <td class="style3">2011-07-06</td>
+            <td class="auto-style1">2011-07-06</td>
             <td>- Complete Gui re-think, to allow tabs to be used in main window, this allows 
             the realtime log view to be displayed.<br />
                 - Allow number of lines in the realtime log view to be changed - (Global App 
@@ -232,14 +249,14 @@
                 - Start app after install complete.</td>
         </tr>
         <tr>
-            <td class="style3">2011-06-26</td>
+            <td class="auto-style1">2011-06-26</td>
             <td>- Sort out the mono progress bar not drawing correctly.<br />
                 - Moved App.Config file to windows only, and create a mono derivative<br />
                 - Try to sort out why the Mono Menu strip does not look good (i.e. cut&#39;s the 
             bottom off the text and no underlines!)</td>
         </tr>
         <tr>
-            <td class="style3">2011-06-19</td>
+            <td class="auto-style1">2011-06-19</td>
             <td>- Remove the unused References, to make Mono easier to convert<br />
                 - Problems with the a known Mono .Net4 code needed to be removed from Settings 
             form<br />
@@ -251,7 +268,7 @@
                 - Some Windows x64 OS Testing</td>
         </tr>
         <tr>
-            <td class="style3">2011-06-18</td>
+            <td class="auto-style1">2011-06-18</td>
             <td>- On restart it does not remember the SnapRaid Settings<br />
                 - Spaces in the Directories to be protected are lost (And everything after the 
          fisrt one)<br />
@@ -261,7 +278,7 @@
                 - More informative MessageBox&#39;s (Replace with TaskDialog look-alikes)</td>
         </tr>
         <tr>
-            <td class="style3">2011-06-16<br />
+            <td class="auto-style1">2011-06-16<br />
                 Beta 2</td>
             <td>- Allow SnapRAID to run in &quot;verbose mode&quot;<br />
                 - Add unsaved chnages question when exiting Settings Form<br />
@@ -273,7 +290,7 @@
                 - Fix Initial Colouring of CommandLinks is not always correct</td>
         </tr>
         <tr>
-            <td class="style3">2011-06-14<br />
+            <td class="auto-style1">2011-06-14<br />
                 Beta 1</td>
             <td>- Add the app to the startup group via the 
    installer<br />
@@ -285,7 +302,7 @@
                 - Add&nbsp; version indicator in the top.</td>
         </tr>
         <tr>
-            <td class="style3">2011-06-12
+            <td class="auto-style1">2011-06-12
             </td>
             <td>- Changed the button icons to be a little more related to their function(s)<br />
                 - Start to add the Settings form<br />
@@ -297,7 +314,7 @@
                 - Updated NLog to the latest nightly build</td>
         </tr>
         <tr>
-            <td class="style3">2011-06-10
+            <td class="auto-style1">2011-06-10
             </td>
             <td>- Added the code to do the CommandLink Buttons (Compatible with .Net 2)<br />
                 - Reused the code for the Progress bar to allow &quot;pretty&quot; drawing on all
@@ -309,7 +326,7 @@
             </td>
         </tr>
         <tr>
-            <td class="style3">2011-06-09
+            <td class="auto-style1">2011-06-09
             </td>
             <td>-&nbsp;Created&nbsp;Codeplex&nbsp;Project&nbsp;and&nbsp;checked&nbsp;this&nbsp;in
             </td>

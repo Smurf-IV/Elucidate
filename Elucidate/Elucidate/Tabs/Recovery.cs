@@ -64,6 +64,7 @@ namespace Elucidate
                 }
                 catch
                 {
+                    // ignored
                 }
             }
         }
@@ -108,15 +109,15 @@ namespace Elucidate
                             fi.Delete();
                         }
                     }
-                    if (cfg.ContentFiles != null)
+
+                    if (cfg.ContentFiles == null) return;
+
+                    foreach (string contentFile in cfg.ContentFiles.Where(contentFile => !string.IsNullOrEmpty(contentFile)))
                     {
-                        foreach (string contentFile in cfg.ContentFiles.Where(contentFile => !string.IsNullOrEmpty(contentFile)))
+                        fi = new FileInfo(contentFile);
+                        if (fi.Exists)
                         {
-                            fi = new FileInfo(contentFile);
-                            if (fi.Exists)
-                            {
-                                fi.Delete();
-                            }
+                            fi.Delete();
                         }
                     }
                 }
@@ -124,7 +125,7 @@ namespace Elucidate
             catch (Exception ex)
             {
                 ExceptionHandler.ReportException(ex, "btnRemoveOutput_Click has thrown: ");
-                MessageBox.Show(this, ex.Message, "Remove SnapRAID Output files.");
+                MessageBox.Show(this, ex.Message, @"Remove SnapRAID Output files.");
             }
         }
 
