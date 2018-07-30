@@ -42,17 +42,17 @@ namespace Elucidate
             actionWorker.DoWork += actionWorker_DoWork;
             actionWorker.ProgressChanged += actionWorker_ProgressChanged;
             actionWorker.RunWorkerCompleted += actionWorker_RunWorkerCompleted;
-            comboBox1.Text = "Stopped";
+            comboBox1.Text = @"Stopped";
             comboBox1.Enabled = false;
             timer1.Enabled = true;
         }
 
-        private void deleteContentsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteContentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textBox1.Clear();
         }
 
-        private void copySelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopySelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataObject dto = new DataObject();
             if (textBox1.SelectionLength <= 1)
@@ -71,12 +71,11 @@ namespace Elucidate
             if (e.Control
                 && e.KeyCode == Keys.C)
             {
-                copySelectedToolStripMenuItem_Click(sender, e);
+                CopySelectedToolStripMenuItem_Click(sender, e);
             }
         }
 
-
-        private void timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
             try
             {
@@ -136,8 +135,12 @@ namespace Elucidate
                     }
                 }
             }
-            catch { }
-            textBox1._Paint = true;// restore flag so we can paint the control
+            catch
+            {
+                // ignored
+            }
+
+            textBox1._Paint = true; // restore flag so we can paint the control
         }
 
         private class LogString
@@ -146,7 +149,7 @@ namespace Elucidate
             public string Message;
         };
 
-        static private readonly Queue<LogString> Logs = new Queue<LogString>();
+        private static readonly Queue<LogString> Logs = new Queue<LogString>();
 
         // ReSharper disable UnusedMember.Global
         // This is used by the logging to force all to the output window
@@ -158,7 +161,6 @@ namespace Elucidate
                 Message = message
             });
         }
-
 
     }
 }

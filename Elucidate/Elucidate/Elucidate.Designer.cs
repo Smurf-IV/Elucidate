@@ -424,7 +424,7 @@ namespace Elucidate
             this.deleteContentsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.deleteContentsToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.deleteContentsToolStripMenuItem.Text = "&Delete contents";
-            this.deleteContentsToolStripMenuItem.Click += new System.EventHandler(this.deleteContentsToolStripMenuItem_Click);
+            this.deleteContentsToolStripMenuItem.Click += new System.EventHandler(this.DeleteContentsToolStripMenuItem_Click);
             // 
             // copySelectedToolStripMenuItem
             // 
@@ -433,7 +433,7 @@ namespace Elucidate
             this.copySelectedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.copySelectedToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.copySelectedToolStripMenuItem.Text = "&Copy selected";
-            this.copySelectedToolStripMenuItem.Click += new System.EventHandler(this.copySelectedToolStripMenuItem_Click);
+            this.copySelectedToolStripMenuItem.Click += new System.EventHandler(this.CopySelectedToolStripMenuItem_Click);
             // 
             // driveSpace
             // 
@@ -692,7 +692,7 @@ namespace Elucidate
             // timer1
             // 
             this.timer1.Interval = 250;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // Elucidate
             // 
