@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
-using Shared;
+using Elucidate.Shared;
 
 namespace Elucidate.AppTabs
 {

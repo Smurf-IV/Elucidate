@@ -9,7 +9,7 @@ using System.Windows.Forms;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
 //
-namespace Shared
+namespace Elucidate.Shared
 {
     /// <summary>
     /// Implements a .NET version of the new Vista Command Link style buttons.

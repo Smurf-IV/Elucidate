@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Elucidate.Shared;
 using Microsoft.VisualBasic.Devices;
-using Shared;
 
 namespace Elucidate
 {

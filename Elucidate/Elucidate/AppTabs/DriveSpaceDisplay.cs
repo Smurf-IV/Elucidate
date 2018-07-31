@@ -34,7 +34,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using ByteSizeLib;
 using Elucidate.Logging;
-using Shared;
+using Elucidate.Shared;
 
 namespace Elucidate.AppTabs
 {

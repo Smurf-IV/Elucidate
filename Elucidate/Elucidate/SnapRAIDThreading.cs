@@ -35,6 +35,7 @@ using System.Threading;
 using System.Windows.Forms;
 using wyDay.Controls;
 using Elucidate.Logging;
+using Elucidate.wyDay.Controls;
 using NLog;
 using NLog.Targets;
 using NLog.Targets.Wrappers;

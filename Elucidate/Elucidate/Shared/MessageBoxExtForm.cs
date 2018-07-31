@@ -4,7 +4,7 @@ using System.Windows.Forms;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable RedundantCast
 // ReSharper disable MemberCanBePrivate.Global
-namespace Shared
+namespace Elucidate.Shared
 {
    /// <summary>
    /// Class of MessageBox

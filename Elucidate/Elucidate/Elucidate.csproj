@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.7.31.269</AssemblyVersion>
+    <AssemblyVersion>18.7.31.279</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -226,16 +226,16 @@
     <Compile Include="AppTabs\DriveSpaceDisplay.Designer.cs">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </Compile>
-    <Compile Include="Recovery Wizard\RecoveryWizard.cs">
+    <Compile Include="RecoveryWizard\RecoveryWizard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Recovery Wizard\RecoveryWizard.Designer.cs">
+    <Compile Include="RecoveryWizard\RecoveryWizard.Designer.cs">
       <DependentUpon>RecoveryWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="AppTabs\CapturedLogging.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AppTabs\Common.cs">
+    <Compile Include="Common.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AppTabs\MiscTab.cs">
@@ -307,7 +307,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Recovery Wizard\RecoveryWizard.resx">
+    <EmbeddedResource Include="RecoveryWizard\RecoveryWizard.resx">
       <DependentUpon>RecoveryWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">

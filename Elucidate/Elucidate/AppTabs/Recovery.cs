@@ -31,7 +31,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Shared;
+using Elucidate.Shared;
 
 namespace Elucidate
 {

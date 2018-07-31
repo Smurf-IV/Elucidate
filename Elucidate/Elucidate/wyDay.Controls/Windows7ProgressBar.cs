@@ -2,11 +2,12 @@
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Windows.Forms;
+using wyDay.Controls;
 
 //Windows7ProgressBar v1.0, created by Wyatt O'Day
 //Visit: http://wyday.com/windows-7-progress-bar/
 
-namespace wyDay.Controls
+namespace Elucidate.wyDay.Controls
 {
     /// <summary>
     /// A Windows progress bar control with Windows Vista & 7 functionality.

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 using Elucidate.AppTabs;
+using Elucidate.Shared;
 using Microsoft.Win32.TaskScheduler;
-using Shared;
 
 namespace Elucidate
 {
@@ -46,7 +46,7 @@ namespace Elucidate
             this.runWithoutCaptureMenuItem = new ToolStripCheckBoxMenuItem();
             this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.Panel();
-            this.toolStripProgressBar1 = new Shared.TextOverProgressBar();
+            this.toolStripProgressBar1 = new TextOverProgressBar();
             this.spacer = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();

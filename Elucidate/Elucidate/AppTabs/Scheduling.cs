@@ -33,6 +33,7 @@ using System.Windows.Forms;
 using Microsoft.Win32.TaskScheduler;
 using wyDay.Controls;
 using Elucidate.Logging;
+using Elucidate.wyDay.Controls;
 
 namespace Elucidate
 {

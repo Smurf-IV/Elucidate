@@ -42,5 +42,6 @@ namespace Elucidate
          this.CheckState = checkState;
          TootTip = tootTip;
       }
+
    }
 }

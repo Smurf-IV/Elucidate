@@ -34,8 +34,8 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
-using Shared;
 using Elucidate.Logging;
+using Elucidate.Shared;
 
 namespace Elucidate
 {

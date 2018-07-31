@@ -4,7 +4,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Shared
+namespace Elucidate.Shared
 {
     /// <summary>
     /// Summary description for FlickerFreeRichEditTextBox - Subclasses the RichTextBox to allow control over flicker
