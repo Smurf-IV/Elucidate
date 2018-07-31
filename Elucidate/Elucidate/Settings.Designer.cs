@@ -65,6 +65,7 @@ namespace Elucidate
             this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.snapShotSourcesTreeView = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.driveSpace = new DriveSpaceDisplay();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnGetRecommended = new System.Windows.Forms.Button();
@@ -89,7 +90,6 @@ namespace Elucidate
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.driveSpace = new DriveSpaceDisplay();
             this.drivesAndDirectoriesMenu.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SnapShotsMenu.SuspendLayout();
@@ -111,7 +111,7 @@ namespace Elucidate
             // 
             this.DRUnit_NewNode.Name = "DRUnit_NewNode";
             this.DRUnit_NewNode.ShortcutKeys = System.Windows.Forms.Keys.Insert;
-            this.DRUnit_NewNode.Size = new System.Drawing.Size(155, 22);
+            this.DRUnit_NewNode.Size = new System.Drawing.Size(196, 26);
             this.DRUnit_NewNode.Text = "&New Node";
             this.DRUnit_NewNode.Click += new System.EventHandler(this.DRUnit_NewNode_MenuItem_Click);
             // 
@@ -139,18 +139,19 @@ namespace Elucidate
             // drivesAndDirectoriesMenu
             // 
             this.drivesAndDirectoriesMenu.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.drivesAndDirectoriesMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.drivesAndDirectoriesMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.refreshStripMenuItem,
             this.toolStripMenuItem1,
             this.advancedSettingsToolStripMenuItem});
             this.drivesAndDirectoriesMenu.Name = "unitsMenu";
-            this.drivesAndDirectoriesMenu.Size = new System.Drawing.Size(198, 70);
+            this.drivesAndDirectoriesMenu.Size = new System.Drawing.Size(259, 82);
             // 
             // refreshStripMenuItem
             // 
             this.refreshStripMenuItem.Name = "refreshStripMenuItem";
             this.refreshStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.refreshStripMenuItem.Size = new System.Drawing.Size(258, 26);
             this.refreshStripMenuItem.Text = "&Refresh";
             this.refreshStripMenuItem.Click += new System.EventHandler(this.refreshStripMenuItem_Click);
             // 
@@ -158,13 +159,13 @@ namespace Elucidate
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.Insert;
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(197, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(258, 26);
             this.toolStripMenuItem1.Text = "&Add To Snap shot";
             // 
             // advancedSettingsToolStripMenuItem
             // 
             this.advancedSettingsToolStripMenuItem.Name = "advancedSettingsToolStripMenuItem";
-            this.advancedSettingsToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.advancedSettingsToolStripMenuItem.Size = new System.Drawing.Size(258, 26);
             this.advancedSettingsToolStripMenuItem.Text = "Advanced &Settings...";
             // 
             // imageListUnits
@@ -263,7 +264,7 @@ namespace Elucidate
             this.parityLocation6.Location = new System.Drawing.Point(65, 159);
             this.parityLocation6.Name = "parityLocation6";
             this.helpProvider1.SetShowHelp(this.parityLocation6, true);
-            this.parityLocation6.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation6.Size = new System.Drawing.Size(406, 29);
             this.parityLocation6.TabIndex = 11;
             this.toolTip1.SetToolTip(this.parityLocation6, "Optional disk failure protection root location.");
             this.parityLocation6.TextChanged += new System.EventHandler(this.parityLocation6_TextChanged);
@@ -279,7 +280,7 @@ namespace Elucidate
             this.parityLocation5.Location = new System.Drawing.Point(65, 131);
             this.parityLocation5.Name = "parityLocation5";
             this.helpProvider1.SetShowHelp(this.parityLocation5, true);
-            this.parityLocation5.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation5.Size = new System.Drawing.Size(406, 29);
             this.parityLocation5.TabIndex = 9;
             this.toolTip1.SetToolTip(this.parityLocation5, "Optional disk failure protection root location.");
             this.parityLocation5.TextChanged += new System.EventHandler(this.parityLocation5_TextChanged);
@@ -295,7 +296,7 @@ namespace Elucidate
             this.parityLocation4.Location = new System.Drawing.Point(65, 103);
             this.parityLocation4.Name = "parityLocation4";
             this.helpProvider1.SetShowHelp(this.parityLocation4, true);
-            this.parityLocation4.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation4.Size = new System.Drawing.Size(406, 29);
             this.parityLocation4.TabIndex = 7;
             this.toolTip1.SetToolTip(this.parityLocation4, "Optional disk failure protection root location.");
             this.parityLocation4.TextChanged += new System.EventHandler(this.parityLocation4_TextChanged);
@@ -364,7 +365,7 @@ namespace Elucidate
             this.parityLocation3.Location = new System.Drawing.Point(65, 75);
             this.parityLocation3.Name = "parityLocation3";
             this.helpProvider1.SetShowHelp(this.parityLocation3, true);
-            this.parityLocation3.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation3.Size = new System.Drawing.Size(406, 29);
             this.parityLocation3.TabIndex = 5;
             this.toolTip1.SetToolTip(this.parityLocation3, "Optional disk failure protection root location.");
             this.parityLocation3.TextChanged += new System.EventHandler(this.parityLocation3_TextChanged);
@@ -390,7 +391,7 @@ namespace Elucidate
             this.parityLocation2.Location = new System.Drawing.Point(65, 47);
             this.parityLocation2.Name = "parityLocation2";
             this.helpProvider1.SetShowHelp(this.parityLocation2, true);
-            this.parityLocation2.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation2.Size = new System.Drawing.Size(406, 29);
             this.parityLocation2.TabIndex = 3;
             this.toolTip1.SetToolTip(this.parityLocation2, "Optional disk failure protection root location.");
             this.parityLocation2.TextChanged += new System.EventHandler(this.parityLocation2_TextChanged);
@@ -429,7 +430,7 @@ namespace Elucidate
             this.parityLocation1.Location = new System.Drawing.Point(65, 19);
             this.parityLocation1.Name = "parityLocation1";
             this.helpProvider1.SetShowHelp(this.parityLocation1, true);
-            this.parityLocation1.Size = new System.Drawing.Size(406, 22);
+            this.parityLocation1.Size = new System.Drawing.Size(406, 29);
             this.parityLocation1.TabIndex = 1;
             this.parityLocation1.Text = "Z:\\";
             this.toolTip1.SetToolTip(this.parityLocation1, "Mandatory root location for minimum protection");
@@ -452,7 +453,7 @@ namespace Elucidate
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             this.removeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
             this.removeToolStripMenuItem.Text = "&Delete";
             this.removeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
@@ -460,11 +461,12 @@ namespace Elucidate
             // SnapShotsMenu
             // 
             this.SnapShotsMenu.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.SnapShotsMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.SnapShotsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.removeToolStripMenuItem,
             this.DRUnit_NewNode});
             this.SnapShotsMenu.Name = "unitsMenu";
-            this.SnapShotsMenu.Size = new System.Drawing.Size(156, 48);
+            this.SnapShotsMenu.Size = new System.Drawing.Size(197, 56);
             // 
             // snapShotSourcesTreeView
             // 
@@ -477,7 +479,7 @@ namespace Elucidate
             this.helpProvider1.SetHelpNavigator(this.snapShotSourcesTreeView, System.Windows.Forms.HelpNavigator.Topic);
             this.snapShotSourcesTreeView.ImageIndex = 0;
             this.snapShotSourcesTreeView.ImageList = this.imageListUnits;
-            this.snapShotSourcesTreeView.Location = new System.Drawing.Point(3, 18);
+            this.snapShotSourcesTreeView.Location = new System.Drawing.Point(3, 25);
             this.snapShotSourcesTreeView.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.snapShotSourcesTreeView.Name = "snapShotSourcesTreeView";
             this.snapShotSourcesTreeView.SelectedImageIndex = 0;
@@ -485,7 +487,7 @@ namespace Elucidate
             this.snapShotSourcesTreeView.ShowLines = false;
             this.snapShotSourcesTreeView.ShowPlusMinus = false;
             this.snapShotSourcesTreeView.ShowRootLines = false;
-            this.snapShotSourcesTreeView.Size = new System.Drawing.Size(228, 322);
+            this.snapShotSourcesTreeView.Size = new System.Drawing.Size(228, 315);
             this.snapShotSourcesTreeView.TabIndex = 0;
             this.toolTip1.SetToolTip(this.snapShotSourcesTreeView, "The order is relevant for parity, do not change it!");
             this.snapShotSourcesTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.snapShotSourcesTreeView_DragDrop);
@@ -506,6 +508,18 @@ namespace Elucidate
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "S&nap Shot Sources";
+            // 
+            // driveSpace
+            // 
+            this.driveSpace.Dock = System.Windows.Forms.DockStyle.Right;
+            this.driveSpace.Location = new System.Drawing.Point(234, 25);
+            this.driveSpace.Margin = new System.Windows.Forms.Padding(0);
+            this.driveSpace.Name = "driveSpace";
+            this.driveSpace.ShowXAxisText = false;
+            this.driveSpace.ShowYAxisText = false;
+            this.driveSpace.Size = new System.Drawing.Size(300, 315);
+            this.driveSpace.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.driveSpace, "Shows the space in GBytes");
             // 
             // splitContainer1
             // 
@@ -587,7 +601,7 @@ namespace Elucidate
             0,
             0});
             this.numAutoSaveGB.Name = "numAutoSaveGB";
-            this.numAutoSaveGB.Size = new System.Drawing.Size(74, 22);
+            this.numAutoSaveGB.Size = new System.Drawing.Size(74, 29);
             this.numAutoSaveGB.TabIndex = 4;
             this.toolTip1.SetToolTip(this.numAutoSaveGB, "You could increase this value if you do not have enough RAM memory to run SnapRAI" +
         "D\r\nAs a rule of thumb, with 4GB or more memory use the default 256, with 2GB use" +
@@ -603,7 +617,7 @@ namespace Elucidate
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(7, 53);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(83, 14);
+            this.label6.Size = new System.Drawing.Size(119, 22);
             this.label6.TabIndex = 3;
             this.label6.Text = "AutoSave &GB:";
             this.toolTip1.SetToolTip(this.label6, "The number of processed GigaBytes before a save; 0 is off.");
@@ -627,7 +641,7 @@ namespace Elucidate
             0,
             0});
             this.numBlockSizeKB.Name = "numBlockSizeKB";
-            this.numBlockSizeKB.Size = new System.Drawing.Size(74, 22);
+            this.numBlockSizeKB.Size = new System.Drawing.Size(74, 29);
             this.numBlockSizeKB.TabIndex = 2;
             this.toolTip1.SetToolTip(this.numBlockSizeKB, "You could increase this value if you do not have enough RAM memory to run SnapRAI" +
         "D\r\nAs a rule of thumb, with 4GB or more memory use the default 256, with 2GB use" +
@@ -643,7 +657,7 @@ namespace Elucidate
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(7, 26);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 14);
+            this.label4.Size = new System.Drawing.Size(123, 22);
             this.label4.TabIndex = 1;
             this.label4.Text = "&Block Size KB:";
             this.toolTip1.SetToolTip(this.label4, "You could increase this value if you do not have enough RAM memory to run SnapRAI" +
@@ -738,7 +752,7 @@ namespace Elucidate
             this.configFileLocation.Location = new System.Drawing.Point(135, 35);
             this.configFileLocation.Name = "configFileLocation";
             this.helpProvider1.SetShowHelp(this.configFileLocation, true);
-            this.configFileLocation.Size = new System.Drawing.Size(544, 22);
+            this.configFileLocation.Size = new System.Drawing.Size(544, 29);
             this.configFileLocation.TabIndex = 4;
             this.configFileLocation.Text = "Stick some text in here for config";
             this.toolTip1.SetToolTip(this.configFileLocation, "Full path to the SnapRAID config file.");
@@ -756,7 +770,7 @@ namespace Elucidate
             this.snapRAIDFileLocation.Location = new System.Drawing.Point(135, 5);
             this.snapRAIDFileLocation.Name = "snapRAIDFileLocation";
             this.helpProvider1.SetShowHelp(this.snapRAIDFileLocation, true);
-            this.snapRAIDFileLocation.Size = new System.Drawing.Size(544, 22);
+            this.snapRAIDFileLocation.Size = new System.Drawing.Size(544, 29);
             this.snapRAIDFileLocation.TabIndex = 1;
             this.snapRAIDFileLocation.Text = "Stick some text in here";
             this.toolTip1.SetToolTip(this.snapRAIDFileLocation, "Full path to the SnapRAID application.");
@@ -828,21 +842,9 @@ namespace Elucidate
             // 
             this.helpProvider1.HelpNamespace = "https://github.com/Smurf-IV/Elucidatewikipage?title=Settings";
             // 
-            // driveSpace
-            // 
-            this.driveSpace.Dock = System.Windows.Forms.DockStyle.Right;
-            this.driveSpace.Location = new System.Drawing.Point(234, 18);
-            this.driveSpace.Margin = new System.Windows.Forms.Padding(0);
-            this.driveSpace.Name = "driveSpace";
-            this.driveSpace.ShowXAxisText = false;
-            this.driveSpace.ShowYAxisText = false;
-            this.driveSpace.Size = new System.Drawing.Size(300, 322);
-            this.driveSpace.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.driveSpace, "Shows the space in GBytes");
-            // 
             // Settings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(870, 710);
             this.Controls.Add(this.splitContainer1);

@@ -196,6 +196,7 @@ namespace Elucidate
             // e.g. "D:\snapraid-1.3-windows-x64\snapraid" -c "D:\snapraid-1.3-windows-x64\snapraid.conf" sync
             appPath = $"\"{Properties.Settings.Default.SnapRAIDFileLocation}\"";
             // Find the meanings @ http://snapraid.sourceforge.net/manual.html  6 Options
+            // status|smart|up|down|diff|sync|scrub|fix|check|list|dup|pool|devices|touch|rehash
             StringBuilder args = new StringBuilder(txtAddCommands.Text);
             args.Append(' ');
             if (Properties.Settings.Default.UseVerboseMode)

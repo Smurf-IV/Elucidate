@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -118,7 +119,6 @@ namespace Elucidate
                 {
                     Log.Instance.Debug(dr);
                     DriveInfo di = new DriveInfo(dr);
-
                     FillInDirectoryType(tvwRoot, di);
                 }
 
@@ -202,8 +202,22 @@ namespace Elucidate
         private void PerformSnapShotSourceAdd(TreeNode selected)
         {
             string newPath = GetSelectedNodesPath(selected);
-            // TODO: On Add check to make sure that the root (Or this) node have not already been covered.
+            string newDevice = Path.GetPathRoot(newPath);
             if (String.IsNullOrEmpty(newPath)) return;
+            if (!Directory.Exists(newPath))
+            {
+                Log.Instance.Warn($"Data source not added. Path does not exist. Attempted to add [{newPath}]");
+                return;
+            }
+            // check if device is already added by an existing entry; a device cannot be entered more than once
+            foreach (TreeNode node in snapShotSourcesTreeView.Nodes)
+            {
+                string nodeDevice = Path.GetPathRoot(node.FullPath);
+                if (newDevice != nodeDevice) continue;
+                Log.Instance.Warn($"Data source not added. The path is on a device for an existing path. Attempted to add [{newPath}] which is on the same device as the existing path [{node.FullPath}]");
+                MessageBoxExt.Show(this, $"The path is on a device for an existing path.\n\nExisting device path:\n{node.FullPath}", "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
             snapShotSourcesTreeView.Nodes.Add(new TreeNode(newPath, selected.ImageIndex, selected.ImageIndex));
             UnsavedChangesMade = true;
             driveSpace.StartProcessing((from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList());
@@ -249,7 +263,7 @@ namespace Elucidate
                 if (subDirs.Length == 0) return;
                 foreach (DirectoryInfo dirInfo in subDirs)
                 {
-                    // Resursive call for each subdirectory.
+                    // Recursive call for each subdirectory.
                     TreeNode tvwChild = new TreeNode
                     {
                         Text = dirInfo.Name,
@@ -339,6 +353,8 @@ namespace Elucidate
             {
                 SystemSounds.Beep.Play();
             }
+
+            ValidateData();
         }
 
         private void snapShotSourcesTreeView_DragOver(object sender, DragEventArgs e)
@@ -381,7 +397,7 @@ namespace Elucidate
             if (!File.Exists(snapRAIDFileLocation.Text))
             {
                 isValid = false;
-                errorProvider1.SetError(snapRAIDFileLocation, "Executeable Not found!");
+                errorProvider1.SetError(snapRAIDFileLocation, "Executeable not found!");
             }
             if (!File.Exists(configFileLocation.Text))
             {
@@ -402,6 +418,36 @@ namespace Elucidate
                 errorProvider1.SetIconPadding(snapShotSourcesTreeView, -20);
                 errorProvider1.SetError(snapShotSourcesTreeView, "No protected regions set!");
             }
+
+            List<string> deviceList = new List<string>();
+            foreach (TreeNode node in snapShotSourcesTreeView.Nodes)
+            {
+                node.BackColor = Color.Empty;
+
+                string errMsg = string.Empty;
+                
+                // test if device already exists in list; SnapRAID only permits one device entry per device
+                if (deviceList.Contains(Path.GetPathRoot(node.FullPath)))
+                {
+                    errMsg = $"{node.Index} A device may only appear once in the data source list!";
+                }
+                deviceList.Add(Path.GetPathRoot(node.FullPath));
+                
+                // test is path exists
+                if (!Directory.Exists(node.FullPath))
+                {
+                    errMsg = "Data source is inaccessible!";
+                }
+
+                if (string.IsNullOrEmpty(errMsg)) continue;
+                isValid = false;
+                node.BackColor = Color.Red;
+                errorProvider1.SetIconAlignment(snapShotSourcesTreeView, ErrorIconAlignment.TopLeft);
+                errorProvider1.SetIconPadding(snapShotSourcesTreeView, -20);
+                errorProvider1.SetIconAlignment(snapShotSourcesTreeView, ErrorIconAlignment.TopLeft);
+                errorProvider1.SetError(snapShotSourcesTreeView, errMsg);
+            }
+            
             return isValid;
         }
 
@@ -606,13 +652,13 @@ namespace Elucidate
                     UnsavedChangesMade = false;
 
                     // keep config backup - by day, otherwise include minute, otherwise include second
-                    var backupCconfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMdd}";
-                    if (File.Exists(backupCconfig))
-                        backupCconfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmm}";
-                    if (File.Exists(backupCconfig))
-                        backupCconfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmmss}";
+                    var backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMdd}";
+                    if (File.Exists(backupConfig))
+                        backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmm}";
+                    if (File.Exists(backupConfig))
+                        backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmmss}";
                     if (!File.Exists($"{configFileLocation.Text}.temp")) return;
-                    File.Copy($"{configFileLocation.Text}.temp", backupCconfig);
+                    File.Copy($"{configFileLocation.Text}.temp", backupConfig);
                     File.Delete($"{configFileLocation.Text}.temp");
                 }
             }

@@ -32,6 +32,7 @@ using System.IO;
 using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
+using Shared;
 
 namespace Elucidate
 {
@@ -67,6 +68,7 @@ namespace Elucidate
         private void Form1_Shown(object sender, EventArgs e)
         {
             VersionIndicator.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
             if (!Properties.Settings.Default.ConfigFileIsValid)
             {
                 settingsToolStripMenuItem_Click(sender, e);
@@ -75,7 +77,6 @@ namespace Elucidate
             {
                 runWithoutCaptureMenuItem.Checked = Properties.Settings.Default.RunWithoutCapture;
                 toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
-                EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
             }
         }
 

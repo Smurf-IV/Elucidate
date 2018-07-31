@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -120,7 +121,12 @@ namespace Elucidate.Tabs
                 {
                     return;
                 }
-                FindAndAddDisplaySizes(path);
+                if (!Directory.Exists(path))
+                {
+                    Log.Instance.Warn($"Directory path does not exist: {path}");
+                    continue;
+                }
+                CompileChartDataItemForPath(path);
             }
 
             AddDataToDisplay();
@@ -134,6 +140,7 @@ namespace Elucidate.Tabs
 
         private void ClearExpectedListMethodInvoker()
         {
+            ChartDataList.Clear();
             foreach (Series series in chart1.Series)
             {
                 series.Points.Clear();
@@ -148,7 +155,7 @@ namespace Elucidate.Tabs
         // Need to find 3 values, Total drive size, Root drive used, actual used by path
         // Need to be aware of UNC paths
         // Need to be aware of Junctions
-        private void FindAndAddDisplaySizes(string path)
+        private void CompileChartDataItemForPath(string path)
         {
             Util.FreeBytesAvailable(path, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
             var chartDataItem = new ChartDataItem
@@ -160,12 +167,7 @@ namespace Elucidate.Tabs
             };
             ChartDataList.Add(chartDataItem);
         }
-
-        private void AddDataToDisplay()
-        {
-            Invoke((MethodInvoker) AddDataToDisplayMethodInvoker);
-        }
-
+        
         private string GetLargestWholenumberSymbolOfChartData()
         {
             List<string> availableSymbols = new List<string> {"", "b", "B", "KB", "MB", "GB", "TB"};
@@ -183,6 +185,11 @@ namespace Elucidate.Tabs
             }
             Log.Instance.Debug($"GetLargestWholenumberSymbolOfChartData is {currentMaxSymbol}");
             return currentMaxSymbol;
+        }
+
+        private void AddDataToDisplay()
+        {
+            Invoke((MethodInvoker)AddDataToDisplayMethodInvoker);
         }
 
         private void AddDataToDisplayMethodInvoker()

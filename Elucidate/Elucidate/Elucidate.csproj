@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.7.31.188</AssemblyVersion>
+    <AssemblyVersion>18.7.31.266</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -334,6 +334,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="snapraid.conf.example" />
+    <None Include="Resources\errorprovidericon.gif" />
     <Content Include="wyDay.Controls\License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
