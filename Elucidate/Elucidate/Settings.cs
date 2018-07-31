@@ -579,8 +579,11 @@ namespace Elucidate
 
             try
             {
-                // backup current config
-                File.Copy(configFileLocation.Text, $"{configFileLocation.Text}.temp", overwrite: true);
+                // temp backup current config
+                if (File.Exists(configFileLocation.Text))
+                {
+                    File.Copy(configFileLocation.Text, $"{configFileLocation.Text}.temp", overwrite: true);
+                }
 
                 string writeResult;
                 if (!string.IsNullOrEmpty(writeResult = cfg.Write()))
@@ -608,6 +611,7 @@ namespace Elucidate
                         backupCconfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmm}";
                     if (File.Exists(backupCconfig))
                         backupCconfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmmss}";
+                    if (!File.Exists($"{configFileLocation.Text}.temp")) return;
                     File.Copy($"{configFileLocation.Text}.temp", backupCconfig);
                     File.Delete($"{configFileLocation.Text}.temp");
                 }
