@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
+using Elucidate.AppTabs;
 using Elucidate.Tabs;
 using Microsoft.Win32.TaskScheduler;
 using Shared;

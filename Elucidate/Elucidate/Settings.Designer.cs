@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Elucidate.Tabs;
+using Elucidate.AppTabs;
 
 namespace Elucidate
 {
-   partial class Settings
+    partial class Settings
    {
       /// <summary>
       /// Required designer variable.

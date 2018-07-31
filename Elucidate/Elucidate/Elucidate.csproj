@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.7.31.266</AssemblyVersion>
+    <AssemblyVersion>18.7.31.268</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -220,10 +220,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Shared\WaitCursor.cs" />
-    <Compile Include="Tabs\DriveSpaceDisplay.cs">
+    <Compile Include="AppTabs\DriveSpaceDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Tabs\DriveSpaceDisplay.Designer.cs">
+    <Compile Include="AppTabs\DriveSpaceDisplay.Designer.cs">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </Compile>
     <Compile Include="Recovery Wizard\RecoveryWizard.cs">
@@ -232,22 +232,22 @@
     <Compile Include="Recovery Wizard\RecoveryWizard.Designer.cs">
       <DependentUpon>RecoveryWizard.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\CapturedLogging.cs">
+    <Compile Include="AppTabs\CapturedLogging.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tabs\Common.cs">
+    <Compile Include="AppTabs\Common.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tabs\MiscTab.cs">
+    <Compile Include="AppTabs\MiscTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Tabs\MiscTab.Designer.cs">
+    <Compile Include="AppTabs\MiscTab.Designer.cs">
       <DependentUpon>MiscTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tabs\Recovery.cs">
+    <Compile Include="AppTabs\Recovery.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tabs\Scheduling.cs">
+    <Compile Include="AppTabs\Scheduling.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ToolStripCheckBoxMenuItem.cs">
@@ -288,7 +288,7 @@
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shared\MessageBoxExtForm.resx" />
-    <EmbeddedResource Include="Tabs\DriveSpaceDisplay.resx">
+    <EmbeddedResource Include="AppTabs\DriveSpaceDisplay.resx">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Elucidate.resx">
@@ -313,7 +313,7 @@
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tabs\MiscTab.resx">
+    <EmbeddedResource Include="AppTabs\MiscTab.resx">
       <DependentUpon>MiscTab.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
