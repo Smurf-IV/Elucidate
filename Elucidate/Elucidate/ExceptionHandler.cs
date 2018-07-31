@@ -22,5 +22,6 @@ namespace Elucidate
             reporter.Config.TakeScreenshot = false;  // attached if sending email
             reporter.Show(ex);
         }
+
     }
 }
