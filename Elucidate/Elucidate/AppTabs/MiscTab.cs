@@ -2,7 +2,7 @@
 using System.Text;
 using System.Windows.Forms;
 
-namespace Elucidate.Tabs
+namespace Elucidate.AppTabs
 {
    public partial class MiscTab : UserControl
    {
