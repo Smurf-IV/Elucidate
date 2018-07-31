@@ -67,6 +67,10 @@ namespace Elucidate
         private void Form1_Shown(object sender, EventArgs e)
         {
             VersionIndicator.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
+            {
+                Properties.Settings.Default.ConfigFileIsValid = false;
+            }
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
             if (!Properties.Settings.Default.ConfigFileIsValid)
             {
