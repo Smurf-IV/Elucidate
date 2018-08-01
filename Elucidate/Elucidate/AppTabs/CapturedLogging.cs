@@ -30,7 +30,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
+using Elucidate.Logging;
 
 namespace Elucidate
 {
@@ -49,18 +51,18 @@ namespace Elucidate
 
         private void DeleteContentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            textBox1.Clear();
+            textBoxLogging.Clear();
         }
 
         private void CopySelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataObject dto = new DataObject();
-            if (textBox1.SelectionLength <= 1)
+            if (textBoxLogging.SelectionLength <= 1)
             {
-                textBox1.SelectAll();
+                textBoxLogging.SelectAll();
             }
-            dto.SetText(textBox1.SelectedRtf, TextDataFormat.Rtf);
-            dto.SetText(textBox1.SelectedText, TextDataFormat.UnicodeText);
+            dto.SetText(textBoxLogging.SelectedRtf, TextDataFormat.Rtf);
+            dto.SetText(textBoxLogging.SelectedText, TextDataFormat.UnicodeText);
             Clipboard.Clear();
             Clipboard.SetDataObject(dto);
         }
@@ -79,59 +81,60 @@ namespace Elucidate
         {
             try
             {
-                if (!Logs.Any())
+                if (!LogQueue.Any())
                 {
+                    //Thread.Sleep(250);
                     return;
                 }
                 // Now lock in case the timer is overlapping !
                 lock (this)
                 {
-                    textBox1._Paint = false; // turn off flag to ignore WM_PAINT messages
-                    if (textBox1.Lines.Length > Properties.Settings.Default.MaxNumberOfRealTimeLines)
+                    textBoxLogging._Paint = false; // turn off flag to ignore WM_PAINT messages
+                    if (textBoxLogging.Lines.Length > Properties.Settings.Default.MaxNumberOfRealTimeLines)
                     {
                         //textBox1.SelectionStart = 0;
                         //textBox1.SelectionLength = textBox1.GetFirstCharIndexFromLine(Properties.Settings.Default.MaxNumberOfRealTimeLines - 10);
                         //textBox1.SelectedText = string.Empty;
                         // The above makes it beep as well !!
-                        textBox1.Clear();
+                        textBoxLogging.Clear();
                     }
                     //read out of the file until the EOF
-                    while (Logs.Any())
+                    while (LogQueue.Any())
                     {
-                        int textLength = textBox1.TextLength;
-                        textBox1.Select(textLength, 0);
-                        LogString log = Logs.Dequeue();
+                        int textLength = textBoxLogging.TextLength;
+                        textBoxLogging.Select(textLength, 0);
+                        LogString log = LogQueue.Dequeue();
                         switch (log.LevelUppercase)
                         {
                             case "FATAL":
-                                textBox1.SelectionColor = Color.DarkViolet;
+                                textBoxLogging.SelectionColor = Color.DarkViolet;
                                 break;
 
                             case "ERROR":
-                                textBox1.SelectionColor = Color.Red;
+                                textBoxLogging.SelectionColor = Color.Red;
                                 break;
 
                             case "WARN":
-                                textBox1.SelectionColor = Color.RoyalBlue;
+                                textBoxLogging.SelectionColor = Color.RoyalBlue;
                                 break;
 
                             case "INFO":
-                                textBox1.SelectionColor = Color.Black;
+                                textBoxLogging.SelectionColor = Color.Black;
                                 break;
 
                             case "DEBUG":
-                                textBox1.SelectionColor = Color.DarkGray;
+                                textBoxLogging.SelectionColor = Color.DarkGray;
                                 break;
 
                             case "TRACE":
-                                textBox1.SelectionColor = Color.DimGray;
+                                textBoxLogging.SelectionColor = Color.DimGray;
                                 break;
 
                             default:
                                 // Leave it as is
                                 break;
                         }
-                        textBox1.AppendText(log.Message + Environment.NewLine);
+                        textBoxLogging.AppendText(log.Message + Environment.NewLine);
                     }
                 }
             }
@@ -140,7 +143,7 @@ namespace Elucidate
                 // ignored
             }
 
-            textBox1._Paint = true; // restore flag so we can paint the control
+            textBoxLogging._Paint = true; // restore flag so we can paint the control
         }
 
         private class LogString
@@ -149,13 +152,13 @@ namespace Elucidate
             public string Message;
         };
 
-        private static readonly Queue<LogString> Logs = new Queue<LogString>();
+        private static readonly Queue<LogString> LogQueue = new Queue<LogString>();
 
         // ReSharper disable UnusedMember.Global
         // This is used by the logging to force all to the output window
         public static void LogMethod(string levelUppercase, string message)
         {
-            Logs.Enqueue(new LogString
+            LogQueue.Enqueue(new LogString
             {
                 LevelUppercase = levelUppercase,
                 Message = message

@@ -48,7 +48,6 @@ namespace Elucidate
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
         /// </summary>
         private readonly ManualResetEvent mreProcessExit = new ManualResetEvent(false);
-
         private readonly ManualResetEvent mreOutputDone = new ManualResetEvent(false);
         private readonly ManualResetEvent mreErrorDone = new ManualResetEvent(false);
         private ProcessPriorityClass requested = ProcessPriorityClass.Normal;
@@ -91,6 +90,7 @@ namespace Elucidate
                 mreOutputDone.Reset();
                 mreErrorDone.Reset();
                 string args = FormatSnapRaidCommandArgs(command, out string appPath);
+
                 if (runWithoutCaptureMenuItem.Checked)
                 {
                     Log.Instance.Warn("Running without Capture mode");
@@ -106,13 +106,13 @@ namespace Elucidate
                     {
                         FileName = "CMD.exe",
                         Arguments = $" /K \"{appPath} {args}\"",
-                        WorkingDirectory = @"C:\windows\System32",
+                        WorkingDirectory = @"C:\Windows\System32",
                         UseShellExecute = true,
                         WindowStyle = ProcessWindowStyle.Minimized,
                         ErrorDialog = true
                     };
                     Process process = Process.Start(startInfo);
-                    Log.Instance.Info("Process is running PID[{0}]", process.Id);
+                    if (process != null) Log.Instance.Info("Process is running PID[{0}]", process.Id);
                     return;
                 }
 
@@ -177,9 +177,11 @@ namespace Elucidate
                 {
                     case 0:
                         break;
-
                     case 1:
                         worker.ReportProgress(101, "Error");
+                        break;
+                    default:
+                        Log.Instance.Debug($"Unhandled ExitCode of {exitCode}");
                         break;
                 }
                 if (worker.CancellationPending)
@@ -358,7 +360,7 @@ namespace Elucidate
             actionWorker.RunWorkerAsync(command);
             UseWaitCursor = true;
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
-            toolStripProgressBar1.DisplayText = command + "- Starting";
+            toolStripProgressBar1.DisplayText = $"{command}- Starting";
             toolStripProgressBar1.State = ProgressBarState.Normal;
             toolStripProgressBar1.Style = ProgressBarStyle.Marquee;
             toolStripProgressBar1.Value = 0;
