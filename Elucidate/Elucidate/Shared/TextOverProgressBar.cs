@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using Elucidate.wyDay.Controls;
-using wyDay.Controls;
 
 // Stuff Resdharper comment here to prevent it trying to remove designer reflection methods
 // ReSharper disable MemberCanBePrivate.Global

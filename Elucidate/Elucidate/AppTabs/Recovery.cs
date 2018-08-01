@@ -35,7 +35,7 @@ using Elucidate.Shared;
 
 namespace Elucidate
 {
-    public sealed partial class Elucidate
+    public sealed partial class ElucidateForm
     {
         #region Recovery options pane
 

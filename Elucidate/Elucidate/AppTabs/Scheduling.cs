@@ -37,7 +37,7 @@ using Elucidate.wyDay.Controls;
 
 namespace Elucidate
 {
-    public partial class Elucidate
+    public partial class ElucidateForm
     {
         private const string TaskName = "SnapRAID Sync";
 

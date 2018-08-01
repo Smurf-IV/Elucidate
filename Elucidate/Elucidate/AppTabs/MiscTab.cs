@@ -12,8 +12,7 @@ namespace Elucidate.AppTabs
          InitializeComponent();
       }
 
-      public Elucidate Elucidate { private get; set; }
-
+      public ElucidateForm Elucidate { get; set; }
 
       public void EnableIfValid(bool enabled)
       {

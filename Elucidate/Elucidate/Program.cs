@@ -93,7 +93,7 @@ namespace Elucidate
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new Elucidate());
+                    Application.Run(new ElucidateForm());
                 }
                 else
                 {

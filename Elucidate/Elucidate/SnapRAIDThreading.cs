@@ -42,7 +42,7 @@ using NLog.Targets.Wrappers;
 
 namespace Elucidate
 {
-    public sealed partial class Elucidate
+    public sealed partial class ElucidateForm
     {
         /// <summary>
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program

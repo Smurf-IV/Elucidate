@@ -30,7 +30,7 @@ using System;
 
 namespace Elucidate
 {
-   public partial class Elucidate
+   public partial class ElucidateForm
    {
       private void EnableCommonButtons(bool enabled)
       {

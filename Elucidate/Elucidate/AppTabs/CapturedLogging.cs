@@ -34,7 +34,7 @@ using System.Windows.Forms;
 
 namespace Elucidate
 {
-    public partial class Elucidate
+    public partial class ElucidateForm
     {
         private void AddThreadingCallbacks()
         {
