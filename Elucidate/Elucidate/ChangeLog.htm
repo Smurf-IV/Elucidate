@@ -49,17 +49,15 @@
     <h3>Done (Newest First):</h3>
     <table border="1" width="100%">
         <tr>
-            <td class="auto-style1">&nbsp;</td>
+            <td class="auto-style1">2018-08-01</td>
             <td>- Fix saving of initial config when no config file exists<br />
                 - Fix coverage chart repeatedly adding sources<br />
                 - Add check that data sources do not contain duplicate devices; SnapRAID does not permit more than one source per device<br />
                 - Check that config data sources in the config validation; data sources that cannot be accessed will cause a sync to fail<br />
                 - Change app start behaviour to open the config dialog if no config file exists<br />
-                <br />
-                - Add &quot;sync --force-full&quot; button<br />
-                - Add button to scrub only bad blocks; &quot;use -p bad to scrub only blocks marked as bad&quot;<br />
-                <br />
-            </td>
+                - Move all command buttons to a single tab<br />
+                - Move log to the command tab<br />
+                - Change NLog from async to AsyncWrapper since &#39;async&#39; will discard log data if overloaded</td>
         </tr>
         <tr>
             <td class="auto-style1">2018-07-30</td>

@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.1.463</AssemblyVersion>
+    <AssemblyVersion>18.8.1.496</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -238,12 +238,6 @@
     <Compile Include="Common.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AppTabs\MiscTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="AppTabs\MiscTab.Designer.cs">
-      <DependentUpon>MiscTab.cs</DependentUpon>
-    </Compile>
     <Compile Include="AppTabs\Recovery.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -312,9 +306,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AppTabs\MiscTab.resx">
-      <DependentUpon>MiscTab.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
