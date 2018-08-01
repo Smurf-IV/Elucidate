@@ -16,10 +16,6 @@ namespace Elucidate.AppTabs
 
       public void EnableIfValid(bool enabled)
       {
-         btnScrub.Enabled = enabled;
-         btnFix.Enabled = enabled;
-         btnDupFinder.Enabled = enabled;
-         btnUndelete.Enabled = enabled;
       }
 
       private void btnScrub_Click(object sender, EventArgs e)

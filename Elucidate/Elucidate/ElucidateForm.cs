@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Media;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Elucidate
@@ -58,6 +59,10 @@ namespace Elucidate
             btnSync.Enabled = enabled;
             btnCheck.Enabled = enabled;
             btnStatus.Enabled = enabled;
+            btnScrub.Enabled = enabled;
+            btnFix.Enabled = enabled;
+            btnDupFinder.Enabled = enabled;
+            btnUndelete.Enabled = enabled;
         }
 
         // ReSharper disable once InconsistentNaming
@@ -74,6 +79,7 @@ namespace Elucidate
 
         private void Form1_Shown(object sender, EventArgs e)
         {
+            txtAddCommands.Width = txtAddCommands.Parent.Width;
             VersionIndicator.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
             {
@@ -205,7 +211,28 @@ namespace Elucidate
 
         private void btnScrub2_Click(object sender, EventArgs e)
         {
-            StartSnapRaidProcess("Scrub");
+            StringBuilder command = new StringBuilder(@"scrub ");
+            command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-p100 -o0");
+            StartSnapRaidProcess(command.ToString());
+        }
+
+        private void btnCmdFix_Click(object sender, EventArgs e)
+        {
+            StringBuilder command = new StringBuilder(@"fix ");
+            command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-e");
+            StartSnapRaidProcess(command.ToString());
+        }
+
+        private void btnCmdDupFinder_Click(object sender, EventArgs e)
+        {
+            StartSnapRaidProcess(@"dup");
+        }
+
+        private void btnCmdUndelete_Click(object sender, EventArgs e)
+        {
+            StringBuilder command = new StringBuilder(@"fix ");
+            command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-m");
+            StartSnapRaidProcess(command.ToString());
         }
     }
 }
