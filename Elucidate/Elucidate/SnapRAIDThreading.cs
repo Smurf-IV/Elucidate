@@ -353,14 +353,14 @@ namespace Elucidate
         internal void StartSnapRaidProcess(string command)
         {
             EnableIfValid(false);
-            tabControl1.SelectTab(realTimeOutputTabPage);
+            //tabControl1.SelectTab(realTimeOutputTabPage);
             comboBox1.Enabled = true;
             comboBox1.Text = @"Running";
             requested = ProcessPriorityClass.Normal;
             actionWorker.RunWorkerAsync(command);
             UseWaitCursor = true;
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
-            toolStripProgressBar1.DisplayText = $"{command}- Starting";
+            toolStripProgressBar1.DisplayText = $"{command} - Starting";
             toolStripProgressBar1.State = ProgressBarState.Normal;
             toolStripProgressBar1.Style = ProgressBarStyle.Marquee;
             toolStripProgressBar1.Value = 0;

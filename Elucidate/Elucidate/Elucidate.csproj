@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.1.291</AssemblyVersion>
+    <AssemblyVersion>18.8.1.463</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -256,11 +256,11 @@
     <Compile Include="Util.cs" />
     <Compile Include="WindowLocation.cs" />
     <Compile Include="ConfigFileHelper.cs" />
-    <Compile Include="Elucidate.cs">
+    <Compile Include="ElucidateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Elucidate.Designer.cs">
-      <DependentUpon>Elucidate.cs</DependentUpon>
+    <Compile Include="ElucidateForm.Designer.cs">
+      <DependentUpon>ElucidateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LogFileLocation.cs">
       <SubType>Form</SubType>
@@ -291,8 +291,8 @@
     <EmbeddedResource Include="AppTabs\DriveSpaceDisplay.resx">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elucidate.resx">
-      <DependentUpon>Elucidate.cs</DependentUpon>
+    <EmbeddedResource Include="ElucidateForm.resx">
+      <DependentUpon>ElucidateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogFileLocation.resx">
       <DependentUpon>LogFileLocation.cs</DependentUpon>
@@ -373,7 +373,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseUniversalClock="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" BuildVersion_UseGlobalSettings="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UseUniversalClock="False" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
