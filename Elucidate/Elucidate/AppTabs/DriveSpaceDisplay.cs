@@ -221,7 +221,6 @@ namespace Elucidate.AppTabs
                 {
                     foreach (double yValue in dp.YValues)
                     {
-                        Log.Instance.Info(yValue);
                         if (!(yValue > 0))
                         {
                             dp.IsValueShownAsLabel = false;

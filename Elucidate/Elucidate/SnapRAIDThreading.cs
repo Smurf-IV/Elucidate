@@ -163,7 +163,14 @@ namespace Elucidate
                     }
 
                     exitCode = process.ExitCode;
-                    Log.Instance.Info("ExitCode=[{0}]", exitCode);
+                    if (exitCode == 0)
+                    {
+                        Log.Instance.Info("ExitCode=[{0}]", exitCode);
+                    }
+                    else
+                    {
+                        Log.Instance.Error("ExitCode=[{0}]", exitCode);
+                    }
                     process.Close();
                 }
                 switch (exitCode)
@@ -187,7 +194,7 @@ namespace Elucidate
             }
             finally
             {
-                Log.Instance.Info("We are exiting the status thread");
+                Log.Instance.Debug("We are exiting the status thread");
             }
         }
 
@@ -216,19 +223,19 @@ namespace Elucidate
             return args.ToString();
         }
 
-        private string lastError;
+        private string _lastError;
 
         private void ReadStandardError(ThreadObject threadObject)
         {
             try
             {
-                Log.Instance.Warn("Start Verbose handler");
+                Log.Instance.Info("Start Verbose handler");
                 string buf;
                 do
                 {
                     if (!string.IsNullOrEmpty(buf = threadObject.cmdProcess.StandardError.ReadLine()))
                     {
-                        lastError = buf;
+                        _lastError = buf;
                         Log.Instance.Warn("Verbose[{0}]", buf);
                     }
                     else
@@ -250,7 +257,7 @@ namespace Elucidate
         {
             try
             {
-                Log.Instance.Info("Start StdOut handler");
+                Log.Instance.Debug("Start StdOut handler");
                 string buf;
                 do
                 {
@@ -281,7 +288,7 @@ namespace Elucidate
 
         private void Exited(object o, EventArgs e)
         {
-            Log.Instance.Info("Exited.");
+            Log.Instance.Debug("Exited.");
             Thread.Sleep(1000);  // When the process has exited, the buffers are _still_ flushing
             mreProcessExit.Set();
         }
@@ -300,7 +307,7 @@ namespace Elucidate
             else if (e.ProgressPercentage == 101)
             {
                 toolStripProgressBar1.State = ProgressBarState.Error;
-                toolStripProgressBar1.DisplayText = lastError;
+                toolStripProgressBar1.DisplayText = _lastError;
                 toolStripProgressBar1.Value = 100;
             }
         }

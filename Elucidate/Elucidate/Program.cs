@@ -60,7 +60,7 @@ namespace Elucidate
             }
             try
             {
-                Log.Instance.Info("=====================================================================");
+                //Log.Instance.Info("=====================================================================");
                 Log.Instance.Info("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
                 CheckAndRunSingleApp();
             }
@@ -71,8 +71,8 @@ namespace Elucidate
             }
             finally
             {
-                Log.Instance.Info("File Closing");
-                Log.Instance.Info("=====================================================================");
+                Log.Instance.Debug("File Closing");
+                //Log.Instance.Info("=====================================================================");
                 // shutdown log
                 Log.Shutdown(); // Flush and close down internal threads and timers
             }
