@@ -5,7 +5,8 @@ namespace Elucidate.Logging
     internal static class Log
     {
         public static Logger Instance { get; private set; }
-        private enum LogLevels
+
+        internal enum LogLevels
         {
             Trace,
             Debug,
@@ -20,7 +21,7 @@ namespace Elucidate.Logging
             LogManager.ReconfigExistingLoggers();
             Instance = LogManager.GetCurrentClassLogger();
         }
-        private static void SetLogLevel(LogLevels logLevel, bool enable)
+        public static void SetLogLevel(LogLevels logLevel, bool enable)
         {
             LogLevel targetLogLevel;
             switch (logLevel)

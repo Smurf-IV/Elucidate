@@ -172,5 +172,17 @@ namespace Elucidate.Properties {
                 this["Theme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DebugLoggingEnabled {
+            get {
+                return ((bool)(this["DebugLoggingEnabled"]));
+            }
+            set {
+                this["DebugLoggingEnabled"] = value;
+            }
+        }
     }
 }

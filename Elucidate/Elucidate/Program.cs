@@ -46,6 +46,12 @@ namespace Elucidate
             try
             {
                 AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
+#if !DEBUG
+                if (!Properties.Settings.Default.DebugLoggingEnabled)
+                {
+                    Log.SetLogLevel(Log.LogLevels.Debug, true);
+                }
+#endif
             }
             catch (Exception ex)
             {
@@ -61,7 +67,7 @@ namespace Elucidate
             try
             {
                 //Log.Instance.Info("=====================================================================");
-                Log.Instance.Info("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
+                Log.Instance.Info($"File Re-opened: Ver :{Assembly.GetExecutingAssembly().GetName().Version}");
                 CheckAndRunSingleApp();
             }
             catch (Exception ex)
@@ -91,7 +97,7 @@ namespace Elucidate
                 }
                 else
                 {
-                    MessageBox.Show($"{mutexName} is already running");
+                    MessageBox.Show($@"{mutexName} is already running");
                 }
             }
         }
