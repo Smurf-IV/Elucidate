@@ -52,6 +52,14 @@ namespace Elucidate
             AddThreadingCallbacks();
         }
 
+        private void EnableCommonButtons(bool enabled)
+        {
+            btnDiff.Enabled = enabled;
+            btnSync.Enabled = enabled;
+            btnCheck.Enabled = enabled;
+            btnStatus.Enabled = enabled;
+        }
+
         // ReSharper disable once InconsistentNaming
         private const int CS_DROPSHADOW = 0x20000;
         protected override CreateParams CreateParams
@@ -175,5 +183,29 @@ namespace Elucidate
 
         #endregion Menu Handlers
 
+        private void btnStatus_Click(object sender, EventArgs e)
+        {
+            StartSnapRaidProcess("Status");
+        }
+
+        private void btnDiff_Click(object sender, EventArgs e)
+        {
+            StartSnapRaidProcess("Diff");
+        }
+
+        private void btnCheck_Click(object sender, EventArgs e)
+        {
+            StartSnapRaidProcess("Check");
+        }
+
+        private void btnSync_Click(object sender, EventArgs e)
+        {
+            StartSnapRaidProcess("Sync");
+        }
+
+        private void btnScrub2_Click(object sender, EventArgs e)
+        {
+            StartSnapRaidProcess("Scrub");
+        }
     }
 }

@@ -32,33 +32,6 @@ namespace Elucidate
 {
    public partial class ElucidateForm
    {
-      private void EnableCommonButtons(bool enabled)
-      {
-         btnDiff.Enabled = enabled;
-         btnSync.Enabled = enabled;
-         btnCheck.Enabled = enabled;
-         btnStatus.Enabled = enabled;
-      }
-
-      private void btnDiff_Click(object sender, EventArgs e)
-      {
-         StartSnapRaidProcess("Diff");
-      }
-
-      private void btnSync_Click(object sender, EventArgs e)
-      {
-         StartSnapRaidProcess("Sync");
-      }
-
-      private void btnCheck_Click(object sender, EventArgs e)
-      {
-         StartSnapRaidProcess("Check");
-      }
-
-      private void btnStatus_Click(object sender, EventArgs e)
-      {
-         StartSnapRaidProcess("Status");
-      }
 
    }
 }

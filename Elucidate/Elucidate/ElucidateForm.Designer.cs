@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using Elucidate.AppTabs;
 using Elucidate.Shared;
@@ -61,15 +62,17 @@ namespace Elucidate
             this.btnRemoveOutput = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.txtAddCommands = new System.Windows.Forms.TextBox();
+            this.btnStatus = new Elucidate.Shared.CommandLinkButton();
+            this.btnDiff = new Elucidate.Shared.CommandLinkButton();
             this.textBox1 = new Elucidate.Shared.FlickerFreeRichEditTextBox();
             this.menuRealTime = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteContentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copySelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.driveSpace = new Elucidate.AppTabs.DriveSpaceDisplay();
-            this.btnDiff = new Elucidate.Shared.CommandLinkButton();
-            this.btnStatus = new Elucidate.Shared.CommandLinkButton();
+            this.btnScrub2 = new Elucidate.Shared.CommandLinkButton();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.StandardOperations = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnCheck = new Elucidate.Shared.CommandLinkButton();
             this.btnSync = new Elucidate.Shared.CommandLinkButton();
@@ -86,6 +89,7 @@ namespace Elucidate
             this.menuRealTime.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.StandardOperations.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.realTimeOutputTabPage.SuspendLayout();
             this.miscTabPage.SuspendLayout();
@@ -108,7 +112,7 @@ namespace Elucidate
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(724, 32);
+            this.menuStrip1.Size = new System.Drawing.Size(878, 32);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -194,11 +198,11 @@ namespace Elucidate
             this.statusStrip1.Controls.Add(this.label3);
             this.statusStrip1.Controls.Add(this.toolStripStatusLabel1);
             this.statusStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 485);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 518);
             this.statusStrip1.Margin = new System.Windows.Forms.Padding(0);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(3);
-            this.statusStrip1.Size = new System.Drawing.Size(724, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(878, 26);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -213,7 +217,7 @@ namespace Elucidate
             this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.ShowInTaskbar = true;
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(376, 20);
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(530, 20);
             this.toolStripProgressBar1.Step = 3;
             this.toolStripProgressBar1.TabIndex = 1;
             this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
@@ -366,7 +370,7 @@ namespace Elucidate
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 404);
+            this.label2.Location = new System.Drawing.Point(18, -34);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(277, 22);
             this.label2.TabIndex = 4;
@@ -383,11 +387,67 @@ namespace Elucidate
             this.txtAddCommands.Margin = new System.Windows.Forms.Padding(1);
             this.txtAddCommands.MaxLength = 128;
             this.txtAddCommands.Name = "txtAddCommands";
-            this.txtAddCommands.Size = new System.Drawing.Size(501, 22);
+            this.txtAddCommands.Size = new System.Drawing.Size(620, 22);
             this.txtAddCommands.TabIndex = 5;
             this.toolTip1.SetToolTip(this.txtAddCommands, "Example of commands:\r\n   -a,   to only check file hashes\r\n   -E, --force-empty\r\n " +
         "  -d,  to filter by disk NAME (e.g. d0)");
             this.txtAddCommands.WordWrap = false;
+            // 
+            // btnStatus
+            // 
+            this.btnStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStatus.ButtonDepress = ((sbyte)(2));
+            this.btnStatus.Enabled = false;
+            this.btnStatus.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.btnStatus.HighlightFillAlpha = ((byte)(200));
+            this.btnStatus.HighlightFillAlphaMouse = ((byte)(100));
+            this.btnStatus.HighlightFillAlphaNormal = ((byte)(50));
+            this.btnStatus.HighlightWidth = 2F;
+            this.btnStatus.Image = global::Elucidate.Properties.Resources.camera_warning_48;
+            this.btnStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnStatus.ImageMargin = 8F;
+            this.btnStatus.Location = new System.Drawing.Point(3, 73);
+            this.btnStatus.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnStatus.Name = "btnStatus";
+            this.btnStatus.Rounding = 14F;
+            this.btnStatus.Size = new System.Drawing.Size(300, 64);
+            this.btnStatus.Subscript = "    A summary of the state of the disk\r\n    array, upto the last sync time.";
+            this.btnStatus.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStatus.TabIndex = 7;
+            this.btnStatus.Text = "S&tatus";
+            this.btnStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.btnStatus, resources.GetString("btnStatus.ToolTip"));
+            this.btnStatus.UseVisualStyleBackColor = true;
+            this.btnStatus.Click += new System.EventHandler(this.btnStatus_Click);
+            // 
+            // btnDiff
+            // 
+            this.btnDiff.ButtonDepress = ((sbyte)(2));
+            this.btnDiff.Enabled = false;
+            this.btnDiff.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnDiff.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.btnDiff.HighlightFillAlpha = ((byte)(200));
+            this.btnDiff.HighlightFillAlphaMouse = ((byte)(100));
+            this.btnDiff.HighlightFillAlphaNormal = ((byte)(50));
+            this.btnDiff.HighlightWidth = 2F;
+            this.btnDiff.Image = global::Elucidate.Properties.Resources.cam_48;
+            this.btnDiff.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDiff.ImageMargin = 8F;
+            this.btnDiff.Location = new System.Drawing.Point(3, 3);
+            this.btnDiff.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnDiff.Name = "btnDiff";
+            this.btnDiff.Rounding = 14F;
+            this.btnDiff.Size = new System.Drawing.Size(300, 64);
+            this.btnDiff.Subscript = "    Lists all the files have been modified\r\n    since the last \"sync\" command.";
+            this.btnDiff.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDiff.TabIndex = 3;
+            this.btnDiff.Text = "&Differences";
+            this.btnDiff.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.btnDiff, "Lists all the files modified since the last \"sync\" command that need to recompute" +
+        " their redundancy data.");
+            this.btnDiff.UseVisualStyleBackColor = true;
+            this.btnDiff.Click += new System.EventHandler(this.btnDiff_Click);
             // 
             // textBox1
             // 
@@ -403,7 +463,7 @@ namespace Elucidate
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ShortcutsEnabled = false;
-            this.textBox1.Size = new System.Drawing.Size(714, 416);
+            this.textBox1.Size = new System.Drawing.Size(840, 416);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "";
             this.toolTip1.SetToolTip(this.textBox1, "Current output going into the log file. \r\nSelect and use [Ctrl+C] or [Ctrl+Insert" +
@@ -444,65 +504,37 @@ namespace Elucidate
             this.driveSpace.Location = new System.Drawing.Point(3, 3);
             this.driveSpace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.driveSpace.Name = "driveSpace";
-            this.driveSpace.Size = new System.Drawing.Size(710, 412);
+            this.driveSpace.Size = new System.Drawing.Size(836, 412);
             this.driveSpace.TabIndex = 0;
             this.toolTip1.SetToolTip(this.driveSpace, "Not real time, only updates when shown.");
             // 
-            // btnDiff
+            // btnScrub2
             // 
-            this.btnDiff.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDiff.ButtonDepress = ((sbyte)(2));
-            this.btnDiff.Enabled = false;
-            this.btnDiff.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnDiff.HighlightColor = System.Drawing.SystemColors.Highlight;
-            this.btnDiff.HighlightFillAlpha = ((byte)(200));
-            this.btnDiff.HighlightFillAlphaMouse = ((byte)(100));
-            this.btnDiff.HighlightFillAlphaNormal = ((byte)(50));
-            this.btnDiff.HighlightWidth = 2F;
-            this.btnDiff.Image = global::Elucidate.Properties.Resources.cam_48;
-            this.btnDiff.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDiff.ImageMargin = 8F;
-            this.btnDiff.Location = new System.Drawing.Point(7, 19);
-            this.btnDiff.Name = "btnDiff";
-            this.btnDiff.Rounding = 14F;
-            this.btnDiff.Size = new System.Drawing.Size(700, 74);
-            this.btnDiff.Subscript = "    Lists all the files have been modified since the last \"sync\" command.";
-            this.btnDiff.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDiff.TabIndex = 3;
-            this.btnDiff.Text = "&Differences";
-            this.btnDiff.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.toolTip1.SetToolTip(this.btnDiff, "Lists all the files modified since the last \"sync\" command that need to recompute" +
+            this.btnScrub2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnScrub2.ButtonDepress = ((sbyte)(2));
+            this.btnScrub2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnScrub2.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.btnScrub2.HighlightFillAlpha = ((byte)(200));
+            this.btnScrub2.HighlightFillAlphaMouse = ((byte)(100));
+            this.btnScrub2.HighlightFillAlphaNormal = ((byte)(50));
+            this.btnScrub2.HighlightWidth = 2F;
+            this.btnScrub2.Image = global::Elucidate.Properties.Resources.cam_48;
+            this.btnScrub2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnScrub2.ImageMargin = 8F;
+            this.btnScrub2.Location = new System.Drawing.Point(309, 3);
+            this.btnScrub2.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnScrub2.Name = "btnScrub2";
+            this.btnScrub2.Rounding = 14F;
+            this.btnScrub2.Size = new System.Drawing.Size(300, 64);
+            this.btnScrub2.Subscript = "    Lists all the files have been modified\r\n    since the last \"sync\" command.";
+            this.btnScrub2.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnScrub2.TabIndex = 8;
+            this.btnScrub2.Text = "&Scrub2";
+            this.btnScrub2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.toolTip1.SetToolTip(this.btnScrub2, "Lists all the files modified since the last \"sync\" command that need to recompute" +
         " their redundancy data.");
-            this.btnDiff.UseVisualStyleBackColor = true;
-            this.btnDiff.Click += new System.EventHandler(this.btnDiff_Click);
-            // 
-            // btnStatus
-            // 
-            this.btnStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStatus.ButtonDepress = ((sbyte)(2));
-            this.btnStatus.Enabled = false;
-            this.btnStatus.HighlightColor = System.Drawing.SystemColors.Highlight;
-            this.btnStatus.HighlightFillAlpha = ((byte)(200));
-            this.btnStatus.HighlightFillAlphaMouse = ((byte)(100));
-            this.btnStatus.HighlightFillAlphaNormal = ((byte)(50));
-            this.btnStatus.HighlightWidth = 2F;
-            this.btnStatus.Image = global::Elucidate.Properties.Resources.camera_warning_48;
-            this.btnStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnStatus.ImageMargin = 8F;
-            this.btnStatus.Location = new System.Drawing.Point(7, 284);
-            this.btnStatus.Name = "btnStatus";
-            this.btnStatus.Rounding = 14F;
-            this.btnStatus.Size = new System.Drawing.Size(700, 74);
-            this.btnStatus.Subscript = "    A summary of the state of the disk array, upto the last sync time.";
-            this.btnStatus.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStatus.TabIndex = 7;
-            this.btnStatus.Text = "S&tatus";
-            this.btnStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.toolTip1.SetToolTip(this.btnStatus, resources.GetString("btnStatus.ToolTip"));
-            this.btnStatus.UseVisualStyleBackColor = true;
-            this.btnStatus.Click += new System.EventHandler(this.btnStatus_Click);
+            this.btnScrub2.UseVisualStyleBackColor = true;
+            this.btnScrub2.Click += new System.EventHandler(this.btnScrub2_Click);
             // 
             // tabControl1
             // 
@@ -519,7 +551,7 @@ namespace Elucidate
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(0, 0);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(724, 453);
+            this.tabControl1.Size = new System.Drawing.Size(878, 486);
             this.tabControl1.TabIndex = 4;
             this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             this.tabControl1.Deselected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Deselected);
@@ -528,18 +560,29 @@ namespace Elucidate
             // 
             this.StandardOperations.BackColor = System.Drawing.SystemColors.Control;
             this.StandardOperations.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.StandardOperations.Controls.Add(this.btnStatus);
+            this.StandardOperations.Controls.Add(this.flowLayoutPanel1);
             this.StandardOperations.Controls.Add(this.panel1);
             this.StandardOperations.Controls.Add(this.label2);
-            this.StandardOperations.Controls.Add(this.btnDiff);
-            this.StandardOperations.Controls.Add(this.btnCheck);
-            this.StandardOperations.Controls.Add(this.btnSync);
             this.StandardOperations.Location = new System.Drawing.Point(4, 31);
             this.StandardOperations.Margin = new System.Windows.Forms.Padding(0);
             this.StandardOperations.Name = "StandardOperations";
-            this.StandardOperations.Size = new System.Drawing.Size(716, 418);
+            this.StandardOperations.Size = new System.Drawing.Size(870, 451);
             this.StandardOperations.TabIndex = 0;
             this.StandardOperations.Text = "  Common SnapRaid  ";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel1.Controls.Add(this.btnDiff);
+            this.flowLayoutPanel1.Controls.Add(this.btnScrub2);
+            this.flowLayoutPanel1.Controls.Add(this.btnStatus);
+            this.flowLayoutPanel1.Controls.Add(this.btnSync);
+            this.flowLayoutPanel1.Controls.Add(this.btnCheck);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(855, 269);
+            this.flowLayoutPanel1.TabIndex = 9;
             // 
             // panel1
             // 
@@ -547,10 +590,10 @@ namespace Elucidate
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.Highlight;
             this.panel1.Controls.Add(this.txtAddCommands);
-            this.panel1.Location = new System.Drawing.Point(207, 401);
+            this.panel1.Location = new System.Drawing.Point(207, -37);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(2);
-            this.panel1.Size = new System.Drawing.Size(505, 19);
+            this.panel1.Size = new System.Drawing.Size(624, 19);
             this.panel1.TabIndex = 6;
             // 
             // btnCheck
@@ -567,10 +610,11 @@ namespace Elucidate
             this.btnCheck.Image = global::Elucidate.Properties.Resources.camera_warning_48;
             this.btnCheck.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCheck.ImageMargin = 8F;
-            this.btnCheck.Location = new System.Drawing.Point(7, 197);
+            this.btnCheck.Location = new System.Drawing.Point(3, 143);
+            this.btnCheck.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnCheck.Name = "btnCheck";
             this.btnCheck.Rounding = 14F;
-            this.btnCheck.Size = new System.Drawing.Size(700, 74);
+            this.btnCheck.Size = new System.Drawing.Size(300, 64);
             this.btnCheck.Subscript = "    Run a check over the whole snapshot to confirm it\'s integrity. (use -a for ha" +
     "sh only)";
             this.btnCheck.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -595,10 +639,11 @@ namespace Elucidate
             this.btnSync.Image = global::Elucidate.Properties.Resources.camera_add_48;
             this.btnSync.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSync.ImageMargin = 8F;
-            this.btnSync.Location = new System.Drawing.Point(7, 108);
+            this.btnSync.Location = new System.Drawing.Point(309, 73);
+            this.btnSync.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnSync.Name = "btnSync";
             this.btnSync.Rounding = 14F;
-            this.btnSync.Size = new System.Drawing.Size(700, 74);
+            this.btnSync.Size = new System.Drawing.Size(300, 64);
             this.btnSync.Subscript = "    Synchronise with any changes that may have occurred since the last run.";
             this.btnSync.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSync.TabIndex = 1;
@@ -615,7 +660,7 @@ namespace Elucidate
             this.realTimeOutputTabPage.Location = new System.Drawing.Point(4, 31);
             this.realTimeOutputTabPage.Margin = new System.Windows.Forms.Padding(0);
             this.realTimeOutputTabPage.Name = "realTimeOutputTabPage";
-            this.realTimeOutputTabPage.Size = new System.Drawing.Size(716, 418);
+            this.realTimeOutputTabPage.Size = new System.Drawing.Size(842, 418);
             this.realTimeOutputTabPage.TabIndex = 2;
             this.realTimeOutputTabPage.Text = "  Captured Logging  ";
             // 
@@ -627,7 +672,7 @@ namespace Elucidate
             this.miscTabPage.Location = new System.Drawing.Point(4, 31);
             this.miscTabPage.Name = "miscTabPage";
             this.miscTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.miscTabPage.Size = new System.Drawing.Size(716, 418);
+            this.miscTabPage.Size = new System.Drawing.Size(870, 451);
             this.miscTabPage.TabIndex = 5;
             this.miscTabPage.Text = "   Misc Commands   ";
             // 
@@ -639,7 +684,7 @@ namespace Elucidate
             this.miscTabCtrl.Location = new System.Drawing.Point(3, 3);
             this.miscTabCtrl.Name = "miscTabCtrl";
             this.miscTabCtrl.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.miscTabCtrl.Size = new System.Drawing.Size(708, 410);
+            this.miscTabCtrl.Size = new System.Drawing.Size(862, 443);
             this.miscTabCtrl.TabIndex = 0;
             // 
             // SchedulingPage
@@ -652,7 +697,7 @@ namespace Elucidate
             this.SchedulingPage.Location = new System.Drawing.Point(4, 31);
             this.SchedulingPage.Name = "SchedulingPage";
             this.SchedulingPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SchedulingPage.Size = new System.Drawing.Size(716, 418);
+            this.SchedulingPage.Size = new System.Drawing.Size(842, 418);
             this.SchedulingPage.TabIndex = 3;
             this.SchedulingPage.Text = "  Simple Scheduling  ";
             this.SchedulingPage.UseVisualStyleBackColor = true;
@@ -668,7 +713,7 @@ namespace Elucidate
             this.RecoveryOperations.Location = new System.Drawing.Point(4, 31);
             this.RecoveryOperations.Margin = new System.Windows.Forms.Padding(0);
             this.RecoveryOperations.Name = "RecoveryOperations";
-            this.RecoveryOperations.Size = new System.Drawing.Size(716, 418);
+            this.RecoveryOperations.Size = new System.Drawing.Size(842, 418);
             this.RecoveryOperations.TabIndex = 1;
             this.RecoveryOperations.Text = "  Recovery Help  ";
             // 
@@ -688,7 +733,7 @@ namespace Elucidate
             this.coveragePage.Location = new System.Drawing.Point(4, 31);
             this.coveragePage.Name = "coveragePage";
             this.coveragePage.Padding = new System.Windows.Forms.Padding(3);
-            this.coveragePage.Size = new System.Drawing.Size(716, 418);
+            this.coveragePage.Size = new System.Drawing.Size(842, 418);
             this.coveragePage.TabIndex = 4;
             this.coveragePage.Text = "  Coverage  ";
             this.coveragePage.UseVisualStyleBackColor = true;
@@ -702,7 +747,7 @@ namespace Elucidate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 22F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(724, 511);
+            this.ClientSize = new System.Drawing.Size(878, 544);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -711,7 +756,7 @@ namespace Elucidate
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(690, 550);
+            this.MinimumSize = new System.Drawing.Size(675, 600);
             this.Name = "ElucidateForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Elucidate: A SnapRAID Command Line Driver";
@@ -726,6 +771,7 @@ namespace Elucidate
             this.tabControl1.ResumeLayout(false);
             this.StandardOperations.ResumeLayout(false);
             this.StandardOperations.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.realTimeOutputTabPage.ResumeLayout(false);
@@ -787,7 +833,8 @@ namespace Elucidate
       private Label spacer;
       private Label label3;
       private MiscTab miscTabCtrl;
-
-   }
+        private CommandLinkButton btnScrub2;
+        private FlowLayoutPanel flowLayoutPanel1;
+    }
 }
 
