@@ -90,6 +90,7 @@ namespace Elucidate
             snapRAIDFileLocation.Text = Properties.Settings.Default.SnapRAIDFileLocation;
             configFileLocation.Text = Properties.Settings.Default.ConfigFileLocation;
             StartTree();
+            Properties.Settings.Default.ConfigFileIsValid = ValidateData();
             UnsavedChangesMade = false;
         }
 
