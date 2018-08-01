@@ -64,6 +64,7 @@ namespace Elucidate
             this.copySelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.StandardOperations = new System.Windows.Forms.TabPage();
+            this.logPanel = new System.Windows.Forms.Panel();
             this.addCommandPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.commandPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.SchedulingPage = new System.Windows.Forms.TabPage();
@@ -72,6 +73,7 @@ namespace Elucidate
             this.coveragePage = new System.Windows.Forms.TabPage();
             this.miscTabPage = new System.Windows.Forms.TabPage();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.textBoxLogging1 = new Elucidate.Shared.FlickerFreeRichEditTextBox();
             this.btnDiff = new Elucidate.Shared.CommandLinkButton();
             this.btnScrub = new Elucidate.Shared.CommandLinkButton();
             this.btnStatus = new Elucidate.Shared.CommandLinkButton();
@@ -80,25 +82,21 @@ namespace Elucidate
             this.btnFix = new Elucidate.Shared.CommandLinkButton();
             this.btnDupFinder = new Elucidate.Shared.CommandLinkButton();
             this.btnUndelete = new Elucidate.Shared.CommandLinkButton();
-            this.textBoxLogging = new Elucidate.Shared.FlickerFreeRichEditTextBox();
             this.driveSpace = new Elucidate.AppTabs.DriveSpaceDisplay();
             this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.runWithoutCaptureMenuItem = new ToolStripCheckBoxMenuItem();
-            this.miscTabCtrl = new Elucidate.AppTabs.MiscTab();
-            this.logPanel = new System.Windows.Forms.Panel();
-            this.textBoxLogging1 = new Elucidate.Shared.FlickerFreeRichEditTextBox();
+            this.textBoxLogging = new Elucidate.Shared.FlickerFreeRichEditTextBox();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.menuRealTime.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.StandardOperations.SuspendLayout();
+            this.logPanel.SuspendLayout();
             this.addCommandPanel.SuspendLayout();
             this.commandPanel.SuspendLayout();
             this.SchedulingPage.SuspendLayout();
             this.RecoveryOperations.SuspendLayout();
             this.coveragePage.SuspendLayout();
-            this.miscTabPage.SuspendLayout();
-            this.logPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -432,6 +430,15 @@ namespace Elucidate
             this.StandardOperations.TabIndex = 0;
             this.StandardOperations.Text = "  Common SnapRaid  ";
             // 
+            // logPanel
+            // 
+            this.logPanel.Controls.Add(this.textBoxLogging1);
+            this.logPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logPanel.Location = new System.Drawing.Point(0, 269);
+            this.logPanel.Name = "logPanel";
+            this.logPanel.Size = new System.Drawing.Size(1503, 476);
+            this.logPanel.TabIndex = 11;
+            // 
             // addCommandPanel
             // 
             this.addCommandPanel.Controls.Add(this.labelCommandLineOptions);
@@ -470,7 +477,7 @@ namespace Elucidate
             this.SchedulingPage.Location = new System.Drawing.Point(4, 31);
             this.SchedulingPage.Name = "SchedulingPage";
             this.SchedulingPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SchedulingPage.Size = new System.Drawing.Size(870, 451);
+            this.SchedulingPage.Size = new System.Drawing.Size(1505, 778);
             this.SchedulingPage.TabIndex = 3;
             this.SchedulingPage.Text = "  Simple Scheduling  ";
             this.SchedulingPage.UseVisualStyleBackColor = true;
@@ -486,7 +493,7 @@ namespace Elucidate
             this.RecoveryOperations.Location = new System.Drawing.Point(4, 31);
             this.RecoveryOperations.Margin = new System.Windows.Forms.Padding(0);
             this.RecoveryOperations.Name = "RecoveryOperations";
-            this.RecoveryOperations.Size = new System.Drawing.Size(870, 451);
+            this.RecoveryOperations.Size = new System.Drawing.Size(1505, 778);
             this.RecoveryOperations.TabIndex = 1;
             this.RecoveryOperations.Text = "  Recovery Help  ";
             // 
@@ -506,27 +513,38 @@ namespace Elucidate
             this.coveragePage.Location = new System.Drawing.Point(4, 31);
             this.coveragePage.Name = "coveragePage";
             this.coveragePage.Padding = new System.Windows.Forms.Padding(3);
-            this.coveragePage.Size = new System.Drawing.Size(870, 451);
+            this.coveragePage.Size = new System.Drawing.Size(1505, 778);
             this.coveragePage.TabIndex = 4;
             this.coveragePage.Text = "  Coverage  ";
             this.coveragePage.UseVisualStyleBackColor = true;
             // 
             // miscTabPage
             // 
-            this.miscTabPage.BackColor = System.Drawing.SystemColors.Control;
-            this.miscTabPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.miscTabPage.Controls.Add(this.miscTabCtrl);
-            this.miscTabPage.Location = new System.Drawing.Point(4, 31);
+            this.miscTabPage.Location = new System.Drawing.Point(0, 0);
             this.miscTabPage.Name = "miscTabPage";
-            this.miscTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.miscTabPage.Size = new System.Drawing.Size(870, 451);
-            this.miscTabPage.TabIndex = 5;
-            this.miscTabPage.Text = "   Misc Commands   ";
+            this.miscTabPage.Size = new System.Drawing.Size(200, 100);
+            this.miscTabPage.TabIndex = 0;
             // 
             // timer1
             // 
             this.timer1.Interval = 250;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            // 
+            // textBoxLogging1
+            // 
+            this.textBoxLogging1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxLogging1.CausesValidation = false;
+            this.textBoxLogging1.DetectUrls = false;
+            this.textBoxLogging1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxLogging1.Location = new System.Drawing.Point(0, 0);
+            this.textBoxLogging1.MaxLength = 10000000;
+            this.textBoxLogging1.Name = "textBoxLogging1";
+            this.textBoxLogging1.ReadOnly = true;
+            this.textBoxLogging1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
+            this.textBoxLogging1.Size = new System.Drawing.Size(1503, 476);
+            this.textBoxLogging1.TabIndex = 0;
+            this.textBoxLogging1.Text = "";
+            this.toolTip1.SetToolTip(this.textBoxLogging1, "Current output going into the log file. ");
             // 
             // btnDiff
             // 
@@ -754,34 +772,13 @@ namespace Elucidate
             this.btnUndelete.UseVisualStyleBackColor = true;
             this.btnUndelete.Click += new System.EventHandler(this.btnCmdUndelete_Click);
             // 
-            // textBoxLogging
-            // 
-            this.textBoxLogging.AutoWordSelection = true;
-            this.textBoxLogging.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxLogging.ContextMenuStrip = this.menuRealTime;
-            this.textBoxLogging.DetectUrls = false;
-            this.textBoxLogging.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxLogging.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLogging.Location = new System.Drawing.Point(0, 0);
-            this.textBoxLogging.Margin = new System.Windows.Forms.Padding(0);
-            this.textBoxLogging.MaxLength = 20;
-            this.textBoxLogging.Name = "textBoxLogging";
-            this.textBoxLogging.ReadOnly = true;
-            this.textBoxLogging.ShortcutsEnabled = false;
-            this.textBoxLogging.Size = new System.Drawing.Size(1503, 776);
-            this.textBoxLogging.TabIndex = 0;
-            this.textBoxLogging.Text = "";
-            this.toolTip1.SetToolTip(this.textBoxLogging, "Current output going into the log file. \r\nSelect and use [Ctrl+C] or [Ctrl+Insert" +
-        "] to copy.\r\nSelect and press Delete to clear contents.");
-            this.textBoxLogging.WordWrap = false;
-            // 
             // driveSpace
             // 
             this.driveSpace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.driveSpace.Location = new System.Drawing.Point(3, 3);
             this.driveSpace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.driveSpace.Name = "driveSpace";
-            this.driveSpace.Size = new System.Drawing.Size(864, 445);
+            this.driveSpace.Size = new System.Drawing.Size(1499, 772);
             this.driveSpace.TabIndex = 0;
             this.toolTip1.SetToolTip(this.driveSpace, "Not real time, only updates when shown.");
             // 
@@ -809,41 +806,26 @@ namespace Elucidate
             this.runWithoutCaptureMenuItem.Text = "   Run &Without Capture";
             this.runWithoutCaptureMenuItem.ToolTipText = "Run SnapRaid and send logs to a file rather than capturing here.";
             // 
-            // miscTabCtrl
+            // textBoxLogging
             // 
-            this.miscTabCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.miscTabCtrl.Elucidate = null;
-            this.miscTabCtrl.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.miscTabCtrl.Location = new System.Drawing.Point(3, 3);
-            this.miscTabCtrl.Name = "miscTabCtrl";
-            this.miscTabCtrl.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.miscTabCtrl.Size = new System.Drawing.Size(862, 443);
-            this.miscTabCtrl.TabIndex = 0;
-            // 
-            // logPanel
-            // 
-            this.logPanel.Controls.Add(this.textBoxLogging1);
-            this.logPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logPanel.Location = new System.Drawing.Point(0, 269);
-            this.logPanel.Name = "logPanel";
-            this.logPanel.Size = new System.Drawing.Size(1503, 476);
-            this.logPanel.TabIndex = 11;
-            // 
-            // textBoxLogging1
-            // 
-            this.textBoxLogging1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxLogging1.CausesValidation = false;
-            this.textBoxLogging1.DetectUrls = false;
-            this.textBoxLogging1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxLogging1.Location = new System.Drawing.Point(0, 0);
-            this.textBoxLogging1.MaxLength = 1000000;
-            this.textBoxLogging1.Name = "textBoxLogging1";
-            this.textBoxLogging1.ReadOnly = true;
-            this.textBoxLogging1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.textBoxLogging1.Size = new System.Drawing.Size(1503, 476);
-            this.textBoxLogging1.TabIndex = 0;
-            this.textBoxLogging1.Text = "";
-            this.toolTip1.SetToolTip(this.textBoxLogging1, "Current output going into the log file. ");
+            this.textBoxLogging.AutoWordSelection = true;
+            this.textBoxLogging.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxLogging.ContextMenuStrip = this.menuRealTime;
+            this.textBoxLogging.DetectUrls = false;
+            this.textBoxLogging.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxLogging.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxLogging.Location = new System.Drawing.Point(0, 0);
+            this.textBoxLogging.Margin = new System.Windows.Forms.Padding(0);
+            this.textBoxLogging.MaxLength = 20;
+            this.textBoxLogging.Name = "textBoxLogging";
+            this.textBoxLogging.ReadOnly = true;
+            this.textBoxLogging.ShortcutsEnabled = false;
+            this.textBoxLogging.Size = new System.Drawing.Size(1503, 776);
+            this.textBoxLogging.TabIndex = 0;
+            this.textBoxLogging.Text = "";
+            this.toolTip1.SetToolTip(this.textBoxLogging, "Current output going into the log file. \r\nSelect and use [Ctrl+C] or [Ctrl+Insert" +
+        "] to copy.\r\nSelect and press Delete to clear contents.");
+            this.textBoxLogging.WordWrap = false;
             // 
             // ElucidateForm
             // 
@@ -872,6 +854,7 @@ namespace Elucidate
             this.menuRealTime.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.StandardOperations.ResumeLayout(false);
+            this.logPanel.ResumeLayout(false);
             this.addCommandPanel.ResumeLayout(false);
             this.addCommandPanel.PerformLayout();
             this.commandPanel.ResumeLayout(false);
@@ -880,8 +863,6 @@ namespace Elucidate
             this.RecoveryOperations.ResumeLayout(false);
             this.RecoveryOperations.PerformLayout();
             this.coveragePage.ResumeLayout(false);
-            this.miscTabPage.ResumeLayout(false);
-            this.logPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -930,7 +911,6 @@ namespace Elucidate
         private TabPage miscTabPage;
         private Label spacer;
         private Label label3;
-        private MiscTab miscTabCtrl;
         private CommandLinkButton btnScrub;
         private FlowLayoutPanel commandPanel;
         private FlowLayoutPanel addCommandPanel;

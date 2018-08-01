@@ -41,7 +41,6 @@ namespace Elucidate
         public ElucidateForm()
         {
             InitializeComponent();
-            miscTabCtrl.Elucidate = this;
             if (Properties.Settings.Default.UpdateRequired)
             {
                 // Thanks go to http://cs.rthand.com/blogs/blog_with_righthand/archive/2005/12/09/246.aspx
@@ -107,7 +106,6 @@ namespace Elucidate
         private void EnableIfValid(bool enabled)
         {
             EnableCommonButtons(enabled);
-            miscTabCtrl.EnableIfValid(enabled);
             EnableScheduleButtons(enabled);
         }
 

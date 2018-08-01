@@ -33,7 +33,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using wyDay.Controls;
 using Elucidate.Logging;
 using Elucidate.wyDay.Controls;
 using NLog;
@@ -277,6 +276,8 @@ namespace Elucidate
                     {
                         mreProcessExit.WaitOne(100);
                     }
+                    //Log.Instance.Debug("sleep");
+                    //Thread.Sleep(1000);
                 } while (!string.IsNullOrEmpty(buf)
                    || !mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
                    );
@@ -316,7 +317,7 @@ namespace Elucidate
 
         private void actionWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            UseWaitCursor = false;
+            //UseWaitCursor = false;
             EnableIfValid(true);
 
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
@@ -352,13 +353,14 @@ namespace Elucidate
 
         internal void StartSnapRaidProcess(string command)
         {
-            EnableIfValid(false);
-            //tabControl1.SelectTab(realTimeOutputTabPage);
+            Log.Instance.Debug("Command buttcon clicked but a command is still running.");
+            if (actionWorker.IsBusy == true) return;
+            //UseWaitCursor = true;
+            //EnableIfValid(false);
             comboBox1.Enabled = true;
             comboBox1.Text = @"Running";
             requested = ProcessPriorityClass.Normal;
             actionWorker.RunWorkerAsync(command);
-            UseWaitCursor = true;
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
             toolStripProgressBar1.DisplayText = $"{command} - Starting";
             toolStripProgressBar1.State = ProgressBarState.Normal;
