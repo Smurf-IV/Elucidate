@@ -545,6 +545,7 @@ namespace Elucidate
             this.textBoxLogging1.TabIndex = 0;
             this.textBoxLogging1.Text = "";
             this.toolTip1.SetToolTip(this.textBoxLogging1, "Current output going into the log file. ");
+            this.textBoxLogging1.WordWrap = false;
             // 
             // btnDiff
             // 
@@ -778,7 +779,7 @@ namespace Elucidate
             this.driveSpace.Location = new System.Drawing.Point(3, 3);
             this.driveSpace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.driveSpace.Name = "driveSpace";
-            this.driveSpace.Size = new System.Drawing.Size(1499, 772);
+            this.driveSpace.Size = new System.Drawing.Size(1499, 774);
             this.driveSpace.TabIndex = 0;
             this.toolTip1.SetToolTip(this.driveSpace, "Not real time, only updates when shown.");
             // 
