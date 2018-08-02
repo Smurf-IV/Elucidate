@@ -370,7 +370,7 @@ namespace Elucidate
             // labelCommandLineOptions
             // 
             this.labelCommandLineOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelCommandLineOptions.Location = new System.Drawing.Point(3, 1);
+            this.labelCommandLineOptions.Location = new System.Drawing.Point(3, 3);
             this.labelCommandLineOptions.MinimumSize = new System.Drawing.Size(210, 20);
             this.labelCommandLineOptions.Name = "labelCommandLineOptions";
             this.labelCommandLineOptions.Size = new System.Drawing.Size(210, 20);
@@ -388,7 +388,7 @@ namespace Elucidate
             this.txtAddCommands.Margin = new System.Windows.Forms.Padding(1);
             this.txtAddCommands.MaxLength = 128;
             this.txtAddCommands.Name = "txtAddCommands";
-            this.txtAddCommands.Size = new System.Drawing.Size(100, 19);
+            this.txtAddCommands.Size = new System.Drawing.Size(100, 21);
             this.txtAddCommands.TabIndex = 5;
             this.toolTip1.SetToolTip(this.txtAddCommands, "Example of commands:\r\n   -a,   to only check file hashes\r\n   -E, --force-empty\r\n " +
         "  -d,  to filter by disk NAME (e.g. d0)");
@@ -406,7 +406,7 @@ namespace Elucidate
             this.textBoxLogging1.Name = "textBoxLogging1";
             this.textBoxLogging1.ReadOnly = true;
             this.textBoxLogging1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.textBoxLogging1.Size = new System.Drawing.Size(1503, 483);
+            this.textBoxLogging1.Size = new System.Drawing.Size(1503, 480);
             this.textBoxLogging1.TabIndex = 0;
             this.textBoxLogging1.Text = "";
             this.toolTip1.SetToolTip(this.textBoxLogging1, "Current output going into the log file. ");
@@ -622,6 +622,7 @@ namespace Elucidate
             this.tabControl1.Controls.Add(this.RecoveryOperations);
             this.tabControl1.Controls.Add(this.coveragePage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(0, 29);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
@@ -640,10 +641,10 @@ namespace Elucidate
             this.StandardOperations.Controls.Add(this.logPanel);
             this.StandardOperations.Controls.Add(this.addCommandPanel);
             this.StandardOperations.Controls.Add(this.commandPanel);
-            this.StandardOperations.Location = new System.Drawing.Point(4, 27);
+            this.StandardOperations.Location = new System.Drawing.Point(4, 30);
             this.StandardOperations.Margin = new System.Windows.Forms.Padding(0);
             this.StandardOperations.Name = "StandardOperations";
-            this.StandardOperations.Size = new System.Drawing.Size(1505, 785);
+            this.StandardOperations.Size = new System.Drawing.Size(1505, 782);
             this.StandardOperations.TabIndex = 0;
             this.StandardOperations.Text = "  Common SnapRaid  ";
             // 
@@ -653,7 +654,7 @@ namespace Elucidate
             this.logPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logPanel.Location = new System.Drawing.Point(0, 269);
             this.logPanel.Name = "logPanel";
-            this.logPanel.Size = new System.Drawing.Size(1503, 483);
+            this.logPanel.Size = new System.Drawing.Size(1503, 480);
             this.logPanel.TabIndex = 11;
             // 
             // addCommandPanel
@@ -661,7 +662,7 @@ namespace Elucidate
             this.addCommandPanel.Controls.Add(this.labelCommandLineOptions);
             this.addCommandPanel.Controls.Add(this.txtAddCommands);
             this.addCommandPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.addCommandPanel.Location = new System.Drawing.Point(0, 752);
+            this.addCommandPanel.Location = new System.Drawing.Point(0, 749);
             this.addCommandPanel.MinimumSize = new System.Drawing.Size(200, 31);
             this.addCommandPanel.Name = "addCommandPanel";
             this.addCommandPanel.Size = new System.Drawing.Size(1503, 31);
