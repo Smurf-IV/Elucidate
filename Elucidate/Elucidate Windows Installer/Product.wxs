@@ -1,33 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
-     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
-     >
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
 
   <?define MgtSource=$(sys.SOURCEFILEDIR)..\Elucidate\bin\Release ?>
 
   <!-- do not change this ever !-->
-  <?define UpgradeCode = "B015A529-67FB-4009-93A8-E7465CA191C1" ?>
+  <?define UpgradeCode = "739868EC-E5CC-4F24-9D9F-88FDBD08371A" ?>
+  <!--e8b00f72-5771-42a8-82a0-6e71bf310721-->
 
-  <!-- Change this when creating new release YY-MM-DD.Build -->
   <?define Version = "!(bind.FileVersion.Elucidate.exe)" ?>
 
-  <?define ProductName = "Elucidate: A GUI to drive the SnapRAID command line (via .Net)"?>
+  <!--<?define ProductName = "Elucidate: A GUI to drive the SnapRAID command line (via .Net)"?>-->
+  <?define ProductName = "Elucidate for SnapRAID"?>
 
-  <Product Version="$(var.Version)" Id="*" UpgradeCode="$(var.UpgradeCode)"
-         Name="$(var.ProductName)" Language="1033" Manufacturer="https://github.com/BlueBlock/Elucidate/" >
+  <Product 
+    Version="$(var.Version)" 
+    Id="*" 
+    UpgradeCode="$(var.UpgradeCode)"
+    Name="$(var.ProductName)" 
+    Language="1033" 
+    Manufacturer="https://github.com/BlueBlock/Elucidate/">
 
     <Package Id="*" Keywords='Installer'
              InstallScope='perMachine'
              Description="$(var.ProductName)"
              Comments="Elucidate" InstallerVersion="500" Compressed="yes"
              AdminImage='no'
-             Platform='x86'
-               />
+             Platform='x64' />
 
-    <MajorUpgrade DowngradeErrorMessage="Downgrades are not allowed - Use add/remove from the control panel" />
+    <MajorUpgrade 
+      DowngradeErrorMessage="A newer version of [ProdutName] is already installed. Downgrades are not allowed - Use add/remove from the control panel."
+      AllowSameVersionUpgrades="yes" />
 
-    <!-- Support Information shown in Add/Remove programs (this is optional) -->
+    <Upgrade Id="$(var.UpgradeCode)">
+      <UpgradeVersion OnlyDetect="no" Property="PREVIOUSFOUND"
+                      Minimum="18.0.0.0" IncludeMinimum="yes"
+                      Maximum="$(var.Version)" IncludeMaximum="no" />
+    </Upgrade>
+
+    <!-- Support Information shown in Add/Remove programs -->
     <Property Id="ARPHELPLINK" Value="https://github.com/BlueBlock/Elucidate/docs" />
     <Property Id="ARPCOMMENTS" Value="https://github.com/BlueBlock/Elucidate/issues"/>
     <Property Id="ARPCONTACT" Value="BlueBlock" />
@@ -38,9 +50,12 @@
 
     <!-- Properties to allow detection of .Net installation -->
     <PropertyRef Id="NETFRAMEWORK45" />
-    <Condition Message="[ProductName] Requires .NET Framework 4.7 or later to be installed">
+    <Condition Message="[ProductName] requires .NET Framework 4.7.1. Please install the .NET Framework then run this installer again.">
       <![CDATA[Installed OR (NETFRAMEWORK45 AND NETFRAMEWORK45 >= "#460805")]]>
     </Condition>
+    <!--<Condition Message="This application requires .NET Framework 4.7.1. Please install the .NET Framework then run this installer again.">
+      <![CDATA[Installed OR NETFRAMEWORK45>=#461308]]>
+    </Condition>-->
 
     <Property Id="WIX_IS_NETFRAMEWORK_47_OR_LATER_INSTALLED" Value="0" />
     <!-- <PropertyRef Id="WIX_IS_NETFRAMEWORK_47_OR_LATER_INSTALLED" /> 
@@ -56,7 +71,7 @@
     <Media Id="1" Cabinet="Setup.cab" EmbedCab="yes" CompressionLevel="high" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
+      <Directory Id="ProgramFiles64Folder">
         <Directory Id="INSTALLDIR" Name="Elucidate">
           <Directory Id="ClientDIR" Name="Elucidate Client">
           </Directory>
@@ -70,7 +85,7 @@
       </Directory>
 
       <Directory Id="CommonAppDataFolder" Name="CommonAppData">
-        <Directory Id="ElucidateSvc_Data" Name="ElucidateSvc" >
+        <Directory Id="ElucidateSvc_Data" Name="ElucidateSvc">
           <Component Id="DataDir" Guid="01234567-7E98-44CE-B049-C477CC0A2B01" KeyPath="yes" />
         </Directory>
       </Directory>
@@ -78,70 +93,70 @@
     </Directory>
 
     <ComponentGroup Id="Client" Directory="ClientDIR">
-      <Component Id="Client" Guid="5EBF3F29-9CF1-44FE-A94C-CC1B4FE09367" >
-        <File Id="InstallerIcon" Name="Elucidate.ico" Source="$(sys.SOURCEFILEDIR)..\Elucidate\Elucidate.ico" />
-        <File Id="Elucidate.exe" Name="Elucidate.exe" Source="$(var.MgtSource)\Elucidate.exe" KeyPath="yes" />
+      <Component Id="Client" Guid="5EBF3F29-9CF1-44FE-A94C-CC1B4FE09367" Win64="yes">
+        <File Id="InstallerIcon" Name="Elucidate.ico" Source="$(sys.SOURCEFILEDIR)..\Elucidate\Elucidate.ico" ProcessorArchitecture="x64" />
+        <File Id="Elucidate.exe" Name="Elucidate.exe" Source="$(var.MgtSource)\Elucidate.exe" KeyPath="yes" ProcessorArchitecture="x64" />
       </Component>
       <Component>
-        <File Source="$(sys.SOURCEFILEDIR)..\Elucidate\ChangeLog.htm" KeyPath="yes" />
+        <File Source="$(sys.SOURCEFILEDIR)..\Elucidate\ChangeLog.htm" KeyPath="yes" ProcessorArchitecture="x64" />
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\Elucidate.exe.config" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\Elucidate.exe.config" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\ActiveDirectoryObjectPicker.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\ActiveDirectoryObjectPicker.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\AeroWizard.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\AeroWizard.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\ByteSize.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\ByteSize.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\ComponentFactory.Krypton.Toolkit.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\ComponentFactory.Krypton.Toolkit.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\DotNetZip.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\DotNetZip.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\ExceptionReporter.NET.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\ExceptionReporter.NET.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\Microsoft.Win32.TaskScheduler.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\Microsoft.Win32.TaskScheduler.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\Microsoft.Win32.TaskSchedulerEditor.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\Microsoft.Win32.TaskSchedulerEditor.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\Newtonsoft.Json.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\Newtonsoft.Json.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\RestSharp.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\RestSharp.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\SimpleMapi.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\SimpleMapi.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\TimeSpan2.dll" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\TimeSpan2.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
+        <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\wyDay.Controls\License.txt" KeyPath="yes" />
+        <File Source="$(var.MgtSource)\wyDay.Controls\License.txt" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
     </ComponentGroup>
 
     <DirectoryRef Id="ProgramMenuDir">
       <Component Id="ProgramMenuDir2" Guid="11234567-7E98-44CE-B049-C477CC0A2B01">
-        <Shortcut Id="Elucidate_Shortcut" Name="Elucidate MGT" Description="Elucidate Management Application" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
-        <Shortcut Id="Elucidate_Start" Name="Elucidate MGT" Directory="StartupFolder" Description="Elucidate MGT Application" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
+        <Shortcut Id="Elucidate_Shortcut" Name="Elucidate" Description="Elucidate Management Application" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
+        <Shortcut Id="Elucidate_Start" Name="Elucidate" Directory="StartupFolder" Description="Elucidate for SnapRAID" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
         <util:InternetShortcut Type="url" Id="Home" Name="Elucidate Forum" Target="[ARPHELPLINK]" />
         <util:InternetShortcut Type="link" Id="Change" Name="Change Log" Target="[ClientDIR]ChangeLog.htm"/>
         <util:InternetShortcut Type="url" Id="SnapRAID" Name="SnapRAID Forum" Target="https://sourceforge.net/projects/snapraid/forums/forum/1677233" />
@@ -156,8 +171,9 @@
       <ComponentRef Id='ProgramMenuDir2'/>
     </Feature>
 
+    <!-- START APP AFTER INSTALL -->
+    <!--<CustomAction Id="MgtApp" FileKey="Elucidate.exe" ExeCommand="" Return="asyncNoWait" />-->
 
-    <CustomAction Id="MgtApp" FileKey="Elucidate.exe" ExeCommand="" Return="asyncNoWait" />
     <util:CloseApplication CloseMessage="yes" Id="CloseElucidate" Target="Elucidate.exe" RebootPrompt="no"/>
 
     <InstallUISequence>
@@ -168,7 +184,8 @@
     <InstallExecuteSequence>
       <Custom Action="WixCloseApplications" Before="LaunchConditions" />
 
-      <Custom Action="MgtApp" After="InstallFinalize">Not Installed</Custom>
+      <!-- START APP AFTER INSTALL -->
+      <!--<Custom Action="MgtApp" After="InstallFinalize">Not Installed</Custom>-->
     </InstallExecuteSequence>
 
     <!-- Get the install to skip a few steps -->

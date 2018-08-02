@@ -193,10 +193,6 @@ namespace Elucidate
                 ExceptionHandler.ReportException(ex, "Thread closing abnormally");
                 throw;
             }
-            finally
-            {
-                Log.Instance.Debug("We are exiting the status thread");
-            }
         }
 
         private string FormatSnapRaidCommandArgs(string command, out string appPath)
@@ -346,7 +342,7 @@ namespace Elucidate
                     toolStripProgressBar1.Value = 100;
                     comboBox1.Text = @"Stopped";
                 }
-                Log.Instance.Info("Completed");
+                //Log.Instance.Info("Completed");
             }
             comboBox1.Enabled = false;
         }

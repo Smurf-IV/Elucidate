@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Elucidate")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Smurf-IV")]
+[assembly: AssemblyCompany("BlueBlock")]
 [assembly: AssemblyProduct("Elucidate")]
 [assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2018")]
 [assembly: AssemblyTrademark("")]
@@ -45,7 +45,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e8b00f72-5771-42a8-82a0-6e71bf310721")]
+[assembly: Guid("739868EC-E5CC-4F24-9D9F-88FDBD08371A")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -54,5 +54,5 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("18.8.1.496")]
-[assembly: AssemblyFileVersion("18.8.1.496")]
+[assembly: AssemblyVersion("18.8.2.520")]
+[assembly: AssemblyFileVersion("18.8.2.520")]
