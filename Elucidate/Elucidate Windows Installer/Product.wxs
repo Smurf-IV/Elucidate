@@ -3,7 +3,7 @@
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
 
-  <?define MgtSource=$(sys.SOURCEFILEDIR)..\Elucidate\bin\Release ?>
+  <?define MgtSource=$(sys.SOURCEFILEDIR)..\Elucidate\bin\x64\Release ?>
 
   <!-- do not change this ever !-->
   <?define UpgradeCode = "739868EC-E5CC-4F24-9D9F-88FDBD08371A" ?>
