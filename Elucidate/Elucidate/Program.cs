@@ -46,6 +46,10 @@ namespace Elucidate
             try
             {
                 AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
+                //if (FileUtil.IsDirectoryCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)))
+                //{
+                //    FileUtil.SetDirectoryAsCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation));
+                //}
 #if !DEBUG
                 if (!Properties.Settings.Default.DebugLoggingEnabled)
                 {
@@ -66,6 +70,7 @@ namespace Elucidate
             }
             try
             {
+
                 //Log.Instance.Info("=====================================================================");
                 Log.Instance.Info($"File Re-opened: Ver :{Assembly.GetExecutingAssembly().GetName().Version}");
                 CheckAndRunSingleApp();
