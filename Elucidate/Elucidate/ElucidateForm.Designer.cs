@@ -400,6 +400,7 @@ namespace Elucidate
             this.textBoxLogging1.CausesValidation = false;
             this.textBoxLogging1.DetectUrls = false;
             this.textBoxLogging1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxLogging1.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLogging1.Location = new System.Drawing.Point(0, 0);
             this.textBoxLogging1.MaxLength = 10000000;
             this.textBoxLogging1.Name = "textBoxLogging1";
@@ -466,7 +467,7 @@ namespace Elucidate
         "ady marked as bad are always checked.\r\nUse \"Additional Command\" to override the " +
         "default of 100% of 0 days");
             this.btnScrub.UseVisualStyleBackColor = true;
-            this.btnScrub.Click += new System.EventHandler(this.btnScrub2_Click);
+            this.btnScrub.Click += new System.EventHandler(this.btnScrub_Click);
             // 
             // btnStatus
             // 
@@ -523,7 +524,7 @@ namespace Elucidate
             this.toolTip1.SetToolTip(this.btnFix, "Override with the \"Additional Command\" options, e.g.\r\nRecover all the deleted fil" +
         "es in all drives with \"-m\" \r\n");
             this.btnFix.UseVisualStyleBackColor = true;
-            this.btnFix.Click += new System.EventHandler(this.btnCmdFix_Click);
+            this.btnFix.Click += new System.EventHandler(this.btnFix_Click);
             // 
             // btnDupFinder
             // 
@@ -553,7 +554,7 @@ namespace Elucidate
             this.toolTip1.SetToolTip(this.btnDupFinder, "The file data is not read, but only the precomputed hashes are used.\r\nNothing is " +
         "modified\r\n");
             this.btnDupFinder.UseVisualStyleBackColor = true;
-            this.btnDupFinder.Click += new System.EventHandler(this.btnCmdDupFinder_Click);
+            this.btnDupFinder.Click += new System.EventHandler(this.btnDupFinder_Click);
             // 
             // driveSpace
             // 
@@ -561,7 +562,7 @@ namespace Elucidate
             this.driveSpace.Location = new System.Drawing.Point(3, 3);
             this.driveSpace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.driveSpace.Name = "driveSpace";
-            this.driveSpace.Size = new System.Drawing.Size(1499, 776);
+            this.driveSpace.Size = new System.Drawing.Size(1499, 779);
             this.driveSpace.TabIndex = 0;
             this.toolTip1.SetToolTip(this.driveSpace, "Not real time, only updates when shown.");
             // 
@@ -763,7 +764,7 @@ namespace Elucidate
             this.btnUndelete.Text = "&Undelete";
             this.btnUndelete.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUndelete.UseVisualStyleBackColor = true;
-            this.btnUndelete.Click += new System.EventHandler(this.btnCmdUndelete_Click);
+            this.btnUndelete.Click += new System.EventHandler(this.btnUndelete_Click);
             // 
             // SchedulingPage
             // 
@@ -775,7 +776,7 @@ namespace Elucidate
             this.SchedulingPage.Location = new System.Drawing.Point(4, 27);
             this.SchedulingPage.Name = "SchedulingPage";
             this.SchedulingPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SchedulingPage.Size = new System.Drawing.Size(1505, 782);
+            this.SchedulingPage.Size = new System.Drawing.Size(1505, 785);
             this.SchedulingPage.TabIndex = 3;
             this.SchedulingPage.Text = "  Simple Scheduling  ";
             this.SchedulingPage.UseVisualStyleBackColor = true;
@@ -791,7 +792,7 @@ namespace Elucidate
             this.RecoveryOperations.Location = new System.Drawing.Point(4, 27);
             this.RecoveryOperations.Margin = new System.Windows.Forms.Padding(0);
             this.RecoveryOperations.Name = "RecoveryOperations";
-            this.RecoveryOperations.Size = new System.Drawing.Size(1505, 782);
+            this.RecoveryOperations.Size = new System.Drawing.Size(1505, 785);
             this.RecoveryOperations.TabIndex = 1;
             this.RecoveryOperations.Text = "  Recovery Help  ";
             // 
@@ -811,7 +812,7 @@ namespace Elucidate
             this.coveragePage.Location = new System.Drawing.Point(4, 27);
             this.coveragePage.Name = "coveragePage";
             this.coveragePage.Padding = new System.Windows.Forms.Padding(3);
-            this.coveragePage.Size = new System.Drawing.Size(1505, 782);
+            this.coveragePage.Size = new System.Drawing.Size(1505, 785);
             this.coveragePage.TabIndex = 4;
             this.coveragePage.Text = "  Coverage  ";
             this.coveragePage.UseVisualStyleBackColor = true;

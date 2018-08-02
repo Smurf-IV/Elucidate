@@ -207,26 +207,26 @@ namespace Elucidate
             StartSnapRaidProcess("Sync");
         }
 
-        private void btnScrub2_Click(object sender, EventArgs e)
+        private void btnScrub_Click(object sender, EventArgs e)
         {
             StringBuilder command = new StringBuilder(@"scrub ");
             command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-p100 -o0");
             StartSnapRaidProcess(command.ToString());
         }
 
-        private void btnCmdFix_Click(object sender, EventArgs e)
+        private void btnFix_Click(object sender, EventArgs e)
         {
             StringBuilder command = new StringBuilder(@"fix ");
             command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-e");
             StartSnapRaidProcess(command.ToString());
         }
 
-        private void btnCmdDupFinder_Click(object sender, EventArgs e)
+        private void btnDupFinder_Click(object sender, EventArgs e)
         {
             StartSnapRaidProcess(@"dup");
         }
 
-        private void btnCmdUndelete_Click(object sender, EventArgs e)
+        private void btnUndelete_Click(object sender, EventArgs e)
         {
             StringBuilder command = new StringBuilder(@"fix ");
             command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-m");
