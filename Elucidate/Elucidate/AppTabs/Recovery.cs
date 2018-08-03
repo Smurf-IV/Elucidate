@@ -39,37 +39,37 @@ namespace Elucidate
     {
         #region Recovery options pane
 
-        private void tabControl1_Selected(object sender, TabControlEventArgs e)
-        {
-            if (e.TabPage == RecoveryOperations)
-            {
-                WindowState = FormWindowState.Maximized;
-                webBrowser1.Url = new Uri("http://snapraid.sourceforge.net/manual.html#9", UriKind.Absolute);
-            }
-            else if (e.TabPage == coveragePage)
-            {
-                if (!Properties.Settings.Default.ConfigFileIsValid) return;
-                try
-                {
-                    ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
-                    cfg.Read();
-                    List<string> displayLines = cfg.SnapShotSources;
-                    // Add the Parity lines to show the amount of drive space currently occupied by SnapRaid
-                    displayLines.Add(new FileInfo(cfg.ParityFile1).DirectoryName);
-                    if (!string.IsNullOrEmpty(cfg.ParityFile2))
-                    {
-                        displayLines.Add(new FileInfo(cfg.ParityFile2).DirectoryName);
-                    }
-                    driveSpace.StartProcessing(displayLines);
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-        }
+        //private void tabControl_Selected(object sender, TabControlEventArgs e)
+        //{
+        //    if (e.TabPage == RecoveryOperations)
+        //    {
+        //        WindowState = FormWindowState.Maximized;
+        //        webBrowser1.Url = new Uri("http://snapraid.sourceforge.net/manual.html#9", UriKind.Absolute);
+        //    }
+        //    else if (e.TabPage == coveragePage)
+        //    {
+        //        if (!Properties.Settings.Default.ConfigFileIsValid) return;
+        //        try
+        //        {
+        //            ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+        //            cfg.Read();
+        //            List<string> displayLines = cfg.SnapShotSources;
+        //            // Add the Parity lines to show the amount of drive space currently occupied by SnapRaid
+        //            displayLines.Add(new FileInfo(cfg.ParityFile1).DirectoryName);
+        //            if (!string.IsNullOrEmpty(cfg.ParityFile2))
+        //            {
+        //                displayLines.Add(new FileInfo(cfg.ParityFile2).DirectoryName);
+        //            }
+        //            driveSpace.StartProcessing(displayLines);
+        //        }
+        //        catch
+        //        {
+        //            // ignored
+        //        }
+        //    }
+        //}
 
-        private void tabControl1_Deselected(object sender, TabControlEventArgs e)
+        private void tabControl_Deselected(object sender, TabControlEventArgs e)
         {
             if (e.TabPage != RecoveryOperations) return;
             if (WindowState == FormWindowState.Maximized)

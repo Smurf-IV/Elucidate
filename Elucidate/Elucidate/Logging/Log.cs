@@ -1,4 +1,7 @@
-﻿using NLog;
+﻿using System;
+using System.IO;
+using NLog;
+using NLog.Targets;
 
 namespace Elucidate.Logging
 {
@@ -21,6 +24,20 @@ namespace Elucidate.Logging
             LogManager.ReconfigExistingLoggers();
             Instance = LogManager.GetCurrentClassLogger();
         }
+
+        public static void SetLogFile(string logFilePath)
+        {
+            if (LogManager.Configuration.FindTargetByName("file") is FileTarget target)
+            {
+                if (!Directory.Exists(Path.GetDirectoryName(logFilePath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(logFilePath) ?? throw new InvalidOperationException());
+                }
+                target.FileName = logFilePath;
+            }
+            LogManager.ReconfigExistingLoggers();
+        }
+
         public static void SetLogLevel(LogLevels logLevel, bool enable)
         {
             LogLevel targetLogLevel;

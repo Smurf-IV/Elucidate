@@ -106,7 +106,6 @@ namespace Elucidate
         private void EnableIfValid(bool enabled)
         {
             EnableCommonButtons(enabled);
-            EnableScheduleButtons(enabled);
         }
 
         #region Main Menu Toolbar Handlers
@@ -232,5 +231,10 @@ namespace Elucidate
             command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-m");
             StartSnapRaidProcess(command.ToString());
         }
+
+        private void tabControl_Selected(object sender, TabControlEventArgs e)
+        {
+        }
+        
     }
 }

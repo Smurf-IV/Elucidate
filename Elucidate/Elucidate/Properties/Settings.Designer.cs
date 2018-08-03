@@ -184,5 +184,17 @@ namespace Elucidate.Properties {
                 this["DebugLoggingEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("logs")]
+        public string LogFileDirectory {
+            get {
+                return ((string)(this["LogFileDirectory"]));
+            }
+            set {
+                this["LogFileDirectory"] = value;
+            }
+        }
     }
 }

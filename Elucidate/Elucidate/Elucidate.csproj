@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.2.530</AssemblyVersion>
+    <AssemblyVersion>18.8.3.5</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -221,6 +221,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedSettingsHelper.cs" />
+    <Compile Include="Controls\LogsViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LogsViewerControl.Designer.cs">
+      <DependentUpon>LogsViewerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Schedule.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Schedule.Designer.cs">
+      <DependentUpon>Schedule.cs</DependentUpon>
+    </Compile>
     <Compile Include="CalculateBlockSize.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -228,6 +240,7 @@
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </Compile>
     <Compile Include="ExceptionHandler.cs" />
+    <Compile Include="FileUtil.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Shared\CommandLinkButton.cs">
       <SubType>Component</SubType>
@@ -260,9 +273,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AppTabs\Recovery.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AppTabs\Scheduling.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ToolStripCheckBoxMenuItem.cs">
@@ -299,6 +309,12 @@
     <Compile Include="wyDay.Controls\Windows7ProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <EmbeddedResource Include="Controls\LogsViewerControl.resx">
+      <DependentUpon>LogsViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Schedule.resx">
+      <DependentUpon>Schedule.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CalculateBlockSize.resx">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </EmbeddedResource>

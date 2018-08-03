@@ -50,18 +50,18 @@ namespace Elucidate
 
         private void DeleteContentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            textBoxLogging1.Clear();
+            textBoxLiveLog.Clear();
         }
 
         private void CopySelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DataObject dto = new DataObject();
-            if (textBoxLogging1.SelectionLength <= 1)
+            if (textBoxLiveLog.SelectionLength <= 1)
             {
-                textBoxLogging1.SelectAll();
+                textBoxLiveLog.SelectAll();
             }
-            dto.SetText(textBoxLogging1.SelectedRtf, TextDataFormat.Rtf);
-            dto.SetText(textBoxLogging1.SelectedText, TextDataFormat.UnicodeText);
+            dto.SetText(textBoxLiveLog.SelectedRtf, TextDataFormat.Rtf);
+            dto.SetText(textBoxLiveLog.SelectedText, TextDataFormat.UnicodeText);
             Clipboard.Clear();
             Clipboard.SetDataObject(dto);
         }
@@ -88,14 +88,14 @@ namespace Elucidate
                 // Now lock in case the timer is overlapping !
                 lock (this)
                 {
-                    textBoxLogging1._Paint = false; // turn off flag to ignore WM_PAINT messages
-                    if (textBoxLogging1.Lines.Length > Properties.Settings.Default.MaxNumberOfRealTimeLines)
+                    textBoxLiveLog._Paint = false; // turn off flag to ignore WM_PAINT messages
+                    if (textBoxLiveLog.Lines.Length > Properties.Settings.Default.MaxNumberOfRealTimeLines)
                     {
                         //textBox1.SelectionStart = 0;
                         //textBox1.SelectionLength = textBox1.GetFirstCharIndexFromLine(Properties.Settings.Default.MaxNumberOfRealTimeLines - 10);
                         //textBox1.SelectedText = string.Empty;
                         // The above makes it beep as well !!
-                        textBoxLogging1.Clear();
+                        textBoxLiveLog.Clear();
                     }
                     //read out of the file until the EOF
                     while (LogQueue.Any())
@@ -104,42 +104,42 @@ namespace Elucidate
                         switch (log.LevelUppercase)
                         {
                             case "FATAL":
-                                textBoxLogging1.SelectionColor = Color.DarkViolet;
+                                textBoxLiveLog.SelectionColor = Color.DarkViolet;
                                 break;
 
                             case "ERROR":
-                                textBoxLogging1.SelectionColor = Color.Red;
+                                textBoxLiveLog.SelectionColor = Color.Red;
                                 break;
 
                             case "WARN":
-                                textBoxLogging1.SelectionColor = Color.RoyalBlue;
+                                textBoxLiveLog.SelectionColor = Color.RoyalBlue;
                                 break;
 
                             case "INFO":
-                                textBoxLogging1.SelectionColor = Color.Black;
+                                textBoxLiveLog.SelectionColor = Color.Black;
                                 break;
 
                             case "DEBUG":
-                                textBoxLogging1.SelectionColor = Color.DarkGray;
+                                textBoxLiveLog.SelectionColor = Color.DarkGray;
                                 break;
 
                             case "TRACE":
-                                textBoxLogging1.SelectionColor = Color.DimGray;
+                                textBoxLiveLog.SelectionColor = Color.DimGray;
                                 break;
 
                             default:
                                 // Leave it as is
                                 break;
                         }
-                        textBoxLogging1.AppendText(log.Message + Environment.NewLine);
-                        textBoxLogging1.ScrollToCaret();
+                        textBoxLiveLog.AppendText(log.Message + Environment.NewLine);
+                        textBoxLiveLog.ScrollToCaret();
                     }
                     // check if our textbox is getting too full
-                    int textLength = textBoxLogging1.TextLength;
-                    if (textLength > (textBoxLogging1.MaxLength - 1000))
+                    int textLength = textBoxLiveLog.TextLength;
+                    if (textLength > (textBoxLiveLog.MaxLength - 1000))
                     {
                         //max possible on control = 2147483647
-                        textBoxLogging1.Clear();
+                        textBoxLiveLog.Clear();
                         Log.Instance.Debug("CLEAR");
                     }
                 }
@@ -149,7 +149,7 @@ namespace Elucidate
                 // ignored
             }
 
-            textBoxLogging1._Paint = true; // restore flag so we can paint the control
+            textBoxLiveLog._Paint = true; // restore flag so we can paint the control
         }
 
         private class LogString

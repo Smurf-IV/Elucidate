@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using ExceptionReporting;
 using Elucidate.Logging;
 
@@ -8,10 +9,10 @@ namespace Elucidate
     {
         public static void ReportException(Exception ex, string strMessage = null)
         {
-            if (strMessage == null)
-                Log.Instance.Fatal(ex);
-            else
-                Log.Instance.Fatal(ex, strMessage.Trim());
+            Log.Instance.Fatal(ex,
+                strMessage == null
+                    ? $"{new StackTrace(ex).GetFrame(0).GetMethod().Name} has thrown: "
+                    : strMessage.Trim());
             ExceptionReporter reporter = new ExceptionReporter();
             reporter.Config.AppName = "Elucidate";
             reporter.Config.CompanyName = "Elucidate";
