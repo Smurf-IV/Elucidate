@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.3.150</AssemblyVersion>
+    <AssemblyVersion>18.8.3.152</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -224,6 +224,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedSettingsHelper.cs" />
+    <Compile Include="Controls\LiveRunLogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LiveRunLogControl.Designer.cs">
+      <DependentUpon>LiveRunLogControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LogsViewerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -312,6 +318,9 @@
     <Compile Include="wyDay.Controls\Windows7ProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <EmbeddedResource Include="Controls\LiveRunLogControl.resx">
+      <DependentUpon>LiveRunLogControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\LogsViewerControl.resx">
       <DependentUpon>LogsViewerControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -409,7 +418,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" BuildVersion_UseGlobalSettings="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UseUniversalClock="False" />
+      <UserProperties BuildVersion_UseUniversalClock="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
