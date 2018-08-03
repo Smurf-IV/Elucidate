@@ -235,6 +235,9 @@ namespace Elucidate
         private void tabControl_Selected(object sender, TabControlEventArgs e)
         {
         }
-        
+
+        private void ElucidateForm_Load(object sender, EventArgs e)
+        {
+        }
     }
 }

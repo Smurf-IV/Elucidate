@@ -40,17 +40,21 @@ namespace Elucidate.AppTabs
 {
     public partial class DriveSpaceDisplay : UserControl
     {
+        public ConfigFileHelper SnapRaidConfig = null;
+        
         private bool _percentage;
         private WaitCursor _waiting;
         private string _oldTooltip;
-        public class ChartDataItem
+
+        private class ChartDataItem
         {
             public string Path { get; set; }
             public ByteSize RootBytesNotCoveredByPath { get; set; }
             public ByteSize PathUsedBytes { get; set; }
             public ByteSize FreeBytesAvailable { get; set; }
         }
-        public readonly List<ChartDataItem> ChartDataList = new List<ChartDataItem>();
+
+        private readonly List<ChartDataItem> ChartDataList = new List<ChartDataItem>();
         public DriveSpaceDisplay()
         {
             InitializeComponent();
@@ -244,5 +248,12 @@ namespace Elucidate.AppTabs
             }
         }
 
+        private void DriveSpaceDisplay_Load(object sender, EventArgs e)
+        {
+            SnapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+            SnapRaidConfig.Read();
+            List<string> paths = SnapRaidConfig.SnapShotSources;
+            StartProcessing(paths);
+        }
     }
 }

@@ -128,7 +128,7 @@ namespace Elucidate.AppTabs
             this.chart1.Series.Add(series1);
             this.chart1.Series.Add(series2);
             this.chart1.Series.Add(series3);
-            this.chart1.Size = new System.Drawing.Size(441, 286);
+            this.chart1.Size = new System.Drawing.Size(331, 232);
             this.chart1.TabIndex = 3;
             this.toolTip1.SetToolTip(this.chart1, "Click to toggle between Size and Percentage");
             this.chart1.Click += new System.EventHandler(this.chart1_Click);
@@ -141,12 +141,12 @@ namespace Elucidate.AppTabs
             // 
             // DriveSpaceDisplay
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.chart1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "DriveSpaceDisplay";
-            this.Size = new System.Drawing.Size(441, 286);
+            this.Size = new System.Drawing.Size(331, 232);
+            this.Load += new System.EventHandler(this.DriveSpaceDisplay_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
 

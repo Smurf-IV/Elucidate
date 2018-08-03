@@ -35,7 +35,7 @@ using Elucidate.Logging;
 
 namespace Elucidate
 {
-    internal class ConfigFileHelper
+    public class ConfigFileHelper
     {
         private string ConfigPath { get; set; }
 
@@ -356,8 +356,10 @@ namespace Elucidate
 
         public List<string> IncludePatterns { get; set; }
 
+        // ReSharper disable once InconsistentNaming
         public uint BlockSizeKB { get; set; }
 
+        // ReSharper disable once InconsistentNaming
         public uint AutoSaveGB { get; set; }
 
         public bool Nohidden { get; set; }

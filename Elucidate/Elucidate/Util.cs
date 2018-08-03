@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Forms;
 using Elucidate.Logging;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -12,12 +15,11 @@ namespace Elucidate
 {
     public static class Util
     {
-
         public static string FormatSnapRaidCommandArgs(string command, string additionalCommands, out string appPath)
         {
             // Format according to this: http://snapraid.sourceforge.net/manual.html
             // e.g. "D:\snapraid-1.3-windows-x64\snapraid" -c "D:\snapraid-1.3-windows-x64\snapraid.conf" sync
-            appPath = $"\"{Properties.Settings.Default.SnapRAIDFileLocation}\"";
+            appPath = Properties.Settings.Default.SnapRAIDFileLocation;
             // Find the meanings @ http://snapraid.sourceforge.net/manual.html  6 Options
             // status|smart|up|down|diff|sync|scrub|fix|check|list|dup|pool|devices|touch|rehash
             StringBuilder args = new StringBuilder(additionalCommands);
@@ -38,12 +40,40 @@ namespace Elucidate
             return args.ToString();
         }
 
+        public static string AddLoggingToArgs(string args)
+        {
+            string appDir = Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation);
+            string logDir = Properties.Settings.Default.LogFileDirectory;
+            //string logFilename = $"{DateTime.Now:yyyyMMddhhmmss}.log";
+            string logFilename = "%date:~10,4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%%time:~6,2%.log";
+            string newArgs = $@"--log ""{appDir}\{logDir}\{logFilename}"" {args}";
+            return newArgs;
+        }
+
         public static double RoundUpToDecimalPlace(double numToRound, int decimalPlace)
         {
             if (decimalPlace < 1) return numToRound; // return original nmber if 0 decimal places requested
             string strX = $"1{new String('0', decimalPlace)}";
             int intX = Convert.ToInt32(strX);
             return Math.Ceiling(numToRound * intX) / intX;
+        }
+
+        public static string ComputeSha256Hash(string rawData)
+        {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
 
         public static string SnapRaidLatestVersion()
@@ -88,6 +118,40 @@ namespace Elucidate
             return null;
         }
         
+        private static void RunElevatedProcess(string fileName, string args = "")
+        {
+            Process process = null;
+
+            var processStartInfo = new ProcessStartInfo { FileName = fileName };
+
+            if (Environment.OSVersion.Version.Major >= 6)  // Windows Vista or higher
+            {
+                processStartInfo.Verb = "runas";
+            }
+            else
+            {
+                // No need to prompt to run as admin
+            }
+
+            processStartInfo.Arguments = args;
+            processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            processStartInfo.UseShellExecute = true;
+
+            try
+            {
+                process = Process.Start(processStartInfo);
+                //process.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                process?.Dispose();
+            }
+        }
+
         #region DLL Imports
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true, CallingConvention = CallingConvention.Winapi)]

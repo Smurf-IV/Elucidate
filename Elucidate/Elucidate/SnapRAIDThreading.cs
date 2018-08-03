@@ -35,9 +35,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Elucidate.Logging;
 using Elucidate.wyDay.Controls;
-using NLog;
-using NLog.Targets;
-using NLog.Targets.Wrappers;
 
 namespace Elucidate
 {
@@ -59,8 +56,8 @@ namespace Elucidate
 
         private class ThreadObject
         {
-            public BackgroundWorker bgdWorker;
-            public Process cmdProcess;
+            public BackgroundWorker BgdWorker;
+            public Process CmdProcess;
         }
 
         private void actionWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -93,19 +90,13 @@ namespace Elucidate
                 if (runWithoutCaptureMenuItem.Checked)
                 {
                     Log.Instance.Warn("Running without Capture mode");
-
-                    FileTarget fileTarget = (FileTarget)((AsyncTargetWrapper)LogManager.Configuration.FindTargetByName("file")).WrappedTarget;
-                    // Need to set timestamp here if filename uses date.
-                    // For example - filename="${basedir}/logs/${shortdate}/trace.log"
-                    LogEventInfo logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
-                    FileInfo fi = new FileInfo(fileTarget.FileName.Render(logEventInfo));
-                    args += $" 2> \"{fi.DirectoryName}\\Verbose-{DateTime.UtcNow:yyyy-MM-dd HH.mm}.log\"";
                     Log.Instance.Info("Starting minimised {0} {1}", appPath, args);
+                    Log.Instance.Info("Working...");
                     ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         FileName = "CMD.exe",
                         Arguments = $" /K \"{appPath} {args}\"",
-                        WorkingDirectory = @"C:\Windows\System32",
+                        WorkingDirectory = $"{Path.GetDirectoryName(Properties.Settings.Default.SnapRAIDFileLocation)}",
                         UseShellExecute = true,
                         WindowStyle = ProcessWindowStyle.Minimized,
                         ErrorDialog = true
@@ -135,7 +126,7 @@ namespace Elucidate
 
                     process.Start();
                     // Redirect the output stream of the child process.
-                    ThreadObject threadObject = new ThreadObject { bgdWorker = worker, cmdProcess = process };
+                    ThreadObject threadObject = new ThreadObject { BgdWorker = worker, CmdProcess = process };
                     ThreadPool.QueueUserWorkItem(o => ReadStandardOutput(threadObject));
                     ThreadPool.QueueUserWorkItem(o => ReadStandardError(threadObject));
 
@@ -205,7 +196,7 @@ namespace Elucidate
                 string buf;
                 do
                 {
-                    if (!string.IsNullOrEmpty(buf = threadObject.cmdProcess.StandardError.ReadLine()))
+                    if (!string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardError.ReadLine()))
                     {
                         _lastError = buf;
                         Log.Instance.Warn("Verbose[{0}]", buf);
@@ -233,14 +224,14 @@ namespace Elucidate
                 string buf;
                 do
                 {
-                    if (!string.IsNullOrEmpty(buf = threadObject.cmdProcess.StandardOutput.ReadLine()))
+                    if (!string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardOutput.ReadLine()))
                     {
                         Log.Instance.Info("StdOut[{0}]", buf);
                         if (!buf.Contains("%")) continue;
                         string[] splits = buf.Split('%');
                         if (int.TryParse(splits[0], out int percentProgress))
                         {
-                            threadObject.bgdWorker.ReportProgress(percentProgress, buf);
+                            threadObject.BgdWorker.ReportProgress(percentProgress, buf);
                         }
                     }
                     else

@@ -126,6 +126,12 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>132, 15</value>
   </metadata>
+  <data name="btnStatus.ToolTip" xml:space="preserve">
+    <value>Prints a summary of the state of the disk array.
+It includes information about the parity fragmentation, how old are the blocks without checking, and all the recorded silent errors encountered while scrubbing.
+Note that the information presented refers at the latest time you run "sync". Later modifications are not taken into account.
+Nothing is modified. </value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -389,10 +395,4 @@
   <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>361, 15</value>
   </metadata>
-  <data name="btnStatus.ToolTip" xml:space="preserve">
-    <value>Prints a summary of the state of the disk array.
-It includes information about the parity fragmentation, how old are the blocks without checking, and all the recorded silent errors encountered while scrubbing.
-Note that the information presented refers at the latest time you run "sync". Later modifications are not taken into account.
-Nothing is modified. </value>
-  </data>
 </root>
