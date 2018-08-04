@@ -27,35 +27,45 @@
 #endregion Copyright (C)
 
 using System;
-using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
-using System.Xml;
+using Elucidate.Logging;
 
 namespace Elucidate
 {
     public partial class LogFileLocation : Form
     {
-        private const string configurationNlogVariableNameLogdirValue = @"/configuration/nlog/variable[@name='LogDir'][@value]";
-
         public LogFileLocation()
         {
             InitializeComponent();
 
-            // retrieve appSettings node
             txtNewLocation.Text = txtCurrentLocation.Text = GetLogFileLocation();
+        }
+
+        private static string GetLogFileLocation()
+        {
+            return string.IsNullOrEmpty(Properties.Settings.Default.NlogFileLocation) ? Log.DefaultLogLocation : Properties.Settings.Default.NlogFileLocation;
         }
 
         private void btnDefault_Click(object sender, EventArgs e)
         {
-            txtCurrentLocation.Text = txtNewLocation.Text = @"${specialfolder:folder=CommonApplicationData}/Elucidate/Logs";
-            WriteSetting(txtCurrentLocation.Text);
+            txtNewLocation.Text = Log.DefaultLogLocation;
         }
 
         private void btnCommit_Click(object sender, EventArgs e)
         {
-            WriteSetting(txtNewLocation.Text);
-            txtCurrentLocation.Text = txtNewLocation.Text;
+            try
+            {
+                if (string.IsNullOrEmpty(txtNewLocation.Text))
+                {
+                    txtNewLocation.Text = Log.DefaultLogLocation;
+                }
+                Log.SetLogPath(txtNewLocation.Text);
+                txtCurrentLocation.Text = txtNewLocation.Text;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.ReportException(ex);
+            }
         }
 
         private void btnLaunchBrowser_Click(object sender, EventArgs e)
@@ -65,46 +75,6 @@ namespace Elucidate
                 txtNewLocation.Text = folderBrowserDialog1.SelectedPath;
             }
         }
-
-        private static void WriteSetting(string value)
-        {
-            try
-            {
-                XmlDocument doc = LoadConfigDocument();
-                XmlAttribute att = doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"];
-                att.Value = value;
-                doc.Save(GetConfigFilePath());
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        private static string GetLogFileLocation()
-        {
-            XmlDocument doc = LoadConfigDocument();
-            return doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"].Value;
-        }
-
-        private static XmlDocument LoadConfigDocument()
-        {
-            try
-            {
-                var doc = new XmlDocument();
-                doc.Load(GetConfigFilePath());
-                return doc;
-            }
-            catch (FileNotFoundException e)
-            {
-                throw new Exception("No configuration file found.", e);
-            }
-        }
-
-        private static string GetConfigFilePath()
-        {
-            return $"{Assembly.GetExecutingAssembly().Location}.config";
-        }
-
+        
     }
 }

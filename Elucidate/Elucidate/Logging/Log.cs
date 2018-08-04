@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using NLog;
 using NLog.Targets;
 
@@ -7,6 +6,10 @@ namespace Elucidate.Logging
 {
     internal static class Log
     {
+        public const string DefaultLogLocation = @"${specialfolder:folder=CommonApplicationData}/Elucidate/Logs";
+        private const string DefaultLogFilename = @"/${date:format=yyyyMMdd}.log";
+        private const string DefaultArchiveLogFilename = @"/{###}.log";
+
         public static Logger Instance { get; private set; }
 
         internal enum LogLevels
@@ -15,29 +18,41 @@ namespace Elucidate.Logging
             Debug,
             Warn
         }
+
         static Log()
         {
 #if !DEBUG
             DisableLogLevel(LogLevels.Trace);
             DisableLogLevel(LogLevels.Debug);
 #endif
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.NlogFileLocation))
+            {
+                SetLogPath(Properties.Settings.Default.NlogFileLocation);
+            }
             LogManager.ReconfigExistingLoggers();
             Instance = LogManager.GetCurrentClassLogger();
         }
 
-        public static void SetLogFile(string logFilePath)
+        public static void SetLogPath(string logFilePath = DefaultLogLocation)
         {
-            if (LogManager.Configuration.FindTargetByName("file") is FileTarget target)
+            try
             {
-                if (!Directory.Exists(Path.GetDirectoryName(logFilePath)))
+                if (LogManager.Configuration.FindTargetByName("file") is FileTarget target)
                 {
-                    Directory.CreateDirectory(Path.GetDirectoryName(logFilePath) ?? throw new InvalidOperationException());
+                    target.FileName = $"{logFilePath}{DefaultLogFilename}";
+                    target.ArchiveFileName = $"{logFilePath}{DefaultArchiveLogFilename}";
                 }
-                target.FileName = logFilePath;
+                LogManager.ReconfigExistingLoggers();
+                // persist change
+                Properties.Settings.Default.NlogFileLocation = logFilePath == DefaultLogLocation ? string.Empty : logFilePath;
+                Properties.Settings.Default.Save();
             }
-            LogManager.ReconfigExistingLoggers();
+            catch (Exception ex)
+            {
+                ExceptionHandler.ReportException(ex);
+            }
         }
-
+        
         public static void SetLogLevel(LogLevels logLevel, bool enable)
         {
             LogLevel targetLogLevel;

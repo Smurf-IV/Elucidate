@@ -57,7 +57,10 @@ namespace Elucidate.Controls
                     break;
                 case 1:
                     // Elucidate
-                    _logSourcePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\{Properties.Settings.Default.LogFileDirectory}\";
+                    //_logSourcePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\{Properties.Settings.Default.LogFileDirectory}\";
+                    _logSourcePath = $@"{Properties.Settings.Default.NlogFileLocation}\";
+                    _logSourcePath = Environment.ExpandEnvironmentVariables(_logSourcePath);
+                    
                     break;
                 default:
                     break;

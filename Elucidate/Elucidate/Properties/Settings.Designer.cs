@@ -196,5 +196,17 @@ namespace Elucidate.Properties {
                 this["LogFileDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string NlogFileLocation {
+            get {
+                return ((string)(this["NlogFileLocation"]));
+            }
+            set {
+                this["NlogFileLocation"] = value;
+            }
+        }
     }
 }
