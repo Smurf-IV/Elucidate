@@ -35,7 +35,34 @@ namespace Elucidate
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ElucidateForm));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.statusStrip1 = new System.Windows.Forms.Panel();
+            this.spacer = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.btnRemoveOutput = new System.Windows.Forms.Button();
+            this.btnDiff = new Elucidate.Shared.CommandLinkButton();
+            this.btnScrub = new Elucidate.Shared.CommandLinkButton();
+            this.btnStatus = new Elucidate.Shared.CommandLinkButton();
+            this.btnFix = new Elucidate.Shared.CommandLinkButton();
+            this.btnDupFinder = new Elucidate.Shared.CommandLinkButton();
+            this.driveSpace = new Elucidate.AppTabs.DriveSpaceDisplay();
+            this.textBoxLogging = new Elucidate.Shared.FlickerFreeRichEditTextBox();
+            this.coveragePage = new System.Windows.Forms.TabPage();
+            this.RecoveryOperations = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.SchedulePage = new System.Windows.Forms.TabPage();
+            this.SchedulePageScheduleControl = new Elucidate.Controls.Schedule();
+            this.StandardOperations = new System.Windows.Forms.TabPage();
+            this.logPanel = new System.Windows.Forms.Panel();
+            this.liveRunLogControl1 = new Elucidate.Controls.LiveRunLogControl();
+            this.commandPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnSync = new Elucidate.Shared.CommandLinkButton();
+            this.btnCheck = new Elucidate.Shared.CommandLinkButton();
+            this.btnUndelete = new Elucidate.Shared.CommandLinkButton();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabLogs = new System.Windows.Forms.TabPage();
+            this.logsViewerControl = new Elucidate.Controls.LogsViewerControl();
             this.snapRAIDConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logViewToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,158 +71,23 @@ namespace Elucidate
             this.VersionIndicator = new System.Windows.Forms.ToolStripMenuItem();
             this.runWithoutCaptureMenuItem = new ToolStripCheckBoxMenuItem();
             this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.Panel();
-            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
-            this.spacer = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.btnRemoveOutput = new System.Windows.Forms.Button();
-            this.txtAddCommands = new System.Windows.Forms.TextBox();
-            this.labelCommandLineOptions = new System.Windows.Forms.Label();
-            this.textBoxLiveLog = new Elucidate.Shared.FlickerFreeRichEditTextBox();
-            this.btnDiff = new Elucidate.Shared.CommandLinkButton();
-            this.btnScrub = new Elucidate.Shared.CommandLinkButton();
-            this.btnStatus = new Elucidate.Shared.CommandLinkButton();
-            this.btnFix = new Elucidate.Shared.CommandLinkButton();
-            this.btnDupFinder = new Elucidate.Shared.CommandLinkButton();
-            this.driveSpace = new Elucidate.AppTabs.DriveSpaceDisplay();
-            this.textBoxLogging = new Elucidate.Shared.FlickerFreeRichEditTextBox();
-            this.menuRealTime = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deleteContentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copySelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.miscTabPage = new System.Windows.Forms.TabPage();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.coveragePage = new System.Windows.Forms.TabPage();
-            this.RecoveryOperations = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
-            this.SchedulePage = new System.Windows.Forms.TabPage();
-            this.SchedulePageScheduleControl = new Elucidate.Controls.Schedule();
-            this.StandardOperations = new System.Windows.Forms.TabPage();
-            this.logPanel = new System.Windows.Forms.Panel();
-            this.addCommandPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.commandPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnSync = new Elucidate.Shared.CommandLinkButton();
-            this.btnCheck = new Elucidate.Shared.CommandLinkButton();
-            this.btnUndelete = new Elucidate.Shared.CommandLinkButton();
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabLogs = new System.Windows.Forms.TabPage();
-            this.logsViewerControl = new Elucidate.Controls.LogsViewerControl();
-            this.menuStrip1.SuspendLayout();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.statusStrip1.SuspendLayout();
-            this.menuRealTime.SuspendLayout();
             this.coveragePage.SuspendLayout();
             this.RecoveryOperations.SuspendLayout();
             this.SchedulePage.SuspendLayout();
             this.StandardOperations.SuspendLayout();
             this.logPanel.SuspendLayout();
-            this.addCommandPanel.SuspendLayout();
             this.commandPanel.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabLogs.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.snapRAIDConfigToolStripMenuItem,
-            this.logViewToolStripMenuItem,
-            this.helpToolStripMenuItem,
-            this.VersionIndicator,
-            this.runWithoutCaptureMenuItem,
-            this.changeToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(994, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // snapRAIDConfigToolStripMenuItem
-            // 
-            this.snapRAIDConfigToolStripMenuItem.Name = "snapRAIDConfigToolStripMenuItem";
-            this.snapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(129, 20);
-            this.snapRAIDConfigToolStripMenuItem.Text = "Snap&RAID Config...";
-            this.snapRAIDConfigToolStripMenuItem.ToolTipText = "Change the location of SnapRAID and config it\'s settings.";
-            this.snapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
-            // 
-            // logViewToolStripMenuItem
-            // 
-            this.logViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.logViewToolStripMenuItem1,
-            this.changeLogLocationToolStripMenuItem});
-            this.logViewToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logViewToolStripMenuItem.Name = "logViewToolStripMenuItem";
-            this.logViewToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
-            this.logViewToolStripMenuItem.Text = "&Logging";
-            this.logViewToolStripMenuItem.ToolTipText = "Open a View of Elucidates log file.";
-            // 
-            // logViewToolStripMenuItem1
-            // 
-            this.logViewToolStripMenuItem1.Name = "logViewToolStripMenuItem1";
-            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(135, 22);
-            this.logViewToolStripMenuItem1.Text = "&View...";
-            this.logViewToolStripMenuItem1.Click += new System.EventHandler(this.logViewToolStripMenuItem_Click);
-            // 
-            // changeLogLocationToolStripMenuItem
-            // 
-            this.changeLogLocationToolStripMenuItem.Name = "changeLogLocationToolStripMenuItem";
-            this.changeLogLocationToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.changeLogLocationToolStripMenuItem.Text = "&Location...";
-            this.changeLogLocationToolStripMenuItem.Click += new System.EventHandler(this.changeLogLocationToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.helpToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            this.helpToolStripMenuItem.ToolTipText = "Goto the Help page.";
-            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
-            // 
-            // VersionIndicator
-            // 
-            this.VersionIndicator.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.VersionIndicator.Enabled = false;
-            this.VersionIndicator.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.VersionIndicator.Name = "VersionIndicator";
-            this.VersionIndicator.ShowShortcutKeys = false;
-            this.VersionIndicator.Size = new System.Drawing.Size(107, 20);
-            this.VersionIndicator.Text = "VersionIndicator";
-            this.VersionIndicator.ToolTipText = "The build number of this application.";
-            this.VersionIndicator.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
-            // 
-            // runWithoutCaptureMenuItem
-            // 
-            this.runWithoutCaptureMenuItem.CheckOnClick = true;
-            this.runWithoutCaptureMenuItem.Name = "runWithoutCaptureMenuItem";
-            this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(151, 20);
-            this.runWithoutCaptureMenuItem.Text = "   Run &Without Capture";
-            this.runWithoutCaptureMenuItem.ToolTipText = "Run SnapRaid and send logs to a file rather than capturing here.";
-            // 
-            // changeToolStripMenuItem
-            // 
-            this.changeToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.changeToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
-            this.changeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.changeToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
-            this.changeToolStripMenuItem.Text = "C&hangeLog";
-            this.changeToolStripMenuItem.Click += new System.EventHandler(this.changeToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Controls.Add(this.toolStripProgressBar1);
             this.statusStrip1.Controls.Add(this.spacer);
-            this.statusStrip1.Controls.Add(this.comboBox1);
             this.statusStrip1.Controls.Add(this.label3);
-            this.statusStrip1.Controls.Add(this.toolStripStatusLabel1);
             this.statusStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.statusStrip1.Location = new System.Drawing.Point(0, 535);
             this.statusStrip1.Margin = new System.Windows.Forms.Padding(0);
@@ -205,74 +97,25 @@ namespace Elucidate
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.ContainerControl = this;
-            this.toolStripProgressBar1.DisplayText = "";
-            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
-            this.toolStripProgressBar1.Location = new System.Drawing.Point(274, 3);
-            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.ShowInTaskbar = true;
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(717, 20);
-            this.toolStripProgressBar1.Step = 3;
-            this.toolStripProgressBar1.TabIndex = 1;
-            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
-            // 
             // spacer
             // 
             this.spacer.AutoSize = true;
             this.spacer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.spacer.Location = new System.Drawing.Point(263, 3);
+            this.spacer.Location = new System.Drawing.Point(14, 3);
             this.spacer.Name = "spacer";
             this.spacer.Size = new System.Drawing.Size(11, 14);
             this.spacer.TabIndex = 3;
             this.spacer.Text = " ";
             // 
-            // comboBox1
-            // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.IntegralHeight = false;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Stopped",
-            "Running",
-            "Abort",
-            "Idle"});
-            this.comboBox1.Location = new System.Drawing.Point(150, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(113, 22);
-            this.comboBox1.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.comboBox1, "Change the state of the current running SnapRAID process.");
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label3.Location = new System.Drawing.Point(139, 3);
+            this.label3.Location = new System.Drawing.Point(3, 3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(11, 14);
             this.label3.TabIndex = 4;
             this.label3.Text = " ";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.AutoSize = true;
-            this.toolStripStatusLabel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.toolStripStatusLabel1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripStatusLabel1.Location = new System.Drawing.Point(3, 3);
-            this.toolStripStatusLabel1.Margin = new System.Windows.Forms.Padding(0);
-            this.toolStripStatusLabel1.MinimumSize = new System.Drawing.Size(132, 28);
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(136, 28);
-            this.toolStripStatusLabel1.TabIndex = 0;
-            this.toolStripStatusLabel1.Text = "2011-06-012T18:54:54";
-            this.toolTip1.SetToolTip(this.toolStripStatusLabel1, "Last action started @");
             // 
             // webBrowser1
             // 
@@ -303,51 +146,6 @@ namespace Elucidate
             this.toolTip1.SetToolTip(this.btnRemoveOutput, "This will remove all the files that SnapRAID creates.");
             this.btnRemoveOutput.UseVisualStyleBackColor = true;
             this.btnRemoveOutput.Click += new System.EventHandler(this.btnRemoveOutput_Click);
-            // 
-            // txtAddCommands
-            // 
-            this.txtAddCommands.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.txtAddCommands.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtAddCommands.Location = new System.Drawing.Point(217, 1);
-            this.txtAddCommands.Margin = new System.Windows.Forms.Padding(1);
-            this.txtAddCommands.MaxLength = 128;
-            this.txtAddCommands.Name = "txtAddCommands";
-            this.txtAddCommands.Size = new System.Drawing.Size(100, 17);
-            this.txtAddCommands.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtAddCommands, "Example of commands:\r\n   -a,   to only check file hashes\r\n   -E, --force-empty\r\n " +
-        "  -d,  to filter by disk NAME (e.g. d0)");
-            this.txtAddCommands.WordWrap = false;
-            // 
-            // labelCommandLineOptions
-            // 
-            this.labelCommandLineOptions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelCommandLineOptions.Location = new System.Drawing.Point(3, 0);
-            this.labelCommandLineOptions.MinimumSize = new System.Drawing.Size(210, 20);
-            this.labelCommandLineOptions.Name = "labelCommandLineOptions";
-            this.labelCommandLineOptions.Size = new System.Drawing.Size(210, 20);
-            this.labelCommandLineOptions.TabIndex = 4;
-            this.labelCommandLineOptions.Text = "&Additional Command line options:";
-            this.labelCommandLineOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.toolTip1.SetToolTip(this.labelCommandLineOptions, "Example of commands:\r\n   -A, --audit-only option\r\n   -E, --force-empty\r\n   -d, --" +
-        "filter-disk NAME");
-            // 
-            // textBoxLiveLog
-            // 
-            this.textBoxLiveLog.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.textBoxLiveLog.CausesValidation = false;
-            this.textBoxLiveLog.DetectUrls = false;
-            this.textBoxLiveLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxLiveLog.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLiveLog.Location = new System.Drawing.Point(0, 0);
-            this.textBoxLiveLog.MaxLength = 10000000;
-            this.textBoxLiveLog.Name = "textBoxLiveLog";
-            this.textBoxLiveLog.ReadOnly = true;
-            this.textBoxLiveLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.textBoxLiveLog.Size = new System.Drawing.Size(984, 239);
-            this.textBoxLiveLog.TabIndex = 0;
-            this.textBoxLiveLog.Text = "";
-            this.toolTip1.SetToolTip(this.textBoxLiveLog, "Current output going into the log file. ");
-            this.textBoxLiveLog.WordWrap = false;
             // 
             // btnDiff
             // 
@@ -495,6 +293,7 @@ namespace Elucidate
             // 
             // driveSpace
             // 
+            this.driveSpace.Cursor = System.Windows.Forms.Cursors.Default;
             this.driveSpace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.driveSpace.Location = new System.Drawing.Point(3, 3);
             this.driveSpace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -507,7 +306,6 @@ namespace Elucidate
             // 
             this.textBoxLogging.AutoWordSelection = true;
             this.textBoxLogging.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxLogging.ContextMenuStrip = this.menuRealTime;
             this.textBoxLogging.DetectUrls = false;
             this.textBoxLogging.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxLogging.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -523,46 +321,6 @@ namespace Elucidate
             this.toolTip1.SetToolTip(this.textBoxLogging, "Current output going into the log file. \r\nSelect and use [Ctrl+C] or [Ctrl+Insert" +
         "] to copy.\r\nSelect and press Delete to clear contents.");
             this.textBoxLogging.WordWrap = false;
-            // 
-            // menuRealTime
-            // 
-            this.menuRealTime.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.menuRealTime.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteContentsToolStripMenuItem,
-            this.copySelectedToolStripMenuItem});
-            this.menuRealTime.Name = "menuRealTime";
-            this.menuRealTime.Size = new System.Drawing.Size(191, 48);
-            this.menuRealTime.Text = "menuStrip2";
-            // 
-            // deleteContentsToolStripMenuItem
-            // 
-            this.deleteContentsToolStripMenuItem.Name = "deleteContentsToolStripMenuItem";
-            this.deleteContentsToolStripMenuItem.ShortcutKeyDisplayString = "Del";
-            this.deleteContentsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.deleteContentsToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-            this.deleteContentsToolStripMenuItem.Text = "&Delete contents";
-            this.deleteContentsToolStripMenuItem.Click += new System.EventHandler(this.DeleteContentsToolStripMenuItem_Click);
-            // 
-            // copySelectedToolStripMenuItem
-            // 
-            this.copySelectedToolStripMenuItem.Name = "copySelectedToolStripMenuItem";
-            this.copySelectedToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+C";
-            this.copySelectedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.copySelectedToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
-            this.copySelectedToolStripMenuItem.Text = "&Copy selected";
-            this.copySelectedToolStripMenuItem.Click += new System.EventHandler(this.CopySelectedToolStripMenuItem_Click);
-            // 
-            // miscTabPage
-            // 
-            this.miscTabPage.Location = new System.Drawing.Point(0, 0);
-            this.miscTabPage.Name = "miscTabPage";
-            this.miscTabPage.Size = new System.Drawing.Size(200, 100);
-            this.miscTabPage.TabIndex = 0;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 250;
-            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // coveragePage
             // 
@@ -627,7 +385,6 @@ namespace Elucidate
             this.StandardOperations.BackColor = System.Drawing.SystemColors.Control;
             this.StandardOperations.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.StandardOperations.Controls.Add(this.logPanel);
-            this.StandardOperations.Controls.Add(this.addCommandPanel);
             this.StandardOperations.Controls.Add(this.commandPanel);
             this.StandardOperations.Location = new System.Drawing.Point(4, 25);
             this.StandardOperations.Margin = new System.Windows.Forms.Padding(0);
@@ -638,24 +395,21 @@ namespace Elucidate
             // 
             // logPanel
             // 
-            this.logPanel.Controls.Add(this.textBoxLiveLog);
+            this.logPanel.Controls.Add(this.liveRunLogControl1);
             this.logPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logPanel.Location = new System.Drawing.Point(0, 210);
             this.logPanel.Name = "logPanel";
-            this.logPanel.Size = new System.Drawing.Size(984, 239);
+            this.logPanel.Size = new System.Drawing.Size(984, 270);
             this.logPanel.TabIndex = 11;
             // 
-            // addCommandPanel
+            // liveRunLogControl1
             // 
-            this.addCommandPanel.Controls.Add(this.labelCommandLineOptions);
-            this.addCommandPanel.Controls.Add(this.txtAddCommands);
-            this.addCommandPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.addCommandPanel.Location = new System.Drawing.Point(0, 449);
-            this.addCommandPanel.MinimumSize = new System.Drawing.Size(200, 31);
-            this.addCommandPanel.Name = "addCommandPanel";
-            this.addCommandPanel.Size = new System.Drawing.Size(984, 31);
-            this.addCommandPanel.TabIndex = 10;
-            this.addCommandPanel.WrapContents = false;
+            this.liveRunLogControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.liveRunLogControl1.Location = new System.Drawing.Point(0, 0);
+            this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.liveRunLogControl1.Name = "liveRunLogControl1";
+            this.liveRunLogControl1.Size = new System.Drawing.Size(984, 270);
+            this.liveRunLogControl1.TabIndex = 0;
             // 
             // commandPanel
             // 
@@ -799,6 +553,98 @@ namespace Elucidate
             this.logsViewerControl.Size = new System.Drawing.Size(980, 476);
             this.logsViewerControl.TabIndex = 0;
             // 
+            // snapRAIDConfigToolStripMenuItem
+            // 
+            this.snapRAIDConfigToolStripMenuItem.Name = "snapRAIDConfigToolStripMenuItem";
+            this.snapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(129, 20);
+            this.snapRAIDConfigToolStripMenuItem.Text = "Snap&RAID Config...";
+            this.snapRAIDConfigToolStripMenuItem.ToolTipText = "Change the location of SnapRAID and config it\'s settings.";
+            this.snapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            // 
+            // logViewToolStripMenuItem
+            // 
+            this.logViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.logViewToolStripMenuItem1,
+            this.changeLogLocationToolStripMenuItem});
+            this.logViewToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logViewToolStripMenuItem.Name = "logViewToolStripMenuItem";
+            this.logViewToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.logViewToolStripMenuItem.Text = "&Logging";
+            this.logViewToolStripMenuItem.ToolTipText = "Open a View of Elucidates log file.";
+            // 
+            // logViewToolStripMenuItem1
+            // 
+            this.logViewToolStripMenuItem1.Name = "logViewToolStripMenuItem1";
+            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(135, 22);
+            this.logViewToolStripMenuItem1.Text = "&View...";
+            this.logViewToolStripMenuItem1.Click += new System.EventHandler(this.logViewToolStripMenuItem_Click);
+            // 
+            // changeLogLocationToolStripMenuItem
+            // 
+            this.changeLogLocationToolStripMenuItem.Name = "changeLogLocationToolStripMenuItem";
+            this.changeLogLocationToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.changeLogLocationToolStripMenuItem.Text = "&Location...";
+            this.changeLogLocationToolStripMenuItem.Click += new System.EventHandler(this.changeLogLocationToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.helpToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.ToolTipText = "Goto the Help page.";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            // 
+            // VersionIndicator
+            // 
+            this.VersionIndicator.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.VersionIndicator.Enabled = false;
+            this.VersionIndicator.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VersionIndicator.Name = "VersionIndicator";
+            this.VersionIndicator.ShowShortcutKeys = false;
+            this.VersionIndicator.Size = new System.Drawing.Size(107, 20);
+            this.VersionIndicator.Text = "VersionIndicator";
+            this.VersionIndicator.ToolTipText = "The build number of this application.";
+            this.VersionIndicator.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            // 
+            // runWithoutCaptureMenuItem
+            // 
+            this.runWithoutCaptureMenuItem.CheckOnClick = true;
+            this.runWithoutCaptureMenuItem.Name = "runWithoutCaptureMenuItem";
+            this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(151, 20);
+            this.runWithoutCaptureMenuItem.Text = "   Run &Without Capture";
+            this.runWithoutCaptureMenuItem.ToolTipText = "Run SnapRaid and send logs to a file rather than capturing here.";
+            // 
+            // changeToolStripMenuItem
+            // 
+            this.changeToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.changeToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
+            this.changeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.changeToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.changeToolStripMenuItem.Text = "C&hangeLog";
+            this.changeToolStripMenuItem.Click += new System.EventHandler(this.changeToolStripMenuItem_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.snapRAIDConfigToolStripMenuItem,
+            this.logViewToolStripMenuItem,
+            this.helpToolStripMenuItem,
+            this.VersionIndicator,
+            this.runWithoutCaptureMenuItem,
+            this.changeToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(994, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
             // ElucidateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -816,15 +662,10 @@ namespace Elucidate
             this.Name = "ElucidateForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Elucidate: A SnapRAID Command Line Driver";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.ElucidateForm_Load);
-            this.Shown += new System.EventHandler(this.Form1_Shown);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Elucidate_KeyDown);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.ResizeEnd += new System.EventHandler(this.ElucidateForm_ResizeEnd);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.menuRealTime.ResumeLayout(false);
             this.coveragePage.ResumeLayout(false);
             this.RecoveryOperations.ResumeLayout(false);
             this.RecoveryOperations.PerformLayout();
@@ -833,12 +674,12 @@ namespace Elucidate
             this.StandardOperations.ResumeLayout(false);
             this.StandardOperations.PerformLayout();
             this.logPanel.ResumeLayout(false);
-            this.addCommandPanel.ResumeLayout(false);
-            this.addCommandPanel.PerformLayout();
             this.commandPanel.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
             this.tabLogs.ResumeLayout(false);
             this.tabLogs.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -846,35 +687,14 @@ namespace Elucidate
 
         #endregion
 
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem snapRAIDConfigToolStripMenuItem;
-        private ToolStripMenuItem logViewToolStripMenuItem;
-        private ToolStripMenuItem VersionIndicator;
         private Panel statusStrip1;
-        private Label toolStripStatusLabel1;
-        private TextOverProgressBar toolStripProgressBar1;
         private ToolTip toolTip1;
-        private ToolStripMenuItem helpToolStripMenuItem;
-        private ToolStripMenuItem logViewToolStripMenuItem1;
-        private ToolStripMenuItem changeLogLocationToolStripMenuItem;
         private FlickerFreeRichEditTextBox textBoxLogging;
-        private ContextMenuStrip menuRealTime;
-        private ToolStripMenuItem deleteContentsToolStripMenuItem;
-        private ComboBox comboBox1;
-        private Timer timer1;
-        private ToolStripCheckBoxMenuItem runWithoutCaptureMenuItem;
-        private ToolStripMenuItem copySelectedToolStripMenuItem;
-        private ToolStripMenuItem changeToolStripMenuItem;
-        private TabPage miscTabPage;
         private Label spacer;
         private Label label3;
         private TabControl tabControl;
         private TabPage StandardOperations;
         private Panel logPanel;
-        private FlickerFreeRichEditTextBox textBoxLiveLog;
-        private FlowLayoutPanel addCommandPanel;
-        private Label labelCommandLineOptions;
-        private TextBox txtAddCommands;
         private FlowLayoutPanel commandPanel;
         private CommandLinkButton btnDiff;
         private CommandLinkButton btnScrub;
@@ -894,6 +714,16 @@ namespace Elucidate
         private DriveSpaceDisplay driveSpace;
         private TabPage tabLogs;
         private Controls.LogsViewerControl logsViewerControl;
+        private Controls.LiveRunLogControl liveRunLogControl1;
+        private ToolStripMenuItem snapRAIDConfigToolStripMenuItem;
+        private ToolStripMenuItem logViewToolStripMenuItem;
+        private ToolStripMenuItem logViewToolStripMenuItem1;
+        private ToolStripMenuItem changeLogLocationToolStripMenuItem;
+        private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripMenuItem VersionIndicator;
+        private ToolStripCheckBoxMenuItem runWithoutCaptureMenuItem;
+        private ToolStripMenuItem changeToolStripMenuItem;
+        private MenuStrip menuStrip1;
     }
 }
 

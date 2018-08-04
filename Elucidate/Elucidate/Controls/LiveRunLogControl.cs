@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Elucidate.Logging;
 using Elucidate.wyDay.Controls;
@@ -20,22 +18,17 @@ namespace Elucidate.Controls
         public LiveRunLogControl()
         {
             InitializeComponent();
+            AddThreadingCallbacks();
         }
 
         /// <summary>
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
         /// </summary>
-        private readonly ManualResetEvent mreProcessExit = new ManualResetEvent(false);
-        private readonly ManualResetEvent mreOutputDone = new ManualResetEvent(false);
-        private readonly ManualResetEvent mreErrorDone = new ManualResetEvent(false);
-        private ProcessPriorityClass requested = ProcessPriorityClass.Normal;
+        private readonly ManualResetEvent _mreProcessExit = new ManualResetEvent(false);
+        private readonly ManualResetEvent _mreOutputDone = new ManualResetEvent(false);
+        private readonly ManualResetEvent _mreErrorDone = new ManualResetEvent(false);
+        private ProcessPriorityClass _requested = ProcessPriorityClass.Normal;
         private string _lastError;
-
-        private readonly BackgroundWorker actionWorker = new BackgroundWorker
-        {
-            WorkerReportsProgress = true,
-            WorkerSupportsCancellation = true,
-        };
 
         private class ThreadObject
         {
@@ -43,24 +36,168 @@ namespace Elucidate.Controls
             public Process CmdProcess;
         }
 
-        internal void StartSnapRaidProcess(string command)
+        public enum CommandType { Status, Diff, Check, Sync, Scrub, Fix, Dup, Undelete }
+
+        public readonly BackgroundWorker ActionWorker = new BackgroundWorker
         {
-            Log.Instance.Debug("Command buttcon clicked but a command is still running.");
-            if (actionWorker.IsBusy) return;
+            WorkerReportsProgress = true,
+            WorkerSupportsCancellation = true,
+        };
+        
+        private void AddThreadingCallbacks()
+        {
+            // Add threading callbacks
+            ActionWorker.DoWork += actionWorker_DoWork;
+            ActionWorker.ProgressChanged += actionWorker_ProgressChanged;
+            ActionWorker.RunWorkerCompleted += actionWorker_RunWorkerCompleted;
+            comboBox1.Text = @"Stopped";
+            comboBox1.Enabled = false;
+            timer1.Enabled = true;
+        }
+
+        internal void StartSnapRaidProcess(CommandType action)
+        {
+            if (ActionWorker.IsBusy)
+            {
+                Log.Instance.Debug("Command button clicked but a command is still running.");
+                return;
+            }
             //UseWaitCursor = true;
             //EnableIfValid(false);
+            StringBuilder command = new StringBuilder();
+            switch (action)
+            {
+                case CommandType.Status:
+                    command.Append(@"status");
+                    break;
+                case CommandType.Diff:
+                    command.Append(@"diff");
+                    break;
+                case CommandType.Check:
+                    command.Append(@"check");
+                    break;
+                case CommandType.Sync:
+                    command.Append(@"sync");
+                    break;
+                case CommandType.Scrub:
+                    command.Append(@"scrub ");
+                    command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-p100 -o0");
+                    break;
+                case CommandType.Fix:
+                    command.Append(@"fix ");
+                    command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-e");
+                    break;
+                case CommandType.Dup:
+                    command.Append(@"dup");
+                    break;
+                case CommandType.Undelete:
+                    command.Append(@"fix ");
+                    command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-m");
+                    break;
+            }
+            
             comboBox1.Enabled = true;
             comboBox1.Text = @"Running";
-            requested = ProcessPriorityClass.Normal;
-            actionWorker.RunWorkerAsync(command);
+            _requested = ProcessPriorityClass.Normal;
+            ActionWorker.RunWorkerAsync(command.ToString());
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
-            toolStripProgressBar1.DisplayText = $"{command} - Starting";
+            toolStripProgressBar1.DisplayText = "Running...";
             toolStripProgressBar1.State = ProgressBarState.Normal;
             toolStripProgressBar1.Style = ProgressBarStyle.Marquee;
             toolStripProgressBar1.Value = 0;
         }
+        
+        private void Timer1_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!LogQueue.Any())
+                {
+                    //Thread.Sleep(250);
+                    return;
+                }
+                // Now lock in case the timer is overlapping !
+                lock (this)
+                {
+                    textBoxLiveLog._Paint = false; // turn off flag to ignore WM_PAINT messages
+                    if (textBoxLiveLog.Lines.Length > Properties.Settings.Default.MaxNumberOfRealTimeLines)
+                    {
+                        //textBox1.SelectionStart = 0;
+                        //textBox1.SelectionLength = textBox1.GetFirstCharIndexFromLine(Properties.Settings.Default.MaxNumberOfRealTimeLines - 10);
+                        //textBox1.SelectedText = string.Empty;
+                        // The above makes it beep as well !!
+                        textBoxLiveLog.Clear();
+                    }
+                    //read out of the file until the EOF
+                    while (LogQueue.Any())
+                    {
+                        LogString log = LogQueue.Dequeue();
+                        switch (log.LevelUppercase)
+                        {
+                            case "FATAL":
+                                textBoxLiveLog.SelectionColor = Color.DarkViolet;
+                                break;
 
+                            case "ERROR":
+                                textBoxLiveLog.SelectionColor = Color.Red;
+                                break;
 
+                            case "WARN":
+                                textBoxLiveLog.SelectionColor = Color.RoyalBlue;
+                                break;
+
+                            case "INFO":
+                                textBoxLiveLog.SelectionColor = Color.Black;
+                                break;
+
+                            case "DEBUG":
+                                textBoxLiveLog.SelectionColor = Color.DarkGray;
+                                break;
+
+                            case "TRACE":
+                                textBoxLiveLog.SelectionColor = Color.DimGray;
+                                break;
+                        }
+                        textBoxLiveLog.AppendText(log.Message + Environment.NewLine);
+                        textBoxLiveLog.ScrollToCaret();
+                    }
+                    // check if our textbox is getting too full
+                    int textLength = textBoxLiveLog.TextLength;
+                    if (textLength > (textBoxLiveLog.MaxLength - 1000))
+                    {
+                        //max possible on control = 2147483647
+                        textBoxLiveLog.Clear();
+                        Log.Instance.Debug("CLEAR");
+                    }
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+
+            textBoxLiveLog._Paint = true; // restore flag so we can paint the control
+        }
+
+        private class LogString
+        {
+            public string LevelUppercase;
+            public string Message;
+        };
+
+        private static readonly Queue<LogString> LogQueue = new Queue<LogString>();
+
+        // ReSharper disable UnusedMember.Global
+        // This is used by the logging to force all to the output window
+        public static void LogMethod(string levelUppercase, string message)
+        {
+            LogQueue.Enqueue(new LogString
+            {
+                LevelUppercase = levelUppercase,
+                Message = message
+            });
+        }
+        
         private void actionWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
@@ -68,6 +205,7 @@ namespace Elucidate.Controls
                 Log.Instance.Debug("actionWorker_DoWork");
                 BackgroundWorker worker = sender as BackgroundWorker;
                 string command = e.Argument as string;
+                _lastError = string.Empty;
 
                 if (worker == null)
                 {
@@ -75,7 +213,8 @@ namespace Elucidate.Controls
                     e.Cancel = true;
                     return;
                 }
-                else if (string.IsNullOrWhiteSpace(command))
+
+                if (string.IsNullOrWhiteSpace(command))
                 {
                     Log.Instance.Error("Passed in command is null");
                     e.Cancel = true;
@@ -83,9 +222,10 @@ namespace Elucidate.Controls
                 }
 
                 int exitCode;
-                mreProcessExit.Reset();
-                mreOutputDone.Reset();
-                mreErrorDone.Reset();
+                _mreProcessExit.Reset();
+                _mreOutputDone.Reset();
+                _mreErrorDone.Reset();
+
                 string args = Util.FormatSnapRaidCommandArgs(command, txtAddCommands.Text, out string appPath);
 
                 if (runWithoutCaptureMenuItem.Checked)
@@ -133,10 +273,10 @@ namespace Elucidate.Controls
 
                     if (process.HasExited)
                     {
-                        mreProcessExit.Set();
+                        _mreProcessExit.Set();
                     }
 
-                    while (!WaitHandle.WaitAll(new WaitHandle[] { mreErrorDone, mreOutputDone, mreProcessExit }, 250))
+                    while (!WaitHandle.WaitAll(new WaitHandle[] { _mreErrorDone, _mreOutputDone, _mreProcessExit }, 250))
                     {
                         if (process.HasExited) continue;
                         if (worker.CancellationPending)
@@ -147,9 +287,9 @@ namespace Elucidate.Controls
                         else
                         {
                             ProcessPriorityClass current = process.PriorityClass;
-                            if (current == requested) continue;
-                            Log.Instance.Fatal("Setting the processpriority to[{0}]", requested);
-                            process.PriorityClass = requested;
+                            if (current == _requested) continue;
+                            Log.Instance.Fatal("Setting the processpriority to[{0}]", _requested);
+                            process.PriorityClass = _requested;
                         }
                     }
 
@@ -182,7 +322,8 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex, "Thread closing abnormally");
+                _lastError = "Thread closing abnormally";
+                ExceptionHandler.ReportException(ex, _lastError);
                 throw;
             }
         }
@@ -203,17 +344,18 @@ namespace Elucidate.Controls
                     }
                     else
                     {
-                        mreProcessExit.WaitOne(100);
+                        _mreProcessExit.WaitOne(100);
                     }
                 } while (!string.IsNullOrEmpty(buf)
-                         || !mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
+                         || !_mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
                 );
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex, "Thread closing abnormally");
+                _lastError = "Thread closing abnormally";
+                ExceptionHandler.ReportException(ex, _lastError);
             }
-            mreErrorDone.Set();
+            _mreErrorDone.Set();
         }
 
         private void ReadStandardOutput(ThreadObject threadObject)
@@ -236,26 +378,26 @@ namespace Elucidate.Controls
                     }
                     else
                     {
-                        mreProcessExit.WaitOne(100);
+                        _mreProcessExit.WaitOne(100);
                     }
                     //Log.Instance.Debug("sleep");
                     //Thread.Sleep(1000);
                 } while (!string.IsNullOrEmpty(buf)
-                         || !mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
+                         || !_mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
                 );
             }
             catch (Exception ex)
             {
                 ExceptionHandler.ReportException(ex, "ReadStandardOutput: ");
             }
-            mreOutputDone.Set();
+            _mreOutputDone.Set();
         }
 
         private void Exited(object o, EventArgs e)
         {
             Log.Instance.Debug("Exited.");
             Thread.Sleep(1000);  // When the process has exited, the buffers are _still_ flushing
-            mreProcessExit.Set();
+            _mreProcessExit.Set();
         }
 
         private void actionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -266,14 +408,13 @@ namespace Elucidate.Controls
             }
             if (e.ProgressPercentage < 101)
             {
-                toolStripProgressBar1.DisplayText = e.UserState as string;
                 toolStripProgressBar1.Value = e.ProgressPercentage;
             }
             else if (e.ProgressPercentage == 101)
             {
                 toolStripProgressBar1.State = ProgressBarState.Error;
-                toolStripProgressBar1.DisplayText = _lastError;
                 toolStripProgressBar1.Value = 100;
+                _lastError = e.UserState.ToString();
             }
         }
 
@@ -296,28 +437,31 @@ namespace Elucidate.Controls
             else if (e.Error != null)
             {
                 toolStripProgressBar1.State = ProgressBarState.Error;
-                toolStripProgressBar1.DisplayText = e.Error.Message;
+                toolStripProgressBar1.DisplayText = "Error";
                 Log.Instance.Error(e.Error, "Thread threw: ");
                 comboBox1.Text = @"Abort";
             }
             else
             {
-                //if (toolStripProgressBar1.State == ProgressBarState.Normal)
+                if (toolStripProgressBar1.State == ProgressBarState.Normal)
                 {
                     toolStripProgressBar1.DisplayText = "Completed";
                     toolStripProgressBar1.Value = 100;
                     comboBox1.Text = @"Stopped";
                 }
-                //Log.Instance.Info("Completed");
+            }
+
+            if (!string.IsNullOrEmpty(_lastError))
+            {
+                toolStripProgressBar1.DisplayText = "Error";
+                Log.Instance.Info($"Last Error: {_lastError}");
             }
             comboBox1.Enabled = false;
         }
 
-
-
-
-
-
-
+        private void LiveRunLogControl_Load(object sender, EventArgs e)
+        {
+            //AddThreadingCallbacks();
+        }
     }
 }

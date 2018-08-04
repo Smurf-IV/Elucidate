@@ -33,6 +33,7 @@ using System.Media;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Elucidate.Controls;
 
 namespace Elucidate
 {
@@ -49,7 +50,7 @@ namespace Elucidate
                 Properties.Settings.Default.Save();
             }
             WindowLocation.GeometryFromString(Properties.Settings.Default.WindowLocation, this);
-            AddThreadingCallbacks();
+            //AddThreadingCallbacks();
         }
 
         private void EnableCommonButtons(bool enabled)
@@ -76,33 +77,6 @@ namespace Elucidate
             }
         }
 
-        private void Form1_Shown(object sender, EventArgs e)
-        {
-            txtAddCommands.Width = txtAddCommands.Parent.Width;
-            VersionIndicator.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
-            {
-                Properties.Settings.Default.ConfigFileIsValid = false;
-            }
-            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
-            if (!Properties.Settings.Default.ConfigFileIsValid)
-            {
-                settingsToolStripMenuItem_Click(sender, e);
-            }
-            else
-            {
-                runWithoutCaptureMenuItem.Checked = Properties.Settings.Default.RunWithoutCapture;
-                toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
-            }
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // persist our geometry string.
-            Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
-            Properties.Settings.Default.Save();
-        }
-
         private void EnableIfValid(bool enabled)
         {
             EnableCommonButtons(enabled);
@@ -112,12 +86,11 @@ namespace Elucidate
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (actionWorker.IsBusy)
+            if (liveRunLogControl1.ActionWorker.IsBusy)
             {
                 SystemSounds.Beep.Play();
                 return;
             }
-            toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
             new Settings().ShowDialog(this);
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
             runWithoutCaptureMenuItem.Checked = Properties.Settings.Default.RunWithoutCapture;
@@ -125,12 +98,11 @@ namespace Elucidate
 
         private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (actionWorker.IsBusy)
+            if (liveRunLogControl1.ActionWorker.IsBusy)
             {
                 SystemSounds.Beep.Play();
                 return;
             }
-            toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
             string userAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Elucidate");
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -158,7 +130,7 @@ namespace Elucidate
 
         private void changeLogLocationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (actionWorker.IsBusy)
+            if (liveRunLogControl1.ActionWorker.IsBusy)
             {
                 SystemSounds.Beep.Play();
                 return;
@@ -188,48 +160,42 @@ namespace Elucidate
 
         private void btnStatus_Click(object sender, EventArgs e)
         {
-            StartSnapRaidProcess("Status");
+            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Status);
         }
 
         private void btnDiff_Click(object sender, EventArgs e)
         {
-            StartSnapRaidProcess("Diff");
+            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Diff);
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
-            StartSnapRaidProcess("Check");
+            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Check);
         }
 
         private void btnSync_Click(object sender, EventArgs e)
         {
-            StartSnapRaidProcess("Sync");
+            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Sync);
         }
 
         private void btnScrub_Click(object sender, EventArgs e)
         {
-            StringBuilder command = new StringBuilder(@"scrub ");
-            command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-p100 -o0");
-            StartSnapRaidProcess(command.ToString());
+            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Scrub);
         }
 
         private void btnFix_Click(object sender, EventArgs e)
         {
-            StringBuilder command = new StringBuilder(@"fix ");
-            command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-e");
-            StartSnapRaidProcess(command.ToString());
+            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Fix);
         }
 
         private void btnDupFinder_Click(object sender, EventArgs e)
         {
-            StartSnapRaidProcess(@"dup");
+            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Dup);
         }
 
         private void btnUndelete_Click(object sender, EventArgs e)
         {
-            StringBuilder command = new StringBuilder(@"fix ");
-            command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-m");
-            StartSnapRaidProcess(command.ToString());
+            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Undelete);
         }
 
         private void tabControl_Selected(object sender, TabControlEventArgs e)
@@ -238,6 +204,27 @@ namespace Elucidate
 
         private void ElucidateForm_Load(object sender, EventArgs e)
         {
+            VersionIndicator.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
+            {
+                Properties.Settings.Default.ConfigFileIsValid = false;
+            }
+            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
+            if (!Properties.Settings.Default.ConfigFileIsValid)
+            {
+                settingsToolStripMenuItem_Click(sender, e);
+            }
+            else
+            {
+                runWithoutCaptureMenuItem.Checked = Properties.Settings.Default.RunWithoutCapture;
+            }
+        }
+
+        private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
+        {
+            // persist our geometry string.
+            Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
+            Properties.Settings.Default.Save();
         }
     }
 }
