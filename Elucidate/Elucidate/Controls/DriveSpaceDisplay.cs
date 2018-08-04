@@ -36,12 +36,12 @@ using ByteSizeLib;
 using Elucidate.Logging;
 using Elucidate.Shared;
 
-namespace Elucidate.AppTabs
+namespace Elucidate.Controls
 {
     public partial class DriveSpaceDisplay : UserControl
     {
-        public ConfigFileHelper SnapRaidConfig = null;
-        
+        private ConfigFileHelper SnapRaidConfig = null;
+
         private bool _percentage;
         private WaitCursor _waiting;
         private string _oldTooltip;
@@ -94,8 +94,35 @@ namespace Elucidate.AppTabs
 
         #endregion Designer
 
+        public void RefreshGraph(List<string> pathsOfInterest = null)
+        {
+            try
+            {
+                if (pathsOfInterest == null)
+                {
+                    SnapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                    SnapRaidConfig.Read();
+                    pathsOfInterest = new List<string>();
+                    pathsOfInterest.AddRange(SnapRaidConfig.SnapShotSources);
+                    pathsOfInterest.AddRange(SnapRaidConfig.ContentFiles);
+                }
+                StartProcessing(pathsOfInterest);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.ReportException(ex);
+            }
+        }
+
         public void StartProcessing(List<string> pathsOfInterest)
         {
+            if (pathsOfInterest == null)
+            {
+                pathsOfInterest = new List<string>();
+                pathsOfInterest.AddRange(SnapRaidConfig.SnapShotSources);
+                pathsOfInterest.AddRange(SnapRaidConfig.ContentFiles);
+            }
+
             _waiting = new WaitCursor(this);
             _oldTooltip = toolTip1.GetToolTip(this);
             toolTip1.SetToolTip(this, "Calculating...");
@@ -155,7 +182,7 @@ namespace Elucidate.AppTabs
         {
             Invoke((MethodInvoker)ClearExpectedListMethodInvoker);
         }
-        
+
         // Need to find 3 values, Total drive size, Root drive used, actual used by path
         // Need to be aware of UNC paths
         // Need to be aware of Junctions
@@ -171,10 +198,10 @@ namespace Elucidate.AppTabs
             };
             ChartDataList.Add(chartDataItem);
         }
-        
+
         private string GetLargestWholenumberSymbolOfChartData()
         {
-            List<string> availableSymbols = new List<string> {"", "b", "B", "KB", "MB", "GB", "TB"};
+            List<string> availableSymbols = new List<string> { "", "b", "B", "KB", "MB", "GB", "TB" };
             string currentMaxSymbol = string.Empty;
             foreach (var item in ChartDataList)
             {
@@ -237,7 +264,7 @@ namespace Elucidate.AppTabs
                 }
             }
         }
-        
+
         private void chart1_Click(object sender, EventArgs e)
         {
             _percentage = !_percentage;
@@ -250,10 +277,19 @@ namespace Elucidate.AppTabs
 
         private void DriveSpaceDisplay_Load(object sender, EventArgs e)
         {
-            SnapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
-            SnapRaidConfig.Read();
-            List<string> paths = SnapRaidConfig.SnapShotSources;
-            StartProcessing(paths);
+            try
+            {
+                SnapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                SnapRaidConfig.Read();
+                List<string> paths = new List<string>();
+                paths.AddRange(SnapRaidConfig.SnapShotSources);
+                paths.AddRange(SnapRaidConfig.ContentFiles);
+                StartProcessing(paths);
+            }
+            catch
+            {
+                // ignored
+            }
         }
     }
 }

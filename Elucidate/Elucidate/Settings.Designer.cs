@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
-using Elucidate.AppTabs;
+using Elucidate.Controls;
 
 namespace Elucidate
 {

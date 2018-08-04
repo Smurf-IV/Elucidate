@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.4.46</AssemblyVersion>
+    <AssemblyVersion>18.8.4.53</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -263,10 +263,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Shared\WaitCursor.cs" />
-    <Compile Include="AppTabs\DriveSpaceDisplay.cs">
+    <Compile Include="Controls\DriveSpaceDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="AppTabs\DriveSpaceDisplay.Designer.cs">
+    <Compile Include="Controls\DriveSpaceDisplay.Designer.cs">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </Compile>
     <Compile Include="RecoveryWizard\RecoveryWizard.cs">
@@ -328,7 +328,7 @@
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shared\MessageBoxExtForm.resx" />
-    <EmbeddedResource Include="AppTabs\DriveSpaceDisplay.resx">
+    <EmbeddedResource Include="Controls\DriveSpaceDisplay.resx">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ElucidateForm.resx">

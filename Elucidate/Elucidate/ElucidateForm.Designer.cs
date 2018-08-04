@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
-using Elucidate.AppTabs;
+using Elucidate.Controls;
 using Elucidate.Shared;
 
 namespace Elucidate
@@ -46,7 +46,7 @@ namespace Elucidate
             this.btnStatus = new Elucidate.Shared.CommandLinkButton();
             this.btnFix = new Elucidate.Shared.CommandLinkButton();
             this.btnDupFinder = new Elucidate.Shared.CommandLinkButton();
-            this.driveSpace = new Elucidate.AppTabs.DriveSpaceDisplay();
+            this.driveSpace = new DriveSpaceDisplay();
             this.textBoxLogging = new Elucidate.Shared.FlickerFreeRichEditTextBox();
             this.coveragePage = new System.Windows.Forms.TabPage();
             this.RecoveryOperations = new System.Windows.Forms.TabPage();

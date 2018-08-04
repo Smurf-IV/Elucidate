@@ -560,70 +560,72 @@ namespace Elucidate
         
         private void btnSave_Click(object sender, EventArgs e)
         {
-            ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text)
-            {
-                IncludePatterns = IncludePatterns,
-                BlockSizeKB = (uint)numBlockSizeKB.Value,
-                Nohidden = _advSettingsList[3].CheckState,
-                AutoSaveGB = (uint)numAutoSaveGB.Value
-            };
-            foreach (DataGridViewRow row in exludedFilesView.Rows)
-            {
-                string value = $"{row.Cells[0].Value}";
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    cfg.ExcludePatterns.Add(value);
-                }
-            }
-            foreach (string text in snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text).Where(text => !string.IsNullOrWhiteSpace(text)))
-            {
-                cfg.SnapShotSources.Add(text);
-                cfg.ContentFiles.Add(text);
-            }
-
-            switch (!string.IsNullOrEmpty(parityLocation1.Text.Trim()))
-            {
-                case true:
-                    var trim1 = parityLocation1.Text.Trim();
-                    cfg.ParityFile1 = trim1;
-                    FileInfo fi = new FileInfo(trim1);
-                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
-
-                    string trim2 = parityLocation2.Text.Trim();
-                    if (string.IsNullOrEmpty(trim2)) break;
-                    cfg.ParityFile2 = trim2;
-                    fi = new FileInfo(trim2);
-                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
-
-                    string trim3 = parityLocation3.Text.Trim();
-                    if (string.IsNullOrEmpty(trim3)) break;
-                    cfg.ParityFile3 = trim3;
-                    fi = new FileInfo(trim3);
-                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
-
-                    string trim4 = parityLocation4.Text.Trim();
-                    if (string.IsNullOrEmpty(trim4)) break;
-                    cfg.ParityFile4 = trim4;
-                    fi = new FileInfo(trim4);
-                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
-
-                    string trim5 = parityLocation5.Text.Trim();
-                    if (string.IsNullOrEmpty(trim5)) break;
-                    cfg.ParityFile5 = trim5;
-                    fi = new FileInfo(trim5);
-                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
-
-                    string trim6 = parityLocation6.Text.Trim();
-                    if (string.IsNullOrEmpty(trim6)) break;
-                    cfg.ParityFile6 = trim6;
-                    fi = new FileInfo(trim6);
-                    cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
-
-                    break;
-            }
-
             try
             {
+                ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text)
+                {
+                    IncludePatterns = IncludePatterns,
+                    BlockSizeKB = (uint) numBlockSizeKB.Value,
+                    Nohidden = _advSettingsList[3].CheckState,
+                    AutoSaveGB = (uint) numAutoSaveGB.Value
+                };
+                foreach (DataGridViewRow row in exludedFilesView.Rows)
+                {
+                    string value = $"{row.Cells[0].Value}";
+                    if (!string.IsNullOrWhiteSpace(value))
+                    {
+                        cfg.ExcludePatterns.Add(value);
+                    }
+                }
+
+                foreach (string text in snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text)
+                    .Where(text => !string.IsNullOrWhiteSpace(text)))
+                {
+                    cfg.SnapShotSources.Add(text);
+                    cfg.ContentFiles.Add(text);
+                }
+
+                switch (!string.IsNullOrEmpty(parityLocation1.Text.Trim()))
+                {
+                    case true:
+                        var trim1 = parityLocation1.Text.Trim();
+                        cfg.ParityFile1 = trim1;
+                        FileInfo fi = new FileInfo(trim1);
+                        cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                        string trim2 = parityLocation2.Text.Trim();
+                        if (string.IsNullOrEmpty(trim2)) break;
+                        cfg.ParityFile2 = trim2;
+                        fi = new FileInfo(trim2);
+                        cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                        string trim3 = parityLocation3.Text.Trim();
+                        if (string.IsNullOrEmpty(trim3)) break;
+                        cfg.ParityFile3 = trim3;
+                        fi = new FileInfo(trim3);
+                        cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                        string trim4 = parityLocation4.Text.Trim();
+                        if (string.IsNullOrEmpty(trim4)) break;
+                        cfg.ParityFile4 = trim4;
+                        fi = new FileInfo(trim4);
+                        cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                        string trim5 = parityLocation5.Text.Trim();
+                        if (string.IsNullOrEmpty(trim5)) break;
+                        cfg.ParityFile5 = trim5;
+                        fi = new FileInfo(trim5);
+                        cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                        string trim6 = parityLocation6.Text.Trim();
+                        if (string.IsNullOrEmpty(trim6)) break;
+                        cfg.ParityFile6 = trim6;
+                        fi = new FileInfo(trim6);
+                        cfg.ContentFiles.Add(fi.DirectoryName ?? fi.FullName);
+
+                        break;
+                }
+
                 // temp backup current config
                 if (File.Exists(configFileLocation.Text))
                 {
@@ -633,7 +635,8 @@ namespace Elucidate
                 string writeResult;
                 if (!string.IsNullOrEmpty(writeResult = cfg.Write()))
                 {
-                    MessageBoxExt.Show(this, writeResult, "Config Write Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxExt.Show(this, writeResult, "Config Write Error:", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -659,6 +662,8 @@ namespace Elucidate
                     if (!File.Exists($"{configFileLocation.Text}.temp")) return;
                     File.Copy($"{configFileLocation.Text}.temp", backupConfig);
                     File.Delete($"{configFileLocation.Text}.temp");
+
+                    driveSpace.RefreshGraph();
                 }
             }
             catch (Exception ex)
