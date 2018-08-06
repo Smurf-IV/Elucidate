@@ -32,17 +32,17 @@ namespace Elucidate.Controls
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.toolStripStatusLabel1 = new System.Windows.Forms.Label();
             this.runWithoutCaptureMenuItem = new System.Windows.Forms.CheckBox();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanelAdditionalCommands = new System.Windows.Forms.TableLayoutPanel();
             this.txtAddCommands = new System.Windows.Forms.TextBox();
             this.labelCommandLineOptions = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.textBoxLiveLog = new Elucidate.Shared.FlickerFreeRichEditTextBox();
-            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanelAdditionalCommands.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -57,12 +57,29 @@ namespace Elucidate.Controls
             this.tableLayoutPanel1.Controls.Add(this.toolStripStatusLabel1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.runWithoutCaptureMenuItem, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 385);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 474);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(871, 27);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1161, 33);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.ContainerControl = this;
+            this.toolStripProgressBar1.DisplayText = "";
+            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
+            this.toolStripProgressBar1.Location = new System.Drawing.Point(497, 0);
+            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.ShowInTaskbar = true;
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(664, 33);
+            this.toolStripProgressBar1.Step = 3;
+            this.toolStripProgressBar1.TabIndex = 5;
+            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // comboBox1
             // 
@@ -75,9 +92,10 @@ namespace Elucidate.Controls
             "Running",
             "Abort",
             "Idle"});
-            this.comboBox1.Location = new System.Drawing.Point(139, 3);
+            this.comboBox1.Location = new System.Drawing.Point(180, 4);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(113, 21);
+            this.comboBox1.Size = new System.Drawing.Size(149, 24);
             this.comboBox1.TabIndex = 3;
             // 
             // toolStripStatusLabel1
@@ -87,53 +105,54 @@ namespace Elucidate.Controls
             this.toolStripStatusLabel1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabel1.Location = new System.Drawing.Point(0, 0);
             this.toolStripStatusLabel1.Margin = new System.Windows.Forms.Padding(0);
-            this.toolStripStatusLabel1.MinimumSize = new System.Drawing.Size(132, 28);
+            this.toolStripStatusLabel1.MinimumSize = new System.Drawing.Size(176, 34);
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(136, 28);
+            this.toolStripStatusLabel1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(176, 34);
             this.toolStripStatusLabel1.TabIndex = 1;
             this.toolStripStatusLabel1.Text = "2011-06-012T18:54:54";
             // 
             // runWithoutCaptureMenuItem
             // 
             this.runWithoutCaptureMenuItem.AutoSize = true;
-            this.runWithoutCaptureMenuItem.Location = new System.Drawing.Point(258, 3);
+            this.runWithoutCaptureMenuItem.Location = new System.Drawing.Point(337, 4);
+            this.runWithoutCaptureMenuItem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.runWithoutCaptureMenuItem.Name = "runWithoutCaptureMenuItem";
-            this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(122, 17);
+            this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(156, 21);
             this.runWithoutCaptureMenuItem.TabIndex = 4;
             this.runWithoutCaptureMenuItem.Text = "Run without capture";
             this.runWithoutCaptureMenuItem.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanel2
+            // tableLayoutPanelAdditionalCommands
             // 
-            this.tableLayoutPanel2.AutoSize = true;
-            this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel2.BackColor = System.Drawing.SystemColors.Control;
-            this.tableLayoutPanel2.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.Controls.Add(this.txtAddCommands, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelCommandLineOptions, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 361);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(12);
-            this.tableLayoutPanel2.MinimumSize = new System.Drawing.Size(50, 10);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(871, 24);
-            this.tableLayoutPanel2.TabIndex = 1;
+            this.tableLayoutPanelAdditionalCommands.AutoSize = true;
+            this.tableLayoutPanelAdditionalCommands.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanelAdditionalCommands.BackColor = System.Drawing.SystemColors.Control;
+            this.tableLayoutPanelAdditionalCommands.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanelAdditionalCommands.ColumnCount = 2;
+            this.tableLayoutPanelAdditionalCommands.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanelAdditionalCommands.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanelAdditionalCommands.Controls.Add(this.txtAddCommands, 0, 0);
+            this.tableLayoutPanelAdditionalCommands.Controls.Add(this.labelCommandLineOptions, 0, 0);
+            this.tableLayoutPanelAdditionalCommands.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanelAdditionalCommands.Location = new System.Drawing.Point(0, 454);
+            this.tableLayoutPanelAdditionalCommands.Margin = new System.Windows.Forms.Padding(16, 15, 16, 15);
+            this.tableLayoutPanelAdditionalCommands.MinimumSize = new System.Drawing.Size(67, 12);
+            this.tableLayoutPanelAdditionalCommands.Name = "tableLayoutPanelAdditionalCommands";
+            this.tableLayoutPanelAdditionalCommands.RowCount = 1;
+            this.tableLayoutPanelAdditionalCommands.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanelAdditionalCommands.Size = new System.Drawing.Size(1161, 20);
+            this.tableLayoutPanelAdditionalCommands.TabIndex = 1;
             // 
             // txtAddCommands
             // 
             this.txtAddCommands.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtAddCommands.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtAddCommands.Location = new System.Drawing.Point(200, 2);
+            this.txtAddCommands.Location = new System.Drawing.Point(239, 2);
             this.txtAddCommands.Margin = new System.Windows.Forms.Padding(1);
             this.txtAddCommands.MaxLength = 128;
             this.txtAddCommands.Name = "txtAddCommands";
-            this.txtAddCommands.Size = new System.Drawing.Size(669, 13);
+            this.txtAddCommands.Size = new System.Drawing.Size(920, 15);
             this.txtAddCommands.TabIndex = 6;
             this.txtAddCommands.WordWrap = false;
             // 
@@ -142,10 +161,11 @@ namespace Elucidate.Controls
             this.labelCommandLineOptions.AutoSize = true;
             this.labelCommandLineOptions.Dock = System.Windows.Forms.DockStyle.Left;
             this.labelCommandLineOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCommandLineOptions.Location = new System.Drawing.Point(4, 1);
-            this.labelCommandLineOptions.MinimumSize = new System.Drawing.Size(170, 10);
+            this.labelCommandLineOptions.Location = new System.Drawing.Point(5, 1);
+            this.labelCommandLineOptions.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelCommandLineOptions.MinimumSize = new System.Drawing.Size(227, 12);
             this.labelCommandLineOptions.Name = "labelCommandLineOptions";
-            this.labelCommandLineOptions.Size = new System.Drawing.Size(191, 22);
+            this.labelCommandLineOptions.Size = new System.Drawing.Size(228, 18);
             this.labelCommandLineOptions.TabIndex = 5;
             this.labelCommandLineOptions.Text = "&Additional Command line options:";
             this.labelCommandLineOptions.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -163,45 +183,31 @@ namespace Elucidate.Controls
             this.textBoxLiveLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxLiveLog.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLiveLog.Location = new System.Drawing.Point(0, 0);
+            this.textBoxLiveLog.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxLiveLog.MaxLength = 10000000;
             this.textBoxLiveLog.Name = "textBoxLiveLog";
             this.textBoxLiveLog.ReadOnly = true;
             this.textBoxLiveLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.textBoxLiveLog.Size = new System.Drawing.Size(871, 361);
+            this.textBoxLiveLog.Size = new System.Drawing.Size(1161, 454);
             this.textBoxLiveLog.TabIndex = 2;
             this.textBoxLiveLog.Text = "";
             this.textBoxLiveLog.WordWrap = false;
             // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.ContainerControl = this;
-            this.toolStripProgressBar1.DisplayText = "";
-            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
-            this.toolStripProgressBar1.Location = new System.Drawing.Point(383, 0);
-            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.ShowInTaskbar = true;
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(488, 27);
-            this.toolStripProgressBar1.Step = 3;
-            this.toolStripProgressBar1.TabIndex = 5;
-            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
-            // 
             // LiveRunLogControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.textBoxLiveLog);
-            this.Controls.Add(this.tableLayoutPanel2);
+            this.Controls.Add(this.tableLayoutPanelAdditionalCommands);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "LiveRunLogControl";
-            this.Size = new System.Drawing.Size(871, 412);
+            this.Size = new System.Drawing.Size(1161, 507);
             this.Load += new System.EventHandler(this.LiveRunLogControl_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
+            this.tableLayoutPanelAdditionalCommands.ResumeLayout(false);
+            this.tableLayoutPanelAdditionalCommands.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -210,14 +216,14 @@ namespace Elucidate.Controls
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelAdditionalCommands;
         private System.Windows.Forms.Label labelCommandLineOptions;
         private System.Windows.Forms.TextBox txtAddCommands;
         private System.Windows.Forms.Label toolStripStatusLabel1;
         private System.Windows.Forms.ComboBox comboBox1;
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private System.Windows.Forms.CheckBox runWithoutCaptureMenuItem;
-        private Shared.FlickerFreeRichEditTextBox textBoxLiveLog;
+        public Shared.FlickerFreeRichEditTextBox textBoxLiveLog;
         private Timer timer1;
     }
 }

@@ -31,7 +31,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Media;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 using Elucidate.Controls;
 

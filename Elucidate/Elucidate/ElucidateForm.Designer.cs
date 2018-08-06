@@ -46,7 +46,7 @@ namespace Elucidate
             this.btnStatus = new Elucidate.Shared.CommandLinkButton();
             this.btnFix = new Elucidate.Shared.CommandLinkButton();
             this.btnDupFinder = new Elucidate.Shared.CommandLinkButton();
-            this.driveSpace = new DriveSpaceDisplay();
+            this.driveSpace = new Elucidate.Controls.DriveSpaceDisplay();
             this.textBoxLogging = new Elucidate.Shared.FlickerFreeRichEditTextBox();
             this.coveragePage = new System.Windows.Forms.TabPage();
             this.RecoveryOperations = new System.Windows.Forms.TabPage();
@@ -72,6 +72,8 @@ namespace Elucidate
             this.runWithoutCaptureMenuItem = new ToolStripCheckBoxMenuItem();
             this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.recover1 = new Elucidate.Controls.Recover();
             this.statusStrip1.SuspendLayout();
             this.coveragePage.SuspendLayout();
             this.RecoveryOperations.SuspendLayout();
@@ -82,6 +84,7 @@ namespace Elucidate
             this.tabControl.SuspendLayout();
             this.tabLogs.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -128,7 +131,7 @@ namespace Elucidate
             this.webBrowser1.Location = new System.Drawing.Point(2, 19);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(20, 25);
+            this.webBrowser1.Size = new System.Drawing.Size(20, 22);
             this.webBrowser1.TabIndex = 3;
             this.toolTip1.SetToolTip(this.webBrowser1, "Read section \"9 Recovering\" carefully");
             // 
@@ -341,10 +344,10 @@ namespace Elucidate
             this.RecoveryOperations.Controls.Add(this.webBrowser1);
             this.RecoveryOperations.Controls.Add(this.label1);
             this.RecoveryOperations.ForeColor = System.Drawing.Color.DarkRed;
-            this.RecoveryOperations.Location = new System.Drawing.Point(4, 25);
+            this.RecoveryOperations.Location = new System.Drawing.Point(4, 28);
             this.RecoveryOperations.Margin = new System.Windows.Forms.Padding(0);
             this.RecoveryOperations.Name = "RecoveryOperations";
-            this.RecoveryOperations.Size = new System.Drawing.Size(986, 482);
+            this.RecoveryOperations.Size = new System.Drawing.Size(986, 479);
             this.RecoveryOperations.TabIndex = 1;
             this.RecoveryOperations.Text = "  Recovery Help  ";
             // 
@@ -517,9 +520,10 @@ namespace Elucidate
             this.tabControl.Controls.Add(this.tabLogs);
             this.tabControl.Controls.Add(this.coveragePage);
             this.tabControl.Controls.Add(this.SchedulePage);
+            this.tabControl.Controls.Add(this.tabPage1);
             this.tabControl.Controls.Add(this.RecoveryOperations);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl.HotTrack = true;
             this.tabControl.Location = new System.Drawing.Point(0, 24);
             this.tabControl.Margin = new System.Windows.Forms.Padding(0);
@@ -645,6 +649,26 @@ namespace Elucidate
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.recover1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(986, 482);
+            this.tabPage1.TabIndex = 7;
+            this.tabPage1.Text = "Recover Files";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // recover1
+            // 
+            this.recover1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.recover1.Location = new System.Drawing.Point(3, 3);
+            this.recover1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.recover1.Name = "recover1";
+            this.recover1.Size = new System.Drawing.Size(980, 476);
+            this.recover1.TabIndex = 0;
+            // 
             // ElucidateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -680,6 +704,7 @@ namespace Elucidate
             this.tabLogs.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -724,6 +749,8 @@ namespace Elucidate
         private ToolStripCheckBoxMenuItem runWithoutCaptureMenuItem;
         private ToolStripMenuItem changeToolStripMenuItem;
         private MenuStrip menuStrip1;
+        private TabPage tabPage1;
+        private Recover recover1;
     }
 }
 

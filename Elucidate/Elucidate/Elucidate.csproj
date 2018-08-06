@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.4.74</AssemblyVersion>
+    <AssemblyVersion>18.8.6.91</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -196,7 +196,7 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.7\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.8\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=106.3.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.3.1\lib\net452\RestSharp.dll</HintPath>
@@ -236,6 +236,12 @@
     <Compile Include="Controls\LogsViewerControl.Designer.cs">
       <DependentUpon>LogsViewerControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Recover.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Recover.Designer.cs">
+      <DependentUpon>Recover.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Schedule.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -248,8 +254,10 @@
     <Compile Include="CalculateBlockSize.Designer.cs">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SnapRAIDThread.cs" />
     <Compile Include="ExceptionHandler.cs" />
     <Compile Include="FileUtil.cs" />
+    <Compile Include="Logging\LiveLog.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Shared\CommandLinkButton.cs">
       <SubType>Component</SubType>
@@ -268,12 +276,6 @@
     </Compile>
     <Compile Include="Controls\DriveSpaceDisplay.Designer.cs">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RecoveryWizard\RecoveryWizard.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RecoveryWizard\RecoveryWizard.Designer.cs">
-      <DependentUpon>RecoveryWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="Common.cs">
       <SubType>Form</SubType>
@@ -307,9 +309,6 @@
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="SnapRAIDThreading.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="wyDay.Controls\COMTypes.cs" />
     <Compile Include="wyDay.Controls\Windows7Taskbar.cs" />
     <Compile Include="wyDay.Controls\Windows7ProgressBar.cs">
@@ -320,6 +319,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\LogsViewerControl.resx">
       <DependentUpon>LogsViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Recover.resx">
+      <DependentUpon>Recover.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Schedule.resx">
       <DependentUpon>Schedule.cs</DependentUpon>
@@ -347,9 +349,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="RecoveryWizard\RecoveryWizard.resx">
-      <DependentUpon>RecoveryWizard.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
