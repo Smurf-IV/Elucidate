@@ -70,7 +70,6 @@ namespace Elucidate
             }
             try
             {
-
                 //Log.Instance.Info("=====================================================================");
                 Log.Instance.Info($"File Re-opened: Ver :{Assembly.GetExecutingAssembly().GetName().Version}");
                 CheckAndRunSingleApp();

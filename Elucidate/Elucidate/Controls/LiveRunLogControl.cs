@@ -15,7 +15,6 @@ namespace Elucidate.Controls
 {
     public partial class LiveRunLogControl : UserControl
     {
-        
         /// <summary>
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
         /// </summary>
@@ -24,6 +23,7 @@ namespace Elucidate.Controls
         private readonly ManualResetEvent _mreErrorDone = new ManualResetEvent(false);
         private ProcessPriorityClass _requested = ProcessPriorityClass.Normal;
         private string _lastError;
+        private List<string> _batchPaths;
 
         public bool IsRunning { get; set; }
         private CommandType CommandTypeRunning { get; set; }
@@ -67,7 +67,8 @@ namespace Elucidate.Controls
 
         internal void StartSnapRaidProcess(CommandType commandToRun, List<string> paths = null)
         {
-            if (ActionWorker.IsBusy || timer1.Enabled)
+            //if (ActionWorker.IsBusy || timer1.Enabled)
+            if (IsRunning)
             {
                 Log.Instance.Debug("Command button clicked but a command is still running.");
                 return;
@@ -114,16 +115,13 @@ namespace Elucidate.Controls
                     break;
                 case CommandType.RecoverFix:
                     command.Append(@"fix ");
-                    foreach (var path in paths)
-                    {
-                        command.Append($@"-f ""{path}"" ");
-                    }
+                    if (paths != null) { _batchPaths = paths; }
                     break;
             }
 
             comboBox1.Enabled = true;
             comboBox1.Text = @"Running";
-            _requested = ProcessPriorityClass.Normal;
+            _requested = ProcessPriorityClass.Idle;
             ActionWorker.RunWorkerAsync(command.ToString());
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
             toolStripProgressBar1.DisplayText = "Running...";
@@ -131,26 +129,19 @@ namespace Elucidate.Controls
             toolStripProgressBar1.Style = ProgressBarStyle.Marquee;
             toolStripProgressBar1.Value = 0;
         }
-        
+
         private void Timer1_Tick(object sender, EventArgs e)
         {
             try
             {
-                if (!LiveLog.LogQueueCommon.Any())
-                {
-                    //Thread.Sleep(250);
-                    return;
-                }
                 // Now lock in case the timer is overlapping !
                 lock (this)
                 {
+                    if (!LiveLog.LogQueueCommon.Any()) return;
+                    
                     textBoxLiveLog._Paint = false; // turn off flag to ignore WM_PAINT messages
                     if (textBoxLiveLog.Lines.Length > Properties.Settings.Default.MaxNumberOfRealTimeLines)
                     {
-                        //textBox1.SelectionStart = 0;
-                        //textBox1.SelectionLength = textBox1.GetFirstCharIndexFromLine(Properties.Settings.Default.MaxNumberOfRealTimeLines - 10);
-                        //textBox1.SelectedText = string.Empty;
-                        // The above makes it beep as well !!
                         textBoxLiveLog.Clear();
                     }
                     //read out of the file until the EOF
@@ -183,16 +174,23 @@ namespace Elucidate.Controls
                                 textBoxLiveLog.SelectionColor = Color.DimGray;
                                 break;
                         }
-                        textBoxLiveLog.AppendText(log.Message + Environment.NewLine);
-                        textBoxLiveLog.ScrollToCaret();
+
+                        if ((CommandTypeRunning == CommandType.RecoverCheck || CommandTypeRunning == CommandType.RecoverFix) && log.Message.Contains($" WARN "))
+                        {
+                            textBoxLiveLog.SelectionColor = Color.Black;
+                        }
+
+                        textBoxLiveLog.AppendText($"{log.Message}{Environment.NewLine}");
                     }
+                    
+                    textBoxLiveLog.ScrollToCaret();
+
                     // check if our textbox is getting too full
                     int textLength = textBoxLiveLog.TextLength;
                     if (textLength > (textBoxLiveLog.MaxLength - 1000))
                     {
                         //max possible on control = 2147483647
                         textBoxLiveLog.Clear();
-                        Log.Instance.Debug("CLEAR");
                     }
 
                     textBoxLiveLog._Paint = true; // restore flag so we can paint the control
@@ -229,104 +227,13 @@ namespace Elucidate.Controls
                     return;
                 }
 
-                int exitCode;
                 _mreProcessExit.Reset();
                 _mreOutputDone.Reset();
                 _mreErrorDone.Reset();
 
                 string args = Util.FormatSnapRaidCommandArgs(command, txtAddCommands.Text, out string appPath);
 
-                if (runWithoutCaptureMenuItem.Checked)
-                {
-                    Log.Instance.Warn("Running without Capture mode");
-                    Log.Instance.Info("Starting minimised {0} {1}", appPath, args);
-                    Log.Instance.Info("Working...");
-                    ProcessStartInfo startInfo = new ProcessStartInfo
-                    {
-                        FileName = "CMD.exe",
-                        Arguments = $" /C \"{appPath} {args}\"",
-                        WorkingDirectory = $"{Path.GetDirectoryName(Properties.Settings.Default.SnapRAIDFileLocation)}",
-                        UseShellExecute = true,
-                        WindowStyle = ProcessWindowStyle.Minimized,
-                        ErrorDialog = true
-                    };
-                    Process process = Process.Start(startInfo);
-                    if (process != null) Log.Instance.Info("Process is running PID[{0}]", process.Id);
-                    return;
-                }
-
-                using (Process process = new Process
-                {
-                    StartInfo = new ProcessStartInfo(appPath, args)
-                    {
-                        UseShellExecute = false,      // We're redirecting !
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        StandardOutputEncoding = Encoding.UTF8,   // SnapRAID uses UTF-8 for output
-                        WindowStyle = ProcessWindowStyle.Hidden,
-                        CreateNoWindow = true
-                    },
-                    EnableRaisingEvents = true
-                })
-                {
-                    Log.Instance.Info("Using: {0}", process.StartInfo.FileName);
-                    Log.Instance.Info("with: {0}", process.StartInfo.Arguments);
-                    process.Exited += Exited;
-
-                    process.Start();
-                    // Redirect the output stream of the child process.
-                    ThreadObject threadObject = new ThreadObject { BgdWorker = worker, CmdProcess = process };
-                    ThreadPool.QueueUserWorkItem(o => ReadStandardOutput(threadObject));
-                    ThreadPool.QueueUserWorkItem(o => ReadStandardError(threadObject));
-
-                    if (process.HasExited)
-                    {
-                        _mreProcessExit.Set();
-                    }
-
-                    while (!WaitHandle.WaitAll(new WaitHandle[] { _mreErrorDone, _mreOutputDone, _mreProcessExit }, 250))
-                    {
-                        if (process.HasExited) continue;
-                        if (worker.CancellationPending)
-                        {
-                            Log.Instance.Fatal("Attempting process KILL");
-                            process.Kill();
-                        }
-                        else
-                        {
-                            ProcessPriorityClass current = process.PriorityClass;
-                            if (current == _requested) continue;
-                            Log.Instance.Fatal("Setting the processpriority to[{0}]", _requested);
-                            process.PriorityClass = _requested;
-                        }
-                    }
-
-                    exitCode = process.ExitCode;
-                    if (exitCode == 0)
-                    {
-                        Log.Instance.Info("ExitCode=[{0}]", exitCode);
-                    }
-                    else
-                    {
-                        Log.Instance.Error("ExitCode=[{0}]", exitCode);
-                    }
-                    process.Close();
-                }
-                switch (exitCode)
-                {
-                    case 0:
-                        break;
-                    case 1:
-                        worker.ReportProgress(101, "Error");
-                        break;
-                    default:
-                        Log.Instance.Debug($"Unhandled ExitCode of {exitCode}");
-                        break;
-                }
-                if (worker.CancellationPending)
-                {
-                    e.Cancel = true;
-                }
+                RunSnapRaid(e, args, appPath, worker);
             }
             catch (Exception ex)
             {
@@ -335,7 +242,120 @@ namespace Elucidate.Controls
                 throw;
             }
         }
-        
+
+        private void RunSnapRaid(DoWorkEventArgs e, string args, string appPath, BackgroundWorker worker)
+        {
+            int exitCode;
+
+            // RecoveryFix
+            if (CommandTypeRunning == CommandType.RecoverFix)
+            {
+                StringBuilder sbPaths = new StringBuilder();
+                do
+                {
+                    sbPaths.Append($"-f \"{_batchPaths[_batchPaths.Count - 1]}\" ");
+                    _batchPaths.RemoveAt(_batchPaths.Count - 1);
+                } while (sbPaths.Length < 7000 && _batchPaths.Any());
+
+                args += sbPaths.ToString();
+            }
+
+            if (runWithoutCaptureMenuItem.Checked)
+            {
+                Log.Instance.Warn("Running without Capture mode");
+                Log.Instance.Info("Starting minimised {0} {1}", appPath, args);
+                Log.Instance.Info("Working...");
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = "CMD.exe",
+                    Arguments = $" /C \"{appPath} {args}\"",
+                    WorkingDirectory = $"{Path.GetDirectoryName(Properties.Settings.Default.SnapRAIDFileLocation)}",
+                    UseShellExecute = true,
+                    WindowStyle = ProcessWindowStyle.Minimized,
+                    ErrorDialog = true
+                };
+                Process process = Process.Start(startInfo);
+                if (process != null) Log.Instance.Info("Process is running PID[{0}]", process.Id);
+                return;
+            }
+
+            using (Process process = new Process
+            {
+                StartInfo = new ProcessStartInfo(appPath, args)
+                {
+                    UseShellExecute = false, // We're redirecting !
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    StandardOutputEncoding = Encoding.UTF8, // SnapRAID uses UTF-8 for output
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    CreateNoWindow = true
+                },
+                EnableRaisingEvents = true
+            })
+            {
+                Log.Instance.Info("Using: {0}", process.StartInfo.FileName);
+                Log.Instance.Info("with: {0}", process.StartInfo.Arguments);
+                process.Exited += Exited;
+
+                process.Start();
+                // Redirect the output stream of the child process.
+                ThreadObject threadObject = new ThreadObject {BgdWorker = worker, CmdProcess = process};
+                ThreadPool.QueueUserWorkItem(o => ReadStandardOutput(threadObject));
+                ThreadPool.QueueUserWorkItem(o => ReadStandardError(threadObject));
+
+                if (process.HasExited)
+                {
+                    _mreProcessExit.Set();
+                }
+
+                while (!WaitHandle.WaitAll(new WaitHandle[] {_mreErrorDone, _mreOutputDone, _mreProcessExit}, 250))
+                {
+                    if (process.HasExited) continue;
+                    if (worker.CancellationPending)
+                    {
+                        Log.Instance.Fatal("Attempting process KILL");
+                        process.Kill();
+                    }
+                    else
+                    {
+                        ProcessPriorityClass current = process.PriorityClass;
+                        if (current == _requested) continue;
+                        Log.Instance.Fatal("Setting the processpriority to[{0}]", _requested);
+                        process.PriorityClass = _requested;
+                    }
+                }
+
+                exitCode = process.ExitCode;
+                if (exitCode == 0)
+                {
+                    Log.Instance.Info("ExitCode=[{0}]", exitCode);
+                }
+                else
+                {
+                    Log.Instance.Error("ExitCode=[{0}]", exitCode);
+                }
+
+                process.Close();
+            }
+
+            switch (exitCode)
+            {
+                case 0:
+                    break;
+                case 1:
+                    worker.ReportProgress(101, "Error");
+                    break;
+                default:
+                    Log.Instance.Debug($"Unhandled ExitCode of {exitCode}");
+                    break;
+            }
+
+            if (worker.CancellationPending)
+            {
+                e.Cancel = true;
+            }
+        }
+
         private void actionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
@@ -359,19 +379,19 @@ namespace Elucidate.Controls
             //UseWaitCursor = false;
             //EnableIfValid(true);
 
-            comboBox1.Enabled = false;
-            timer1.Enabled = false;
             IsRunning = false;
 
-            if (CommandTypeRunning == CommandType.RecoverCheck)
+            // continue running additional times if there is more work to be done
+            if (CommandTypeRunning == CommandType.RecoverFix && _batchPaths.Any())
             {
-                toolStripProgressBar1.State = ProgressBarState.Normal;
-                toolStripProgressBar1.DisplayText = "Completed";
-                toolStripProgressBar1.Value = 100;
-                comboBox1.Text = @"Stopped";
+                StartSnapRaidProcess(CommandType.RecoverFix);
                 return;
             }
 
+            IsRunning = false;
+            comboBox1.Enabled = false;
+            timer1.Enabled = false;
+            
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
             {
                 toolStripProgressBar1.Style = ProgressBarStyle.Continuous;
@@ -400,9 +420,19 @@ namespace Elucidate.Controls
                 }
             }
 
-            if (string.IsNullOrEmpty(_lastError)) return;
-            toolStripProgressBar1.DisplayText = "Error";
-            Log.Instance.Info($"Last Error: {_lastError}");
+            if (CommandTypeRunning == CommandType.RecoverCheck || CommandTypeRunning == CommandType.RecoverFix)
+            {
+                toolStripProgressBar1.State = ProgressBarState.Normal;
+                toolStripProgressBar1.DisplayText = "Completed";
+                toolStripProgressBar1.Value = 100;
+                comboBox1.Text = @"Completed";
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(_lastError)) return;
+                toolStripProgressBar1.DisplayText = "Error";
+                Log.Instance.Info($"Last Error: {_lastError}");
+            }
         }
 
         private void ReadStandardError(ThreadObject threadObject)
@@ -416,7 +446,14 @@ namespace Elucidate.Controls
                     if (!string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardError.ReadLine()))
                     {
                         _lastError = buf;
-                        Log.Instance.Warn("Verbose[{0}]", buf);
+                        Log.Instance.Warn($"Verbose[{_lastError}]");
+
+                        //Log.LogMethod(Log.LogLevels.Warn, $"Verbose[{_lastError}]");
+
+                        //Thread thread1 = new Thread(() => thr.LogEntry($"Verbose[{_lastError}]"));
+                        //thread1.Start();
+                        
+                        //Log.LogMethod(Log.LogLevels.Warn, $"Verbose[{buf}]");
                     }
                     else
                     {
@@ -444,7 +481,19 @@ namespace Elucidate.Controls
                 {
                     if (!string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardOutput.ReadLine()))
                     {
-                        Log.Instance.Info("StdOut[{0}]", buf);
+                        Log.Instance.Info($"StdOut[{buf}]");
+                        
+                        //Log.LogMethod(Log.LogLevels.Info, $"StdOut[{buf}]");
+                        
+                        //var buf1 = buf;
+                        //Thread thread1 = new Thread(() => thr.LogEntry($"StdOut[{buf1}]")) {IsBackground = true};
+                        //thread1.Start();
+                        //Thread thread2 = new Thread(() => thr.ProcessLog()) {IsBackground = true};
+                        //thread2.Start();
+                        
+                        //LiveLog.LogMethod("INFO", $"StdOut[{buf}]");
+                        //Log.LogMethod(Log.LogLevels.Info, $"StdOut[{buf}]");
+
                         if (!buf.Contains("%")) continue;
                         string[] splits = buf.Split('%');
                         if (int.TryParse(splits[0], out int percentProgress))

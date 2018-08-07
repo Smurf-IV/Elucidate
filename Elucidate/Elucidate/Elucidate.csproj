@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.6.91</AssemblyVersion>
+    <AssemblyVersion>18.8.7.120</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -283,6 +283,8 @@
     <Compile Include="AppTabs\Recovery.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Threads\LogThreadClass.cs" />
+    <Compile Include="Threads\RecoverThreadClass.cs" />
     <Compile Include="ToolStripCheckBoxMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>

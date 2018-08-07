@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading;
 using NLog;
 using NLog.Targets;
 
@@ -6,17 +10,44 @@ namespace Elucidate.Logging
 {
     internal static class Log
     {
+        public static Queue<LogString> LogDisplayQueue { get; } = new Queue<LogString>();
+        public static void ProcessLogQueue()
+        {
+            while (LogDisplayQueue.Any())
+            {
+                LogString log = LogDisplayQueue.Dequeue();
+                Instance.Info(log.Message);
+            }
+        }
+
+        public class LogString
+        {
+            public LogLevels Level;
+            public string Message;
+        };
+        public static void LogMethod(LogLevels level, string message)
+        {
+            LogDisplayQueue.Enqueue(new LogString
+            {
+                Level = level,
+                Message = message
+            });
+        }
+
+
+
         public const string DefaultLogLocation = @"${specialfolder:folder=CommonApplicationData}/Elucidate/Logs";
         private const string DefaultLogFilename = @"/${date:format=yyyyMMdd}.log";
         private const string DefaultArchiveLogFilename = @"/{###}.log";
 
         public static Logger Instance { get; private set; }
 
-        internal enum LogLevels
+        public enum LogLevels
         {
             Trace,
             Debug,
-            Warn
+            Warn,
+            Info
         }
 
         static Log()
@@ -83,10 +114,12 @@ namespace Elucidate.Logging
             }
             LogManager.ReconfigExistingLoggers();
         }
+        // ReSharper disable once UnusedMember.Local
         private static void DisableLogLevel(LogLevels logLevel)
         {
             SetLogLevel(logLevel, false);
         }
+        // ReSharper disable once UnusedMember.Local
         private static void EnableLogLevel(LogLevels logLevel)
         {
             SetLogLevel(logLevel, true);

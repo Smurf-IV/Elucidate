@@ -11,25 +11,27 @@ namespace Elucidate.Controls
     public partial class Recover : UserControl
     {
         private int _nodeCheckCount;
-        
+        private readonly List<string> _batchPaths = new List<string>();
+
         public Recover()
         {
             InitializeComponent();
             liveRunLogControl.HideAdditionalCommands();
-            DisableRecovery();
+            SetRecoveryButtonEnableState();
         }
 
         private void Recover_Load(object sender, EventArgs e)
         {
             timerTreeViewFill.Enabled = false;
             timerTreeViewRecover.Enabled = false;
+            splitContainer1.SplitterDistance = (int)(splitContainer1.Height * 0.8);
         }
 
         private void Recover_Resize(object sender, EventArgs e)
         {
             treeView1.Width = tableLayoutPanel1.Width;
         }
-        
+
         // Return a list of the TreeNodes that are checked.
         private void FindCheckedNodes(List<TreeNode> checkedNodes, TreeNodeCollection nodes)
         {
@@ -51,29 +53,34 @@ namespace Elucidate.Controls
             return checkedNodes;
         }
 
+        private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+        }
+
         private void timerTreeViewFill_Tick(object sender, EventArgs e)
         {
             try
             {
-                if (!LiveLog.LogQueueRecover.Any())
-                {
-                    if (liveRunLogControl.IsRunning) return;
-                    EnableRecovery();
-                    timerTreeViewFill.Enabled = false;
-                    //Thread.Sleep(250);
-                    return;
-                }
-                // Now lock in case the timer is overlapping !
                 lock (this)
                 {
-                    //read out of the file until the EOF
-                    while (LiveLog.LogQueueRecover.Any())
+                    for (int i = 0; i < 10; i++)
                     {
-                        LiveLog.LogString log = LiveLog.LogQueueRecover.Dequeue();
-                        if (!log.Message.Contains("recoverable \"")) continue;
-                        string filePath = log.Message.Split('"')[1];
-                        //if (filePath.Substring(1, 1) != ":") continue;
-                        treeView1.Nodes.Add($"/{filePath}", $"/{filePath}");
+                        while (LiveLog.LogQueueRecover.Any())
+                        {
+                            LiveLog.LogString log = LiveLog.LogQueueRecover.Dequeue();
+                            if (!log.Message.Contains("recoverable \"")) continue;
+                            string filePath = log.Message.Split('"')[1];
+                            //if (filePath.Substring(1, 1) != ":") continue;
+                            treeView1.Invoke(new Action(() => treeView1.Nodes.Add($"/{filePath}", $"/{filePath}")));
+                            //Thread thread1 = new Thread(() => thr.AddNode($"/{filePath}"));
+                            //thread1.Start();
+                        }
+                    }
+
+                    if (!liveRunLogControl.ActionWorker.IsBusy && !LiveLog.LogQueueRecover.Any())
+                    {
+                        SetRecoveryButtonEnableState();
+                        timerTreeViewFill.Enabled = false;
                     }
                 }
             }
@@ -82,19 +89,11 @@ namespace Elucidate.Controls
                 // ignored
             }
         }
-        
+
         private void timerTreeViewRecover_Tick(object sender, EventArgs e)
         {
             try
             {
-                if (!LiveLog.LogQueueRecover.Any())
-                {
-                    if (liveRunLogControl.IsRunning) return;
-                    DisableRecovery();
-                    timerTreeViewRecover.Enabled = false;
-                    //Thread.Sleep(250);
-                    return;
-                }
                 // Now lock in case the timer is overlapping !
                 lock (this)
                 {
@@ -109,6 +108,12 @@ namespace Elucidate.Controls
                         node[0].Text = $@"{node[0].Name} (RECOVERED)";
                         node[0].BackColor = Color.Green;
                     }
+
+                    if (!liveRunLogControl.ActionWorker.IsBusy && !LiveLog.LogQueueRecover.Any())
+                    {
+                        SetRecoveryButtonEnableState();
+                        timerTreeViewRecover.Enabled = false;
+                    }
                 }
             }
             catch
@@ -117,19 +122,15 @@ namespace Elucidate.Controls
             }
         }
 
-        private void EnableRecovery()
+        private void SetRecoveryButtonEnableState()
         {
-            if (!liveRunLogControl.IsRunning && _nodeCheckCount > 0)
+            if (treeView1.Nodes.Count - _nodeCheckCount > 0)
             {
                 btnRecoverFiles.Enabled = true;
             }
-        }
-
-        private void DisableRecovery()
-        {
-            if (liveRunLogControl.IsRunning || _nodeCheckCount == 0)
+            else
             {
-                btnRecoverFiles.Enabled = true;
+                btnRecoverFiles.Enabled = false;
             }
         }
 
@@ -175,40 +176,52 @@ namespace Elucidate.Controls
 
         private void btnLoadFiles_Click(object sender, EventArgs e)
         {
-            // run only if app is not already running an operation
-            // replace mlog method with ours
-            treeView1.Nodes.Clear();
-            timerTreeViewFill.Enabled = true;
-            liveRunLogControl.StartSnapRaidProcess(LiveRunLogControl.CommandType.RecoverCheck);
+            lock (treeView1)
+            {
+                // run only if app is not already running an operation
+                // replace mlog method with ours
+                treeView1.Nodes.Clear();
+                timerTreeViewFill.Enabled = true;
+                liveRunLogControl.StartSnapRaidProcess(LiveRunLogControl.CommandType.RecoverCheck);
+            }
         }
 
         private void btnRecoverFiles_Click(object sender, EventArgs e)
         {
-            if (_nodeCheckCount == 0)
+            lock (treeView1)
             {
+                if (_nodeCheckCount == 0)
+                {
+                    UncheckAll(treeView1);
+                    return;
+                }
+
+                // Get the checked nodes.
+                List<TreeNode> checkedNodes = CheckedNodes(treeView1);
+                // recover items
+                foreach (var node in checkedNodes)
+                {
+                    if (node.BackColor == Color.Green) continue;
+                    _batchPaths.Add(node.FullPath);
+                    //paths = new List<string>(paths.OrderBy(p => p.Count(c => c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar)));
+                }
+
                 UncheckAll(treeView1);
-                return;
+                timerTreeViewRecover.Enabled = true;
+
+                if (!liveRunLogControl.ActionWorker.IsBusy && _batchPaths.Any())
+                {
+                    liveRunLogControl.StartSnapRaidProcess(LiveRunLogControl.CommandType.RecoverFix, _batchPaths);
+                }
             }
-            // Get the checked nodes.
-            List<TreeNode> checkedNodes = CheckedNodes(treeView1);
-            // recover items
-            List<string> paths = new List<string>();
-            foreach (var node in checkedNodes)
-            {
-                if (node.BackColor == Color.Green) continue;
-                paths.Add(node.FullPath);
-            }
-            paths = new List<string>(paths.OrderBy(p => p.Count(c => c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar)));
-            DisableRecovery();
-            UncheckAll(treeView1);
-            timerTreeViewRecover.Enabled = true;
-            liveRunLogControl.StartSnapRaidProcess(LiveRunLogControl.CommandType.RecoverFix, paths);
         }
 
     }
 }
 
 #region tree hier code
+// sort list of paths
+//paths = new List<string>(paths.OrderBy(p => p.Count(c => c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar)));
 //private void LoadFile(string fileFullName)
 //{
 //    List<string> items = new List<string>();
