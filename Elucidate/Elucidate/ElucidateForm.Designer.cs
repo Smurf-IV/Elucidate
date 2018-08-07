@@ -63,6 +63,8 @@ namespace Elucidate
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabLogs = new System.Windows.Forms.TabPage();
             this.logsViewerControl = new Elucidate.Controls.LogsViewerControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.recover1 = new Elucidate.Controls.Recover();
             this.snapRAIDConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logViewToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,8 +74,6 @@ namespace Elucidate
             this.runWithoutCaptureMenuItem = new ToolStripCheckBoxMenuItem();
             this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.recover1 = new Elucidate.Controls.Recover();
             this.statusStrip1.SuspendLayout();
             this.coveragePage.SuspendLayout();
             this.RecoveryOperations.SuspendLayout();
@@ -83,8 +83,8 @@ namespace Elucidate
             this.commandPanel.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabLogs.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -301,7 +301,7 @@ namespace Elucidate
             this.driveSpace.Location = new System.Drawing.Point(3, 3);
             this.driveSpace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.driveSpace.Name = "driveSpace";
-            this.driveSpace.Size = new System.Drawing.Size(980, 476);
+            this.driveSpace.Size = new System.Drawing.Size(980, 473);
             this.driveSpace.TabIndex = 0;
             this.toolTip1.SetToolTip(this.driveSpace, "Not real time, only updates when shown.");
             // 
@@ -328,10 +328,10 @@ namespace Elucidate
             // coveragePage
             // 
             this.coveragePage.Controls.Add(this.driveSpace);
-            this.coveragePage.Location = new System.Drawing.Point(4, 25);
+            this.coveragePage.Location = new System.Drawing.Point(4, 28);
             this.coveragePage.Name = "coveragePage";
             this.coveragePage.Padding = new System.Windows.Forms.Padding(3);
-            this.coveragePage.Size = new System.Drawing.Size(986, 482);
+            this.coveragePage.Size = new System.Drawing.Size(986, 479);
             this.coveragePage.TabIndex = 4;
             this.coveragePage.Text = "  Coverage  ";
             this.coveragePage.UseVisualStyleBackColor = true;
@@ -364,10 +364,10 @@ namespace Elucidate
             // SchedulePage
             // 
             this.SchedulePage.Controls.Add(this.SchedulePageScheduleControl);
-            this.SchedulePage.Location = new System.Drawing.Point(4, 25);
+            this.SchedulePage.Location = new System.Drawing.Point(4, 28);
             this.SchedulePage.Name = "SchedulePage";
             this.SchedulePage.Padding = new System.Windows.Forms.Padding(3);
-            this.SchedulePage.Size = new System.Drawing.Size(986, 482);
+            this.SchedulePage.Size = new System.Drawing.Size(986, 479);
             this.SchedulePage.TabIndex = 5;
             this.SchedulePage.Text = "Schedule";
             this.SchedulePage.UseVisualStyleBackColor = true;
@@ -380,7 +380,7 @@ namespace Elucidate
             this.SchedulePageScheduleControl.Location = new System.Drawing.Point(3, 3);
             this.SchedulePageScheduleControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SchedulePageScheduleControl.Name = "SchedulePageScheduleControl";
-            this.SchedulePageScheduleControl.Size = new System.Drawing.Size(980, 476);
+            this.SchedulePageScheduleControl.Size = new System.Drawing.Size(980, 473);
             this.SchedulePageScheduleControl.TabIndex = 0;
             // 
             // StandardOperations
@@ -389,10 +389,10 @@ namespace Elucidate
             this.StandardOperations.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.StandardOperations.Controls.Add(this.logPanel);
             this.StandardOperations.Controls.Add(this.commandPanel);
-            this.StandardOperations.Location = new System.Drawing.Point(4, 25);
+            this.StandardOperations.Location = new System.Drawing.Point(4, 28);
             this.StandardOperations.Margin = new System.Windows.Forms.Padding(0);
             this.StandardOperations.Name = "StandardOperations";
-            this.StandardOperations.Size = new System.Drawing.Size(986, 482);
+            this.StandardOperations.Size = new System.Drawing.Size(986, 479);
             this.StandardOperations.TabIndex = 0;
             this.StandardOperations.Text = "  Common SnapRaid  ";
             // 
@@ -402,16 +402,17 @@ namespace Elucidate
             this.logPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logPanel.Location = new System.Drawing.Point(0, 210);
             this.logPanel.Name = "logPanel";
-            this.logPanel.Size = new System.Drawing.Size(984, 270);
+            this.logPanel.Size = new System.Drawing.Size(984, 267);
             this.logPanel.TabIndex = 11;
             // 
             // liveRunLogControl1
             // 
             this.liveRunLogControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.liveRunLogControl1.IsRunning = false;
             this.liveRunLogControl1.Location = new System.Drawing.Point(0, 0);
             this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.liveRunLogControl1.Name = "liveRunLogControl1";
-            this.liveRunLogControl1.Size = new System.Drawing.Size(984, 270);
+            this.liveRunLogControl1.Size = new System.Drawing.Size(984, 267);
             this.liveRunLogControl1.TabIndex = 0;
             // 
             // commandPanel
@@ -539,10 +540,10 @@ namespace Elucidate
             // 
             this.tabLogs.BackColor = System.Drawing.Color.Transparent;
             this.tabLogs.Controls.Add(this.logsViewerControl);
-            this.tabLogs.Location = new System.Drawing.Point(4, 25);
+            this.tabLogs.Location = new System.Drawing.Point(4, 28);
             this.tabLogs.Name = "tabLogs";
             this.tabLogs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLogs.Size = new System.Drawing.Size(986, 482);
+            this.tabLogs.Size = new System.Drawing.Size(986, 479);
             this.tabLogs.TabIndex = 6;
             this.tabLogs.Text = "Logs";
             // 
@@ -554,8 +555,28 @@ namespace Elucidate
             this.logsViewerControl.Location = new System.Drawing.Point(3, 3);
             this.logsViewerControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.logsViewerControl.Name = "logsViewerControl";
-            this.logsViewerControl.Size = new System.Drawing.Size(980, 476);
+            this.logsViewerControl.Size = new System.Drawing.Size(980, 473);
             this.logsViewerControl.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.recover1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 28);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(986, 479);
+            this.tabPage1.TabIndex = 7;
+            this.tabPage1.Text = "Recover Files";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // recover1
+            // 
+            this.recover1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.recover1.Location = new System.Drawing.Point(3, 3);
+            this.recover1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.recover1.Name = "recover1";
+            this.recover1.Size = new System.Drawing.Size(980, 473);
+            this.recover1.TabIndex = 0;
             // 
             // snapRAIDConfigToolStripMenuItem
             // 
@@ -649,26 +670,6 @@ namespace Elucidate
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.recover1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(986, 482);
-            this.tabPage1.TabIndex = 7;
-            this.tabPage1.Text = "Recover Files";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // recover1
-            // 
-            this.recover1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.recover1.Location = new System.Drawing.Point(3, 3);
-            this.recover1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.recover1.Name = "recover1";
-            this.recover1.Size = new System.Drawing.Size(980, 476);
-            this.recover1.TabIndex = 0;
-            // 
             // ElucidateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -702,9 +703,9 @@ namespace Elucidate
             this.tabControl.ResumeLayout(false);
             this.tabLogs.ResumeLayout(false);
             this.tabLogs.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

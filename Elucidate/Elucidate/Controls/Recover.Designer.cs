@@ -40,7 +40,6 @@ namespace Elucidate.Controls
             this.timerTreeViewFill = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.timerTreeViewRecover = new System.Windows.Forms.Timer(this.components);
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.liveRunLogControl = new Elucidate.Controls.LiveRunLogControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -107,6 +106,7 @@ namespace Elucidate.Controls
             this.btnClearFiles.TabIndex = 2;
             this.btnClearFiles.Text = "Clear";
             this.btnClearFiles.UseVisualStyleBackColor = true;
+            this.btnClearFiles.Click += new System.EventHandler(this.btnClearFiles_Click);
             // 
             // treeView1
             // 
@@ -145,10 +145,6 @@ namespace Elucidate.Controls
             // 
             this.timerTreeViewRecover.Interval = 250;
             this.timerTreeViewRecover.Tick += new System.EventHandler(this.timerTreeViewRecover_Tick);
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // liveRunLogControl
             // 
@@ -196,6 +192,5 @@ namespace Elucidate.Controls
         private LiveRunLogControl liveRunLogControl;
         private TreeView treeView1;
         private Timer timerTreeViewRecover;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

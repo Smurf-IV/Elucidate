@@ -54,5 +54,5 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("18.8.7.120")]
-[assembly: AssemblyFileVersion("18.8.7.120")]
+[assembly: AssemblyVersion("18.8.7.145")]
+[assembly: AssemblyFileVersion("18.8.7.145")]

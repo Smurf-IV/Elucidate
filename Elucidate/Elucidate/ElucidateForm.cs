@@ -27,6 +27,7 @@
 #endregion Copyright (C)
 
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
@@ -38,9 +39,11 @@ namespace Elucidate
 {
     public sealed partial class ElucidateForm : Form
     {
+       
         public ElucidateForm()
         {
             InitializeComponent();
+
             if (Properties.Settings.Default.UpdateRequired)
             {
                 // Thanks go to http://cs.rthand.com/blogs/blog_with_righthand/archive/2005/12/09/246.aspx
@@ -49,10 +52,13 @@ namespace Elucidate
                 Properties.Settings.Default.Save();
             }
             WindowLocation.GeometryFromString(Properties.Settings.Default.WindowLocation, this);
-            //AddThreadingCallbacks();
+
+            liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
         }
 
-        private void EnableCommonButtons(bool enabled)
+        private void liveRunLogControl1_RunWorkerCompleted(object sender, EventArgs e) => SetCommonButtonsEnabledState(true);
+
+        private void SetCommonButtonsEnabledState(bool enabled)
         {
             btnDiff.Enabled = enabled;
             btnSync.Enabled = enabled;
@@ -62,8 +68,12 @@ namespace Elucidate
             btnFix.Enabled = enabled;
             btnDupFinder.Enabled = enabled;
             btnUndelete.Enabled = enabled;
+            snapRAIDConfigToolStripMenuItem.Enabled = enabled;
+            logViewToolStripMenuItem.Enabled = enabled;
+            runWithoutCaptureMenuItem.Enabled = enabled;
+            tabControl.Enabled = enabled;
         }
-
+        
         // ReSharper disable once InconsistentNaming
         private const int CS_DROPSHADOW = 0x20000;
         protected override CreateParams CreateParams
@@ -78,7 +88,7 @@ namespace Elucidate
 
         private void EnableIfValid(bool enabled)
         {
-            EnableCommonButtons(enabled);
+            SetCommonButtonsEnabledState(enabled);
         }
 
         #region Main Menu Toolbar Handlers
@@ -159,41 +169,49 @@ namespace Elucidate
 
         private void btnStatus_Click(object sender, EventArgs e)
         {
+            SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Status);
         }
 
         private void btnDiff_Click(object sender, EventArgs e)
         {
+            SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Diff);
         }
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
+            SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Check);
         }
 
         private void btnSync_Click(object sender, EventArgs e)
         {
+            SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Sync);
         }
 
         private void btnScrub_Click(object sender, EventArgs e)
         {
+            SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Scrub);
         }
 
         private void btnFix_Click(object sender, EventArgs e)
         {
+            SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Fix);
         }
 
         private void btnDupFinder_Click(object sender, EventArgs e)
         {
+            SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Dup);
         }
 
         private void btnUndelete_Click(object sender, EventArgs e)
         {
+            SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Undelete);
         }
 
@@ -204,11 +222,14 @@ namespace Elucidate
         private void ElucidateForm_Load(object sender, EventArgs e)
         {
             VersionIndicator.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
             if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
             {
                 Properties.Settings.Default.ConfigFileIsValid = false;
             }
+
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
+
             if (!Properties.Settings.Default.ConfigFileIsValid)
             {
                 settingsToolStripMenuItem_Click(sender, e);

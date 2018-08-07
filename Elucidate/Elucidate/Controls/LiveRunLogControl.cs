@@ -24,7 +24,7 @@ namespace Elucidate.Controls
         private ProcessPriorityClass _requested = ProcessPriorityClass.Normal;
         private string _lastError;
         private List<string> _batchPaths;
-
+        
         public bool IsRunning { get; set; }
         private CommandType CommandTypeRunning { get; set; }
         
@@ -77,7 +77,7 @@ namespace Elucidate.Controls
             CommandTypeRunning = commandToRun;
             timer1.Enabled = true;
             //UseWaitCursor = true;
-            //EnableIfValid(false);
+            
             StringBuilder command = new StringBuilder();
             switch (commandToRun)
             {
@@ -207,7 +207,7 @@ namespace Elucidate.Controls
             try
             {
                 IsRunning = true;
-
+                
                 Log.Instance.Debug("actionWorker_DoWork");
                 BackgroundWorker worker = sender as BackgroundWorker;
                 string command = e.Argument as string;
@@ -377,8 +377,9 @@ namespace Elucidate.Controls
         private void actionWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //UseWaitCursor = false;
-            //EnableIfValid(true);
-
+            //ElucidateForm.SetCommonButtonsEnabledState(true);
+            
+            
             IsRunning = false;
 
             // continue running additional times if there is more work to be done

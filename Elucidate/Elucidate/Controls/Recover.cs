@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Elucidate.Logging;
@@ -17,7 +16,29 @@ namespace Elucidate.Controls
         {
             InitializeComponent();
             liveRunLogControl.HideAdditionalCommands();
-            SetRecoveryButtonEnableState();
+            SetButtonsEnabledState();
+            liveRunLogControl.ActionWorker.RunWorkerCompleted += liveRunLogControl_RunWorkerCompleted;
+        }
+
+        private void liveRunLogControl_RunWorkerCompleted(object sender, EventArgs e) => SetButtonsEnabledState();
+
+        private void SetButtonsEnabledState()
+        {
+            lock (treeView1)
+            {
+                if (liveRunLogControl.IsRunning)
+                {
+                    btnLoadFiles.Enabled = false;
+                    btnRecoverFiles.Enabled = false;
+                    btnClearFiles.Enabled = false;
+                }
+                else
+                {
+                    btnLoadFiles.Enabled = true;
+                    btnRecoverFiles.Enabled = treeView1.Nodes.Count - _nodeCheckCount > 0;
+                    btnClearFiles.Enabled = treeView1.Nodes.Count > 0;
+                }
+            }
         }
 
         private void Recover_Load(object sender, EventArgs e)
@@ -53,10 +74,6 @@ namespace Elucidate.Controls
             return checkedNodes;
         }
 
-        private void backgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
-        }
-
         private void timerTreeViewFill_Tick(object sender, EventArgs e)
         {
             try
@@ -79,7 +96,7 @@ namespace Elucidate.Controls
 
                     if (!liveRunLogControl.ActionWorker.IsBusy && !LiveLog.LogQueueRecover.Any())
                     {
-                        SetRecoveryButtonEnableState();
+                        SetButtonsEnabledState();
                         timerTreeViewFill.Enabled = false;
                     }
                 }
@@ -111,7 +128,7 @@ namespace Elucidate.Controls
 
                     if (!liveRunLogControl.ActionWorker.IsBusy && !LiveLog.LogQueueRecover.Any())
                     {
-                        SetRecoveryButtonEnableState();
+                        //SetRecoveryButtonEnableState();
                         timerTreeViewRecover.Enabled = false;
                     }
                 }
@@ -121,19 +138,7 @@ namespace Elucidate.Controls
                 // ignored
             }
         }
-
-        private void SetRecoveryButtonEnableState()
-        {
-            if (treeView1.Nodes.Count - _nodeCheckCount > 0)
-            {
-                btnRecoverFiles.Enabled = true;
-            }
-            else
-            {
-                btnRecoverFiles.Enabled = false;
-            }
-        }
-
+        
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
         {
             if (!(e.Node is TreeNode treeNode)) return;
@@ -178,6 +183,7 @@ namespace Elucidate.Controls
         {
             lock (treeView1)
             {
+                SetButtonsEnabledState();
                 // run only if app is not already running an operation
                 // replace mlog method with ours
                 treeView1.Nodes.Clear();
@@ -190,6 +196,7 @@ namespace Elucidate.Controls
         {
             lock (treeView1)
             {
+                SetButtonsEnabledState();
                 if (_nodeCheckCount == 0)
                 {
                     UncheckAll(treeView1);
@@ -216,6 +223,13 @@ namespace Elucidate.Controls
             }
         }
 
+        private void btnClearFiles_Click(object sender, EventArgs e)
+        {
+            lock (treeView1)
+            {
+                treeView1.Nodes.Clear();
+            }
+        }
     }
 }
 
