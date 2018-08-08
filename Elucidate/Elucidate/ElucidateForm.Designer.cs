@@ -672,7 +672,7 @@ namespace Elucidate
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(675, 600);
+            this.MinimumSize = new System.Drawing.Size(750, 600);
             this.Name = "ElucidateForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Elucidate: A SnapRAID Command Line Driver";

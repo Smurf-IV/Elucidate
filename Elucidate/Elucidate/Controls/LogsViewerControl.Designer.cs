@@ -70,6 +70,8 @@
             // 
             // panelRight
             // 
+            this.panelRight.AutoSize = true;
+            this.panelRight.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panelRight.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.panelRight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelRight.Controls.Add(this.richTextBoxLogViewer);
@@ -91,7 +93,6 @@
             this.richTextBoxLogViewer.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBoxLogViewer.Location = new System.Drawing.Point(0, 0);
             this.richTextBoxLogViewer.Margin = new System.Windows.Forms.Padding(2);
-            this.richTextBoxLogViewer.MinimumSize = new System.Drawing.Size(151, 163);
             this.richTextBoxLogViewer.Name = "richTextBoxLogViewer";
             this.richTextBoxLogViewer.ReadOnly = true;
             this.richTextBoxLogViewer.Size = new System.Drawing.Size(599, 394);
@@ -161,6 +162,7 @@
             this.Size = new System.Drawing.Size(765, 400);
             this.Load += new System.EventHandler(this.LogsViewerControl_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.panelRight.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
