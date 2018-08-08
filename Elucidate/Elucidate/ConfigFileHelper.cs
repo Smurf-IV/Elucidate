@@ -58,11 +58,11 @@ namespace Elucidate
         /// Reads the config file
         /// </summary>
         /// <returns>an empty string if no exception occurrs</returns>
-        public string Read()
+        public bool Read()
         {
             try
             {
-                if (!ConfigFileExists) return string.Empty;
+                if (!ConfigFileExists) return false;
 
                 ParityFile1 = string.Empty;
                 ParityFile2 = string.Empty;
@@ -157,10 +157,10 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
-                return ex.Message;
+                Log.Instance.Error(ex);
+                return false;
             }
-            return string.Empty;
+            return true;
         }
 
         /// <summary>

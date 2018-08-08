@@ -32,6 +32,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using Elucidate.Controls;
+using Elucidate.Shared;
 
 namespace Elucidate
 {
@@ -225,13 +226,8 @@ namespace Elucidate
         private void ElucidateForm_Load(object sender, EventArgs e)
         {
             VersionIndicator.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
-            if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
-            {
-                Properties.Settings.Default.ConfigFileIsValid = false;
-            }
-
-            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
+            if (File.Exists(Properties.Settings.Default.ConfigFileLocation)) return;
+            Properties.Settings.Default.ConfigFileIsValid = false;
         }
 
         private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
@@ -243,6 +239,17 @@ namespace Elucidate
 
         private void ElucidateForm_Shown(object sender, EventArgs e)
         {
+            ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+            if (!cfg.Read())
+            {
+                MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Properties.Settings.Default.ConfigFileIsValid = cfg.ConfigFileExists;
+
+            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
+
             if (!Properties.Settings.Default.ConfigFileIsValid)
             {
                 // open the settings form since the config is not valid

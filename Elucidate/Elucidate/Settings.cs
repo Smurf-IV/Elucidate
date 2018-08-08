@@ -480,7 +480,7 @@ namespace Elucidate
             {
                 ofd.InitialDirectory = Path.GetFullPath(configFileLocation.Text);
                 Log.Instance.Info("configFileLocation from [{0}]", ofd.InitialDirectory);
-                ofd.Filter = @"Snap Raid Config|SnapRAID.config|All Files|*.*";
+                ofd.Filter = @"Snap Raid Config|*.conf*|All Files|*.*";
                 ofd.CheckFileExists = true;
                 ofd.RestoreDirectory = true;
                 if (DialogResult.OK == ofd.ShowDialog())
@@ -503,7 +503,7 @@ namespace Elucidate
             ValidateData();
         }
 
-        public void ReadConfigDetails()
+        private void ReadConfigDetails()
         {
             exludedFilesView.Rows.Clear();
             snapShotSourcesTreeView.Nodes.Clear();
@@ -530,11 +530,12 @@ namespace Elucidate
             }
             else
             {
-                string readResult;
-                if (!string.IsNullOrEmpty(readResult = cfg.Read()))
+                if (!cfg.Read())
                 {
-                    MessageBoxExt.Show(this, readResult, "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
+
                 IncludePatterns = cfg.IncludePatterns;
                 numBlockSizeKB.Value = cfg.BlockSizeKB;
                 _advSettingsList[3].CheckState = cfg.Nohidden;

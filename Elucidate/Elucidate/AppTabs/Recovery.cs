@@ -27,7 +27,6 @@
 #endregion Copyright (C)
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -69,14 +68,14 @@ namespace Elucidate
         //    }
         //}
 
-        private void tabControl_Deselected(object sender, TabControlEventArgs e)
-        {
-            if (e.TabPage != RecoveryOperations) return;
-            if (WindowState == FormWindowState.Maximized)
-            {
-                WindowState = FormWindowState.Normal;
-            }
-        }
+        //private void tabControl_Deselected(object sender, TabControlEventArgs e)
+        //{
+        //    if (e.TabPage != RecoveryOperations) return;
+        //    if (WindowState == FormWindowState.Maximized)
+        //    {
+        //        WindowState = FormWindowState.Normal;
+        //    }
+        //}
 
         private void btnRemoveOutput_Click(object sender, EventArgs e)
         {
@@ -85,40 +84,38 @@ namespace Elucidate
             try
             {
                 ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
-                string readResult;
-                if (!string.IsNullOrEmpty(readResult = cfg.Read()))
+                if (!cfg.Read())
                 {
-                    MessageBoxExt.Show(this, readResult, "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
-                else
+
+                FileInfo fi;
+                if (!string.IsNullOrEmpty(cfg.ParityFile1))
                 {
-                    FileInfo fi;
-                    if (!string.IsNullOrEmpty(cfg.ParityFile1))
+                    fi = new FileInfo(cfg.ParityFile1);
+                    if (fi.Exists)
                     {
-                        fi = new FileInfo(cfg.ParityFile1);
-                        if (fi.Exists)
-                        {
-                            fi.Delete();
-                        }
+                        fi.Delete();
                     }
-                    if (!string.IsNullOrEmpty(cfg.ParityFile2))
+                }
+                if (!string.IsNullOrEmpty(cfg.ParityFile2))
+                {
+                    fi = new FileInfo(cfg.ParityFile2);
+                    if (fi.Exists)
                     {
-                        fi = new FileInfo(cfg.ParityFile2);
-                        if (fi.Exists)
-                        {
-                            fi.Delete();
-                        }
+                        fi.Delete();
                     }
+                }
 
-                    if (cfg.ContentFiles == null) return;
+                if (cfg.ContentFiles == null) return;
 
-                    foreach (string contentFile in cfg.ContentFiles.Where(contentFile => !string.IsNullOrEmpty(contentFile)))
+                foreach (string contentFile in cfg.ContentFiles.Where(contentFile => !string.IsNullOrEmpty(contentFile)))
+                {
+                    fi = new FileInfo(contentFile);
+                    if (fi.Exists)
                     {
-                        fi = new FileInfo(contentFile);
-                        if (fi.Exists)
-                        {
-                            fi.Delete();
-                        }
+                        fi.Delete();
                     }
                 }
             }
