@@ -143,7 +143,7 @@ namespace Elucidate.Controls
 
             comboBox1.Enabled = true;
             comboBox1.Text = @"Running";
-            _requested = ProcessPriorityClass.Idle;
+            _requested = ProcessPriorityClass.Normal;
             ActionWorker.RunWorkerAsync(command.ToString());
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
             toolStripProgressBar1.DisplayText = "Running...";

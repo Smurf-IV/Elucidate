@@ -30,7 +30,7 @@
              Platform='x64' />
 
     <MajorUpgrade 
-      DowngradeErrorMessage="A newer version of [ProdutName] is already installed. Downgrades are not allowed - Use add/remove from the control panel."
+      DowngradeErrorMessage="A newer version of [ProductName] is already installed. Downgrades are not allowed - Use add/remove from the control panel."
       AllowSameVersionUpgrades="yes" />
 
     <Upgrade Id="$(var.UpgradeCode)">
