@@ -26,6 +26,7 @@ namespace Elucidate.Controls
         }
 
         private int _nodeCheckCount;
+
         private readonly List<string> _batchPaths = new List<string>();
 
         public Recover()
@@ -78,7 +79,10 @@ namespace Elucidate.Controls
 
         private void Recover_Resize(object sender, EventArgs e)
         {
-            treeView1.Width = tableLayoutPanel1.Width;
+            lock (treeView1)
+            {
+                treeView1.Width = tableLayoutPanel1.Width;
+            }
         }
 
         // Return a list of the TreeNodes that are checked.
