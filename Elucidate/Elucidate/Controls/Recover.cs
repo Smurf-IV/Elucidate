@@ -10,13 +10,16 @@ namespace Elucidate.Controls
     public partial class Recover : UserControl
     {
         public event EventHandler TaskStarted;
-        protected virtual void OnTaskStarted(EventArgs e)
+
+        private void OnTaskStarted(EventArgs e)
         {
             EventHandler handler = TaskStarted;
             handler?.Invoke(this, e);
         }
+
         public event EventHandler TaskCompleted;
-        protected virtual void OnTaskCompleted(EventArgs e)
+
+        private void OnTaskCompleted(EventArgs e)
         {
             EventHandler handler = TaskCompleted;
             handler?.Invoke(this, e);

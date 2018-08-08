@@ -71,7 +71,6 @@ namespace Elucidate
             this.changeLogLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionIndicator = new System.Windows.Forms.ToolStripMenuItem();
-            this.runWithoutCaptureMenuItem = new ToolStripCheckBoxMenuItem();
             this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.statusStrip1.SuspendLayout();
@@ -633,14 +632,6 @@ namespace Elucidate
             this.VersionIndicator.ToolTipText = "The build number of this application.";
             this.VersionIndicator.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
-            // runWithoutCaptureMenuItem
-            // 
-            this.runWithoutCaptureMenuItem.CheckOnClick = true;
-            this.runWithoutCaptureMenuItem.Name = "runWithoutCaptureMenuItem";
-            this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(151, 20);
-            this.runWithoutCaptureMenuItem.Text = "   Run &Without Capture";
-            this.runWithoutCaptureMenuItem.ToolTipText = "Run SnapRaid and send logs to a file rather than capturing here.";
-            // 
             // changeToolStripMenuItem
             // 
             this.changeToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -660,7 +651,6 @@ namespace Elucidate
             this.logViewToolStripMenuItem,
             this.helpToolStripMenuItem,
             this.VersionIndicator,
-            this.runWithoutCaptureMenuItem,
             this.changeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -746,7 +736,6 @@ namespace Elucidate
         private ToolStripMenuItem changeLogLocationToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem VersionIndicator;
-        private ToolStripCheckBoxMenuItem runWithoutCaptureMenuItem;
         private ToolStripMenuItem changeToolStripMenuItem;
         private MenuStrip menuStrip1;
         private TabPage tabPage1;

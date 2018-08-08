@@ -15,14 +15,27 @@ namespace Elucidate.Controls
 {
     public partial class LiveRunLogControl : UserControl
     {
+        public LiveRunLogControl()
+        {
+            InitializeComponent();
+            AddThreadingCallbacks();
+            IsRunning = false;
+            timer1.Enabled = false;
+            comboBox1.Enabled = false;
+            runWithoutCaptureMenuItem.Checked = Properties.Settings.Default.RunWithoutCapture;
+        }
+        
         public event EventHandler TaskStarted;
-        protected virtual void OnTaskStarted(EventArgs e)
+
+        private void OnTaskStarted(EventArgs e)
         {
             EventHandler handler = TaskStarted;
             handler?.Invoke(this, e);
         }
+
         public event EventHandler TaskCompleted;
-        protected virtual void OnTaskCompleted(EventArgs e)
+
+        private void OnTaskCompleted(EventArgs e)
         {
             EventHandler handler = TaskCompleted;
             handler?.Invoke(this, e);
@@ -49,15 +62,10 @@ namespace Elucidate.Controls
 
         public enum CommandType { Status, Diff, Check, Sync, Scrub, Fix, Dup, Undelete, QuickCheck, RecoverCheck, RecoverFix }
 
-        public LiveRunLogControl()
+        private void LiveRunLogControl_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
-            AddThreadingCallbacks();
-            IsRunning = false;
-            timer1.Enabled = false;
-            comboBox1.Enabled = false;
         }
-
+        
         public void HideAdditionalCommands()
         {
             tableLayoutPanelAdditionalCommands.Visible = false;
@@ -462,13 +470,6 @@ namespace Elucidate.Controls
                     {
                         _lastError = buf;
                         Log.Instance.Warn($"Verbose[{_lastError}]");
-
-                        //Log.LogMethod(Log.LogLevels.Warn, $"Verbose[{_lastError}]");
-
-                        //Thread thread1 = new Thread(() => thr.LogEntry($"Verbose[{_lastError}]"));
-                        //thread1.Start();
-                        
-                        //Log.LogMethod(Log.LogLevels.Warn, $"Verbose[{buf}]");
                     }
                     else
                     {
@@ -497,18 +498,6 @@ namespace Elucidate.Controls
                     if (!string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardOutput.ReadLine()))
                     {
                         Log.Instance.Info($"StdOut[{buf}]");
-                        
-                        //Log.LogMethod(Log.LogLevels.Info, $"StdOut[{buf}]");
-                        
-                        //var buf1 = buf;
-                        //Thread thread1 = new Thread(() => thr.LogEntry($"StdOut[{buf1}]")) {IsBackground = true};
-                        //thread1.Start();
-                        //Thread thread2 = new Thread(() => thr.ProcessLog()) {IsBackground = true};
-                        //thread2.Start();
-                        
-                        //LiveLog.LogMethod("INFO", $"StdOut[{buf}]");
-                        //Log.LogMethod(Log.LogLevels.Info, $"StdOut[{buf}]");
-
                         if (!buf.Contains("%")) continue;
                         string[] splits = buf.Split('%');
                         if (int.TryParse(splits[0], out int percentProgress))
@@ -540,9 +529,5 @@ namespace Elucidate.Controls
             _mreProcessExit.Set();
         }
 
-        private void LiveRunLogControl_Load(object sender, EventArgs e)
-        {
-            //AddThreadingCallbacks();
-        }
     }
 }

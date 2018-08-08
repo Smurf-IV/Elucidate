@@ -29,7 +29,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Media;
 using System.Reflection;
 using System.Windows.Forms;
 using Elucidate.Controls;
@@ -38,7 +37,6 @@ namespace Elucidate
 {
     public sealed partial class ElucidateForm : Form
     {
-       
         public ElucidateForm()
         {
             InitializeComponent();
@@ -80,7 +78,6 @@ namespace Elucidate
             btnUndelete.Enabled = enabled;
             snapRAIDConfigToolStripMenuItem.Enabled = enabled;
             logViewToolStripMenuItem.Enabled = enabled;
-            runWithoutCaptureMenuItem.Enabled = enabled;
             if (enabled)
             {
                 tabControl.Deselecting -= tabControl_Deselecting;
@@ -112,23 +109,14 @@ namespace Elucidate
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (liveRunLogControl1.ActionWorker.IsBusy)
-            {
-                SystemSounds.Beep.Play();
-                return;
-            }
+            if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
             new Settings().ShowDialog(this);
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
-            runWithoutCaptureMenuItem.Checked = Properties.Settings.Default.RunWithoutCapture;
         }
 
         private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (liveRunLogControl1.ActionWorker.IsBusy)
-            {
-                SystemSounds.Beep.Play();
-                return;
-            }
+            if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
             string userAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Elucidate");
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -156,11 +144,7 @@ namespace Elucidate
 
         private void changeLogLocationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (liveRunLogControl1.ActionWorker.IsBusy)
-            {
-                SystemSounds.Beep.Play();
-                return;
-            }
+            if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
             new LogFileLocation().ShowDialog(this);
         }
 
@@ -232,10 +216,6 @@ namespace Elucidate
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Undelete);
         }
 
-        private void tabControl_Selected(object sender, TabControlEventArgs e)
-        {
-        }
-
         private void ElucidateForm_Load(object sender, EventArgs e)
         {
             VersionIndicator.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -250,10 +230,6 @@ namespace Elucidate
             if (!Properties.Settings.Default.ConfigFileIsValid)
             {
                 settingsToolStripMenuItem_Click(sender, e);
-            }
-            else
-            {
-                runWithoutCaptureMenuItem.Checked = Properties.Settings.Default.RunWithoutCapture;
             }
         }
 
