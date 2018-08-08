@@ -533,8 +533,7 @@ namespace Elucidate
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(994, 511);
             this.tabControl.TabIndex = 4;
-            this.tabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl_Selected);
-            this.tabControl.Deselected += new System.Windows.Forms.TabControlEventHandler(this.tabControl_Deselected);
+            this.tabControl.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Deselecting);
             // 
             // tabLogs
             // 

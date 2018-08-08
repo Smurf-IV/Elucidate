@@ -15,6 +15,19 @@ namespace Elucidate.Controls
 {
     public partial class LiveRunLogControl : UserControl
     {
+        public event EventHandler TaskStarted;
+        protected virtual void OnTaskStarted(EventArgs e)
+        {
+            EventHandler handler = TaskStarted;
+            handler?.Invoke(this, e);
+        }
+        public event EventHandler TaskCompleted;
+        protected virtual void OnTaskCompleted(EventArgs e)
+        {
+            EventHandler handler = TaskCompleted;
+            handler?.Invoke(this, e);
+        }
+
         /// <summary>
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
         /// </summary>
@@ -42,6 +55,7 @@ namespace Elucidate.Controls
             AddThreadingCallbacks();
             IsRunning = false;
             timer1.Enabled = false;
+            comboBox1.Enabled = false;
         }
 
         public void HideAdditionalCommands()
@@ -207,7 +221,8 @@ namespace Elucidate.Controls
             try
             {
                 IsRunning = true;
-                
+                OnTaskStarted(e);
+
                 Log.Instance.Debug("actionWorker_DoWork");
                 BackgroundWorker worker = sender as BackgroundWorker;
                 string command = e.Argument as string;
@@ -379,7 +394,6 @@ namespace Elucidate.Controls
             //UseWaitCursor = false;
             //ElucidateForm.SetCommonButtonsEnabledState(true);
             
-            
             IsRunning = false;
 
             // continue running additional times if there is more work to be done
@@ -389,7 +403,7 @@ namespace Elucidate.Controls
                 return;
             }
 
-            IsRunning = false;
+            OnTaskCompleted(e);
             comboBox1.Enabled = false;
             timer1.Enabled = false;
             

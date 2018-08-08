@@ -9,6 +9,19 @@ namespace Elucidate.Controls
 {
     public partial class Recover : UserControl
     {
+        public event EventHandler TaskStarted;
+        protected virtual void OnTaskStarted(EventArgs e)
+        {
+            EventHandler handler = TaskStarted;
+            handler?.Invoke(this, e);
+        }
+        public event EventHandler TaskCompleted;
+        protected virtual void OnTaskCompleted(EventArgs e)
+        {
+            EventHandler handler = TaskCompleted;
+            handler?.Invoke(this, e);
+        }
+
         private int _nodeCheckCount;
         private readonly List<string> _batchPaths = new List<string>();
 
@@ -18,6 +31,18 @@ namespace Elucidate.Controls
             liveRunLogControl.HideAdditionalCommands();
             SetButtonsEnabledState();
             liveRunLogControl.ActionWorker.RunWorkerCompleted += liveRunLogControl_RunWorkerCompleted;
+            liveRunLogControl.TaskStarted += LiveRunLogControl_TaskStarted;
+            liveRunLogControl.TaskCompleted += LiveRunLogControl_TaskCompleted;
+        }
+
+        private void LiveRunLogControl_TaskStarted(object sender, EventArgs e)
+        {
+            OnTaskStarted(e);
+        }
+
+        private void LiveRunLogControl_TaskCompleted(object sender, EventArgs e)
+        {
+            OnTaskCompleted(e);
         }
 
         private void liveRunLogControl_RunWorkerCompleted(object sender, EventArgs e) => SetButtonsEnabledState();

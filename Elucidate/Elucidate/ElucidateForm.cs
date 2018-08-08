@@ -27,7 +27,6 @@
 #endregion Copyright (C)
 
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Media;
@@ -52,8 +51,19 @@ namespace Elucidate
                 Properties.Settings.Default.Save();
             }
             WindowLocation.GeometryFromString(Properties.Settings.Default.WindowLocation, this);
-
             liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
+            recover1.TaskStarted += Recover1_TaskStarted;
+            recover1.TaskCompleted += Recover1_TaskCompleted;
+        }
+
+        private void Recover1_TaskStarted(object sender, EventArgs e)
+        {
+            tabControl.Deselecting += tabControl_Deselecting;
+        }
+
+        private void Recover1_TaskCompleted(object sender, EventArgs e)
+        {
+            tabControl.Deselecting -= tabControl_Deselecting;
         }
 
         private void liveRunLogControl1_RunWorkerCompleted(object sender, EventArgs e) => SetCommonButtonsEnabledState(true);
@@ -71,7 +81,14 @@ namespace Elucidate
             snapRAIDConfigToolStripMenuItem.Enabled = enabled;
             logViewToolStripMenuItem.Enabled = enabled;
             runWithoutCaptureMenuItem.Enabled = enabled;
-            tabControl.Enabled = enabled;
+            if (enabled)
+            {
+                tabControl.Deselecting -= tabControl_Deselecting;
+            }
+            else
+            {
+                tabControl.Deselecting += tabControl_Deselecting;
+            }
         }
         
         // ReSharper disable once InconsistentNaming
@@ -245,6 +262,11 @@ namespace Elucidate
             // persist our geometry string.
             Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
             Properties.Settings.Default.Save();
+        }
+
+        private void tabControl_Deselecting(object sender, TabControlCancelEventArgs e)
+        {
+            e.Cancel = true;
         }
     }
 }
