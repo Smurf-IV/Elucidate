@@ -101,6 +101,7 @@ namespace Elucidate.Controls
                 if (pathsOfInterest == null)
                 {
                     SnapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                    if (!SnapRaidConfig.ConfigFileExists) return;
                     SnapRaidConfig.Read();
                     pathsOfInterest = new List<string>();
                     pathsOfInterest.AddRange(SnapRaidConfig.SnapShotSources);

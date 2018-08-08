@@ -39,6 +39,8 @@ namespace Elucidate
     {
         private string ConfigPath { get; set; }
 
+        public bool ConfigFileExists => File.Exists(ConfigPath);
+
         /// <summary>
         /// constructor
         /// </summary>
@@ -60,6 +62,8 @@ namespace Elucidate
         {
             try
             {
+                if (!ConfigFileExists) return string.Empty;
+
                 ParityFile1 = string.Empty;
                 ParityFile2 = string.Empty;
                 ParityFile3 = string.Empty;
@@ -252,90 +256,7 @@ namespace Elucidate
             }
             return string.Empty;
         }
-
-        /// <summary>
-        /// Writes the config file
-        /// </summary>
-        /// <returns>an empty string if no exception occurrs</returns>
-        public string Write1()
-        {
-            try
-            {
-                List<string> fileContents = new List<string>
-                                             {
-                                                "# Configuration for snapraid via Elucidate",
-                                                string.Empty,
-                                                "# Defines the file to use as Parity storage",
-                                                "# It must NOT be in a data disk",
-                                                "parity " + (Directory.Exists(ParityFile1)? Path.Combine(ParityFile1, "SnapRAID.parity"):ParityFile1),
-                                                string.Empty,
-                                                "# Defines the file to use as 2-parity storage",
-                                                "# If specified, it enables a double failures protection like RAID6",
-                                                "# It must NOT be in a data disk"
-                                             };
-                if (string.IsNullOrEmpty(ParityFile2))
-                {
-                    fileContents.Add(@"#2-parity F:\SnapRAID.2.parity");
-                }
-                else
-                {
-                    fileContents.Add("2-parity " + (Directory.Exists(ParityFile2) ? Path.Combine(ParityFile2, "SnapRAID.2.parity") : ParityFile2));
-                }
-                fileContents.Add(string.Empty);
-                fileContents.Add("# Defines the file to use as content list");
-                fileContents.Add("# You can use multiple specification to store more copies of the file");
-                fileContents.Add("# It's suggested to have at least N+1 copies of the file, where N is the number of parity files.");
-                fileContents.Add("# It can be in a data disk");
-                fileContents.Add("# It can be in the disks used for parity storage");
-                fileContents.AddRange(ContentFiles.Select(contentFile => "content " + (Directory.Exists(contentFile) ? Path.Combine(contentFile, "SnapRAID.content") : contentFile)));
-                fileContents.Add(string.Empty);
-                fileContents.Add("# Defines the data disks to use");
-                fileContents.Add("# The order is relevant for parity, do not change it");
-                fileContents.AddRange(SnapShotSources.Select((t, index) => string.Concat("disk d", index, ' ', t)));
-                fileContents.Add(string.Empty);
-
-                fileContents.Add("# Excludes hidden files and directories (uncomment to enable).");
-                fileContents.Add(Nohidden ? "nohidden" : "# nohidden");
-                fileContents.Add(string.Empty);
-
-                fileContents.Add("# Defines files and directories to exclude");
-                fileContents.Add("# Remember that all the paths are relative at the mount points");
-                fileContents.Add("# Format: \"exclude FILE\"");
-                fileContents.Add("# Format: \"exclude DIR\\\"");
-                fileContents.Add("# Format: \"exclude \\PATH\\FILE\"");
-                fileContents.Add("# Format: \"exclude \\PATH\\DIR\\\"");
-                if (ExcludePatterns.Any())
-                {
-                    fileContents.AddRange(ExcludePatterns.Select(pattern => "exclude " + pattern));
-                }
-                if (IncludePatterns.Any())
-                {
-                    fileContents.AddRange(IncludePatterns.Select(pattern => "include " + pattern));
-                }
-                fileContents.Add(string.Empty);
-                fileContents.Add("# Defines the block size in kibi bytes (1024 bytes).");
-                fileContents.Add("# Default value is 256 -> 256 kibi bytes -> 262144 bytes");
-                fileContents.Add("block_size " + BlockSizeKB);
-                fileContents.Add(string.Empty);
-
-                fileContents.Add("# Automatically save the state when synching after the specied amount of GiB processed.");
-                fileContents.Add("# This option is useful to avoid to restart from scratch long 'sync'");
-                fileContents.Add("# commands interrupted by a machine crash.");
-                fileContents.Add("# The SIZE argument is specified in gibi bytes -> 1073741824 bytes");
-                fileContents.Add("# Default value is 0, meaning disabled.");
-                fileContents.Add("# Format: \"autosave SIZE_IN_GiB\"");
-                fileContents.Add("autosave " + AutoSaveGB);
-                fileContents.Add(string.Empty);
-                File.WriteAllLines(ConfigPath, fileContents);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHandler.ReportException(ex);
-                return ex.Message;
-            }
-            return string.Empty;
-        }
-
+        
         public string ParityFile1 { get; set; }
 
         public string ParityFile2 { get; set; }

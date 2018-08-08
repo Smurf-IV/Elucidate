@@ -87,7 +87,11 @@ namespace Elucidate
                 tabControl.Deselecting += tabControl_Deselecting;
             }
         }
-        
+        private void tabControl_Deselecting(object sender, TabControlCancelEventArgs e)
+        {
+            e.Cancel = true;
+        }
+
         // ReSharper disable once InconsistentNaming
         private const int CS_DROPSHADOW = 0x20000;
         protected override CreateParams CreateParams
@@ -103,6 +107,8 @@ namespace Elucidate
         private void EnableIfValid(bool enabled)
         {
             SetCommonButtonsEnabledState(enabled);
+            // keep the config menu item accessible
+            snapRAIDConfigToolStripMenuItem.Enabled = true;
         }
 
         #region Main Menu Toolbar Handlers
@@ -226,11 +232,6 @@ namespace Elucidate
             }
 
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
-
-            if (!Properties.Settings.Default.ConfigFileIsValid)
-            {
-                settingsToolStripMenuItem_Click(sender, e);
-            }
         }
 
         private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
@@ -240,9 +241,13 @@ namespace Elucidate
             Properties.Settings.Default.Save();
         }
 
-        private void tabControl_Deselecting(object sender, TabControlCancelEventArgs e)
+        private void ElucidateForm_Shown(object sender, EventArgs e)
         {
-            e.Cancel = true;
+            if (!Properties.Settings.Default.ConfigFileIsValid)
+            {
+                // open the settings form since the config is not valid
+                settingsToolStripMenuItem_Click(sender, e);
+            }
         }
     }
 }
