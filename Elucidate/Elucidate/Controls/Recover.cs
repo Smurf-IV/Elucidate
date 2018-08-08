@@ -25,8 +25,6 @@ namespace Elucidate.Controls
             handler?.Invoke(this, e);
         }
 
-        private int _nodeCheckCount;
-
         private readonly List<string> _batchPaths = new List<string>();
 
         public Recover()
@@ -58,13 +56,16 @@ namespace Elucidate.Controls
                 if (liveRunLogControl.IsRunning)
                 {
                     btnLoadFiles.Enabled = false;
-                    btnRecoverFiles.Enabled = false;
+                    btnRecoverSelectedFiles.Enabled = false;
+                    btnRecoverAllFiles.Enabled = false;
                     btnClearFiles.Enabled = false;
                 }
                 else
                 {
+                    bool countOfFilesRecoverable = CountFilesRecoverable(treeView1) > 0;
                     btnLoadFiles.Enabled = true;
-                    btnRecoverFiles.Enabled = treeView1.Nodes.Count - _nodeCheckCount > 0;
+                    btnRecoverSelectedFiles.Enabled = countOfFilesRecoverable;
+                    btnRecoverAllFiles.Enabled = countOfFilesRecoverable;
                     btnClearFiles.Enabled = treeView1.Nodes.Count > 0;
                 }
             }
@@ -86,12 +87,25 @@ namespace Elucidate.Controls
         }
 
         // Return a list of the TreeNodes that are checked.
+        private void FindRecoverableNodes(List<TreeNode> foundNodes, TreeNodeCollection nodes)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                // Add this node.
+                if (node.BackColor != Color.Green) foundNodes.Add(node);
+
+                // Check the node's descendants.
+                FindCheckedNodes(foundNodes, node.Nodes);
+            }
+        }
+
+        // Return a list of the TreeNodes that are checked.
         private void FindCheckedNodes(List<TreeNode> checkedNodes, TreeNodeCollection nodes)
         {
             foreach (TreeNode node in nodes)
             {
                 // Add this node.
-                if (node.Checked) checkedNodes.Add(node);
+                if (node.BackColor != Color.Green && node.Checked) checkedNodes.Add(node);
 
                 // Check the node's descendants.
                 FindCheckedNodes(checkedNodes, node.Nodes);
@@ -104,6 +118,23 @@ namespace Elucidate.Controls
             List<TreeNode> checkedNodes = new List<TreeNode>();
             FindCheckedNodes(checkedNodes, trv.Nodes);
             return checkedNodes;
+        }
+
+        // Return the count of all recoverable files
+        private int CountFilesRecoverable(TreeView trv)
+        {
+            List<TreeNode> foundNodes = new List<TreeNode>();
+            FindRecoverableNodes(foundNodes, trv.Nodes);
+            return foundNodes.Count;
+        }
+
+        // Return the count of recoverable checked files
+        // ReSharper disable once UnusedMember.Local
+        private int CountFilesChecked(TreeView trv)
+        {
+            List<TreeNode> foundNodes = new List<TreeNode>();
+            FindCheckedNodes(foundNodes, trv.Nodes);
+            return foundNodes.Count;
         }
 
         private void timerTreeViewFill_Tick(object sender, EventArgs e)
@@ -121,8 +152,6 @@ namespace Elucidate.Controls
                             string filePath = log.Message.Split('"')[1];
                             //if (filePath.Substring(1, 1) != ":") continue;
                             treeView1.Invoke(new Action(() => treeView1.Nodes.Add($"/{filePath}", $"/{filePath}")));
-                            //Thread thread1 = new Thread(() => thr.AddNode($"/{filePath}"));
-                            //thread1.Start();
                         }
                     }
 
@@ -173,16 +202,24 @@ namespace Elucidate.Controls
         
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
         {
-            if (!(e.Node is TreeNode treeNode)) return;
+            SetChildrenChecked(e.Node, e.Node.Checked);
+        }
+
+        private void SetChildrenChecked(TreeNode treeNode, bool checkedState)
+        {
+            // do not change nodes already recovered
             if (treeNode.BackColor == Color.Green) { return; }
+
             SetNodeColor(treeNode);
-            if (treeNode.Checked)
+
+            foreach (TreeNode item in treeNode.Nodes)
             {
-                _nodeCheckCount++;
-            }
-            else
-            {
-                _nodeCheckCount--;
+                if (item.Checked != checkedState)
+                {
+                    item.Checked = checkedState;
+                }
+
+                SetChildrenChecked(item, item.Checked);
             }
         }
 
@@ -202,7 +239,14 @@ namespace Elucidate.Controls
             {
                 treeView.Nodes[i].Checked = false;
             }
-            _nodeCheckCount = 0;
+        }
+
+        private void CheckAll(TreeView treeView)
+        {
+            for (int i = 0; i < treeView.Nodes.Count; i++)
+            {
+                treeView.Nodes[i].Checked = true;
+            }
         }
 
         private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -224,19 +268,21 @@ namespace Elucidate.Controls
             }
         }
 
-        private void btnRecoverFiles_Click(object sender, EventArgs e)
+        private void btnRecoverSelectedFiles_Click(object sender, EventArgs e)
         {
             lock (treeView1)
             {
                 SetButtonsEnabledState();
-                if (_nodeCheckCount == 0)
+
+                // Get the checked nodes eligible to be recovered
+                List<TreeNode> checkedNodes = CheckedNodes(treeView1);
+
+                if (checkedNodes.Count == 0)
                 {
                     UncheckAll(treeView1);
                     return;
                 }
 
-                // Get the checked nodes.
-                List<TreeNode> checkedNodes = CheckedNodes(treeView1);
                 // recover items
                 foreach (var node in checkedNodes)
                 {
@@ -246,6 +292,7 @@ namespace Elucidate.Controls
                 }
 
                 UncheckAll(treeView1);
+
                 timerTreeViewRecover.Enabled = true;
 
                 if (!liveRunLogControl.ActionWorker.IsBusy && _batchPaths.Any())
@@ -260,6 +307,16 @@ namespace Elucidate.Controls
             lock (treeView1)
             {
                 treeView1.Nodes.Clear();
+            }
+        }
+
+        private void btnRecoverAllFiles_Click(object sender, EventArgs e)
+        {
+            lock (treeView1)
+            {
+                CheckAll(treeView1);
+
+                btnRecoverSelectedFiles_Click(sender, e);
             }
         }
     }

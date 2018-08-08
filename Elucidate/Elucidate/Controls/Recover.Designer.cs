@@ -34,13 +34,14 @@ namespace Elucidate.Controls
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnLoadFiles = new System.Windows.Forms.Button();
-            this.btnRecoverFiles = new System.Windows.Forms.Button();
+            this.btnRecoverSelectedFiles = new System.Windows.Forms.Button();
+            this.btnRecoverAllFiles = new System.Windows.Forms.Button();
             this.btnClearFiles = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.timerTreeViewFill = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.timerTreeViewRecover = new System.Windows.Forms.Timer(this.components);
             this.liveRunLogControl = new Elucidate.Controls.LiveRunLogControl();
+            this.timerTreeViewRecover = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -70,7 +71,8 @@ namespace Elucidate.Controls
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel1.Controls.Add(this.btnLoadFiles);
-            this.flowLayoutPanel1.Controls.Add(this.btnRecoverFiles);
+            this.flowLayoutPanel1.Controls.Add(this.btnRecoverSelectedFiles);
+            this.flowLayoutPanel1.Controls.Add(this.btnRecoverAllFiles);
             this.flowLayoutPanel1.Controls.Add(this.btnClearFiles);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
@@ -88,19 +90,29 @@ namespace Elucidate.Controls
             this.btnLoadFiles.UseVisualStyleBackColor = true;
             this.btnLoadFiles.Click += new System.EventHandler(this.btnLoadFiles_Click);
             // 
-            // btnRecoverFiles
+            // btnRecoverSelectedFiles
             // 
-            this.btnRecoverFiles.Location = new System.Drawing.Point(153, 3);
-            this.btnRecoverFiles.Name = "btnRecoverFiles";
-            this.btnRecoverFiles.Size = new System.Drawing.Size(113, 23);
-            this.btnRecoverFiles.TabIndex = 1;
-            this.btnRecoverFiles.Text = "Run Recovery";
-            this.btnRecoverFiles.UseVisualStyleBackColor = true;
-            this.btnRecoverFiles.Click += new System.EventHandler(this.btnRecoverFiles_Click);
+            this.btnRecoverSelectedFiles.Location = new System.Drawing.Point(153, 3);
+            this.btnRecoverSelectedFiles.Name = "btnRecoverSelectedFiles";
+            this.btnRecoverSelectedFiles.Size = new System.Drawing.Size(139, 23);
+            this.btnRecoverSelectedFiles.TabIndex = 1;
+            this.btnRecoverSelectedFiles.Text = "Recover Selected Files";
+            this.btnRecoverSelectedFiles.UseVisualStyleBackColor = true;
+            this.btnRecoverSelectedFiles.Click += new System.EventHandler(this.btnRecoverSelectedFiles_Click);
+            // 
+            // btnRecoverAllFiles
+            // 
+            this.btnRecoverAllFiles.Location = new System.Drawing.Point(298, 3);
+            this.btnRecoverAllFiles.Name = "btnRecoverAllFiles";
+            this.btnRecoverAllFiles.Size = new System.Drawing.Size(139, 23);
+            this.btnRecoverAllFiles.TabIndex = 3;
+            this.btnRecoverAllFiles.Text = "Recover All Files";
+            this.btnRecoverAllFiles.UseVisualStyleBackColor = true;
+            this.btnRecoverAllFiles.Click += new System.EventHandler(this.btnRecoverAllFiles_Click);
             // 
             // btnClearFiles
             // 
-            this.btnClearFiles.Location = new System.Drawing.Point(272, 3);
+            this.btnClearFiles.Location = new System.Drawing.Point(443, 3);
             this.btnClearFiles.Name = "btnClearFiles";
             this.btnClearFiles.Size = new System.Drawing.Size(75, 23);
             this.btnClearFiles.TabIndex = 2;
@@ -141,11 +153,6 @@ namespace Elucidate.Controls
             this.splitContainer1.SplitterDistance = 217;
             this.splitContainer1.TabIndex = 1;
             // 
-            // timerTreeViewRecover
-            // 
-            this.timerTreeViewRecover.Interval = 250;
-            this.timerTreeViewRecover.Tick += new System.EventHandler(this.timerTreeViewRecover_Tick);
-            // 
             // liveRunLogControl
             // 
             this.liveRunLogControl.AutoSize = true;
@@ -158,6 +165,11 @@ namespace Elucidate.Controls
             this.liveRunLogControl.Name = "liveRunLogControl";
             this.liveRunLogControl.Size = new System.Drawing.Size(835, 213);
             this.liveRunLogControl.TabIndex = 5;
+            // 
+            // timerTreeViewRecover
+            // 
+            this.timerTreeViewRecover.Interval = 250;
+            this.timerTreeViewRecover.Tick += new System.EventHandler(this.timerTreeViewRecover_Tick);
             // 
             // Recover
             // 
@@ -185,12 +197,13 @@ namespace Elucidate.Controls
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button btnLoadFiles;
-        private System.Windows.Forms.Button btnRecoverFiles;
+        private System.Windows.Forms.Button btnRecoverSelectedFiles;
         private System.Windows.Forms.Button btnClearFiles;
         private System.Windows.Forms.Timer timerTreeViewFill;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private LiveRunLogControl liveRunLogControl;
         private TreeView treeView1;
         private Timer timerTreeViewRecover;
+        private Button btnRecoverAllFiles;
     }
 }
