@@ -39,7 +39,7 @@ namespace Elucidate.Controls
             if (!Directory.Exists(_logSourcePath)) return;
             // TODO: improve performance of large files by using stream
             if (listViewLogFiles.SelectedItems.Count == 0) return;
-            var data = File.ReadAllText(_logSourcePath + listViewLogFiles.SelectedItems[0].Text);
+            var data = File.ReadAllText($@"{_logSourcePath}\{listViewLogFiles.SelectedItems[0].Text}");
             richTextBoxLogViewer.Text = data;
         }
 
@@ -57,14 +57,11 @@ namespace Elucidate.Controls
                     break;
                 case 1:
                     // Elucidate
-                    //_logSourcePath = $@"{AppDomain.CurrentDomain.BaseDirectory}\{Properties.Settings.Default.LogFileDirectory}\";
-                    _logSourcePath = $@"{Properties.Settings.Default.NlogFileLocation}\";
-                    _logSourcePath = Environment.ExpandEnvironmentVariables(_logSourcePath);
-                    
-                    break;
-                default:
+                    _logSourcePath = LogFileLocation.GetActiveLogFileLocation();
                     break;
             }
+
+            Logging.Log.Instance.Debug($"_logSourcePath : {_logSourcePath}");
 
             UpdateLogFileDisplayListBox();
         }

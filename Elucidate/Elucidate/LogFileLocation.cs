@@ -27,8 +27,11 @@
 #endregion Copyright (C)
 
 using System;
+using System.IO;
 using System.Windows.Forms;
 using Elucidate.Logging;
+using NLog;
+using NLog.Targets;
 
 namespace Elucidate
 {
@@ -44,6 +47,13 @@ namespace Elucidate
         private static string GetLogFileLocation()
         {
             return string.IsNullOrEmpty(Properties.Settings.Default.NlogFileLocation) ? Log.DefaultLogLocation : Properties.Settings.Default.NlogFileLocation;
+        }
+        public static string GetActiveLogFileLocation()
+        {
+            FileTarget target = LogManager.Configuration.FindTargetByName("file") as FileTarget;
+            LogEventInfo logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            string filename = target?.FileName.Render(logEventInfo);
+            return Path.GetDirectoryName(filename);
         }
 
         private void btnDefault_Click(object sender, EventArgs e)

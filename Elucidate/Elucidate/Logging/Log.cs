@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Threading;
 using NLog;
 using NLog.Targets;
 
@@ -33,8 +31,6 @@ namespace Elucidate.Logging
                 Message = message
             });
         }
-
-
 
         public const string DefaultLogLocation = @"${specialfolder:folder=CommonApplicationData}/Elucidate/Logs";
         private const string DefaultLogFilename = @"/${date:format=yyyyMMdd}.log";
