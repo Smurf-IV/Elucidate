@@ -71,8 +71,12 @@ namespace Elucidate
             this.changeLogLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.VersionIndicator = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemChangelog = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemNewVersionAvailable = new System.Windows.Forms.ToolStripMenuItem();
+            this.installNewVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeLogOfNewVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.MenuItemNewVersionReadyForInstall = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.coveragePage.SuspendLayout();
             this.RecoveryOperations.SuspendLayout();
@@ -91,11 +95,11 @@ namespace Elucidate
             this.statusStrip1.Controls.Add(this.spacer);
             this.statusStrip1.Controls.Add(this.label3);
             this.statusStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 535);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 669);
             this.statusStrip1.Margin = new System.Windows.Forms.Padding(0);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(3);
-            this.statusStrip1.Size = new System.Drawing.Size(994, 26);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(4);
+            this.statusStrip1.Size = new System.Drawing.Size(1242, 32);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -103,9 +107,10 @@ namespace Elucidate
             // 
             this.spacer.AutoSize = true;
             this.spacer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.spacer.Location = new System.Drawing.Point(14, 3);
+            this.spacer.Location = new System.Drawing.Point(17, 4);
+            this.spacer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.spacer.Name = "spacer";
-            this.spacer.Size = new System.Drawing.Size(11, 14);
+            this.spacer.Size = new System.Drawing.Size(13, 18);
             this.spacer.TabIndex = 3;
             this.spacer.Text = " ";
             // 
@@ -113,9 +118,10 @@ namespace Elucidate
             // 
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Left;
-            this.label3.Location = new System.Drawing.Point(3, 3);
+            this.label3.Location = new System.Drawing.Point(4, 4);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(11, 14);
+            this.label3.Size = new System.Drawing.Size(13, 18);
             this.label3.TabIndex = 4;
             this.label3.Text = " ";
             // 
@@ -127,10 +133,11 @@ namespace Elucidate
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
-            this.webBrowser1.Location = new System.Drawing.Point(2, 19);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Location = new System.Drawing.Point(2, 24);
+            this.webBrowser1.Margin = new System.Windows.Forms.Padding(4);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(25, 25);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(20, 22);
+            this.webBrowser1.Size = new System.Drawing.Size(25, 28);
             this.webBrowser1.TabIndex = 3;
             this.toolTip1.SetToolTip(this.webBrowser1, "Read section \"9 Recovering\" carefully");
             // 
@@ -138,10 +145,10 @@ namespace Elucidate
             // 
             this.btnRemoveOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRemoveOutput.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRemoveOutput.Location = new System.Drawing.Point(-6079, -1);
+            this.btnRemoveOutput.Location = new System.Drawing.Point(-7599, -1);
             this.btnRemoveOutput.Margin = new System.Windows.Forms.Padding(0);
             this.btnRemoveOutput.Name = "btnRemoveOutput";
-            this.btnRemoveOutput.Size = new System.Drawing.Size(176, 22);
+            this.btnRemoveOutput.Size = new System.Drawing.Size(220, 28);
             this.btnRemoveOutput.TabIndex = 4;
             this.btnRemoveOutput.Text = "Remove Output Files";
             this.btnRemoveOutput.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -162,11 +169,12 @@ namespace Elucidate
             this.btnDiff.Image = global::Elucidate.Properties.Resources.cam_48;
             this.btnDiff.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDiff.ImageMargin = 8F;
-            this.btnDiff.Location = new System.Drawing.Point(3, 3);
-            this.btnDiff.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnDiff.Location = new System.Drawing.Point(4, 4);
+            this.btnDiff.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDiff.MinimumSize = new System.Drawing.Size(375, 80);
             this.btnDiff.Name = "btnDiff";
             this.btnDiff.Rounding = 14F;
-            this.btnDiff.Size = new System.Drawing.Size(300, 64);
+            this.btnDiff.Size = new System.Drawing.Size(375, 80);
             this.btnDiff.Subscript = "    Lists all the files have been modified\r\n    since the last \"sync\" command.";
             this.btnDiff.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDiff.TabIndex = 3;
@@ -190,11 +198,12 @@ namespace Elucidate
             this.btnScrub.Image = global::Elucidate.Properties.Resources.cam_48;
             this.btnScrub.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnScrub.ImageMargin = 8F;
-            this.btnScrub.Location = new System.Drawing.Point(309, 3);
-            this.btnScrub.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnScrub.Location = new System.Drawing.Point(387, 4);
+            this.btnScrub.Margin = new System.Windows.Forms.Padding(4);
+            this.btnScrub.MinimumSize = new System.Drawing.Size(375, 80);
             this.btnScrub.Name = "btnScrub";
             this.btnScrub.Rounding = 14F;
-            this.btnScrub.Size = new System.Drawing.Size(300, 64);
+            this.btnScrub.Size = new System.Drawing.Size(375, 80);
             this.btnScrub.Subscript = "Scrubs the array, checking for silent\r\nand input/output errors";
             this.btnScrub.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnScrub.TabIndex = 8;
@@ -220,11 +229,12 @@ namespace Elucidate
             this.btnStatus.Image = global::Elucidate.Properties.Resources.camera_warning_48;
             this.btnStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnStatus.ImageMargin = 8F;
-            this.btnStatus.Location = new System.Drawing.Point(615, 3);
-            this.btnStatus.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnStatus.Location = new System.Drawing.Point(770, 4);
+            this.btnStatus.Margin = new System.Windows.Forms.Padding(4);
+            this.btnStatus.MinimumSize = new System.Drawing.Size(375, 80);
             this.btnStatus.Name = "btnStatus";
             this.btnStatus.Rounding = 14F;
-            this.btnStatus.Size = new System.Drawing.Size(300, 64);
+            this.btnStatus.Size = new System.Drawing.Size(375, 80);
             this.btnStatus.Subscript = "    A summary of the state of the disk\r\n    array, upto the last sync time.";
             this.btnStatus.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStatus.TabIndex = 7;
@@ -248,11 +258,12 @@ namespace Elucidate
             this.btnFix.Image = global::Elucidate.Properties.Resources.camera_add_48;
             this.btnFix.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnFix.ImageMargin = 8F;
-            this.btnFix.Location = new System.Drawing.Point(615, 73);
-            this.btnFix.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnFix.Location = new System.Drawing.Point(770, 92);
+            this.btnFix.Margin = new System.Windows.Forms.Padding(4);
+            this.btnFix.MinimumSize = new System.Drawing.Size(375, 80);
             this.btnFix.Name = "btnFix";
             this.btnFix.Rounding = 14F;
-            this.btnFix.Size = new System.Drawing.Size(300, 64);
+            this.btnFix.Size = new System.Drawing.Size(375, 80);
             this.btnFix.Subscript = "Will default to using \"-e\",\r\nfix errors set by the scrub command. ";
             this.btnFix.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFix.TabIndex = 9;
@@ -277,11 +288,12 @@ namespace Elucidate
             this.btnDupFinder.Image = global::Elucidate.Properties.Resources.camera_warning_48;
             this.btnDupFinder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDupFinder.ImageMargin = 8F;
-            this.btnDupFinder.Location = new System.Drawing.Point(3, 143);
-            this.btnDupFinder.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnDupFinder.Location = new System.Drawing.Point(4, 180);
+            this.btnDupFinder.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDupFinder.MinimumSize = new System.Drawing.Size(375, 80);
             this.btnDupFinder.Name = "btnDupFinder";
             this.btnDupFinder.Rounding = 14F;
-            this.btnDupFinder.Size = new System.Drawing.Size(300, 64);
+            this.btnDupFinder.Size = new System.Drawing.Size(375, 80);
             this.btnDupFinder.Subscript = "Lists all the duplicate files. Two files are\r\nassumed equal if their hashes are m" +
     "atching. ";
             this.btnDupFinder.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -297,10 +309,10 @@ namespace Elucidate
             // 
             this.driveSpace.Cursor = System.Windows.Forms.Cursors.Default;
             this.driveSpace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.driveSpace.Location = new System.Drawing.Point(3, 3);
-            this.driveSpace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.driveSpace.Location = new System.Drawing.Point(4, 4);
+            this.driveSpace.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
             this.driveSpace.Name = "driveSpace";
-            this.driveSpace.Size = new System.Drawing.Size(980, 473);
+            this.driveSpace.Size = new System.Drawing.Size(1226, 595);
             this.driveSpace.TabIndex = 0;
             this.toolTip1.SetToolTip(this.driveSpace, "Not real time, only updates when shown.");
             // 
@@ -327,10 +339,11 @@ namespace Elucidate
             // coveragePage
             // 
             this.coveragePage.Controls.Add(this.driveSpace);
-            this.coveragePage.Location = new System.Drawing.Point(4, 28);
+            this.coveragePage.Location = new System.Drawing.Point(4, 33);
+            this.coveragePage.Margin = new System.Windows.Forms.Padding(4);
             this.coveragePage.Name = "coveragePage";
-            this.coveragePage.Padding = new System.Windows.Forms.Padding(3);
-            this.coveragePage.Size = new System.Drawing.Size(986, 479);
+            this.coveragePage.Padding = new System.Windows.Forms.Padding(4);
+            this.coveragePage.Size = new System.Drawing.Size(1234, 603);
             this.coveragePage.TabIndex = 4;
             this.coveragePage.Text = "  Coverage  ";
             this.coveragePage.UseVisualStyleBackColor = true;
@@ -343,10 +356,10 @@ namespace Elucidate
             this.RecoveryOperations.Controls.Add(this.webBrowser1);
             this.RecoveryOperations.Controls.Add(this.label1);
             this.RecoveryOperations.ForeColor = System.Drawing.Color.DarkRed;
-            this.RecoveryOperations.Location = new System.Drawing.Point(4, 28);
+            this.RecoveryOperations.Location = new System.Drawing.Point(4, 33);
             this.RecoveryOperations.Margin = new System.Windows.Forms.Padding(0);
             this.RecoveryOperations.Name = "RecoveryOperations";
-            this.RecoveryOperations.Size = new System.Drawing.Size(986, 479);
+            this.RecoveryOperations.Size = new System.Drawing.Size(1234, 603);
             this.RecoveryOperations.TabIndex = 1;
             this.RecoveryOperations.Text = "  Recovery Help  ";
             // 
@@ -354,19 +367,21 @@ namespace Elucidate
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(7, 2);
+            this.label1.Location = new System.Drawing.Point(9, 2);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(237, 14);
+            this.label1.Size = new System.Drawing.Size(292, 18);
             this.label1.TabIndex = 2;
             this.label1.Text = "Read section \"&9 Recovering\" carefully";
             // 
             // SchedulePage
             // 
             this.SchedulePage.Controls.Add(this.SchedulePageScheduleControl);
-            this.SchedulePage.Location = new System.Drawing.Point(4, 28);
+            this.SchedulePage.Location = new System.Drawing.Point(4, 33);
+            this.SchedulePage.Margin = new System.Windows.Forms.Padding(4);
             this.SchedulePage.Name = "SchedulePage";
-            this.SchedulePage.Padding = new System.Windows.Forms.Padding(3);
-            this.SchedulePage.Size = new System.Drawing.Size(986, 479);
+            this.SchedulePage.Padding = new System.Windows.Forms.Padding(4);
+            this.SchedulePage.Size = new System.Drawing.Size(1234, 603);
             this.SchedulePage.TabIndex = 5;
             this.SchedulePage.Text = "Schedule";
             this.SchedulePage.UseVisualStyleBackColor = true;
@@ -376,10 +391,10 @@ namespace Elucidate
             this.SchedulePageScheduleControl.AutoSize = true;
             this.SchedulePageScheduleControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.SchedulePageScheduleControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SchedulePageScheduleControl.Location = new System.Drawing.Point(3, 3);
-            this.SchedulePageScheduleControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.SchedulePageScheduleControl.Location = new System.Drawing.Point(4, 4);
+            this.SchedulePageScheduleControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SchedulePageScheduleControl.Name = "SchedulePageScheduleControl";
-            this.SchedulePageScheduleControl.Size = new System.Drawing.Size(980, 473);
+            this.SchedulePageScheduleControl.Size = new System.Drawing.Size(1226, 595);
             this.SchedulePageScheduleControl.TabIndex = 0;
             // 
             // StandardOperations
@@ -388,10 +403,10 @@ namespace Elucidate
             this.StandardOperations.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.StandardOperations.Controls.Add(this.logPanel);
             this.StandardOperations.Controls.Add(this.commandPanel);
-            this.StandardOperations.Location = new System.Drawing.Point(4, 28);
+            this.StandardOperations.Location = new System.Drawing.Point(4, 33);
             this.StandardOperations.Margin = new System.Windows.Forms.Padding(0);
             this.StandardOperations.Name = "StandardOperations";
-            this.StandardOperations.Size = new System.Drawing.Size(986, 479);
+            this.StandardOperations.Size = new System.Drawing.Size(1234, 603);
             this.StandardOperations.TabIndex = 0;
             this.StandardOperations.Text = "  Common SnapRaid  ";
             // 
@@ -399,9 +414,10 @@ namespace Elucidate
             // 
             this.logPanel.Controls.Add(this.liveRunLogControl1);
             this.logPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logPanel.Location = new System.Drawing.Point(0, 210);
+            this.logPanel.Location = new System.Drawing.Point(0, 264);
+            this.logPanel.Margin = new System.Windows.Forms.Padding(4);
             this.logPanel.Name = "logPanel";
-            this.logPanel.Size = new System.Drawing.Size(984, 267);
+            this.logPanel.Size = new System.Drawing.Size(1232, 337);
             this.logPanel.TabIndex = 11;
             // 
             // liveRunLogControl1
@@ -409,9 +425,9 @@ namespace Elucidate
             this.liveRunLogControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.liveRunLogControl1.IsRunning = false;
             this.liveRunLogControl1.Location = new System.Drawing.Point(0, 0);
-            this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.liveRunLogControl1.Name = "liveRunLogControl1";
-            this.liveRunLogControl1.Size = new System.Drawing.Size(984, 267);
+            this.liveRunLogControl1.Size = new System.Drawing.Size(1232, 337);
             this.liveRunLogControl1.TabIndex = 0;
             // 
             // commandPanel
@@ -428,8 +444,9 @@ namespace Elucidate
             this.commandPanel.Controls.Add(this.btnUndelete);
             this.commandPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.commandPanel.Location = new System.Drawing.Point(0, 0);
+            this.commandPanel.Margin = new System.Windows.Forms.Padding(4);
             this.commandPanel.Name = "commandPanel";
-            this.commandPanel.Size = new System.Drawing.Size(984, 210);
+            this.commandPanel.Size = new System.Drawing.Size(1232, 264);
             this.commandPanel.TabIndex = 9;
             // 
             // btnSync
@@ -447,11 +464,12 @@ namespace Elucidate
             this.btnSync.Image = global::Elucidate.Properties.Resources.camera_add_48;
             this.btnSync.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSync.ImageMargin = 8F;
-            this.btnSync.Location = new System.Drawing.Point(3, 73);
-            this.btnSync.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnSync.Location = new System.Drawing.Point(4, 92);
+            this.btnSync.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSync.MinimumSize = new System.Drawing.Size(375, 80);
             this.btnSync.Name = "btnSync";
             this.btnSync.Rounding = 14F;
-            this.btnSync.Size = new System.Drawing.Size(300, 64);
+            this.btnSync.Size = new System.Drawing.Size(375, 80);
             this.btnSync.Subscript = "Synchronise with any changes that may\r\nhave occurred since the last run.";
             this.btnSync.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSync.TabIndex = 1;
@@ -474,11 +492,12 @@ namespace Elucidate
             this.btnCheck.Image = global::Elucidate.Properties.Resources.camera_warning_48;
             this.btnCheck.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCheck.ImageMargin = 8F;
-            this.btnCheck.Location = new System.Drawing.Point(309, 73);
-            this.btnCheck.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnCheck.Location = new System.Drawing.Point(387, 92);
+            this.btnCheck.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCheck.MinimumSize = new System.Drawing.Size(375, 80);
             this.btnCheck.Name = "btnCheck";
             this.btnCheck.Rounding = 14F;
-            this.btnCheck.Size = new System.Drawing.Size(300, 64);
+            this.btnCheck.Size = new System.Drawing.Size(375, 80);
             this.btnCheck.Subscript = "Check the snapshot to confirm\r\nit\'s integrity. (use -a for hash only)";
             this.btnCheck.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCheck.TabIndex = 2;
@@ -501,11 +520,12 @@ namespace Elucidate
             this.btnUndelete.Image = global::Elucidate.Properties.Resources.camera_warning_48;
             this.btnUndelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUndelete.ImageMargin = 8F;
-            this.btnUndelete.Location = new System.Drawing.Point(309, 143);
-            this.btnUndelete.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnUndelete.Location = new System.Drawing.Point(387, 180);
+            this.btnUndelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUndelete.MinimumSize = new System.Drawing.Size(375, 80);
             this.btnUndelete.Name = "btnUndelete";
             this.btnUndelete.Rounding = 14F;
-            this.btnUndelete.Size = new System.Drawing.Size(300, 64);
+            this.btnUndelete.Size = new System.Drawing.Size(375, 80);
             this.btnUndelete.Subscript = "Recover all the deleted files in\r\nall the drives since last \"Sync\"";
             this.btnUndelete.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUndelete.TabIndex = 11;
@@ -525,12 +545,12 @@ namespace Elucidate
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl.HotTrack = true;
-            this.tabControl.Location = new System.Drawing.Point(0, 24);
+            this.tabControl.Location = new System.Drawing.Point(0, 29);
             this.tabControl.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl.Name = "tabControl";
             this.tabControl.Padding = new System.Drawing.Point(0, 0);
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(994, 511);
+            this.tabControl.Size = new System.Drawing.Size(1242, 640);
             this.tabControl.TabIndex = 4;
             this.tabControl.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Deselecting);
             // 
@@ -538,10 +558,11 @@ namespace Elucidate
             // 
             this.tabLogs.BackColor = System.Drawing.Color.Transparent;
             this.tabLogs.Controls.Add(this.logsViewerControl);
-            this.tabLogs.Location = new System.Drawing.Point(4, 28);
+            this.tabLogs.Location = new System.Drawing.Point(4, 33);
+            this.tabLogs.Margin = new System.Windows.Forms.Padding(4);
             this.tabLogs.Name = "tabLogs";
-            this.tabLogs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLogs.Size = new System.Drawing.Size(986, 479);
+            this.tabLogs.Padding = new System.Windows.Forms.Padding(4);
+            this.tabLogs.Size = new System.Drawing.Size(1234, 603);
             this.tabLogs.TabIndex = 6;
             this.tabLogs.Text = "Logs";
             // 
@@ -550,19 +571,20 @@ namespace Elucidate
             this.logsViewerControl.AutoSize = true;
             this.logsViewerControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.logsViewerControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logsViewerControl.Location = new System.Drawing.Point(3, 3);
-            this.logsViewerControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.logsViewerControl.Location = new System.Drawing.Point(4, 4);
+            this.logsViewerControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.logsViewerControl.Name = "logsViewerControl";
-            this.logsViewerControl.Size = new System.Drawing.Size(980, 473);
+            this.logsViewerControl.Size = new System.Drawing.Size(1226, 595);
             this.logsViewerControl.TabIndex = 0;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.recover1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 28);
+            this.tabPage1.Location = new System.Drawing.Point(4, 33);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(986, 479);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
+            this.tabPage1.Size = new System.Drawing.Size(1234, 603);
             this.tabPage1.TabIndex = 7;
             this.tabPage1.Text = "Recover Files";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -570,16 +592,16 @@ namespace Elucidate
             // recover1
             // 
             this.recover1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.recover1.Location = new System.Drawing.Point(3, 3);
-            this.recover1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.recover1.Location = new System.Drawing.Point(4, 4);
+            this.recover1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.recover1.Name = "recover1";
-            this.recover1.Size = new System.Drawing.Size(980, 473);
+            this.recover1.Size = new System.Drawing.Size(1226, 595);
             this.recover1.TabIndex = 0;
             // 
             // snapRAIDConfigToolStripMenuItem
             // 
             this.snapRAIDConfigToolStripMenuItem.Name = "snapRAIDConfigToolStripMenuItem";
-            this.snapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(129, 20);
+            this.snapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(164, 25);
             this.snapRAIDConfigToolStripMenuItem.Text = "Snap&RAID Config...";
             this.snapRAIDConfigToolStripMenuItem.ToolTipText = "Change the location of SnapRAID and config it\'s settings.";
             this.snapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
@@ -591,21 +613,21 @@ namespace Elucidate
             this.changeLogLocationToolStripMenuItem});
             this.logViewToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logViewToolStripMenuItem.Name = "logViewToolStripMenuItem";
-            this.logViewToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
+            this.logViewToolStripMenuItem.Size = new System.Drawing.Size(79, 25);
             this.logViewToolStripMenuItem.Text = "&Logging";
             this.logViewToolStripMenuItem.ToolTipText = "Open a View of Elucidates log file.";
             // 
             // logViewToolStripMenuItem1
             // 
             this.logViewToolStripMenuItem1.Name = "logViewToolStripMenuItem1";
-            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(135, 22);
+            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(163, 26);
             this.logViewToolStripMenuItem1.Text = "&View...";
             this.logViewToolStripMenuItem1.Click += new System.EventHandler(this.logViewToolStripMenuItem_Click);
             // 
             // changeLogLocationToolStripMenuItem
             // 
             this.changeLogLocationToolStripMenuItem.Name = "changeLogLocationToolStripMenuItem";
-            this.changeLogLocationToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.changeLogLocationToolStripMenuItem.Size = new System.Drawing.Size(163, 26);
             this.changeLogLocationToolStripMenuItem.Text = "&Location...";
             this.changeLogLocationToolStripMenuItem.Click += new System.EventHandler(this.changeLogLocationToolStripMenuItem_Click);
             // 
@@ -615,7 +637,7 @@ namespace Elucidate
             this.helpToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 25);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.ToolTipText = "Goto the Help page.";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
@@ -627,20 +649,46 @@ namespace Elucidate
             this.VersionIndicator.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.VersionIndicator.Name = "VersionIndicator";
             this.VersionIndicator.ShowShortcutKeys = false;
-            this.VersionIndicator.Size = new System.Drawing.Size(107, 20);
+            this.VersionIndicator.Size = new System.Drawing.Size(124, 25);
             this.VersionIndicator.Text = "VersionIndicator";
             this.VersionIndicator.ToolTipText = "The build number of this application.";
             this.VersionIndicator.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
-            // changeToolStripMenuItem
+            // MenuItemChangelog
             // 
-            this.changeToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.changeToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
-            this.changeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.changeToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
-            this.changeToolStripMenuItem.Text = "C&hangeLog";
-            this.changeToolStripMenuItem.Click += new System.EventHandler(this.changeToolStripMenuItem_Click);
+            this.MenuItemChangelog.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.MenuItemChangelog.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MenuItemChangelog.Name = "MenuItemChangelog";
+            this.MenuItemChangelog.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.MenuItemChangelog.Size = new System.Drawing.Size(103, 25);
+            this.MenuItemChangelog.Text = "C&hangeLog";
+            this.MenuItemChangelog.Click += new System.EventHandler(this.changeToolStripMenuItem_Click);
+            // 
+            // MenuItemNewVersionAvailable
+            // 
+            this.MenuItemNewVersionAvailable.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.MenuItemNewVersionAvailable.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.installNewVersionToolStripMenuItem,
+            this.changeLogOfNewVersionToolStripMenuItem});
+            this.MenuItemNewVersionAvailable.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.MenuItemNewVersionAvailable.Name = "MenuItemNewVersionAvailable";
+            this.MenuItemNewVersionAvailable.Size = new System.Drawing.Size(206, 25);
+            this.MenuItemNewVersionAvailable.Text = "New Version Is Available";
+            this.MenuItemNewVersionAvailable.Visible = false;
+            // 
+            // installNewVersionToolStripMenuItem
+            // 
+            this.installNewVersionToolStripMenuItem.Name = "installNewVersionToolStripMenuItem";
+            this.installNewVersionToolStripMenuItem.Size = new System.Drawing.Size(284, 26);
+            this.installNewVersionToolStripMenuItem.Text = "Install New Version";
+            this.installNewVersionToolStripMenuItem.Click += new System.EventHandler(this.installNewVersionToolStripMenuItem_Click);
+            // 
+            // changeLogOfNewVersionToolStripMenuItem
+            // 
+            this.changeLogOfNewVersionToolStripMenuItem.Name = "changeLogOfNewVersionToolStripMenuItem";
+            this.changeLogOfNewVersionToolStripMenuItem.Size = new System.Drawing.Size(284, 26);
+            this.changeLogOfNewVersionToolStripMenuItem.Text = "ChangeLog of New Version";
+            this.changeLogOfNewVersionToolStripMenuItem.Click += new System.EventHandler(this.changeLogOfNewVersionToolStripMenuItem_Click);
             // 
             // menuStrip1
             // 
@@ -651,19 +699,31 @@ namespace Elucidate
             this.logViewToolStripMenuItem,
             this.helpToolStripMenuItem,
             this.VersionIndicator,
-            this.changeToolStripMenuItem});
+            this.MenuItemChangelog,
+            this.MenuItemNewVersionAvailable,
+            this.MenuItemNewVersionReadyForInstall});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(994, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1242, 29);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // MenuItemNewVersionReadyForInstall
+            // 
+            this.MenuItemNewVersionReadyForInstall.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.MenuItemNewVersionReadyForInstall.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.MenuItemNewVersionReadyForInstall.Name = "MenuItemNewVersionReadyForInstall";
+            this.MenuItemNewVersionReadyForInstall.Size = new System.Drawing.Size(246, 25);
+            this.MenuItemNewVersionReadyForInstall.Text = "New Version Ready For Install";
+            this.MenuItemNewVersionReadyForInstall.Visible = false;
+            this.MenuItemNewVersionReadyForInstall.Click += new System.EventHandler(this.MenuItemNewVersionReadyForInstall_Click);
+            // 
             // ElucidateForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(994, 561);
+            this.ClientSize = new System.Drawing.Size(1242, 701);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -672,7 +732,8 @@ namespace Elucidate
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(750, 600);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(933, 738);
             this.Name = "ElucidateForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Elucidate: A SnapRAID Command Line Driver";
@@ -731,16 +792,20 @@ namespace Elucidate
         private TabPage tabLogs;
         private Controls.LogsViewerControl logsViewerControl;
         private Controls.LiveRunLogControl liveRunLogControl1;
+        private TabPage tabPage1;
+        private Recover recover1;
         private ToolStripMenuItem snapRAIDConfigToolStripMenuItem;
         private ToolStripMenuItem logViewToolStripMenuItem;
         private ToolStripMenuItem logViewToolStripMenuItem1;
         private ToolStripMenuItem changeLogLocationToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem VersionIndicator;
-        private ToolStripMenuItem changeToolStripMenuItem;
+        private ToolStripMenuItem MenuItemChangelog;
+        private ToolStripMenuItem MenuItemNewVersionAvailable;
+        private ToolStripMenuItem installNewVersionToolStripMenuItem;
+        private ToolStripMenuItem changeLogOfNewVersionToolStripMenuItem;
         private MenuStrip menuStrip1;
-        private TabPage tabPage1;
-        private Recover recover1;
+        private ToolStripMenuItem MenuItemNewVersionReadyForInstall;
     }
 }
 

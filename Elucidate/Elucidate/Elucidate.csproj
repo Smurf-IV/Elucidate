@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.9.10</AssemblyVersion>
+    <AssemblyVersion>18.8.9.114</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -257,7 +257,7 @@
     <Compile Include="Controls\SnapRAIDThread.cs" />
     <Compile Include="ExceptionHandler.cs" />
     <Compile Include="FileUtil.cs" />
-    <Compile Include="HelperClasses\VersionCheck.cs" />
+    <Compile Include="HelperClasses\AppUpdate.cs" />
     <Compile Include="Logging\LiveLog.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Shared\CommandLinkButton.cs">

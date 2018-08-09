@@ -29,9 +29,10 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Elucidate.Controls;
+using Elucidate.HelperClasses;
 using Elucidate.Shared;
 
 namespace Elucidate
@@ -53,6 +54,23 @@ namespace Elucidate
             liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
             recover1.TaskStarted += Recover1_TaskStarted;
             recover1.TaskCompleted += Recover1_TaskCompleted;
+            AppUpdate.NewVersonAvailable += VersionCheck_NewVersonAvailable;
+            AppUpdate.NewVersonInstallReady += VersionCheck_NewVersonInstallReady;
+        }
+
+        private void VersionCheck_NewVersonAvailable(object sender, EventArgs e)
+        {
+            MenuItemNewVersionReadyForInstall.Enabled = false;
+            MenuItemNewVersionReadyForInstall.Visible = false;
+        }
+
+        private void VersionCheck_NewVersonInstallReady(object sender, EventArgs e)
+        {
+            MenuItemNewVersionAvailable.Enabled = false;
+            MenuItemNewVersionAvailable.Visible = false;
+            MenuItemNewVersionReadyForInstall.Enabled = true;
+            MenuItemNewVersionReadyForInstall.Visible = true;
+            AppUpdate.InstallNewVersion();
         }
 
         private void Recover1_TaskStarted(object sender, EventArgs e)
@@ -222,19 +240,28 @@ namespace Elucidate
             SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Undelete);
         }
-
-        private void ElucidateForm_Load(object sender, EventArgs e)
-        {
-            VersionIndicator.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            if (File.Exists(Properties.Settings.Default.ConfigFileLocation)) return;
-            Properties.Settings.Default.ConfigFileIsValid = false;
-        }
-
+        
         private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
         {
             // persist our geometry string.
             Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
             Properties.Settings.Default.Save();
+        }
+
+        private void ElucidateForm_Load(object sender, EventArgs e)
+        {
+            if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
+            {
+                Properties.Settings.Default.ConfigFileIsValid = false;
+            }
+
+            VersionIndicator.Text = AppUpdate.GetInstalledVersion();
+
+            // check for vew version and notify if available
+            if (AppUpdate.IsNewVersionAvailable())
+            {
+                MenuItemNewVersionAvailable.Visible = true;
+            }
         }
 
         private void ElucidateForm_Shown(object sender, EventArgs e)
@@ -255,6 +282,35 @@ namespace Elucidate
                 // open the settings form since the config is not valid
                 settingsToolStripMenuItem_Click(sender, e);
             }
+        }
+        
+        private void installNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AppUpdate.VersionInfo info = AppUpdate.GetLatestVersionInfo();
+
+            if (info?.DownloadUrl == null)
+            {
+                MessageBox.Show(
+                    @"A problem was encountered trying to download the new version. Please try again later.",
+                    @"New Version Download Failed", 
+                    MessageBoxButtons.OK);
+                return;
+            }
+
+            Task.Run(() => AppUpdate.DownloadLatestVersionAsync(info.DownloadUrl));
+            
+        }
+
+        private void changeLogOfNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AppUpdate.VersionInfo info = AppUpdate.GetLatestVersionInfo();
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(info.ChangeLogUrl);
+            Process.Start(processStartInfo);
+        }
+
+        private void MenuItemNewVersionReadyForInstall_Click(object sender, EventArgs e)
+        {
+            AppUpdate.InstallNewVersion();
         }
     }
 }
