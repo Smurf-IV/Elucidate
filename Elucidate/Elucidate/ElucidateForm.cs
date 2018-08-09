@@ -175,7 +175,7 @@ namespace Elucidate
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(@"https://github.com/BlueBlock/Elucidatedocumentation");
+            Process.Start(@"https://github.com/BlueBlock/Elucidate/wiki/Documentation");
         }
 
         private void changeToolStripMenuItem_Click(object sender, EventArgs e)
