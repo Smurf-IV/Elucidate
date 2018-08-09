@@ -175,23 +175,20 @@ namespace Elucidate
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(@"https://github.com/Smurf-IV/Elucidatedocumentation");
+            Process.Start(@"https://github.com/BlueBlock/Elucidatedocumentation");
         }
 
         private void changeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Process.Start(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"ChangeLog.htm"));
-            }
-            catch
-            {
-                // Default to launching the checkin page :-!
-                Process.Start(@"https://github.com/Smurf-IV/ElucidateSourceControl/list/changesets");
-            }
+            // ReSharper disable once RedundantAssignment
+            var bookmark = AppUpdate.GetInstalledVersion().Replace(".", "");
+#if DEBUG
+            bookmark = AppUpdate.GetLatestVersionInfo().Version.Replace(".", "");
+#endif
+            Process.Start("https://github.com/BlueBlock/Elucidate/wiki/ChangeLog#" + bookmark);
         }
 
-        #endregion Menu Handlers
+#endregion Menu Handlers
 
         private void btnStatus_Click(object sender, EventArgs e)
         {
