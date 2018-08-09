@@ -58,11 +58,11 @@ namespace Elucidate.HelperClasses
                 if (installed.Count() != _numberOfVersionBuildParts ||
                     latest.Count() != _numberOfVersionBuildParts) return false;
 
-                if (latest[0] >= installed[0] &&
-                    latest[1] >= installed[1] &&
-                    latest[2] >= installed[2] &&
-                    latest[3] >= installed[3]
-                    ) return true;
+                if (latest[0] >= installed[0])
+                    if (latest[1] >= installed[1])
+                        if (latest[2] >= installed[2])
+                            if (latest[3] > installed[3])
+                                return true;
             }
             catch (Exception ex)
             {
