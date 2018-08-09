@@ -111,7 +111,7 @@ namespace Elucidate
                     ulong minFiles = 0;
 
                     // 4 - Find the Max covered, 
-                    ulong maxFiles = 1 << 18;
+                    //ulong maxFiles = 1 << 18;
 
                     // 5 - Make sure that Parity has enough room times the number of max files, 
                     // and add onto the left over space to find the min and max values.
