@@ -47,13 +47,14 @@ namespace Elucidate.Controls
         {
         }
 
-        private void comboBoxLogType_SelectedIndexChanged(object sender, EventArgs e)
+        private void DisplayLogInViewer()
         {
             switch (comboBoxLogType.SelectedIndex)
             {
                 case 0:
                     // SnapRAID
-                    _logSourcePath = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
+                    _logSourcePath =
+                        $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
                     break;
                 case 1:
                     // Elucidate
@@ -63,6 +64,16 @@ namespace Elucidate.Controls
 
             Logging.Log.Instance.Debug($"_logSourcePath : {_logSourcePath}");
 
+            UpdateLogFileDisplayListBox();
+        }
+
+        private void comboBoxLogType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DisplayLogInViewer();
+        }
+
+        private void listViewLogFiles_DoubleClick(object sender, EventArgs e)
+        {
             UpdateLogFileDisplayListBox();
         }
     }

@@ -150,6 +150,7 @@
             this.listViewLogFiles.UseCompatibleStateImageBehavior = false;
             this.listViewLogFiles.View = System.Windows.Forms.View.List;
             this.listViewLogFiles.SelectedIndexChanged += new System.EventHandler(this.listViewLogFiles_SelectedIndexChanged);
+            this.listViewLogFiles.DoubleClick += new System.EventHandler(this.listViewLogFiles_DoubleClick);
             // 
             // LogsViewerControl
             // 
