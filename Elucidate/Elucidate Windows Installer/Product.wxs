@@ -159,7 +159,7 @@
     <DirectoryRef Id="ProgramMenuDir">
       <Component Id="ProgramMenuDir2" Guid="11234567-7E98-44CE-B049-C477CC0A2B01">
         <Shortcut Id="Elucidate_Shortcut" Name="Elucidate" Description="Elucidate Management Application" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
-        <Shortcut Id="Elucidate_Start" Name="Elucidate" Directory="StartupFolder" Description="Elucidate for SnapRAID" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
+        <!--<Shortcut Id="Elucidate_Start" Name="Elucidate" Directory="StartupFolder" Description="Elucidate for SnapRAID" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />-->
         <util:InternetShortcut Type="url" Id="Home" Name="Elucidate Forum" Target="[ARPHELPLINK]" />
         <util:InternetShortcut Type="link" Id="Change" Name="Change Log" Target="[ClientDIR]ChangeLog.htm"/>
         <util:InternetShortcut Type="url" Id="SnapRAID" Name="SnapRAID Forum" Target="https://sourceforge.net/projects/snapraid/forums/forum/1677233" />
