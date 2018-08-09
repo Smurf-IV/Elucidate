@@ -1,5 +1,7 @@
 ﻿#region Copyright (C)
 // ---------------------------------------------------------------------------------------------------------------
+//  Forked by BlueBlock on July 28th, 2018
+// ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="AssemblyInfo.cs" company="Smurf-IV">
 // 
 //  Copyright (C) 2010-2017 Simon Coghlan (Aka Smurf-IV)
@@ -54,5 +56,5 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("18.8.9.122")]
-[assembly: AssemblyFileVersion("18.8.9.122")]
+[assembly: AssemblyVersion("18.8.9.123")]
+[assembly: AssemblyFileVersion("18.8.9.123")]
