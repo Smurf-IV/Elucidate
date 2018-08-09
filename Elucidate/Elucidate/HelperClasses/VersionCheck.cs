@@ -11,6 +11,7 @@ namespace Elucidate.HelperClasses
         {
             return false;
         }
+
         public string GetLatestVersionBuildNumber()
         {
             try

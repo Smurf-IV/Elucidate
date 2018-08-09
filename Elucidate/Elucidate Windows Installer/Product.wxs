@@ -39,6 +39,9 @@
                       Maximum="$(var.Version)" IncludeMaximum="no" />
     </Upgrade>
 
+    <!-- Property to determine if app should be executed after being installed -->
+    <Property Id="STARTAPP" Value="false"/>
+
     <!-- Support Information shown in Add/Remove programs -->
     <Property Id="ARPHELPLINK" Value="https://github.com/BlueBlock/Elucidate/docs" />
     <Property Id="ARPCOMMENTS" Value="https://github.com/BlueBlock/Elucidate/issues"/>
@@ -172,7 +175,7 @@
     </Feature>
 
     <!-- START APP AFTER INSTALL -->
-    <!--<CustomAction Id="MgtApp" FileKey="Elucidate.exe" ExeCommand="" Return="asyncNoWait" />-->
+    <CustomAction Id="MgtApp" FileKey="Elucidate.exe" ExeCommand="" Return="asyncNoWait" />
 
     <util:CloseApplication CloseMessage="yes" Id="CloseElucidate" Target="Elucidate.exe" RebootPrompt="no"/>
 
@@ -185,7 +188,7 @@
       <Custom Action="WixCloseApplications" Before="LaunchConditions" />
 
       <!-- START APP AFTER INSTALL -->
-      <!--<Custom Action="MgtApp" After="InstallFinalize">Not Installed</Custom>-->
+      <Custom Action="MgtApp" After="InstallFinalize">STARTAPP~="true" AND (Not Installed)</Custom>
     </InstallExecuteSequence>
 
     <!-- Get the install to skip a few steps -->
