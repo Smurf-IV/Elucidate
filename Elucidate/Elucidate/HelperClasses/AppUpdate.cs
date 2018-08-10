@@ -23,12 +23,14 @@ namespace Elucidate.HelperClasses
         public static event EventHandler NewVersonAvailable;
         public static event EventHandler NewVersonInstallReady;
         
+        // ReSharper disable once UnusedMember.Local
         private static void OnNewVersonAvailable(EventArgs e)
         {
             EventHandler handler = NewVersonAvailable;
             handler?.Invoke(null, e);
         }
 
+        // ReSharper disable once UnusedMember.Local
         private static void OnNewVersonInstallReady(EventArgs e)
         {
             EventHandler handler = NewVersonInstallReady;
@@ -151,31 +153,6 @@ namespace Elucidate.HelperClasses
             {
                 Log.Instance.Warn(ex);
             }
-            return false;
-        }
-
-        public static async Task<bool> DownloadLatestAsync(string url)
-        {
-            try
-            {
-                Log.Instance.Debug($"START DownloadLatestAndInstall");
-                //bool isDownloadSuccessful = await DownloadLatestVersionAsync("http://releases.ubuntu.com/18.04.1/ubuntu-18.04.1-desktop-amd64.iso");
-                bool isDownloadSuccessful = await DownloadLatestVersionAsync(url);
-                Log.Instance.Debug($"DownloadLatestAndInstall download completed {isDownloadSuccessful}");
-                if (isDownloadSuccessful)
-                {
-                    // notify user
-                    NewVersonInstallReady?.Invoke(null, new EventArgs());
-                    //InstallNewVersion(InstallFile);
-                    //bool isInstallstarted = await DownloadLatestVersionAsync(url);
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Instance.Warn(ex);
-            }
-
             return false;
         }
     }

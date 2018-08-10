@@ -35,6 +35,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using Elucidate.Logging;
 using Elucidate.Shared;
@@ -223,7 +225,7 @@ namespace Elucidate
             }
             snapShotSourcesTreeView.Nodes.Add(new TreeNode(newPath, selected.ImageIndex, selected.ImageIndex));
             UnsavedChangesMade = true;
-            driveSpace.StartProcessing((from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList());
+            driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
 
         private void refreshStripMenuItem_Click(object sender, EventArgs e)
@@ -350,7 +352,7 @@ namespace Elucidate
                 snapShotSourcesTreeView.SelectedNode = null;
                 snapShotSourcesTreeView.Nodes.Remove(selected);
                 UnsavedChangesMade = true;
-                driveSpace.StartProcessing((from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList());
+                driveSpace.StartProcessing(GetPathsOfInterestFromForm());
             }
             else
             {
@@ -508,9 +510,11 @@ namespace Elucidate
         private void ReadConfigDetails()
         {
             exludedFilesView.Rows.Clear();
+
             snapShotSourcesTreeView.Nodes.Clear();
 
             ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text);
+
             if (!File.Exists(configFileLocation.Text))
             {
                 if (Properties.Settings.Default.UseWindowsSettings)
@@ -557,10 +561,33 @@ namespace Elucidate
                 parityLocation5.Text = cfg.ParityFile5;
                 parityLocation6.Text = cfg.ParityFile6;
             }
+
             UnsavedChangesMade = false;
-            driveSpace.StartProcessing((from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList());
+
+            driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
+
+        private List<string> GetPathsOfInterestFromForm()
+        {
+            List<string> pathsOfInterest = new List<string>();
+
+            pathsOfInterest.AddRange((from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList());
+
+            if (!string.IsNullOrEmpty(parityLocation1.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation1.Text)); }
+
+            if (!string.IsNullOrEmpty(parityLocation2.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation2.Text)); }
+
+            if (!string.IsNullOrEmpty(parityLocation3.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation3.Text)); }
+
+            if (!string.IsNullOrEmpty(parityLocation4.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation4.Text)); }
         
+            if (!string.IsNullOrEmpty(parityLocation5.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation5.Text)); }
+
+            if (!string.IsNullOrEmpty(parityLocation6.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation6.Text)); }
+
+            return pathsOfInterest.OrderBy(s => s).Distinct().ToList();
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -740,18 +767,45 @@ namespace Elucidate
             }
         }
 
+        bool IsValidFilename(string testName)
+        {
+            string regexString = $"[{Regex.Escape(Path.GetInvalidPathChars().ToString())}]";
+            Regex containsABadCharacter = new Regex(regexString);
+            if (containsABadCharacter.IsMatch(testName))
+            {
+                return false;
+            }
+
+            // Check for drive
+            string pathRoot = Path.GetPathRoot(testName);
+            if (Directory.GetLogicalDrives().Contains(pathRoot))
+            {
+                // etc
+            }
+
+            // other checks for UNC, drive-path format, etc
+
+            return true;
+        }
+
+        private void RefreshDriveSspaceDisplayUsingFormData(object sender)
+        {
+            if (!(sender is TextBox textBox)) return;
+            driveSpace.StartProcessing(GetPathsOfInterestFromForm());
+        }
+
         private void parityLocation1_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
+            RefreshDriveSspaceDisplayUsingFormData(sender);
         }
-
+        
         private void parityLocation2_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
+            RefreshDriveSspaceDisplayUsingFormData(sender);
             string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(parityLocation2.Text)
-               && !File.Exists(parityLocation2.Text)
-               )
+            if (!string.IsNullOrEmpty(parityLocation2.Text) && !File.Exists(parityLocation2.Text))
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
@@ -763,10 +817,9 @@ namespace Elucidate
         private void parityLocation3_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
+            RefreshDriveSspaceDisplayUsingFormData(sender);
             string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(parityLocation3.Text)
-                && !File.Exists(parityLocation3.Text)
-            )
+            if (!string.IsNullOrEmpty(parityLocation3.Text) && !File.Exists(parityLocation3.Text))
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
@@ -778,6 +831,7 @@ namespace Elucidate
         private void parityLocation4_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
+            RefreshDriveSspaceDisplayUsingFormData(sender);
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(parityLocation4.Text)
                 && !File.Exists(parityLocation4.Text)
@@ -793,6 +847,7 @@ namespace Elucidate
         private void parityLocation5_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
+            RefreshDriveSspaceDisplayUsingFormData(sender);
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(parityLocation5.Text)
                 && !File.Exists(parityLocation5.Text)
@@ -808,6 +863,7 @@ namespace Elucidate
         private void parityLocation6_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
+            RefreshDriveSspaceDisplayUsingFormData(sender);
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(parityLocation6.Text)
                 && !File.Exists(parityLocation6.Text)
@@ -854,9 +910,7 @@ namespace Elucidate
                     calc.ParityTargets.Add(trim2);
                 }
             }
-
             calc.ShowDialog(this);
         }
-
     }
 }

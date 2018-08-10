@@ -40,8 +40,8 @@ namespace Elucidate.Controls
 {
     public partial class DriveSpaceDisplay : UserControl
     {
-        private ConfigFileHelper SnapRaidConfig = null;
-
+        private ConfigFileHelper _snapRaidConfig;
+        private readonly List<ChartDataItem> _chartDataList = new List<ChartDataItem>();
         private bool _percentage;
         private WaitCursor _waiting;
         private string _oldTooltip;
@@ -54,7 +54,6 @@ namespace Elucidate.Controls
             public ByteSize FreeBytesAvailable { get; set; }
         }
 
-        private readonly List<ChartDataItem> ChartDataList = new List<ChartDataItem>();
         public DriveSpaceDisplay()
         {
             InitializeComponent();
@@ -100,12 +99,10 @@ namespace Elucidate.Controls
             {
                 if (pathsOfInterest == null)
                 {
-                    SnapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
-                    if (!SnapRaidConfig.ConfigFileExists) return;
-                    SnapRaidConfig.Read();
-                    pathsOfInterest = new List<string>();
-                    pathsOfInterest.AddRange(SnapRaidConfig.SnapShotSources);
-                    pathsOfInterest.AddRange(SnapRaidConfig.ContentFiles);
+                    _snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                    if (!_snapRaidConfig.ConfigFileExists) return;
+                    _snapRaidConfig.Read();
+                    pathsOfInterest = GetPathsOfInterest();
                 }
                 StartProcessing(pathsOfInterest);
             }
@@ -115,25 +112,32 @@ namespace Elucidate.Controls
             }
         }
 
-        public void StartProcessing(List<string> pathsOfInterest)
+        public void StartProcessing(List<string> pathsOfInterest = null)
         {
+            ShowXAxisText = true;
+            ShowLegend = true;
+            ShowYAxisText = true;
             if (pathsOfInterest == null)
             {
-                pathsOfInterest = new List<string>();
-                pathsOfInterest.AddRange(SnapRaidConfig.SnapShotSources);
-                pathsOfInterest.AddRange(SnapRaidConfig.ContentFiles);
+                pathsOfInterest = GetPathsOfInterest();
             }
 
             _waiting = new WaitCursor(this);
+
             _oldTooltip = toolTip1.GetToolTip(this);
+
             toolTip1.SetToolTip(this, "Calculating...");
+
             FillExpectedLayoutWorker.CancelAsync();
+
             while (FillExpectedLayoutWorker.IsBusy)
             {
                 Thread.Sleep(500);
                 Application.DoEvents();
             }
+
             Log.Instance.Info(string.Join(", ", pathsOfInterest));
+
             FillExpectedLayoutWorker.RunWorkerAsync(pathsOfInterest);
         }
 
@@ -172,7 +176,7 @@ namespace Elucidate.Controls
 
         private void ClearExpectedListMethodInvoker()
         {
-            ChartDataList.Clear();
+            _chartDataList.Clear();
             foreach (Series series in chart1.Series)
             {
                 series.Points.Clear();
@@ -197,14 +201,15 @@ namespace Elucidate.Controls
                 PathUsedBytes = ByteSize.FromBytes(pathUsedBytes),
                 RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
             };
-            ChartDataList.Add(chartDataItem);
+            _chartDataList.Add(chartDataItem);
         }
 
+        // ReSharper disable once UnusedMember.Local
         private string GetLargestWholenumberSymbolOfChartData()
         {
             List<string> availableSymbols = new List<string> { "", "b", "B", "KB", "MB", "GB", "TB" };
             string currentMaxSymbol = string.Empty;
-            foreach (var item in ChartDataList)
+            foreach (var item in _chartDataList)
             {
                 string[] symbols = { item.FreeBytesAvailable.LargestWholeNumberSymbol, item.PathUsedBytes.LargestWholeNumberSymbol, item.RootBytesNotCoveredByPath.LargestWholeNumberSymbol };
                 foreach (var symbol in symbols)
@@ -229,19 +234,23 @@ namespace Elucidate.Controls
             //string largestWholenumberSymbolOfChartData = GetLargestWholenumberSymbolOfChartData();
             string largestWholenumberSymbolOfChartData = "GB";
 
-            foreach (var item in ChartDataList)
+            foreach (var item in _chartDataList)
             {
                 double[] points =
                 {
                     // Scale the values
-                    Util.RoundUpToDecimalPlace(item.RootBytesNotCoveredByPath.GigaBytes, 2), Util.RoundUpToDecimalPlace(item.PathUsedBytes.GigaBytes, 2), Util.RoundUpToDecimalPlace(item.FreeBytesAvailable.GigaBytes, 2)
+                    Util.RoundUpToDecimalPlace(item.RootBytesNotCoveredByPath.GigaBytes, 2),
+                    Util.RoundUpToDecimalPlace(item.PathUsedBytes.GigaBytes, 2),
+                    Util.RoundUpToDecimalPlace(item.FreeBytesAvailable.GigaBytes, 2)
                 };
 
                 chart1.Series[0].Points.AddXY(item.Path, points[0]);
                 chart1.Series[1].Points.AddXY(item.Path, points[1]);
                 chart1.Series[2].Points.AddXY(item.Path, points[2]);
 
-                Log.Instance.Info("path[{0}], rootBytesNotCoveredByPath[{1}], pathUsedBytes[{2}], freeBytesAvailable[{3}]", item.Path, points[0], points[1], points[2]);
+                Log.Instance.Info(
+                    "path[{0}], rootBytesNotCoveredByPath[{1}], pathUsedBytes[{2}], freeBytesAvailable[{3}]", 
+                    item.Path, points[0], points[1], points[2]);
             }
 
             // set formatting:
@@ -280,17 +289,40 @@ namespace Elucidate.Controls
         {
             try
             {
-                SnapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
-                SnapRaidConfig.Read();
-                List<string> paths = new List<string>();
-                paths.AddRange(SnapRaidConfig.SnapShotSources);
-                paths.AddRange(SnapRaidConfig.ContentFiles);
-                StartProcessing(paths);
+                _snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                _snapRaidConfig.Read();
+                List<string> pathsOfInterest = GetPathsOfInterest();
+                StartProcessing(pathsOfInterest);
             }
             catch
             {
                 // ignored
             }
+        }
+
+        private List<string> GetPathsOfInterest()
+        {
+            List<string> pathsOfInterest = new List<string>();
+
+            // SnapShotsource might be root or folders, so we handle both cases
+            pathsOfInterest.AddRange(_snapRaidConfig.SnapShotSources
+                .Select(x => Path.GetDirectoryName(x) ?? Path.GetFullPath(x)).ToList());
+
+            //pathsOfInterest.AddRange(_snapRaidConfig.ContentFiles.Select(Path.GetDirectoryName));
+
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile1)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile1)); }
+
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile2)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile2)); }
+
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile3)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile3)); }
+
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile4)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile4)); }
+
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile5)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile5)); }
+
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile6)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile6)); }
+
+            return pathsOfInterest.OrderBy(s => s).Distinct().ToList();
         }
     }
 }

@@ -29,6 +29,7 @@
 #endregion Copyright (C)
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -42,12 +43,8 @@ namespace Elucidate
 
         //private void tabControl_Selected(object sender, TabControlEventArgs e)
         //{
-        //    if (e.TabPage == RecoveryOperations)
-        //    {
-        //        WindowState = FormWindowState.Maximized;
-        //        webBrowser1.Url = new Uri("http://snapraid.sourceforge.net/manual.html#9", UriKind.Absolute);
-        //    }
-        //    else if (e.TabPage == coveragePage)
+            
+        //    else if (e.TabPage == tabCoveragePage)
         //    {
         //        if (!Properties.Settings.Default.ConfigFileIsValid) return;
         //        try
