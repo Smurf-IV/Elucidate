@@ -788,24 +788,25 @@ namespace Elucidate
             return true;
         }
 
-        private void RefreshDriveSspaceDisplayUsingFormData(object sender)
+        private void RefreshDriveSspaceDisplayUsingFormData()
         {
-            if (!(sender is TextBox textBox)) return;
             driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
 
         private void parityLocation1_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
-            RefreshDriveSspaceDisplayUsingFormData(sender);
+            if (!(sender is TextBox)) return;
+            RefreshDriveSspaceDisplayUsingFormData();
         }
         
         private void parityLocation2_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
-            RefreshDriveSspaceDisplayUsingFormData(sender);
+            if (!(sender is TextBox textBox)) return;
+            RefreshDriveSspaceDisplayUsingFormData();
             string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(parityLocation2.Text) && !File.Exists(parityLocation2.Text))
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
@@ -817,9 +818,10 @@ namespace Elucidate
         private void parityLocation3_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
-            RefreshDriveSspaceDisplayUsingFormData(sender);
+            if (!(sender is TextBox textBox)) return;
+            RefreshDriveSspaceDisplayUsingFormData();
             string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(parityLocation3.Text) && !File.Exists(parityLocation3.Text))
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
@@ -831,11 +833,10 @@ namespace Elucidate
         private void parityLocation4_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
-            RefreshDriveSspaceDisplayUsingFormData(sender);
+            if (!(sender is TextBox textBox)) return;
+            RefreshDriveSspaceDisplayUsingFormData();
             string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(parityLocation4.Text)
-                && !File.Exists(parityLocation4.Text)
-            )
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
@@ -847,11 +848,10 @@ namespace Elucidate
         private void parityLocation5_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
-            RefreshDriveSspaceDisplayUsingFormData(sender);
+            if (!(sender is TextBox textBox)) return;
+            RefreshDriveSspaceDisplayUsingFormData();
             string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(parityLocation5.Text)
-                && !File.Exists(parityLocation5.Text)
-            )
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
@@ -863,11 +863,10 @@ namespace Elucidate
         private void parityLocation6_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
-            RefreshDriveSspaceDisplayUsingFormData(sender);
+            if (!(sender is TextBox textBox)) return;
+            RefreshDriveSspaceDisplayUsingFormData();
             string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(parityLocation6.Text)
-                && !File.Exists(parityLocation6.Text)
-            )
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
