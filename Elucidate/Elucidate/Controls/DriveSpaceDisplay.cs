@@ -122,8 +122,6 @@ namespace Elucidate.Controls
                 pathsOfInterest = GetPathsOfInterest();
             }
 
-            _waiting = new WaitCursor(this);
-
             _oldTooltip = toolTip1.GetToolTip(this);
 
             toolTip1.SetToolTip(this, "Calculating...");
@@ -143,14 +141,20 @@ namespace Elucidate.Controls
 
         private void FillExpectedLayoutWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            UseWaitCursor = true;
+
             ClearExpectedList();
+
             List<string> pathsOfInterest = e.Argument as List<string>;
+
             BackgroundWorker worker = sender as BackgroundWorker;
+
             if (pathsOfInterest == null || worker == null)
             {
                 Log.Instance.Error("Worker, or auguments are null, exiting.");
                 return;
             }
+
             foreach (string path in pathsOfInterest.Reverse<string>())
             {
                 if (worker.CancellationPending)
@@ -170,7 +174,7 @@ namespace Elucidate.Controls
 
         private void FillExpectedLayoutWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            _waiting.Dispose();
+            UseWaitCursor = false;
             toolTip1.SetToolTip(this, _oldTooltip);
         }
 
