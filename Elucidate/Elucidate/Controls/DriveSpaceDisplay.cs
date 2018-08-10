@@ -114,8 +114,6 @@ namespace Elucidate.Controls
 
         public void StartProcessing(List<string> pathsOfInterest = null)
         {
-            if (FillExpectedLayoutWorker.IsBusy) return;
-
             ShowXAxisText = true;
             ShowLegend = true;
             ShowYAxisText = true;
@@ -134,7 +132,7 @@ namespace Elucidate.Controls
 
             while (FillExpectedLayoutWorker.IsBusy)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(50);
                 Application.DoEvents();
             }
 
