@@ -36,6 +36,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
+using Elucidate.HelperClasses;
 using Elucidate.Logging;
 using Elucidate.Shared;
 
@@ -428,14 +429,14 @@ namespace Elucidate
                 node.BackColor = Color.Empty;
 
                 string errMsg = string.Empty;
-                
+
                 // test if device already exists in list; SnapRAID only permits one device entry per device
                 if (deviceList.Contains(Path.GetPathRoot(node.FullPath)))
                 {
                     errMsg = $"{node.Index} A device may only appear once in the data source list!";
                 }
                 deviceList.Add(Path.GetPathRoot(node.FullPath));
-                
+
                 // test is path exists
                 if (!Directory.Exists(node.FullPath))
                 {
@@ -450,7 +451,7 @@ namespace Elucidate
                 errorProvider1.SetIconAlignment(snapShotSourcesTreeView, ErrorIconAlignment.TopLeft);
                 errorProvider1.SetError(snapShotSourcesTreeView, errMsg);
             }
-            
+
             return isValid;
         }
 
@@ -565,23 +566,70 @@ namespace Elucidate
             driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
 
-        private List<string> GetPathsOfInterestFromForm()
+        private List<CoveragePath> GetPathsOfInterestFromForm()
         {
-            List<string> pathsOfInterest = new List<string>();
+            var paths = (from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList();
 
-            pathsOfInterest.AddRange((from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList());
+            List<CoveragePath> pathsOfInterest = paths.Select(
+                path => new CoveragePath
+                {
+                    Path = path,
+                    PathType = PathTypeEnum.Source
+                }).ToList();
 
-            if (!string.IsNullOrEmpty(parityLocation1.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation1.Text)); }
+            if (!string.IsNullOrEmpty(parityLocation1.Text))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    Path = Path.GetDirectoryName(parityLocation1.Text),
+                    PathType = PathTypeEnum.Parity
+                });
+            }
 
-            if (!string.IsNullOrEmpty(parityLocation2.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation2.Text)); }
+            if (!string.IsNullOrEmpty(parityLocation2.Text))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    Path = Path.GetDirectoryName(parityLocation2.Text),
+                    PathType = PathTypeEnum.Parity
+                });
+            }
 
-            if (!string.IsNullOrEmpty(parityLocation3.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation3.Text)); }
+            if (!string.IsNullOrEmpty(parityLocation3.Text))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    Path = Path.GetDirectoryName(parityLocation3.Text),
+                    PathType = PathTypeEnum.Parity
+                });
+            }
 
-            if (!string.IsNullOrEmpty(parityLocation4.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation4.Text)); }
-        
-            if (!string.IsNullOrEmpty(parityLocation5.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation5.Text)); }
+            if (!string.IsNullOrEmpty(parityLocation4.Text))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    Path = Path.GetDirectoryName(parityLocation4.Text),
+                    PathType = PathTypeEnum.Parity
+                });
+            }
 
-            if (!string.IsNullOrEmpty(parityLocation6.Text)) { pathsOfInterest.Add(Path.GetDirectoryName(parityLocation6.Text)); }
+            if (!string.IsNullOrEmpty(parityLocation5.Text))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    Path = Path.GetDirectoryName(parityLocation5.Text),
+                    PathType = PathTypeEnum.Parity
+                });
+            }
+
+            if (!string.IsNullOrEmpty(parityLocation6.Text))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    Path = Path.GetDirectoryName(parityLocation6.Text),
+                    PathType = PathTypeEnum.Parity
+                });
+            }
 
             return pathsOfInterest.OrderBy(s => s).Distinct().ToList();
         }
@@ -593,9 +641,9 @@ namespace Elucidate
                 ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text)
                 {
                     IncludePatterns = IncludePatterns,
-                    BlockSizeKB = (uint) numBlockSizeKB.Value,
+                    BlockSizeKB = (uint)numBlockSizeKB.Value,
                     Nohidden = _advSettingsList[3].CheckState,
-                    AutoSaveGB = (uint) numAutoSaveGB.Value
+                    AutoSaveGB = (uint)numAutoSaveGB.Value
                 };
                 foreach (DataGridViewRow row in exludedFilesView.Rows)
                 {
@@ -715,13 +763,13 @@ namespace Elucidate
             _advSettingsList[e.Index].CheckState = (e.NewValue == CheckState.Checked);
             UnsavedChangesMade = true;
         }
-        
+
         private void findParity1_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
             {
                 parityLocation1.Text = folderBrowserDialog1.SelectedPath;
-                
+
             }
         }
 
@@ -764,7 +812,7 @@ namespace Elucidate
                 parityLocation6.Text = folderBrowserDialog1.SelectedPath;
             }
         }
-        
+
         private void RefreshDriveSspaceDisplayUsingFormData()
         {
             driveSpace.StartProcessing(GetPathsOfInterestFromForm());
@@ -776,7 +824,7 @@ namespace Elucidate
             if (!(sender is TextBox)) return;
             RefreshDriveSspaceDisplayUsingFormData();
         }
-        
+
         private void parityLocation2_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
@@ -791,7 +839,7 @@ namespace Elucidate
             toolTip1.SetToolTip(findParity2, tooltip);
             toolTip1.SetToolTip(labelParity2, tooltip);
         }
-        
+
         private void parityLocation3_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;

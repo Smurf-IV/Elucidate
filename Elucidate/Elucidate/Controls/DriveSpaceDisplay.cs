@@ -33,8 +33,9 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using ByteSizeLib;
+using Elucidate.HelperClasses;
 using Elucidate.Logging;
-using Elucidate.Shared;
+using MoreLinq;
 
 namespace Elucidate.Controls
 {
@@ -43,7 +44,6 @@ namespace Elucidate.Controls
         private ConfigFileHelper _snapRaidConfig;
         private readonly List<ChartDataItem> _chartDataList = new List<ChartDataItem>();
         private bool _percentage;
-        private WaitCursor _waiting;
         private string _oldTooltip;
         
         private class ChartDataItem
@@ -85,7 +85,7 @@ namespace Elucidate.Controls
         /// Shows the Legend
         /// </summary>
         [DefaultValue(typeof(bool), "true")]
-        public bool ShowLegend
+        private bool ShowLegend
         {
             get => chart1.Legends[0].Enabled;
             set => chart1.Legends[0].Enabled = value;
@@ -93,7 +93,7 @@ namespace Elucidate.Controls
 
         #endregion Designer
 
-        public void RefreshGraph(List<string> pathsOfInterest = null)
+        public void RefreshGraph(List<CoveragePath> pathsOfInterest = null)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace Elucidate.Controls
             }
         }
 
-        public void StartProcessing(List<string> pathsOfInterest = null)
+        public void StartProcessing(List<CoveragePath> pathsOfInterest = null)
         {
             ShowXAxisText = true;
             ShowLegend = true;
@@ -133,7 +133,7 @@ namespace Elucidate.Controls
                 Thread.Sleep(50);
                 Application.DoEvents();
             }
-
+            
             Log.Instance.Info(string.Join(", ", pathsOfInterest));
 
             FillExpectedLayoutWorker.RunWorkerAsync(pathsOfInterest);
@@ -145,7 +145,7 @@ namespace Elucidate.Controls
 
             ClearExpectedList();
 
-            List<string> pathsOfInterest = e.Argument as List<string>;
+            List<CoveragePath> pathsOfInterest = e.Argument as List<CoveragePath>;
 
             BackgroundWorker worker = sender as BackgroundWorker;
 
@@ -155,18 +155,18 @@ namespace Elucidate.Controls
                 return;
             }
 
-            foreach (string path in pathsOfInterest.Reverse<string>())
+            foreach (CoveragePath coveragePath in pathsOfInterest.OrderByDescending(o => o.Path).ToList())
             {
                 if (worker.CancellationPending)
                 {
                     return;
                 }
-                if (!Directory.Exists(path))
+                if (!Directory.Exists(coveragePath.Path))
                 {
-                    Log.Instance.Warn($"Directory path does not exist: {path}");
+                    Log.Instance.Warn($"Directory path does not exist: {coveragePath.Path}");
                     continue;
                 }
-                CompileChartDataItemForPath(path);
+                CompileChartDataItemForPath(coveragePath.Path);
             }
 
             AddDataToDisplay();
@@ -215,7 +215,12 @@ namespace Elucidate.Controls
             string currentMaxSymbol = string.Empty;
             foreach (var item in _chartDataList)
             {
-                string[] symbols = { item.FreeBytesAvailable.LargestWholeNumberSymbol, item.PathUsedBytes.LargestWholeNumberSymbol, item.RootBytesNotCoveredByPath.LargestWholeNumberSymbol };
+                string[] symbols =
+                {
+                    item.FreeBytesAvailable.LargestWholeNumberSymbol,
+                    item.PathUsedBytes.LargestWholeNumberSymbol,
+                    item.RootBytesNotCoveredByPath.LargestWholeNumberSymbol
+                };
                 foreach (var symbol in symbols)
                 {
                     if (availableSymbols.IndexOf(symbol) > availableSymbols.IndexOf(currentMaxSymbol))
@@ -235,7 +240,6 @@ namespace Elucidate.Controls
 
         private void AddDataToDisplayMethodInvoker()
         {
-            //string largestWholenumberSymbolOfChartData = GetLargestWholenumberSymbolOfChartData();
             string largestWholenumberSymbolOfChartData = "GB";
 
             foreach (var item in _chartDataList)
@@ -295,7 +299,7 @@ namespace Elucidate.Controls
             {
                 _snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
                 _snapRaidConfig.Read();
-                List<string> pathsOfInterest = GetPathsOfInterest();
+                List<CoveragePath> pathsOfInterest = GetPathsOfInterest();
                 StartProcessing(pathsOfInterest);
             }
             catch
@@ -304,29 +308,33 @@ namespace Elucidate.Controls
             }
         }
 
-        private List<string> GetPathsOfInterest()
+        private List<CoveragePath> GetPathsOfInterest()
         {
-            List<string> pathsOfInterest = new List<string>();
+            List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
             // SnapShotsource might be root or folders, so we handle both cases
-            pathsOfInterest.AddRange(_snapRaidConfig.SnapShotSources
-                .Select(x => Path.GetDirectoryName(x) ?? Path.GetFullPath(x)).ToList());
+            foreach (string snapShotSource in _snapRaidConfig.SnapShotSources)
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    Path = Path.GetDirectoryName(snapShotSource) ?? Path.GetFullPath(snapShotSource),
+                    PathType = PathTypeEnum.Source
+                });
+            }
 
-            //pathsOfInterest.AddRange(_snapRaidConfig.ContentFiles.Select(Path.GetDirectoryName));
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile1)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile1), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile1)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile1)); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile2)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile2), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile2)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile2)); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile3)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile3), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile3)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile3)); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile4)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile4), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile4)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile4)); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile5)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile5), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile5)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile5)); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile6)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile6), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile6)) { pathsOfInterest.Add(Path.GetDirectoryName(_snapRaidConfig.ParityFile6)); }
-
-            return pathsOfInterest.OrderBy(s => s).Distinct().ToList();
+            return pathsOfInterest.OrderBy(s => s.Path).DistinctBy(d => d.Path).ToList();
         }
     }
 }
