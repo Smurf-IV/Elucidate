@@ -101,9 +101,6 @@
         <File Id="Elucidate.exe" Name="Elucidate.exe" Source="$(var.MgtSource)\Elucidate.exe" KeyPath="yes" ProcessorArchitecture="x64" />
       </Component>
       <Component>
-        <File Source="$(sys.SOURCEFILEDIR)..\Elucidate\ChangeLog.htm" KeyPath="yes" ProcessorArchitecture="x64" />
-      </Component>
-      <Component>
         <File Source="$(var.MgtSource)\Elucidate.exe.config" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
