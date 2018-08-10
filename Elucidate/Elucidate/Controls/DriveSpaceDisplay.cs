@@ -114,6 +114,8 @@ namespace Elucidate.Controls
 
         public void StartProcessing(List<string> pathsOfInterest = null)
         {
+            if (FillExpectedLayoutWorker.IsBusy) return;
+
             ShowXAxisText = true;
             ShowLegend = true;
             ShowYAxisText = true;
