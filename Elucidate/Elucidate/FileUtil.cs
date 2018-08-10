@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Management;
+using System.Text.RegularExpressions;
 
 namespace Elucidate
 {
@@ -32,6 +33,13 @@ namespace Elucidate
             }
 
             return false;
+        }
+        
+        public static bool IsValidFilename(string testName)
+        {
+            string regexString = $"[{Regex.Escape(Path.GetInvalidPathChars().ToString())}]";
+            Regex containsABadCharacter = new Regex(regexString);
+            return !containsABadCharacter.IsMatch(testName);
         }
 
     }

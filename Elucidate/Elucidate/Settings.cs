@@ -35,8 +35,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
 using Elucidate.Logging;
 using Elucidate.Shared;
@@ -766,28 +764,7 @@ namespace Elucidate
                 parityLocation6.Text = folderBrowserDialog1.SelectedPath;
             }
         }
-
-        bool IsValidFilename(string testName)
-        {
-            string regexString = $"[{Regex.Escape(Path.GetInvalidPathChars().ToString())}]";
-            Regex containsABadCharacter = new Regex(regexString);
-            if (containsABadCharacter.IsMatch(testName))
-            {
-                return false;
-            }
-
-            // Check for drive
-            string pathRoot = Path.GetPathRoot(testName);
-            if (Directory.GetLogicalDrives().Contains(pathRoot))
-            {
-                // etc
-            }
-
-            // other checks for UNC, drive-path format, etc
-
-            return true;
-        }
-
+        
         private void RefreshDriveSspaceDisplayUsingFormData()
         {
             driveSpace.StartProcessing(GetPathsOfInterestFromForm());

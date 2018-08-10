@@ -108,6 +108,15 @@ namespace Elucidate
                 tabControl.Deselecting += tabControl_Deselecting;
             }
         }
+
+        private void tabControl_Selected(object sender, TabControlEventArgs e)
+        {
+            if (tabControl.SelectedTab.Name == "tabCoveragePage")
+            {
+                driveSpace.RefreshGraph();
+            }
+        }
+
         private void tabControl_Deselecting(object sender, TabControlCancelEventArgs e)
         {
             e.Cancel = true;
@@ -137,10 +146,23 @@ namespace Elucidate
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
-            new Settings().ShowDialog(this);
+
+            //new Settings().ShowDialog(this);
+
+            var settingsForm = new Settings();
+            settingsForm.FormClosed += RefreshDriveDisplayAfterConfigSaved;
+            settingsForm.ShowDialog(this);
+
+            //if (settingsForm == System.Windows.Forms.DialogResult.OK)
+
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
         }
 
+        private void RefreshDriveDisplayAfterConfigSaved(object sender, FormClosedEventArgs formClosedEventArgs)
+        {
+            driveSpace.RefreshGraph();
+        }
+        
         private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
@@ -311,5 +333,6 @@ namespace Elucidate
         {
             AppUpdate.InstallNewVersion();
         }
+
     }
 }

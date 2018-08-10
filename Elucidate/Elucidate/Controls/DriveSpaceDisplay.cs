@@ -45,7 +45,7 @@ namespace Elucidate.Controls
         private bool _percentage;
         private WaitCursor _waiting;
         private string _oldTooltip;
-
+        
         private class ChartDataItem
         {
             public string Path { get; set; }
