@@ -39,7 +39,7 @@ namespace Elucidate
                 args.Append("-N ");
             }
 
-            args.AppendFormat("-c \"{0}\" {1}", Properties.Settings.Default.ConfigFileLocation, command.ToLower());
+            args.AppendFormat("-c \"{0}\" {1}", Properties.Settings.Default.ConfigFileLocation, command);
             return args.ToString();
         }
 
