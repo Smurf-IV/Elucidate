@@ -49,6 +49,7 @@ namespace Elucidate.Controls
         private class ChartDataItem
         {
             public string Path { get; set; }
+            public ByteSize ParityUsedBytes { get; set; }
             public ByteSize RootBytesNotCoveredByPath { get; set; }
             public ByteSize PathUsedBytes { get; set; }
             public ByteSize FreeBytesAvailable { get; set; }
@@ -67,6 +68,7 @@ namespace Elucidate.Controls
         [DefaultValue(typeof(bool), "true")]
         public bool ShowYAxisText
         {
+            // ReSharper disable once UnusedMember.Local
             get => chart1.ChartAreas[0].AxisX.LabelStyle.Enabled;
             set => chart1.ChartAreas[0].AxisX.LabelStyle.Enabled = value;
         }
@@ -77,16 +79,18 @@ namespace Elucidate.Controls
         [DefaultValue(typeof(bool), "true")]
         public bool ShowXAxisText
         {
+            // ReSharper disable once UnusedMember.Local
             get => chart1.ChartAreas[0].AxisY.LabelStyle.Enabled;
             set => chart1.ChartAreas[0].AxisY.LabelStyle.Enabled = value;
         }
 
         /// <summary>
-        /// Shows the Legend
+        /// Show the Legend
         /// </summary>
         [DefaultValue(typeof(bool), "true")]
         private bool ShowLegend
         {
+            // ReSharper disable once UnusedMember.Local
             get => chart1.Legends[0].Enabled;
             set => chart1.Legends[0].Enabled = value;
         }
@@ -155,18 +159,18 @@ namespace Elucidate.Controls
                 return;
             }
 
-            foreach (CoveragePath coveragePath in pathsOfInterest.OrderByDescending(o => o.Path).ToList())
+            foreach (CoveragePath coveragePath in pathsOfInterest.OrderByDescending(o => o.FullPath).ToList())
             {
                 if (worker.CancellationPending)
                 {
                     return;
                 }
-                if (!Directory.Exists(coveragePath.Path))
+                if (!Directory.Exists(coveragePath.DirectoryPath) && !File.Exists(coveragePath.FullPath))
                 {
-                    Log.Instance.Warn($"Directory path does not exist: {coveragePath.Path}");
+                    Log.Instance.Warn($"Directory path does not exist: {coveragePath.FullPath}");
                     continue;
                 }
-                CompileChartDataItemForPath(coveragePath.Path);
+                CompileChartDataItemForPath(coveragePath);
             }
 
             AddDataToDisplay();
@@ -195,17 +199,44 @@ namespace Elucidate.Controls
         // Need to find 3 values, Total drive size, Root drive used, actual used by path
         // Need to be aware of UNC paths
         // Need to be aware of Junctions
-        private void CompileChartDataItemForPath(string path)
+        private void CompileChartDataItemForPath(CoveragePath pathOfInterest)
         {
-            Util.FreeBytesAvailable(path, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
-            var chartDataItem = new ChartDataItem
+            if (pathOfInterest.PathType == PathTypeEnum.Parity)
             {
-                Path = path,
-                FreeBytesAvailable = ByteSize.FromBytes(freeBytesAvailable),
-                PathUsedBytes = ByteSize.FromBytes(pathUsedBytes),
-                RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
-            };
-            _chartDataList.Add(chartDataItem);
+                if (!File.Exists(pathOfInterest.FullPath)) return;
+
+                Util.ParityPathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable,
+                    out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+
+                var chartDataItem = new ChartDataItem
+                {
+                    Path = pathOfInterest.DirectoryPath,
+                    ParityUsedBytes = ByteSize.FromBytes(pathUsedBytes),
+                    FreeBytesAvailable = ByteSize.FromBytes(freeBytesAvailable),
+                    PathUsedBytes = new ByteSize(0),
+                    RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
+                };
+
+                _chartDataList.Add(chartDataItem);
+            }
+            else
+            {
+                if (!Directory.Exists(pathOfInterest.FullPath)) return;
+
+                Util.SourcePathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable,
+                    out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+
+                var chartDataItem = new ChartDataItem
+                {
+                    Path = pathOfInterest.DirectoryPath,
+                    ParityUsedBytes = new ByteSize(0),
+                    FreeBytesAvailable = ByteSize.FromBytes(freeBytesAvailable),
+                    PathUsedBytes = ByteSize.FromBytes(pathUsedBytes),
+                    RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
+                };
+
+                _chartDataList.Add(chartDataItem);
+            }
         }
 
         // ReSharper disable once UnusedMember.Local
@@ -247,6 +278,7 @@ namespace Elucidate.Controls
                 double[] points =
                 {
                     // Scale the values
+                    Util.RoundUpToDecimalPlace(item.ParityUsedBytes.GigaBytes, 2),
                     Util.RoundUpToDecimalPlace(item.RootBytesNotCoveredByPath.GigaBytes, 2),
                     Util.RoundUpToDecimalPlace(item.PathUsedBytes.GigaBytes, 2),
                     Util.RoundUpToDecimalPlace(item.FreeBytesAvailable.GigaBytes, 2)
@@ -255,10 +287,9 @@ namespace Elucidate.Controls
                 chart1.Series[0].Points.AddXY(item.Path, points[0]);
                 chart1.Series[1].Points.AddXY(item.Path, points[1]);
                 chart1.Series[2].Points.AddXY(item.Path, points[2]);
+                chart1.Series[3].Points.AddXY(item.Path, points[3]);
 
-                Log.Instance.Info(
-                    "path[{0}], rootBytesNotCoveredByPath[{1}], pathUsedBytes[{2}], freeBytesAvailable[{3}]", 
-                    item.Path, points[0], points[1], points[2]);
+                Log.Instance.Info($"path[{item.Path}], parityUsedBytes[{points[0]}], rootBytesNotCoveredByPath[{points[1]}], pathUsedBytes[{points[2]}], freeBytesAvailable[{points[3]}]");
             }
 
             // set formatting:
@@ -317,24 +348,24 @@ namespace Elucidate.Controls
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    Path = Path.GetDirectoryName(snapShotSource) ?? Path.GetFullPath(snapShotSource),
+                    FullPath = Path.GetDirectoryName(snapShotSource) ?? Path.GetFullPath(snapShotSource),
                     PathType = PathTypeEnum.Source
                 });
             }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile1)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile1), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile1)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile1), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile2)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile2), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile2)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile2), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile3)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile3), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile3)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile3), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile4)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile4), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile4)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile4), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile5)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile5), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile5)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile5), PathType = PathTypeEnum.Parity }); }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile6)) { pathsOfInterest.Add(new CoveragePath { Path = Path.GetDirectoryName(_snapRaidConfig.ParityFile6), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile6)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile6), PathType = PathTypeEnum.Parity }); }
 
-            return pathsOfInterest.OrderBy(s => s.Path).DistinctBy(d => d.Path).ToList();
+            return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
         }
     }
 }

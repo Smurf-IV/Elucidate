@@ -39,6 +39,7 @@ using System.Windows.Forms;
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
 using Elucidate.Shared;
+using MoreLinq;
 
 namespace Elucidate
 {
@@ -90,11 +91,25 @@ namespace Elucidate
 
         private void Settings_Load(object sender, EventArgs e)
         {
+            parityLocation1.TextChanged -= parityLocation1_TextChanged;
+            parityLocation2.TextChanged -= parityLocation2_TextChanged;
+            parityLocation3.TextChanged -= parityLocation3_TextChanged;
+            parityLocation4.TextChanged -= parityLocation4_TextChanged;
+            parityLocation5.TextChanged -= parityLocation5_TextChanged;
+            parityLocation6.TextChanged -= parityLocation6_TextChanged;
+
             snapRAIDFileLocation.Text = Properties.Settings.Default.SnapRAIDFileLocation;
             configFileLocation.Text = Properties.Settings.Default.ConfigFileLocation;
             StartTree();
             Properties.Settings.Default.ConfigFileIsValid = ValidateData();
             UnsavedChangesMade = false;
+
+            parityLocation1.TextChanged += parityLocation1_TextChanged;
+            parityLocation2.TextChanged += parityLocation2_TextChanged;
+            parityLocation3.TextChanged += parityLocation3_TextChanged;
+            parityLocation4.TextChanged += parityLocation4_TextChanged;
+            parityLocation5.TextChanged += parityLocation5_TextChanged;
+            parityLocation6.TextChanged += parityLocation6_TextChanged;
         }
 
         private void Settings_Shown(object sender, EventArgs e)
@@ -573,7 +588,7 @@ namespace Elucidate
             List<CoveragePath> pathsOfInterest = paths.Select(
                 path => new CoveragePath
                 {
-                    Path = path,
+                    FullPath = path,
                     PathType = PathTypeEnum.Source
                 }).ToList();
 
@@ -581,7 +596,7 @@ namespace Elucidate
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    Path = Path.GetDirectoryName(parityLocation1.Text),
+                    FullPath = Path.GetFullPath(parityLocation1.Text),
                     PathType = PathTypeEnum.Parity
                 });
             }
@@ -590,7 +605,7 @@ namespace Elucidate
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    Path = Path.GetDirectoryName(parityLocation2.Text),
+                    FullPath = Path.GetFullPath(parityLocation2.Text),
                     PathType = PathTypeEnum.Parity
                 });
             }
@@ -599,7 +614,7 @@ namespace Elucidate
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    Path = Path.GetDirectoryName(parityLocation3.Text),
+                    FullPath = Path.GetFullPath(parityLocation3.Text),
                     PathType = PathTypeEnum.Parity
                 });
             }
@@ -608,7 +623,7 @@ namespace Elucidate
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    Path = Path.GetDirectoryName(parityLocation4.Text),
+                    FullPath = Path.GetFullPath(parityLocation4.Text),
                     PathType = PathTypeEnum.Parity
                 });
             }
@@ -617,7 +632,7 @@ namespace Elucidate
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    Path = Path.GetDirectoryName(parityLocation5.Text),
+                    FullPath = Path.GetFullPath(parityLocation5.Text),
                     PathType = PathTypeEnum.Parity
                 });
             }
@@ -626,12 +641,12 @@ namespace Elucidate
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    Path = Path.GetDirectoryName(parityLocation6.Text),
+                    FullPath = Path.GetFullPath(parityLocation6.Text),
                     PathType = PathTypeEnum.Parity
                 });
             }
 
-            return pathsOfInterest.OrderBy(s => s).Distinct().ToList();
+            return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(s => s.Drive).ToList();
         }
 
         private void btnSave_Click(object sender, EventArgs e)

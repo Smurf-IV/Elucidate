@@ -66,7 +66,7 @@ namespace Elucidate
         // Need to be aware of Junctions
         private static void FindAndAddDisplaySizes(string path, ref UInt64 min, ref UInt64 max)
         {
-            Util.FreeBytesAvailable(path, out var freeBytesAvailable, out var pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+            Util.SourcePathFreeBytesAvailable(path, out var freeBytesAvailable, out var pathUsedBytes, out ulong rootBytesNotCoveredByPath);
             min += pathUsedBytes;
             max += pathUsedBytes;
             max += freeBytesAvailable;
@@ -94,7 +94,7 @@ namespace Elucidate
                     ulong maxParitySizeAvailable = ulong.MaxValue;
                     foreach (string raidTarget in ParityTargets)
                     {
-                        Util.FreeBytesAvailable(raidTarget, out freeBytesAvailable, out pathUsedBytes, out rootBytesNotCoveredByPath);
+                        Util.SourcePathFreeBytesAvailable(raidTarget, out freeBytesAvailable, out pathUsedBytes, out rootBytesNotCoveredByPath);
                         ulong currentTarget = freeBytesAvailable + pathUsedBytes;
                         if (maxParitySizeAvailable > currentTarget)
                         {
@@ -118,7 +118,7 @@ namespace Elucidate
                     ulong maxProjectedSource = 0;
                     foreach (string path in SnapShotSources)
                     {
-                        Util.FreeBytesAvailable(path, out freeBytesAvailable, out pathUsedBytes, out rootBytesNotCoveredByPath);
+                        Util.SourcePathFreeBytesAvailable(path, out freeBytesAvailable, out pathUsedBytes, out rootBytesNotCoveredByPath);
                         ulong currentSource = freeBytesAvailable + pathUsedBytes;
                         if (maxProjectedSource < currentSource)
                         {

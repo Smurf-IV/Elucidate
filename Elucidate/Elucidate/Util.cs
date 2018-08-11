@@ -189,15 +189,45 @@ namespace Elucidate
 
             return 0;
         }
+        public static void ParityPathFreeBytesAvailable(string path, 
+            out ulong freeBytesAvailable, 
+            out ulong pathUsedBytes,
+            out ulong rootBytesNotCoveredByPath)
+        {
+            try
+            {
+                // get stats for parity location since it might be a folder
+                GetDiskFreeSpaceExW(Path.GetPathRoot(path), out freeBytesAvailable, out ulong totalBytes, out ulong num3);
+                ulong driveUsedBytes = totalBytes - freeBytesAvailable;
+                pathUsedBytes = (ulong) new FileInfo(path).Length;
+                if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/softlink path or file
+                {
+                    rootBytesNotCoveredByPath = driveUsedBytes - pathUsedBytes;
+                }
+                else
+                {
+                    rootBytesNotCoveredByPath = driveUsedBytes;
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.ReportException(ex);
+                freeBytesAvailable = 0;
+                pathUsedBytes = 0;
+                rootBytesNotCoveredByPath = 0;
+            }
+        }
 
-        public static void FreeBytesAvailable(string path, out ulong freeBytesAvailable, out ulong pathUsedBytes,
+        public static void SourcePathFreeBytesAvailable(string path, 
+            out ulong freeBytesAvailable, 
+            out ulong pathUsedBytes,
             out ulong rootBytesNotCoveredByPath)
         {
             DirectoryInfo di = new DirectoryInfo(path);
-            rootBytesNotCoveredByPath = 0;
-
             GetDiskFreeSpaceExW(di.Root.FullName, out freeBytesAvailable, out ulong totalBytes, out ulong num3);
             ulong driveUsedBytes = totalBytes - freeBytesAvailable;
+            
+            rootBytesNotCoveredByPath = 0;
             if (di.Root.FullName == di.FullName)
             {
                 Log.Instance.Debug("Nothing more to do, so get values for the series");
