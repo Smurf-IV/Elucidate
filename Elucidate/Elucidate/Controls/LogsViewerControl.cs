@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Elucidate.Logging;
 
 namespace Elucidate.Controls
 {
@@ -17,12 +18,12 @@ namespace Elucidate.Controls
         
         private void UpdateLogFileDisplayListBox()
         {
-            listViewLogFiles.Clear();
+            listBoxViewLogFiles.Items.Clear();
             if (!Directory.Exists(_logSourcePath)) return;
             DirectoryInfo logFileDirectoryInfo = new DirectoryInfo(_logSourcePath);
             foreach (FileInfo log in logFileDirectoryInfo.GetFiles("*.log").OrderByDescending(a => a.Name))
             {
-                listViewLogFiles.Items.Add(log.Name);
+                listBoxViewLogFiles.Items.Add(log.Name);
             }
         }
 
@@ -32,19 +33,6 @@ namespace Elucidate.Controls
 
             comboBoxLogType.DataSource = new[] { "SnapRAID Scheduled Jobs", "Elucidate" };
             comboBoxLogType.SelectedIndex = 0;
-        }
-        
-        private void listViewLogFiles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!Directory.Exists(_logSourcePath)) return;
-            // TODO: improve performance of large files by using stream
-            if (listViewLogFiles.SelectedItems.Count == 0) return;
-            var data = File.ReadAllText($@"{_logSourcePath}\{listViewLogFiles.SelectedItems[0].Text}");
-            richTextBoxLogViewer.Text = data;
-        }
-
-        private void checkedListBoxLogFiles_SelectedIndexChanged(object sender, EventArgs e)
-        {
         }
 
         private void DisplayLogInViewer()
@@ -62,7 +50,7 @@ namespace Elucidate.Controls
                     break;
             }
 
-            Logging.Log.Instance.Debug($"_logSourcePath : {_logSourcePath}");
+            Log.Instance.Debug($"_logSourcePath : {_logSourcePath}");
 
             UpdateLogFileDisplayListBox();
         }
@@ -72,7 +60,15 @@ namespace Elucidate.Controls
             DisplayLogInViewer();
         }
 
-        private void listViewLogFiles_DoubleClick(object sender, EventArgs e)
+        private void listBoxViewLogFiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!Directory.Exists(_logSourcePath)) return;
+            if (listBoxViewLogFiles.SelectedItems.Count == 0) return;
+            var data = File.ReadAllText($@"{_logSourcePath}\{listBoxViewLogFiles.SelectedItems[0]}");
+            richTextBoxLogViewer.Text = data;
+        }
+
+        private void listBoxViewLogFiles_DoubleClick(object sender, EventArgs e)
         {
             UpdateLogFileDisplayListBox();
         }
