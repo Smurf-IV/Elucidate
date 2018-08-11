@@ -96,7 +96,7 @@ namespace Elucidate
             btnScrub.Enabled = enabled;
             btnFix.Enabled = enabled;
             btnDupFinder.Enabled = enabled;
-            btnUndelete.Enabled = enabled;
+            btnForceFullSync.Enabled = enabled;
             snapRAIDConfigToolStripMenuItem.Enabled = enabled;
             logViewToolStripMenuItem.Enabled = enabled;
             if (enabled)
@@ -256,12 +256,6 @@ namespace Elucidate
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Dup);
         }
 
-        private void btnUndelete_Click(object sender, EventArgs e)
-        {
-            SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Undelete);
-        }
-        
         private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
         {
             // persist our geometry string.
@@ -334,5 +328,10 @@ namespace Elucidate
             AppUpdate.InstallNewVersion();
         }
 
+        private void btnForceFullSync_Click(object sender, EventArgs e)
+        {
+            SetCommonButtonsEnabledState(false);
+            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.ForceFullSync);
+        }
     }
 }

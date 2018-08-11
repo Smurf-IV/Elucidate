@@ -60,7 +60,19 @@ namespace Elucidate.Controls
             public Process CmdProcess;
         }
 
-        public enum CommandType { Status, Diff, Check, Sync, Scrub, Fix, Dup, Undelete, QuickCheck, RecoverCheck, RecoverFix }
+        public enum CommandType {
+            Status,
+            Diff,
+            Check,
+            Sync,
+            Scrub,
+            Fix,
+            Dup,
+            QuickCheck,
+            RecoverCheck,
+            RecoverFix,
+            ForceFullSync
+        }
 
         private void LiveRunLogControl_Load(object sender, EventArgs e)
         {
@@ -131,9 +143,9 @@ namespace Elucidate.Controls
                 case CommandType.Dup:
                     command.Append(@"dup ");
                     break;
-                case CommandType.Undelete:
-                    command.Append(@"fix ");
-                    command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-m");
+                case CommandType.ForceFullSync:
+                    command.Append(@"sync ");
+                    command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-F");
                     break;
                 case CommandType.RecoverFix:
                     command.Append(@"fix ");

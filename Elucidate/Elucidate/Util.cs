@@ -60,6 +60,11 @@ namespace Elucidate
             int intX = Convert.ToInt32(strX);
             return Math.Ceiling(numToRound * intX) / intX;
         }
+        public static void CreateEmptyFile(string filename)
+        {
+            if (File.Exists(filename)) return;
+            File.Create(filename).Dispose();
+        }
 
         public static string ComputeSha256Hash(string rawData)
         {

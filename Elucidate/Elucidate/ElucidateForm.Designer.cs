@@ -55,7 +55,6 @@ namespace Elucidate
             this.commandPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.btnSync = new Elucidate.Shared.CommandLinkButton();
             this.btnCheck = new Elucidate.Shared.CommandLinkButton();
-            this.btnUndelete = new Elucidate.Shared.CommandLinkButton();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabLogs = new System.Windows.Forms.TabPage();
             this.logsViewerControl = new Elucidate.Controls.LogsViewerControl();
@@ -73,6 +72,7 @@ namespace Elucidate
             this.changeLogOfNewVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.MenuItemNewVersionReadyForInstall = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnForceFullSync = new Elucidate.Shared.CommandLinkButton();
             this.statusStrip1.SuspendLayout();
             this.tabCoveragePage.SuspendLayout();
             this.tabSchedulePage.SuspendLayout();
@@ -368,7 +368,7 @@ namespace Elucidate
             this.commandPanel.Controls.Add(this.btnCheck);
             this.commandPanel.Controls.Add(this.btnFix);
             this.commandPanel.Controls.Add(this.btnDupFinder);
-            this.commandPanel.Controls.Add(this.btnUndelete);
+            this.commandPanel.Controls.Add(this.btnForceFullSync);
             this.commandPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.commandPanel.Location = new System.Drawing.Point(0, 0);
             this.commandPanel.Name = "commandPanel";
@@ -429,33 +429,6 @@ namespace Elucidate
             this.btnCheck.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCheck.UseVisualStyleBackColor = true;
             this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
-            // 
-            // btnUndelete
-            // 
-            this.btnUndelete.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUndelete.ButtonDepress = ((sbyte)(2));
-            this.btnUndelete.Enabled = false;
-            this.btnUndelete.HighlightColor = System.Drawing.SystemColors.Highlight;
-            this.btnUndelete.HighlightFillAlpha = ((byte)(200));
-            this.btnUndelete.HighlightFillAlphaMouse = ((byte)(100));
-            this.btnUndelete.HighlightFillAlphaNormal = ((byte)(50));
-            this.btnUndelete.HighlightWidth = 2F;
-            this.btnUndelete.Image = global::Elucidate.Properties.Resources.camera_warning_48;
-            this.btnUndelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUndelete.ImageMargin = 8F;
-            this.btnUndelete.Location = new System.Drawing.Point(309, 143);
-            this.btnUndelete.MinimumSize = new System.Drawing.Size(300, 64);
-            this.btnUndelete.Name = "btnUndelete";
-            this.btnUndelete.Rounding = 14F;
-            this.btnUndelete.Size = new System.Drawing.Size(300, 64);
-            this.btnUndelete.Subscript = "Recover all the deleted files in\r\nall the drives since last \"Sync\"";
-            this.btnUndelete.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUndelete.TabIndex = 11;
-            this.btnUndelete.Text = "&Undelete";
-            this.btnUndelete.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUndelete.UseVisualStyleBackColor = true;
-            this.btnUndelete.Click += new System.EventHandler(this.btnUndelete_Click);
             // 
             // tabControl
             // 
@@ -640,6 +613,34 @@ namespace Elucidate
             this.MenuItemNewVersionReadyForInstall.Visible = false;
             this.MenuItemNewVersionReadyForInstall.Click += new System.EventHandler(this.MenuItemNewVersionReadyForInstall_Click);
             // 
+            // btnForceFullSync
+            // 
+            this.btnForceFullSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnForceFullSync.ButtonDepress = ((sbyte)(2));
+            this.btnForceFullSync.Enabled = false;
+            this.btnForceFullSync.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnForceFullSync.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.btnForceFullSync.HighlightFillAlpha = ((byte)(200));
+            this.btnForceFullSync.HighlightFillAlphaMouse = ((byte)(100));
+            this.btnForceFullSync.HighlightFillAlphaNormal = ((byte)(50));
+            this.btnForceFullSync.HighlightWidth = 2F;
+            this.btnForceFullSync.Image = global::Elucidate.Properties.Resources.camera_add_48;
+            this.btnForceFullSync.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnForceFullSync.ImageMargin = 8F;
+            this.btnForceFullSync.Location = new System.Drawing.Point(309, 143);
+            this.btnForceFullSync.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnForceFullSync.Name = "btnForceFullSync";
+            this.btnForceFullSync.Rounding = 14F;
+            this.btnForceFullSync.Size = new System.Drawing.Size(300, 64);
+            this.btnForceFullSync.Subscript = "Force a full synchronization of all content.";
+            this.btnForceFullSync.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForceFullSync.TabIndex = 12;
+            this.btnForceFullSync.Text = "&Force Full Sync";
+            this.btnForceFullSync.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnForceFullSync.UseVisualStyleBackColor = true;
+            this.btnForceFullSync.Click += new System.EventHandler(this.btnForceFullSync_Click);
+            // 
             // ElucidateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -698,7 +699,6 @@ namespace Elucidate
         private CommandLinkButton btnCheck;
         private CommandLinkButton btnFix;
         private CommandLinkButton btnDupFinder;
-        private CommandLinkButton btnUndelete;
         private TabPage tabSchedulePage;
         private Controls.Schedule SchedulePageScheduleControl;
         private TabPage tabCoveragePage;
@@ -720,6 +720,7 @@ namespace Elucidate
         private ToolStripMenuItem changeLogOfNewVersionToolStripMenuItem;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem MenuItemNewVersionReadyForInstall;
+        private CommandLinkButton btnForceFullSync;
     }
 }
 
