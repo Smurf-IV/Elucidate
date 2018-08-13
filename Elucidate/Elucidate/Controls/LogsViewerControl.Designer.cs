@@ -97,6 +97,9 @@
             // 
             // comboBoxLogType
             // 
+            this.comboBoxLogType.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBoxLogType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLogType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.comboBoxLogType.FormattingEnabled = true;
             this.comboBoxLogType.Location = new System.Drawing.Point(3, 3);
             this.comboBoxLogType.Name = "comboBoxLogType";
@@ -159,6 +162,7 @@
             this.scintillaNET.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scintillaNET.Location = new System.Drawing.Point(0, 0);
             this.scintillaNET.Name = "scintillaNET";
+            this.scintillaNET.ScrollWidth = 50;
             this.scintillaNET.Size = new System.Drawing.Size(511, 400);
             this.scintillaNET.TabIndex = 0;
             this.scintillaNET.StyleNeeded += new System.EventHandler<ScintillaNET.StyleNeededEventArgs>(this.scintillaNET_StyleNeeded);

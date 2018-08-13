@@ -32,7 +32,6 @@ namespace Elucidate.Controls
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.toolStripStatusLabel1 = new System.Windows.Forms.Label();
             this.runWithoutCaptureMenuItem = new System.Windows.Forms.CheckBox();
@@ -40,7 +39,8 @@ namespace Elucidate.Controls
             this.txtAddCommands = new System.Windows.Forms.TextBox();
             this.labelCommandLineOptions = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.textBoxLiveLog = new Elucidate.Shared.FlickerFreeRichEditTextBox();
+            this.scintilla = new ScintillaNET.Scintilla();
+            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanelAdditionalCommands.SuspendLayout();
             this.SuspendLayout();
@@ -63,22 +63,6 @@ namespace Elucidate.Controls
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(871, 27);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.ContainerControl = this;
-            this.toolStripProgressBar1.DisplayText = "";
-            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
-            this.toolStripProgressBar1.Location = new System.Drawing.Point(383, 0);
-            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.ShowInTaskbar = true;
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(524, 27);
-            this.toolStripProgressBar1.Step = 3;
-            this.toolStripProgressBar1.TabIndex = 5;
-            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // comboBox1
             // 
@@ -171,28 +155,37 @@ namespace Elucidate.Controls
             this.timer1.Interval = 250;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
-            // textBoxLiveLog
+            // scintilla
             // 
-            this.textBoxLiveLog.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.textBoxLiveLog.CausesValidation = false;
-            this.textBoxLiveLog.DetectUrls = false;
-            this.textBoxLiveLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxLiveLog.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLiveLog.Location = new System.Drawing.Point(0, 0);
-            this.textBoxLiveLog.MaxLength = 10000000;
-            this.textBoxLiveLog.Name = "textBoxLiveLog";
-            this.textBoxLiveLog.ReadOnly = true;
-            this.textBoxLiveLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.textBoxLiveLog.Size = new System.Drawing.Size(871, 368);
-            this.textBoxLiveLog.TabIndex = 2;
-            this.textBoxLiveLog.Text = "";
-            this.textBoxLiveLog.WordWrap = false;
+            this.scintilla.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scintilla.Location = new System.Drawing.Point(0, 0);
+            this.scintilla.Name = "scintilla";
+            this.scintilla.ScrollWidth = 50;
+            this.scintilla.Size = new System.Drawing.Size(871, 368);
+            this.scintilla.TabIndex = 3;
+            this.scintilla.StyleNeeded += new System.EventHandler<ScintillaNET.StyleNeededEventArgs>(this.scintilla_StyleNeeded);
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.ContainerControl = this;
+            this.toolStripProgressBar1.DisplayText = "";
+            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
+            this.toolStripProgressBar1.Location = new System.Drawing.Point(383, 0);
+            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.ShowInTaskbar = true;
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(524, 27);
+            this.toolStripProgressBar1.Step = 3;
+            this.toolStripProgressBar1.TabIndex = 5;
+            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // LiveRunLogControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.textBoxLiveLog);
+            this.Controls.Add(this.scintilla);
             this.Controls.Add(this.tableLayoutPanelAdditionalCommands);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "LiveRunLogControl";
@@ -217,7 +210,7 @@ namespace Elucidate.Controls
         private System.Windows.Forms.ComboBox comboBox1;
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private System.Windows.Forms.CheckBox runWithoutCaptureMenuItem;
-        public Shared.FlickerFreeRichEditTextBox textBoxLiveLog;
+        private ScintillaNET.Scintilla scintilla;
         private Timer timer1;
     }
 }

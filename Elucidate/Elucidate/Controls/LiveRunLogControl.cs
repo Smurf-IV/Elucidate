@@ -8,13 +8,20 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Elucidate.HelperClasses;
 using Elucidate.Logging;
 using Elucidate.wyDay.Controls;
+using ScintillaNET;
 
 namespace Elucidate.Controls
 {
     public partial class LiveRunLogControl : UserControl
     {
+        private readonly LexerNlog _lexerNlog = new LexerNlog(
+            keywordsError: new[] { "ERROR", "FATAL" },
+            keywordsWarning: new[] { "WARN" },
+            keywordsDebug: new[] { "DEBUG", "TRACE" });
+
         public LiveRunLogControl()
         {
             InitializeComponent();
@@ -23,6 +30,28 @@ namespace Elucidate.Controls
             timer1.Enabled = false;
             comboBox1.Enabled = false;
             runWithoutCaptureMenuItem.Checked = Properties.Settings.Default.RunWithoutCapture;
+            
+            // size the margin for the line numbers
+            //var maxLineNumberCharLength = scintilla.Lines.Count.ToString().Length;
+            //const int padding = 2;
+            //scintilla.Margins[0].Width = scintilla.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
+
+            scintilla.StyleResetDefault();
+            //scintilla.Styles[Style.Default].Font = "Lucida Grande";
+            scintilla.Styles[Style.Default].Font = "Consolas";
+            scintilla.Styles[Style.Default].Size = 10;
+            scintilla.StyleClearAll();
+
+            scintilla.Styles[LexerNlog.StyleDefault].ForeColor = Color.Black;
+            scintilla.Styles[LexerNlog.StyleError].ForeColor = Color.White;
+            scintilla.Styles[LexerNlog.StyleError].BackColor = Color.Firebrick;
+            scintilla.Styles[LexerNlog.StyleError].Bold = true;
+            scintilla.Styles[LexerNlog.StyleWarning].ForeColor = Color.White;
+            scintilla.Styles[LexerNlog.StyleWarning].BackColor = Color.DarkOrange;
+            scintilla.Styles[LexerNlog.StyleWarning].Bold = true;
+            scintilla.Styles[LexerNlog.StyleDebug].ForeColor = Color.Gray;
+
+            scintilla.Lexer = Lexer.Container;
         }
         
         public event EventHandler TaskStarted;
@@ -101,7 +130,6 @@ namespace Elucidate.Controls
 
         internal void StartSnapRaidProcess(CommandType commandToRun, List<string> paths = null)
         {
-            //if (ActionWorker.IsBusy || timer1.Enabled)
             if (IsRunning)
             {
                 Log.Instance.Debug("Command button clicked but a command is still running.");
@@ -172,62 +200,17 @@ namespace Elucidate.Controls
                 lock (this)
                 {
                     if (!LiveLog.LogQueueCommon.Any()) return;
-                    
-                    textBoxLiveLog._Paint = false; // turn off flag to ignore WM_PAINT messages
-                    if (textBoxLiveLog.Lines.Length > Properties.Settings.Default.MaxNumberOfRealTimeLines)
-                    {
-                        textBoxLiveLog.Clear();
-                    }
-                    //read out of the file until the EOF
+
                     while (LiveLog.LogQueueCommon.Any())
                     {
                         LiveLog.LogString log = LiveLog.LogQueueCommon.Dequeue();
-                        switch (log.LevelUppercase)
-                        {
-                            case "FATAL":
-                                textBoxLiveLog.SelectionColor = Color.DarkViolet;
-                                break;
-
-                            case "ERROR":
-                                textBoxLiveLog.SelectionColor = Color.Red;
-                                break;
-
-                            case "WARN":
-                                textBoxLiveLog.SelectionColor = Color.RoyalBlue;
-                                break;
-
-                            case "INFO":
-                                textBoxLiveLog.SelectionColor = Color.Black;
-                                break;
-
-                            case "DEBUG":
-                                textBoxLiveLog.SelectionColor = Color.DarkGray;
-                                break;
-
-                            case "TRACE":
-                                textBoxLiveLog.SelectionColor = Color.DimGray;
-                                break;
-                        }
-
-                        if ((CommandTypeRunning == CommandType.RecoverCheck || CommandTypeRunning == CommandType.RecoverFix) && log.Message.Contains($" WARN "))
-                        {
-                            textBoxLiveLog.SelectionColor = Color.Black;
-                        }
-
-                        textBoxLiveLog.AppendText($"{log.Message}{Environment.NewLine}");
-                    }
-                    
-                    textBoxLiveLog.ScrollToCaret();
-
-                    // check if our textbox is getting too full
-                    int textLength = textBoxLiveLog.TextLength;
-                    if (textLength > (textBoxLiveLog.MaxLength - 1000))
-                    {
-                        //max possible on control = 2147483647
-                        textBoxLiveLog.Clear();
+                        scintilla.AppendText($"{log.Message}{Environment.NewLine}");
                     }
 
-                    textBoxLiveLog._Paint = true; // restore flag so we can paint the control
+                    //scintillaNET.SetSel(scintillaNET.TextLength, scintillaNET.TextLength);
+                    //scintillaNET.ScrollCaret();
+                    int scintillaTextLength = scintilla.TextLength;
+                    scintilla.ScrollRange(scintillaTextLength, scintillaTextLength);
                 }
             }
             catch
@@ -521,8 +504,6 @@ namespace Elucidate.Controls
                     {
                         _mreProcessExit.WaitOne(100);
                     }
-                    //Log.Instance.Debug("sleep");
-                    //Thread.Sleep(1000);
                 } while (!string.IsNullOrEmpty(buf)
                          || !_mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
                 );
@@ -541,5 +522,16 @@ namespace Elucidate.Controls
             _mreProcessExit.Set();
         }
 
+        private void scintilla_StyleNeeded(object sender, StyleNeededEventArgs e)
+        {
+            if (scintilla == null) return;
+
+            lock (scintilla)
+            {
+                var startPos = scintilla.GetEndStyled();
+                var endPos = e.Position;
+                _lexerNlog.Style(scintilla, startPos, endPos);
+            }
+        }
     }
 }

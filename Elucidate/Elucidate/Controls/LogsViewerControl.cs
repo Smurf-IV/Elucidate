@@ -144,7 +144,7 @@ namespace Elucidate.Controls
             scintilla.Margins[0].Width = scintilla.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
             
             scintilla.StyleResetDefault();
-            scintilla.Styles[Style.Default].Font = "Lucida Grande";
+            scintilla.Styles[Style.Default].Font = "Consolas";
             scintilla.Styles[Style.Default].Size = 10;
             scintilla.StyleClearAll();
 

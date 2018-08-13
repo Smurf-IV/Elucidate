@@ -45,7 +45,6 @@ namespace Elucidate
             this.btnFix = new Elucidate.Shared.CommandLinkButton();
             this.btnDupFinder = new Elucidate.Shared.CommandLinkButton();
             this.driveSpace = new Elucidate.Controls.DriveSpaceDisplay();
-            this.textBoxLogging = new Elucidate.Shared.FlickerFreeRichEditTextBox();
             this.tabCoveragePage = new System.Windows.Forms.TabPage();
             this.tabSchedulePage = new System.Windows.Forms.TabPage();
             this.SchedulePageScheduleControl = new Elucidate.Controls.Schedule();
@@ -272,26 +271,6 @@ namespace Elucidate
             this.driveSpace.Size = new System.Drawing.Size(980, 473);
             this.driveSpace.TabIndex = 0;
             this.toolTip1.SetToolTip(this.driveSpace, "Not real time, only updates when shown.");
-            // 
-            // textBoxLogging
-            // 
-            this.textBoxLogging.AutoWordSelection = true;
-            this.textBoxLogging.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxLogging.DetectUrls = false;
-            this.textBoxLogging.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxLogging.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxLogging.Location = new System.Drawing.Point(0, 0);
-            this.textBoxLogging.Margin = new System.Windows.Forms.Padding(0);
-            this.textBoxLogging.MaxLength = 20;
-            this.textBoxLogging.Name = "textBoxLogging";
-            this.textBoxLogging.ReadOnly = true;
-            this.textBoxLogging.ShortcutsEnabled = false;
-            this.textBoxLogging.Size = new System.Drawing.Size(1503, 776);
-            this.textBoxLogging.TabIndex = 0;
-            this.textBoxLogging.Text = "";
-            this.toolTip1.SetToolTip(this.textBoxLogging, "Current output going into the log file. \r\nSelect and use [Ctrl+C] or [Ctrl+Insert" +
-        "] to copy.\r\nSelect and press Delete to clear contents.");
-            this.textBoxLogging.WordWrap = false;
             // 
             // tabCoveragePage
             // 
@@ -685,7 +664,6 @@ namespace Elucidate
 
         private Panel statusStrip1;
         private ToolTip toolTip1;
-        private FlickerFreeRichEditTextBox textBoxLogging;
         private Label spacer;
         private Label label3;
         private TabControl tabControl;

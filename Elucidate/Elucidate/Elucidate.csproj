@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.13.214</AssemblyVersion>
+    <AssemblyVersion>18.8.13.245</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -258,9 +258,6 @@
     <Compile Include="Logging\LiveLog.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Shared\CommandLinkButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Shared\FlickerFreeRichEditTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Shared\MessageBoxExtForm.cs" />
