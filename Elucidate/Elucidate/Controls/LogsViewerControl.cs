@@ -113,9 +113,9 @@ namespace Elucidate.Controls
             if (listBoxViewLogFiles.SelectedItems.Count == 0) return;
             string fullPath = $@"{_logSourcePath}\{listBoxViewLogFiles.SelectedItems[0]}";
 
-            scintillaNET.ReadOnly = false;
-            scintillaNET.Text = File.ReadAllText(fullPath);
-            scintillaNET.ReadOnly = true;
+            scintilla.ReadOnly = false;
+            scintilla.Text = File.ReadAllText(fullPath);
+            scintilla.ReadOnly = true;
         }
 
         private void listBoxViewLogFiles_DoubleClick(object sender, EventArgs e)
@@ -133,7 +133,7 @@ namespace Elucidate.Controls
             UpdateLogFileList();
         }
 
-        private void scintillaNET_TextChanged(object sender, EventArgs e)
+        private void scintilla_TextChanged(object sender, EventArgs e)
         {
             Scintilla scintilla = (sender as Scintilla);
             if (scintilla == null) return;
@@ -162,9 +162,14 @@ namespace Elucidate.Controls
 
         private void scintillaNET_StyleNeeded(object sender, StyleNeededEventArgs e)
         {
-            var startPos = scintillaNET.GetEndStyled();
+            
+        }
+
+        private void scintilla_StyleNeeded(object sender, StyleNeededEventArgs e)
+        {
+            var startPos = scintilla.GetEndStyled();
             var endPos = e.Position;
-            _lexerNlog.Style(scintillaNET, startPos, endPos);
+            _lexerNlog.Style(scintilla, startPos, endPos);
         }
     }
 }
