@@ -202,6 +202,7 @@ namespace Elucidate
             try
             {
                 // get stats for parity location since it might be a folder
+                // ReSharper disable once UnusedVariable
                 GetDiskFreeSpaceExW(Path.GetPathRoot(path), out freeBytesAvailable, out ulong totalBytes, out ulong num3);
                 ulong driveUsedBytes = totalBytes - freeBytesAvailable;
                 pathUsedBytes = (ulong) new FileInfo(path).Length;
@@ -229,6 +230,7 @@ namespace Elucidate
             out ulong rootBytesNotCoveredByPath)
         {
             DirectoryInfo di = new DirectoryInfo(path);
+            // ReSharper disable once UnusedVariable
             GetDiskFreeSpaceExW(di.Root.FullName, out freeBytesAvailable, out ulong totalBytes, out ulong num3);
             ulong driveUsedBytes = totalBytes - freeBytesAvailable;
             
