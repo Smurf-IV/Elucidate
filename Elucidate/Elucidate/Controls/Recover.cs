@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Elucidate.Logging;
 
@@ -30,8 +31,11 @@ namespace Elucidate.Controls
         public Recover()
         {
             InitializeComponent();
+
             liveRunLogControl.HideAdditionalCommands();
             SetButtonsEnabledState();
+
+            liveRunLogControl.HighlightWarnings = false;
             liveRunLogControl.ActionWorker.RunWorkerCompleted += liveRunLogControl_RunWorkerCompleted;
             liveRunLogControl.TaskStarted += LiveRunLogControl_TaskStarted;
             liveRunLogControl.TaskCompleted += LiveRunLogControl_TaskCompleted;
@@ -148,18 +152,31 @@ namespace Elucidate.Controls
                         while (LiveLog.LogQueueRecover.Any())
                         {
                             LiveLog.LogString log = LiveLog.LogQueueRecover.Dequeue();
-                            if (!log.Message.Contains("recoverable \"")) continue;
-                            string filePath = log.Message.Split('"')[1];
-                            //if (filePath.Substring(1, 1) != ":") continue;
+                            if (!log.Message.Contains("[recoverable ")) continue; // this is not the line you seek
+
+                            // use regex to parse log line and get the FilePath
+                            string regexPattern = @"(?<LogEntryTimestamp>\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d.\d\d\d\d).*\[recoverable\s(?<FilePath>.*)\].*";
+                            Match matches = Regex.Match(log.Message, regexPattern, RegexOptions.Singleline);
+                            if (!matches.Success)
+                            {
+                                // nothing to do, the string did not match regex but it contained "[recoverable ", odd
+                                Group logEntryTimestamp = matches.Groups["FilePath"];
+                                if (!logEntryTimestamp.Success) return; // paranoid, just check
+                                Log.Instance.Error($"Unable to retrieve the recoverable file path from log entry at '{logEntryTimestamp.Value}'");
+                                return;
+                            }
+                            Group groupFilePath = matches.Groups["FilePath"];
+
+                            if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value)) return; // nothing to do, path is an empty string
+                            string filePath = groupFilePath.Value;
                             treeView1.Invoke(new Action(() => treeView1.Nodes.Add($"/{filePath}", $"/{filePath}")));
                         }
                     }
 
-                    if (!liveRunLogControl.ActionWorker.IsBusy && !LiveLog.LogQueueRecover.Any())
-                    {
-                        SetButtonsEnabledState();
-                        timerTreeViewFill.Enabled = false;
-                    }
+                    if (liveRunLogControl.ActionWorker.IsBusy || LiveLog.LogQueueRecover.Any()) return; // more items to dequeue
+
+                    SetButtonsEnabledState();
+                    timerTreeViewFill.Enabled = false;
                 }
             }
             catch
@@ -179,8 +196,23 @@ namespace Elucidate.Controls
                     while (LiveLog.LogQueueRecover.Any())
                     {
                         LiveLog.LogString log = LiveLog.LogQueueRecover.Dequeue();
-                        if (!log.Message.Contains("recovered \"")) continue;
-                        string filePath = log.Message.Split('"')[1];
+                        if (!log.Message.Contains("[recovered ")) continue; // this is not the line you seek
+
+                        // use regex to parse log line and get the FilePath
+                        string regexPattern = @"(?<LogEntryTimestamp>\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d.\d\d\d\d).*\[recovered\s(?<FilePath>.*)\].*";
+                        Match matches = Regex.Match(log.Message, regexPattern, RegexOptions.Singleline);
+                        if (!matches.Success)
+                        {
+                            // nothing to do, the string did not match regex but it contained "[recoverable ", odd
+                            Group logEntryTimestamp = matches.Groups["FilePath"];
+                            if (!logEntryTimestamp.Success) return; // paranoid, just check
+                            Log.Instance.Error($"Unable to retrieve the recovered file path from log entry at '{logEntryTimestamp.Value}'");
+                            return;
+                        }
+                        Group groupFilePath = matches.Groups["FilePath"];
+                        if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value)) return; // nothing to do, path is an empty string
+                        string filePath = groupFilePath.Value;
+
                         TreeNode[] node = treeView1.Nodes.Find($"/{filePath}", false);
                         if (node.Length <= 0) continue;
                         node[0].Text = $@"{node[0].Name} (RECOVERED)";
@@ -279,6 +311,7 @@ namespace Elucidate.Controls
 
                 if (checkedNodes.Count == 0)
                 {
+                    // only nodes show nas green are selected so deselect all
                     UncheckAll(treeView1);
                     return;
                 }
@@ -318,6 +351,11 @@ namespace Elucidate.Controls
 
                 btnRecoverSelectedFiles_Click(sender, e);
             }
+        }
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            e.Node.Checked = !e.Node.Checked;
         }
     }
 }
