@@ -37,11 +37,11 @@ namespace Elucidate.Controls
             this.runWithoutCaptureMenuItem = new System.Windows.Forms.CheckBox();
             this.checkBoxDisplayOutput = new System.Windows.Forms.CheckBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.tableLayoutPanelAdditionalCommands = new System.Windows.Forms.TableLayoutPanel();
-            this.txtAddCommands = new System.Windows.Forms.TextBox();
-            this.labelCommandLineOptions = new System.Windows.Forms.Label();
             this.timerScantilla = new System.Windows.Forms.Timer(this.components);
             this.scintilla = new ScintillaNET.Scintilla();
+            this.txtAddCommands = new System.Windows.Forms.TextBox();
+            this.tableLayoutPanelAdditionalCommands = new System.Windows.Forms.TableLayoutPanel();
+            this.checkBoxCommandLineOptions = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanelAdditionalCommands.SuspendLayout();
             this.SuspendLayout();
@@ -139,52 +139,6 @@ namespace Elucidate.Controls
             this.comboBox1.Size = new System.Drawing.Size(113, 21);
             this.comboBox1.TabIndex = 3;
             // 
-            // tableLayoutPanelAdditionalCommands
-            // 
-            this.tableLayoutPanelAdditionalCommands.AutoSize = true;
-            this.tableLayoutPanelAdditionalCommands.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanelAdditionalCommands.BackColor = System.Drawing.SystemColors.Control;
-            this.tableLayoutPanelAdditionalCommands.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanelAdditionalCommands.ColumnCount = 2;
-            this.tableLayoutPanelAdditionalCommands.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanelAdditionalCommands.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanelAdditionalCommands.Controls.Add(this.txtAddCommands, 0, 0);
-            this.tableLayoutPanelAdditionalCommands.Controls.Add(this.labelCommandLineOptions, 0, 0);
-            this.tableLayoutPanelAdditionalCommands.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanelAdditionalCommands.Location = new System.Drawing.Point(0, 368);
-            this.tableLayoutPanelAdditionalCommands.Margin = new System.Windows.Forms.Padding(12);
-            this.tableLayoutPanelAdditionalCommands.MinimumSize = new System.Drawing.Size(50, 10);
-            this.tableLayoutPanelAdditionalCommands.Name = "tableLayoutPanelAdditionalCommands";
-            this.tableLayoutPanelAdditionalCommands.RowCount = 1;
-            this.tableLayoutPanelAdditionalCommands.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelAdditionalCommands.Size = new System.Drawing.Size(871, 17);
-            this.tableLayoutPanelAdditionalCommands.TabIndex = 1;
-            // 
-            // txtAddCommands
-            // 
-            this.txtAddCommands.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtAddCommands.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtAddCommands.Location = new System.Drawing.Point(200, 2);
-            this.txtAddCommands.Margin = new System.Windows.Forms.Padding(1);
-            this.txtAddCommands.MaxLength = 128;
-            this.txtAddCommands.Name = "txtAddCommands";
-            this.txtAddCommands.Size = new System.Drawing.Size(691, 13);
-            this.txtAddCommands.TabIndex = 6;
-            this.txtAddCommands.WordWrap = false;
-            // 
-            // labelCommandLineOptions
-            // 
-            this.labelCommandLineOptions.AutoSize = true;
-            this.labelCommandLineOptions.Dock = System.Windows.Forms.DockStyle.Left;
-            this.labelCommandLineOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCommandLineOptions.Location = new System.Drawing.Point(4, 1);
-            this.labelCommandLineOptions.MinimumSize = new System.Drawing.Size(170, 10);
-            this.labelCommandLineOptions.Name = "labelCommandLineOptions";
-            this.labelCommandLineOptions.Size = new System.Drawing.Size(191, 15);
-            this.labelCommandLineOptions.TabIndex = 5;
-            this.labelCommandLineOptions.Text = "&Additional Command line options:";
-            this.labelCommandLineOptions.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // timerScantilla
             // 
             this.timerScantilla.Interval = 750;
@@ -196,9 +150,53 @@ namespace Elucidate.Controls
             this.scintilla.Location = new System.Drawing.Point(0, 0);
             this.scintilla.Name = "scintilla";
             this.scintilla.ScrollWidth = 50;
-            this.scintilla.Size = new System.Drawing.Size(871, 368);
+            this.scintilla.Size = new System.Drawing.Size(871, 360);
             this.scintilla.TabIndex = 3;
             this.scintilla.StyleNeeded += new System.EventHandler<ScintillaNET.StyleNeededEventArgs>(this.scintilla_StyleNeeded);
+            // 
+            // txtAddCommands
+            // 
+            this.txtAddCommands.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtAddCommands.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtAddCommands.Location = new System.Drawing.Point(234, 2);
+            this.txtAddCommands.Margin = new System.Windows.Forms.Padding(1);
+            this.txtAddCommands.MaxLength = 128;
+            this.txtAddCommands.Name = "txtAddCommands";
+            this.txtAddCommands.Size = new System.Drawing.Size(635, 13);
+            this.txtAddCommands.TabIndex = 6;
+            this.txtAddCommands.WordWrap = false;
+            // 
+            // tableLayoutPanelAdditionalCommands
+            // 
+            this.tableLayoutPanelAdditionalCommands.AutoSize = true;
+            this.tableLayoutPanelAdditionalCommands.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanelAdditionalCommands.BackColor = System.Drawing.SystemColors.Control;
+            this.tableLayoutPanelAdditionalCommands.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanelAdditionalCommands.ColumnCount = 2;
+            this.tableLayoutPanelAdditionalCommands.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanelAdditionalCommands.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanelAdditionalCommands.Controls.Add(this.txtAddCommands, 1, 0);
+            this.tableLayoutPanelAdditionalCommands.Controls.Add(this.checkBoxCommandLineOptions, 0, 0);
+            this.tableLayoutPanelAdditionalCommands.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanelAdditionalCommands.Location = new System.Drawing.Point(0, 360);
+            this.tableLayoutPanelAdditionalCommands.Margin = new System.Windows.Forms.Padding(12);
+            this.tableLayoutPanelAdditionalCommands.MinimumSize = new System.Drawing.Size(50, 10);
+            this.tableLayoutPanelAdditionalCommands.Name = "tableLayoutPanelAdditionalCommands";
+            this.tableLayoutPanelAdditionalCommands.RowCount = 1;
+            this.tableLayoutPanelAdditionalCommands.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanelAdditionalCommands.Size = new System.Drawing.Size(871, 25);
+            this.tableLayoutPanelAdditionalCommands.TabIndex = 1;
+            // 
+            // checkBoxCommandLineOptions
+            // 
+            this.checkBoxCommandLineOptions.AutoSize = true;
+            this.checkBoxCommandLineOptions.Location = new System.Drawing.Point(4, 4);
+            this.checkBoxCommandLineOptions.Name = "checkBoxCommandLineOptions";
+            this.checkBoxCommandLineOptions.Size = new System.Drawing.Size(225, 17);
+            this.checkBoxCommandLineOptions.TabIndex = 7;
+            this.checkBoxCommandLineOptions.Text = "Include Additional Command Line Options:";
+            this.checkBoxCommandLineOptions.UseVisualStyleBackColor = true;
+            this.checkBoxCommandLineOptions.CheckedChanged += new System.EventHandler(this.checkBoxCommandLineOptions_CheckedChanged);
             // 
             // LiveRunLogControl
             // 
@@ -222,9 +220,6 @@ namespace Elucidate.Controls
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelAdditionalCommands;
-        private System.Windows.Forms.Label labelCommandLineOptions;
-        private System.Windows.Forms.TextBox txtAddCommands;
         private System.Windows.Forms.ComboBox comboBox1;
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private System.Windows.Forms.CheckBox runWithoutCaptureMenuItem;
@@ -232,5 +227,8 @@ namespace Elucidate.Controls
         private Timer timerScantilla;
         private CheckBox checkBoxDisplayOutput;
         private Label toolStripStatusLabel1;
+        private TableLayoutPanel tableLayoutPanelAdditionalCommands;
+        private TextBox txtAddCommands;
+        private CheckBox checkBoxCommandLineOptions;
     }
 }

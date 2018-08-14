@@ -16,17 +16,19 @@ namespace Elucidate.Controls
 {
     public partial class LiveRunLogControl : UserControl
     {
+        public bool HighlightErrorEnabled { get; set; } = true;
+        public bool HighlightWarningEnabled { get; set; } = true;
+        public bool HighlightDebugEnabled { get; set; } = true;
+
         // ReSharper disable once InconsistentNaming
         private const int MAX_COMMAND_ARG_LENGTH = 7000;
 
-        public LexerNlog LexerNlog = new LexerNlog(
+        private bool IsCommandLineOptionsEnabled { get; set; }
+
+        private readonly LexerNlog _lexerNlog = new LexerNlog(
             keywordsError: new[] { "ERROR", "FATAL" },
             keywordsWarning: new[] { "WARN" },
             keywordsDebug: new[] { "DEBUG", "TRACE" });
-
-        public bool HighlightErrorEnabled { get; set; }
-        public bool HighlightWarningEnabled { get; set; }
-        public bool HighlightDebugEnabled { get; set; }
 
         /// <summary>
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
@@ -205,6 +207,8 @@ namespace Elucidate.Controls
             try
             {
                 IsRunning = true;
+                checkBoxCommandLineOptions.Enabled = false;
+
                 OnTaskStarted(e);
 
                 BackgroundWorker worker = sender as BackgroundWorker;
@@ -229,7 +233,10 @@ namespace Elucidate.Controls
                 _mreOutputDone.Reset();
                 _mreErrorDone.Reset();
 
-                string args = Util.FormatSnapRaidCommandArgs(command, txtAddCommands.Text, out string appPath);
+                string args = Util.FormatSnapRaidCommandArgs(
+                    command: command,
+                    additionalCommands: IsCommandLineOptionsEnabled ? txtAddCommands.Text : string.Empty, 
+                    appPath: out string appPath);
 
                 RunSnapRaid(e, args, appPath, worker);
             }
@@ -372,8 +379,11 @@ namespace Elucidate.Controls
             }
 
             OnTaskCompleted(e);
+
             comboBox1.Enabled = false;
-            
+            checkBoxCommandLineOptions.Checked = false; // uncheck so the next command does not include this by accident
+            checkBoxCommandLineOptions.Enabled = true;
+
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
             {
                 toolStripProgressBar1.Style = ProgressBarStyle.Continuous;
@@ -505,7 +515,7 @@ namespace Elucidate.Controls
             {
                 var startPos = scintilla.GetEndStyled();
                 var endPos = e.Position;
-                LexerNlog.Style(scintilla, startPos, endPos);
+                _lexerNlog.Style(scintilla, startPos, endPos);
             }
         }
 
@@ -517,6 +527,11 @@ namespace Elucidate.Controls
         private void checkBoxDisplayOutput_MouseLeave(object sender, EventArgs e)
         {
             if (sender is CheckBox senderControl) senderControl.BackColor = Color.Empty;
+        }
+
+        private void checkBoxCommandLineOptions_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sender is CheckBox senderControl) IsCommandLineOptionsEnabled = senderControl.Checked;
         }
     }
 }

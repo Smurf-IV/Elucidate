@@ -284,6 +284,7 @@ namespace Elucidate
         private void ElucidateForm_Shown(object sender, EventArgs e)
         {
             ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+
             if (!cfg.Read())
             {
                 MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -52,7 +52,10 @@ namespace Elucidate.Controls
                 {
                     td.Triggers.Add(new DailyTrigger { DaysInterval = 1, StartBoundary = DateTime.Now + TimeSpan.FromMinutes(15) });
                 }
-                string args = Util.FormatSnapRaidCommandArgs(command: "Sync", additionalCommands: string.Empty, appPath: out string appPath);
+                string args = Util.FormatSnapRaidCommandArgs(
+                    command: "Sync", 
+                    additionalCommands: string.Empty, 
+                    appPath: out string appPath);
                 args = Util.AddLoggingToArgs(args);
                 string appExe = $"{Path.GetFileName(appPath)}";
                 ExecAction tsAction = new ExecAction
