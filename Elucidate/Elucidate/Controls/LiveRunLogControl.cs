@@ -29,7 +29,7 @@ namespace Elucidate.Controls
             IsRunning = false;
             timer1.Enabled = false;
             comboBox1.Enabled = false;
-            runWithoutCaptureMenuItem.Checked = Properties.Settings.Default.RunWithoutCapture;
+            checkBoxDisplayOutput.Checked = Properties.Settings.Default.IsDisplayOutputEnabled;
             
             // size the margin for the line numbers
             //var maxLineNumberCharLength = scintilla.Lines.Count.ToString().Length;
@@ -37,7 +37,6 @@ namespace Elucidate.Controls
             //scintilla.Margins[0].Width = scintilla.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
 
             scintilla.StyleResetDefault();
-            //scintilla.Styles[Style.Default].Font = "Lucida Grande";
             scintilla.Styles[Style.Default].Font = "Consolas";
             scintilla.Styles[Style.Default].Size = 10;
             scintilla.StyleClearAll();
@@ -204,11 +203,11 @@ namespace Elucidate.Controls
                     while (LiveLog.LogQueueCommon.Any())
                     {
                         LiveLog.LogString log = LiveLog.LogQueueCommon.Dequeue();
+                        if (!checkBoxDisplayOutput.Checked) continue;
                         scintilla.AppendText($"{log.Message}{Environment.NewLine}");
                     }
 
-                    //scintillaNET.SetSel(scintillaNET.TextLength, scintillaNET.TextLength);
-                    //scintillaNET.ScrollCaret();
+                    // scroll to the bottom
                     int scintillaTextLength = scintilla.TextLength;
                     scintilla.ScrollRange(scintillaTextLength, scintillaTextLength);
                 }
@@ -263,8 +262,10 @@ namespace Elucidate.Controls
 
         private void RunSnapRaid(DoWorkEventArgs e, string args, string appPath, BackgroundWorker worker)
         {
-            int exitCode;
+            Log.Instance.Info("#########################################");
 
+            int exitCode;
+            
             // RecoveryFix
             if (CommandTypeRunning == CommandType.RecoverFix)
             {
@@ -276,25 +277,6 @@ namespace Elucidate.Controls
                 } while (sbPaths.Length < 7000 && _batchPaths.Any());
 
                 args += sbPaths.ToString();
-            }
-
-            if (runWithoutCaptureMenuItem.Checked)
-            {
-                Log.Instance.Warn("Running without Capture mode");
-                Log.Instance.Info("Starting minimised {0} {1}", appPath, args);
-                Log.Instance.Info("Working...");
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    FileName = "CMD.exe",
-                    Arguments = $" /C \"{appPath} {args}\"",
-                    WorkingDirectory = $"{Path.GetDirectoryName(Properties.Settings.Default.SnapRAIDFileLocation)}",
-                    UseShellExecute = true,
-                    WindowStyle = ProcessWindowStyle.Minimized,
-                    ErrorDialog = true
-                };
-                Process process = Process.Start(startInfo);
-                if (process != null) Log.Instance.Info("Process is running PID[{0}]", process.Id);
-                return;
             }
 
             using (Process process = new Process
@@ -316,6 +298,7 @@ namespace Elucidate.Controls
                 process.Exited += Exited;
 
                 process.Start();
+
                 // Redirect the output stream of the child process.
                 ThreadObject threadObject = new ThreadObject {BgdWorker = worker, CmdProcess = process};
                 ThreadPool.QueueUserWorkItem(o => ReadStandardOutput(threadObject));
@@ -373,7 +356,7 @@ namespace Elucidate.Controls
                 e.Cancel = true;
             }
         }
-
+        
         private void actionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
@@ -457,7 +440,7 @@ namespace Elucidate.Controls
         {
             try
             {
-                Log.Instance.Info("Start Verbose handler");
+                Log.Instance.Debug("Start Verbose handler");
                 string buf;
                 do
                 {
@@ -532,6 +515,16 @@ namespace Elucidate.Controls
                 var endPos = e.Position;
                 _lexerNlog.Style(scintilla, startPos, endPos);
             }
+        }
+
+        private void checkBoxDisplayOutput_MouseHover(object sender, EventArgs e)
+        {
+            if (sender is CheckBox senderControl) senderControl.BackColor = Color.LightSteelBlue;
+        }
+
+        private void checkBoxDisplayOutput_MouseLeave(object sender, EventArgs e)
+        {
+            if (sender is CheckBox senderControl) senderControl.BackColor = Color.Empty;
         }
     }
 }
