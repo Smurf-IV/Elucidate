@@ -18,20 +18,20 @@ namespace Elucidate
         public static string FormatSnapRaidCommandArgs(string command, string additionalCommands, out string appPath)
         {
             // Format according to this: http://snapraid.sourceforge.net/manual.html
-            // e.g. "D:\snapraid-1.3-windows-x64\snapraid" -c "D:\snapraid-1.3-windows-x64\snapraid.conf" sync
+            
             appPath = Properties.Settings.Default.SnapRAIDFileLocation;
+            
             // Find the meanings @ http://snapraid.sourceforge.net/manual.html  6 Options
             // status|smart|up|down|diff|sync|scrub|fix|check|list|dup|pool|devices|touch|rehash
+
+            // TODO: use regex to enforce check on addiitonal commands
             StringBuilder args = new StringBuilder(additionalCommands);
+
             args.Append(' ');
+
             if (Properties.Settings.Default.UseVerboseMode)
             {
                 args.Append("-v ");
-            }
-
-            if (Properties.Settings.Default.UseGUIMode)
-            {
-                args.Append("-G ");
             }
 
             if (Properties.Settings.Default.FindByNameInSync)
@@ -40,6 +40,7 @@ namespace Elucidate
             }
 
             args.AppendFormat("-c \"{0}\" {1}", Properties.Settings.Default.ConfigFileLocation, command);
+
             return args.ToString();
         }
 
