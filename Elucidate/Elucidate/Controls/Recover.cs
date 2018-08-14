@@ -31,14 +31,13 @@ namespace Elucidate.Controls
         public Recover()
         {
             InitializeComponent();
-
+            
             liveRunLogControl.HideAdditionalCommands();
-            SetButtonsEnabledState();
-
-            liveRunLogControl.HighlightWarnings = false;
             liveRunLogControl.ActionWorker.RunWorkerCompleted += liveRunLogControl_RunWorkerCompleted;
             liveRunLogControl.TaskStarted += LiveRunLogControl_TaskStarted;
             liveRunLogControl.TaskCompleted += LiveRunLogControl_TaskCompleted;
+
+            SetButtonsEnabledState(true);
         }
 
         private void LiveRunLogControl_TaskStarted(object sender, EventArgs e)
@@ -51,13 +50,13 @@ namespace Elucidate.Controls
             OnTaskCompleted(e);
         }
 
-        private void liveRunLogControl_RunWorkerCompleted(object sender, EventArgs e) => SetButtonsEnabledState();
+        private void liveRunLogControl_RunWorkerCompleted(object sender, EventArgs e) => SetButtonsEnabledState(true);
 
-        private void SetButtonsEnabledState()
+        private void SetButtonsEnabledState(bool isEnabled)
         {
             lock (treeView1)
             {
-                if (liveRunLogControl.IsRunning)
+                if (!isEnabled)
                 {
                     btnLoadFiles.Enabled = false;
                     btnRecoverSelectedFiles.Enabled = false;
@@ -175,7 +174,7 @@ namespace Elucidate.Controls
 
                     if (liveRunLogControl.ActionWorker.IsBusy || LiveLog.LogQueueRecover.Any()) return; // more items to dequeue
 
-                    SetButtonsEnabledState();
+                    SetButtonsEnabledState(true);
                     timerTreeViewFill.Enabled = false;
                 }
             }
@@ -281,17 +280,11 @@ namespace Elucidate.Controls
             }
         }
 
-        private void treeView1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (!(e.Node is TreeNode treeNode)) return;
-            ToggleNodeCheckbox(treeNode);
-        }
-
         private void btnLoadFiles_Click(object sender, EventArgs e)
         {
             lock (treeView1)
             {
-                SetButtonsEnabledState();
+                SetButtonsEnabledState(false);
                 // run only if app is not already running an operation
                 // replace mlog method with ours
                 treeView1.Nodes.Clear();
@@ -304,7 +297,7 @@ namespace Elucidate.Controls
         {
             lock (treeView1)
             {
-                SetButtonsEnabledState();
+                SetButtonsEnabledState(false);
 
                 // Get the checked nodes eligible to be recovered
                 List<TreeNode> checkedNodes = CheckedNodes(treeView1);
@@ -355,7 +348,12 @@ namespace Elucidate.Controls
 
         private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            e.Node.Checked = !e.Node.Checked;
+            // clicking the node checkbox checks the checkbox and also fires NodeMouseClick
+            // so lets only do work here if the click happened on node bounds of the text itself
+            if (e.Button == MouseButtons.Left && e.Node.Bounds.Contains(new Point(e.X, e.Y)))
+            {
+                ToggleNodeCheckbox(e.Node);
+            }
         }
     }
 }

@@ -16,6 +16,31 @@ namespace Elucidate.Controls
 {
     public partial class LiveRunLogControl : UserControl
     {
+        // ReSharper disable once InconsistentNaming
+        private const int MAX_COMMAND_ARG_LENGTH = 7000;
+
+        public LexerNlog LexerNlog = new LexerNlog(
+            keywordsError: new[] { "ERROR", "FATAL" },
+            keywordsWarning: new[] { "WARN" },
+            keywordsDebug: new[] { "DEBUG", "TRACE" });
+
+        public bool HighlightErrorEnabled { get; set; }
+        public bool HighlightWarningEnabled { get; set; }
+        public bool HighlightDebugEnabled { get; set; }
+
+        /// <summary>
+        /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
+        /// </summary>
+        private readonly ManualResetEvent _mreProcessExit = new ManualResetEvent(false);
+        private readonly ManualResetEvent _mreOutputDone = new ManualResetEvent(false);
+        private readonly ManualResetEvent _mreErrorDone = new ManualResetEvent(false);
+        private ProcessPriorityClass _requested = ProcessPriorityClass.Normal;
+        private string _lastError;
+        private List<string> _batchPaths;
+
+        public bool IsRunning { get; set; }
+        private CommandType CommandTypeRunning { get; set; }
+
         public LiveRunLogControl()
         {
             InitializeComponent();
@@ -28,11 +53,11 @@ namespace Elucidate.Controls
             comboBox1.Enabled = false;
             checkBoxDisplayOutput.Checked = Properties.Settings.Default.IsDisplayOutputEnabled;
             
-            // size the margin for the line numbers
-            //var maxLineNumberCharLength = scintilla.Lines.Count.ToString().Length;
-            //const int padding = 2;
-            //scintilla.Margins[0].Width = scintilla.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
+            ConfigureScintillaControl();
+        }
 
+        private void ConfigureScintillaControl()
+        {
             scintilla.StyleResetDefault();
             scintilla.Styles[Style.Default].Font = "Consolas";
             scintilla.Styles[Style.Default].Size = 10;
@@ -49,7 +74,7 @@ namespace Elucidate.Controls
 
             scintilla.Lexer = Lexer.Container;
         }
-        
+
         public event EventHandler TaskStarted;
 
         private void OnTaskStarted(EventArgs e)
@@ -65,33 +90,6 @@ namespace Elucidate.Controls
             EventHandler handler = TaskCompleted;
             handler?.Invoke(this, e);
         }
-
-        // ReSharper disable once InconsistentNaming
-        private const int MAX_COMMAND_ARG_LENGTH = 7000;
-
-        private readonly LexerNlog _lexerNlog = new LexerNlog(
-            keywordsError: new[] { "ERROR", "FATAL" },
-            keywordsWarning: new[] { "WARN" },
-            keywordsDebug: new[] { "DEBUG", "TRACE" });
-        
-        // TODO: highlight off for erros on recovery log
-        public bool HighlightWarnings { get; set; }
-        //keywordsError: new[] { "ERROR", "FATAL" },
-        //keywordsWarning: new[] { "WARN" },
-        //keywordsDebug: new[] { "DEBUG", "TRACE" })
-
-        /// <summary>
-        /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
-        /// </summary>
-        private readonly ManualResetEvent _mreProcessExit = new ManualResetEvent(false);
-        private readonly ManualResetEvent _mreOutputDone = new ManualResetEvent(false);
-        private readonly ManualResetEvent _mreErrorDone = new ManualResetEvent(false);
-        private ProcessPriorityClass _requested = ProcessPriorityClass.Normal;
-        private string _lastError;
-        private List<string> _batchPaths;
-        
-        public bool IsRunning { get; set; }
-        private CommandType CommandTypeRunning { get; set; }
         
         private class ThreadObject
         {
@@ -507,7 +505,7 @@ namespace Elucidate.Controls
             {
                 var startPos = scintilla.GetEndStyled();
                 var endPos = e.Position;
-                _lexerNlog.Style(scintilla, startPos, endPos);
+                LexerNlog.Style(scintilla, startPos, endPos);
             }
         }
 

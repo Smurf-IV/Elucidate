@@ -9,6 +9,18 @@ namespace Elucidate.HelperClasses
 
     public class LexerNlog
     {
+        public bool IsHighlightErrorEnabled { get; set; } = true;
+        public bool IsHighlightWarningEnabled { get; set; } = true;
+        public bool IsHighlightDebugEnabled { get; set; } = true;
+
+        private readonly string[] _defaultKeywordsErrorArray = { "ERROR", "FATAL" };
+        private readonly string[] _defaultKeywordsWarningArray = { "WARN" };
+        private readonly string[] _defaultKeywordsDebugArray = { "DEBUG", "TRACE" };
+
+        private readonly HashSet<string> _keywordsErrorHashSet;
+        private readonly HashSet<string> _keywordsWarningHashSet;
+        private readonly HashSet<string> _keywordsDebugHashSet;
+
         public const int StyleDefault = 0;
         public const int StyleError = 1;
         public const int StyleWarning = 2;
@@ -18,10 +30,19 @@ namespace Elucidate.HelperClasses
         private const int STATE_UNKNOWN = 0;
         // ReSharper disable once InconsistentNaming
         private const int STATE_WORD = 1;
-        
-        private readonly HashSet<string> _keywordsError;
-        private readonly HashSet<string> _keywordsWarning;
-        private readonly HashSet<string> _keywordsDebug;
+
+        public LexerNlog(string[] keywordsError = null, string[] keywordsWarning = null, string[] keywordsDebug = null)
+        {
+            // Put keywords in a HashSet
+
+            if (keywordsError == null) _keywordsErrorHashSet = new HashSet<string>(_defaultKeywordsErrorArray.ToList());
+            if (keywordsWarning == null) _keywordsWarningHashSet = new HashSet<string>(_defaultKeywordsWarningArray.ToList());
+            if (keywordsDebug == null) _keywordsDebugHashSet = new HashSet<string>(_defaultKeywordsDebugArray.ToList());
+
+            if (keywordsError != null) _keywordsErrorHashSet = new HashSet<string>(keywordsError.ToList());
+            if (keywordsWarning != null) _keywordsWarningHashSet = new HashSet<string>(keywordsWarning.ToList());
+            if (keywordsDebug != null) _keywordsDebugHashSet = new HashSet<string>(keywordsDebug.ToList());
+        }
 
         public void Style(Scintilla scintilla, int startPos, int endPos)
         {
@@ -63,11 +84,11 @@ namespace Elucidate.HelperClasses
                         {
                             int style = StyleDefault;
                             var identifier = scintilla.GetTextRange(startPos - length, length);
-                            if (_keywordsError != null && _keywordsError.Contains(identifier))
+                            if (IsHighlightErrorEnabled && _keywordsErrorHashSet != null && _keywordsErrorHashSet.Contains(identifier))
                                 style = StyleError;
-                            else if (_keywordsWarning != null && _keywordsWarning.Contains(identifier))
+                            else if (IsHighlightWarningEnabled && _keywordsWarningHashSet != null && _keywordsWarningHashSet.Contains(identifier))
                                 style = StyleWarning;
-                            else if (_keywordsDebug != null && _keywordsDebug.Contains(identifier))
+                            else if (IsHighlightDebugEnabled && _keywordsDebugHashSet != null && _keywordsDebugHashSet.Contains(identifier))
                                 style = StyleDebug;
 
                             scintilla.SetStyling(length, style);
@@ -83,15 +104,5 @@ namespace Elucidate.HelperClasses
             }
         }
 
-        public LexerNlog(string[] keywordsError = null, string[] keywordsWarning = null, string[] keywordsDebug = null)
-        {
-            // Put keywords in a HashSet
-            //var list = Regex.Split(keywords ?? string.Empty, @"\s+").Where(l => !string.IsNullOrEmpty(l));
-            if (keywordsError == null && keywordsWarning == null && keywordsDebug == null)
-                throw new ArgumentNullException(nameof(keywordsError));
-            if (keywordsError != null) _keywordsError = new HashSet<string>(keywordsError.ToList());
-            if (keywordsWarning != null) _keywordsWarning = new HashSet<string>(keywordsWarning.ToList());
-            if (keywordsDebug != null) _keywordsDebug = new HashSet<string>(keywordsDebug.ToList());
-        }
     }
 }
