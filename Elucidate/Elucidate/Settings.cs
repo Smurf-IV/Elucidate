@@ -73,9 +73,8 @@ namespace Elucidate
             IncludePatterns = new List<string>();
 
             // Add some items to the data source.
-            _advSettingsList.Add(new AdvancedSettingsHelper("SnapRAID without capture", Properties.Settings.Default.RunWithoutCapture, "Launch SnapRAID without log capture, thus allowing this to close"));
-            _advSettingsList.Add(new AdvancedSettingsHelper("Verbose Output", Properties.Settings.Default.UseVerboseMode, "Prints more information in the processing."));
-            _advSettingsList.Add(new AdvancedSettingsHelper("GUI mode Output", Properties.Settings.Default.UseGUIMode, "Enable more output of progress information.\nNot to be used in Elucidate as this uses lot's of CPU cycles scrolling the log window!"));
+            _advSettingsList.Add(new AdvancedSettingsHelper("Display Output", Properties.Settings.Default.IsDisplayOutputEnabled, "Command output is displayed when enabled."));
+            _advSettingsList.Add(new AdvancedSettingsHelper("Verbose Output", Properties.Settings.Default.UseVerboseMode, "Displays more information while processing."));
             _advSettingsList.Add(new AdvancedSettingsHelper("Find-By-Name in Sync", Properties.Settings.Default.FindByNameInSync, "Allow to sync using only the file path and not the inode (i.e. source drive / directory),but the files themselves are the same (path/filename, size, ctime), and you do not want to waste time resyncing the files.\nThis option is also used after you have lost a drive, restored the files to a new drive, and you want to do a fast sync.\n\"Forced dangerous operation\" of synching a rewritten disk."));
             _advSettingsList.Add(new AdvancedSettingsHelper("Hidden files excluded", Properties.Settings.Default.HiddenFilesExcluded, "Option to exclude \"hidden\" files and directories.\nIn Windows files with the HIDDEN attributes, in Unix files starting with \'.\'."));
 
@@ -558,7 +557,7 @@ namespace Elucidate
 
                 IncludePatterns = cfg.IncludePatterns;
                 numBlockSizeKB.Value = cfg.BlockSizeKB;
-                _advSettingsList[3].CheckState = cfg.Nohidden;
+                _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState = cfg.Nohidden;
                 numAutoSaveGB.Value = cfg.AutoSaveGB;
                 foreach (string excludePattern in cfg.ExcludePatterns.Where(excludePattern => !string.IsNullOrWhiteSpace(excludePattern)))
                 {
@@ -657,7 +656,7 @@ namespace Elucidate
                 {
                     IncludePatterns = IncludePatterns,
                     BlockSizeKB = (uint)numBlockSizeKB.Value,
-                    Nohidden = _advSettingsList[3].CheckState,
+                    Nohidden = _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState,
                     AutoSaveGB = (uint)numAutoSaveGB.Value
                 };
 
@@ -741,13 +740,11 @@ namespace Elucidate
                     Properties.Settings.Default.ConfigFileIsValid = ValidateData();
                     Properties.Settings.Default.SnapRAIDFileLocation = snapRAIDFileLocation.Text;
                     Properties.Settings.Default.ConfigFileLocation = configFileLocation.Text;
-                    Properties.Settings.Default.UseVerboseMode = _advSettingsList[1].CheckState;
-                    Properties.Settings.Default.UseGUIMode = _advSettingsList[2].CheckState;
-                    Properties.Settings.Default.FindByNameInSync = _advSettingsList[3].CheckState;
-                    // https://github.com/Smurf-IV/Elucidateworkitem/10114
-                    Properties.Settings.Default.HiddenFilesExcluded = _advSettingsList[4].CheckState;
-                    Properties.Settings.Default.RunWithoutCapture = _advSettingsList[0].CheckState;
-
+                    Properties.Settings.Default.IsDisplayOutputEnabled = _advSettingsList[ConfigFileHelper.CHECKBOX_DISPLAY_OUTPUT_ENABLED].CheckState;
+                    Properties.Settings.Default.UseVerboseMode = _advSettingsList[ConfigFileHelper.CHECKBOX_USE_VERBOSE_MODE].CheckState;
+                    Properties.Settings.Default.FindByNameInSync = _advSettingsList[ConfigFileHelper.CHECKBOX_FIND_BY_NAME_IN_SYNC].CheckState;
+                    Properties.Settings.Default.HiddenFilesExcluded = _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState;
+                    
                     Properties.Settings.Default.Save();
                     UnsavedChangesMade = false;
 

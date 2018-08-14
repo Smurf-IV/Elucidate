@@ -208,5 +208,21 @@ namespace Elucidate.Properties {
                 this["NlogFileLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool IsDisplayOutputEnabled
+        {
+            get
+            {
+                return ((bool)(this["IsDisplayOutputEnabled"]));
+            }
+            set
+            {
+                this["IsDisplayOutputEnabled"] = value;
+            }
+        }
+        
     }
 }

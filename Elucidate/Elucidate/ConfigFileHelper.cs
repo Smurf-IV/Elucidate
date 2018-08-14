@@ -43,6 +43,32 @@ namespace Elucidate
 
         public bool ConfigFileExists => File.Exists(ConfigPath);
 
+        private readonly string[] _validConfigNames =
+        {
+            "parity",
+            "2-parity",
+            "q-parity",
+            "content",
+            "disk",
+            "nohidden",
+            "exclude",
+            "block_size",
+            "hashsize",
+            "autosave",
+            "pool",
+            "share",
+            "smartctl"
+        };
+
+        // ReSharper disable once InconsistentNaming
+        public const int CHECKBOX_DISPLAY_OUTPUT_ENABLED = 0;
+        // ReSharper disable once InconsistentNaming
+        public const int CHECKBOX_USE_VERBOSE_MODE = 1;
+        // ReSharper disable once InconsistentNaming
+        public const int CHECKBOX_FIND_BY_NAME_IN_SYNC = 2;
+        // ReSharper disable once InconsistentNaming
+        public const int CHECKBOX_HIDDEN_FILES_EXCLUDED = 3;
+
         /// <summary>
         /// constructor
         /// </summary>
@@ -81,70 +107,74 @@ namespace Elucidate
 
                 foreach (string line in File.ReadLines(ConfigPath))
                 {
-                    string lineStart = line.TrimStart();
+                    string lineStart = line.Trim();
                     if (string.IsNullOrWhiteSpace(lineStart) || lineStart.StartsWith("#")) continue;
-                    // Not a comment, so off we go.
-                    int splitIndex = lineStart.IndexOf(' ');
-                    string value = lineStart.Substring(splitIndex + 1);
-                    if (string.IsNullOrWhiteSpace(value))
-                    {
-                        continue;
-                    }
-                    switch (lineStart.Substring(0, splitIndex).ToLower())
+                    
+                    // Not a comment so process the line
+
+                    // split the line by the first space encountered
+                    string[] configItem = lineStart.Split(new[] { ' ' }, 2);
+                    string configItemName = configItem[0] ?? string.Empty;
+                    string configItemValue = (configItem.Length > 1) ? configItem[1] : string.Empty;
+
+                    // ignore the line if it is not an a recognized setting
+                    if (!_validConfigNames.Contains(configItemName)) continue;
+
+                    switch (configItemName)
                     {
                         case "parity":
-                            ParityFile1 = value;
+                            ParityFile1 = configItemValue;
                             break;
 
                         case "q-parity":
                             Log.Instance.Warn("'q-parity' entry in config file should be changed to '2-parity'");
-                            ParityFile2 = value;
+                            ParityFile2 = configItemValue;
                             break;
 
                         case "2-parity":
                             // handle legacy 'q-parity' entry by giving it priority over any '2-parity' entry; saving config will rename 'q-parity' to '2-parity' and leave the path unchanged
                             if (string.IsNullOrEmpty(ParityFile2))
                             {
-                                ParityFile2 = value;
+                                ParityFile2 = configItemValue;
                             }
                             break;
 
                         case "3-parity":
-                            ParityFile3 = value;
+                            ParityFile3 = configItemValue;
                             break;
 
                         case "4-parity":
-                            ParityFile4 = value;
+                            ParityFile4 = configItemValue;
                             break;
 
                         case "5-parity":
-                            ParityFile5 = value;
+                            ParityFile5 = configItemValue;
                             break;
 
                         case "6-parity":
-                            ParityFile6 = value;
+                            ParityFile6 = configItemValue;
                             break;
 
                         case "content":
-                            ContentFiles.Add(value);
+                            ContentFiles.Add(configItemValue);
                             break;
 
                         case "disk":
                             // Step over the disk name
-                            int diskSplitIndex = value.IndexOf(' ');
-                            SnapShotSources.Add(value.Substring(diskSplitIndex + 1));
+                            int diskSplitIndex = configItemValue.IndexOf(' ');
+                            SnapShotSources.Add(configItemValue.Substring(diskSplitIndex + 1));
                             break;
 
                         case "exclude":
-                            ExcludePatterns.Add(value);
+                            ExcludePatterns.Add(configItemValue);
                             break;
 
                         case "include":
-                            IncludePatterns.Add(value);
+                            IncludePatterns.Add(configItemValue);
                             break;
 
                         case "block_size":
-                            BlockSizeKB = uint.Parse(value);
+                            BlockSizeKB = uint.Parse(configItemValue);
                             break;
 
                         case "nohidden":
@@ -152,7 +182,7 @@ namespace Elucidate
                             break;
 
                         case "autosave":
-                            AutoSaveGB = uint.Parse(value);
+                            AutoSaveGB = uint.Parse(configItemValue);
                             break;
                     }
                 }
