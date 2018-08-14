@@ -26,6 +26,9 @@ namespace Elucidate.Controls
         {
             InitializeComponent();
             AddThreadingCallbacks();
+
+            toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
+
             IsRunning = false;
             timer1.Enabled = false;
             comboBox1.Enabled = false;
@@ -184,11 +187,11 @@ namespace Elucidate.Controls
             comboBox1.Text = @"Running";
             _requested = ProcessPriorityClass.Normal;
             ActionWorker.RunWorkerAsync(command.ToString());
-            toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
             toolStripProgressBar1.DisplayText = "Running...";
             toolStripProgressBar1.State = ProgressBarState.Normal;
             toolStripProgressBar1.Style = ProgressBarStyle.Marquee;
             toolStripProgressBar1.Value = 0;
+            toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
