@@ -39,6 +39,8 @@ using Elucidate.Shared;
 
 namespace Elucidate
 {
+    // TODO: change additional commands to a checkbox and uncheck after a command has run using the addiitonal command to prevent it accidentally being include in the next command
+
     public sealed partial class ElucidateForm : Form
     {
         public ElucidateForm()

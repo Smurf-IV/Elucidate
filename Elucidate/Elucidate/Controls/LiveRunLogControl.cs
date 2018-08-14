@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,11 +16,6 @@ namespace Elucidate.Controls
 {
     public partial class LiveRunLogControl : UserControl
     {
-        private readonly LexerNlog _lexerNlog = new LexerNlog(
-            keywordsError: new[] { "ERROR", "FATAL" },
-            keywordsWarning: new[] { "WARN" },
-            keywordsDebug: new[] { "DEBUG", "TRACE" });
-
         public LiveRunLogControl()
         {
             InitializeComponent();
@@ -30,7 +24,7 @@ namespace Elucidate.Controls
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
 
             IsRunning = false;
-            timer1.Enabled = false;
+            timerScantilla.Enabled = false;
             comboBox1.Enabled = false;
             checkBoxDisplayOutput.Checked = Properties.Settings.Default.IsDisplayOutputEnabled;
             
@@ -71,6 +65,20 @@ namespace Elucidate.Controls
             EventHandler handler = TaskCompleted;
             handler?.Invoke(this, e);
         }
+
+        // ReSharper disable once InconsistentNaming
+        private const int MAX_COMMAND_ARG_LENGTH = 7000;
+
+        private readonly LexerNlog _lexerNlog = new LexerNlog(
+            keywordsError: new[] { "ERROR", "FATAL" },
+            keywordsWarning: new[] { "WARN" },
+            keywordsDebug: new[] { "DEBUG", "TRACE" });
+        
+        // TODO: highlight off for erros on recovery log
+        public bool HighlightWarnings { get; set; }
+        //keywordsError: new[] { "ERROR", "FATAL" },
+        //keywordsWarning: new[] { "WARN" },
+        //keywordsDebug: new[] { "DEBUG", "TRACE" })
 
         /// <summary>
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
@@ -139,7 +147,7 @@ namespace Elucidate.Controls
             }
 
             CommandTypeRunning = commandToRun;
-            timer1.Enabled = true;
+            timerScantilla.Enabled = true;
             //UseWaitCursor = true;
             
             StringBuilder command = new StringBuilder();
@@ -193,34 +201,7 @@ namespace Elucidate.Controls
             toolStripProgressBar1.Value = 0;
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
         }
-
-        private void Timer1_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                // Now lock in case the timer is overlapping !
-                lock (this)
-                {
-                    if (!LiveLog.LogQueueCommon.Any()) return;
-
-                    while (LiveLog.LogQueueCommon.Any())
-                    {
-                        LiveLog.LogString log = LiveLog.LogQueueCommon.Dequeue();
-                        if (!checkBoxDisplayOutput.Checked) continue;
-                        scintilla.AppendText($"{log.Message}{Environment.NewLine}");
-                    }
-
-                    // scroll to the bottom
-                    int scintillaTextLength = scintilla.TextLength;
-                    scintilla.ScrollRange(scintillaTextLength, scintillaTextLength);
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-
+        
         private void actionWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
@@ -228,7 +209,6 @@ namespace Elucidate.Controls
                 IsRunning = true;
                 OnTaskStarted(e);
 
-                Log.Instance.Debug("actionWorker_DoWork");
                 BackgroundWorker worker = sender as BackgroundWorker;
                 string command = e.Argument as string;
                 _lastError = string.Empty;
@@ -267,8 +247,6 @@ namespace Elucidate.Controls
         {
             Log.Instance.Info("#########################################");
 
-            int exitCode;
-            
             // RecoveryFix
             if (CommandTypeRunning == CommandType.RecoverFix)
             {
@@ -277,10 +255,12 @@ namespace Elucidate.Controls
                 {
                     sbPaths.Append($"-f \"{_batchPaths[_batchPaths.Count - 1]}\" ");
                     _batchPaths.RemoveAt(_batchPaths.Count - 1);
-                } while (sbPaths.Length < 7000 && _batchPaths.Any());
+                } while (sbPaths.Length < MAX_COMMAND_ARG_LENGTH && _batchPaths.Any());
 
                 args += sbPaths.ToString();
             }
+
+            int exitCode;
 
             using (Process process = new Process
             {
@@ -303,16 +283,13 @@ namespace Elucidate.Controls
                 process.Start();
 
                 // Redirect the output stream of the child process.
-                ThreadObject threadObject = new ThreadObject {BgdWorker = worker, CmdProcess = process};
+                ThreadObject threadObject = new ThreadObject { BgdWorker = worker, CmdProcess = process };
                 ThreadPool.QueueUserWorkItem(o => ReadStandardOutput(threadObject));
                 ThreadPool.QueueUserWorkItem(o => ReadStandardError(threadObject));
 
-                if (process.HasExited)
-                {
-                    _mreProcessExit.Set();
-                }
+                if (process.HasExited) _mreProcessExit.Set();
 
-                while (!WaitHandle.WaitAll(new WaitHandle[] {_mreErrorDone, _mreOutputDone, _mreProcessExit}, 250))
+                while (!WaitHandle.WaitAll(new WaitHandle[] { _mreErrorDone, _mreOutputDone, _mreProcessExit }, 250))
                 {
                     if (process.HasExited) continue;
                     if (worker.CancellationPending)
@@ -330,6 +307,7 @@ namespace Elucidate.Controls
                 }
 
                 exitCode = process.ExitCode;
+
                 if (exitCode == 0)
                 {
                     Log.Instance.Info("ExitCode=[{0}]", exitCode);
@@ -347,6 +325,9 @@ namespace Elucidate.Controls
                 case 0:
                     break;
                 case 1:
+                    worker.ReportProgress(101, "Error");
+                    break;
+                case 2:
                     worker.ReportProgress(101, "Error");
                     break;
                 default:
@@ -394,7 +375,6 @@ namespace Elucidate.Controls
 
             OnTaskCompleted(e);
             comboBox1.Enabled = false;
-            timer1.Enabled = false;
             
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
             {
@@ -435,7 +415,36 @@ namespace Elucidate.Controls
             {
                 if (string.IsNullOrEmpty(_lastError)) return;
                 toolStripProgressBar1.DisplayText = "Error";
-                Log.Instance.Info($"Last Error: {_lastError}");
+                Log.Instance.Debug($"Last Error: {_lastError}");
+            }
+        }
+
+        private void timerScantillaTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                // Now lock in case the timer is overlapping !
+                lock (this)
+                {
+                    if (!ActionWorker.IsBusy) timerScantilla.Enabled = false;
+
+                    if (!LiveLog.LogQueueCommon.Any()) return;
+
+                    while (LiveLog.LogQueueCommon.Any())
+                    {
+                        LiveLog.LogString log = LiveLog.LogQueueCommon.Dequeue();
+                        if (!checkBoxDisplayOutput.Checked) continue;
+                        scintilla.AppendText($"{log.Message}{Environment.NewLine}");
+                    }
+
+                    // scroll to the bottom
+                    int scintillaTextLength = scintilla.TextLength;
+                    scintilla.ScrollRange(scintillaTextLength, scintillaTextLength);
+                }
+            }
+            catch
+            {
+                // ignored
             }
         }
 
@@ -443,22 +452,14 @@ namespace Elucidate.Controls
         {
             try
             {
-                Log.Instance.Debug("Start Verbose handler");
                 string buf;
                 do
                 {
-                    if (!string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardError.ReadLine()))
-                    {
-                        _lastError = buf;
-                        Log.Instance.Warn($"Verbose[{_lastError}]");
-                    }
-                    else
-                    {
-                        _mreProcessExit.WaitOne(100);
-                    }
-                } while (!string.IsNullOrEmpty(buf)
-                         || !_mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
-                );
+                    buf = threadObject.CmdProcess.StandardError.ReadLine();
+                    if (string.IsNullOrEmpty(buf) || buf.StartsWith("Reading data from missing file")) continue; // skip verbose messages from file recovery
+                    _lastError = buf;
+                    Log.Instance.Warn(_lastError);
+                } while (!string.IsNullOrEmpty(buf));
             }
             catch (Exception ex)
             {
@@ -472,27 +473,18 @@ namespace Elucidate.Controls
         {
             try
             {
-                Log.Instance.Debug("Start StdOut handler");
                 string buf;
                 do
                 {
-                    if (!string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardOutput.ReadLine()))
+                    if (string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardOutput.ReadLine())) continue;
+                    Log.Instance.Info($"StdOut[{buf}]");
+                    if (!buf.Contains("%")) continue;
+                    string[] splits = buf.Split('%');
+                    if (int.TryParse(splits[0], out int percentProgress))
                     {
-                        Log.Instance.Info($"StdOut[{buf}]");
-                        if (!buf.Contains("%")) continue;
-                        string[] splits = buf.Split('%');
-                        if (int.TryParse(splits[0], out int percentProgress))
-                        {
-                            threadObject.BgdWorker.ReportProgress(percentProgress, buf);
-                        }
+                        threadObject.BgdWorker.ReportProgress(percentProgress, buf);
                     }
-                    else
-                    {
-                        _mreProcessExit.WaitOne(100);
-                    }
-                } while (!string.IsNullOrEmpty(buf)
-                         || !_mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
-                );
+                } while (!string.IsNullOrEmpty(buf));
             }
             catch (Exception ex)
             {
@@ -503,8 +495,7 @@ namespace Elucidate.Controls
 
         private void Exited(object o, EventArgs e)
         {
-            Log.Instance.Debug("Exited.");
-            Thread.Sleep(1000);  // When the process has exited, the buffers are _still_ flushing
+            Log.Instance.Debug("Process has exited");
             _mreProcessExit.Set();
         }
 

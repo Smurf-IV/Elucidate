@@ -40,7 +40,7 @@ namespace Elucidate.Controls
             this.tableLayoutPanelAdditionalCommands = new System.Windows.Forms.TableLayoutPanel();
             this.txtAddCommands = new System.Windows.Forms.TextBox();
             this.labelCommandLineOptions = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerScantilla = new System.Windows.Forms.Timer(this.components);
             this.scintilla = new ScintillaNET.Scintilla();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanelAdditionalCommands.SuspendLayout();
@@ -185,10 +185,10 @@ namespace Elucidate.Controls
             this.labelCommandLineOptions.Text = "&Additional Command line options:";
             this.labelCommandLineOptions.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // timer1
+            // timerScantilla
             // 
-            this.timer1.Interval = 250;
-            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            this.timerScantilla.Interval = 750;
+            this.timerScantilla.Tick += new System.EventHandler(this.timerScantillaTimer_Tick);
             // 
             // scintilla
             // 
@@ -229,7 +229,7 @@ namespace Elucidate.Controls
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private System.Windows.Forms.CheckBox runWithoutCaptureMenuItem;
         private ScintillaNET.Scintilla scintilla;
-        private Timer timer1;
+        private Timer timerScantilla;
         private CheckBox checkBoxDisplayOutput;
         private Label toolStripStatusLabel1;
     }
