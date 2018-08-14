@@ -129,6 +129,7 @@ namespace Elucidate.Controls
             this.treeView1.Size = new System.Drawing.Size(830, 176);
             this.treeView1.TabIndex = 4;
             this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
+            this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
             this.treeView1.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseDoubleClick);
             // 
             // timerTreeViewFill
@@ -158,6 +159,7 @@ namespace Elucidate.Controls
             this.liveRunLogControl.AutoSize = true;
             this.liveRunLogControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.liveRunLogControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.liveRunLogControl.HighlightWarnings = false;
             this.liveRunLogControl.IsRunning = false;
             this.liveRunLogControl.Location = new System.Drawing.Point(0, 0);
             this.liveRunLogControl.Margin = new System.Windows.Forms.Padding(4);
