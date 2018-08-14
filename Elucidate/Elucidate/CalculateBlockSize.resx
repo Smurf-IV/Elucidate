@@ -130,7 +130,7 @@ When you completely fill the parity disk, you are not allowed to add more files 
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>How much memory SnapRAID requires to run?
 
-Approximatively SnapRAID requires 1 GB of memory for 10 TB of data.
+Approximatively SnapRAID requires 1 GB of memory for 16 TB of data.
 
 If you have less memory than required, the recommended option is to install more memory in the machine.
 
