@@ -9,10 +9,10 @@ $loopStart = get-date
 
 do {
     if((get-process "snapraid" -ea SilentlyContinue) -eq $Null) {
-		Write-Host "To have this window hidden:
+		Write-Host "To have this window hidden:"
 		Write-Host "Edit the Sheduled Task and in Security Options "
 		Write-Host "select 'Run whether the user is logged on or not'"
-		Write-Host "and also make sure the 'Hiden' checkbox is checked."
+		Write-Host "and also make sure the 'Hidden' checkbox is checked."
 		Write-Host ""
 		Write-Host "Running SnapRAID process..."
         Start-Process -FilePath $exe -ArgumentList $args -Wait -WindowStyle Hidden
