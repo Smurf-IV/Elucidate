@@ -132,8 +132,6 @@ namespace Elucidate.Shared
             if (null != targetControl)
             {
                 targetControl.HandleDestroyed -= targetControl_HandleDestroyed;
-                //  TODO: Should only be restored if it indeed still has that value
-                // if (curs == targetControl.Cursor)
                 targetControl.Cursor = previousCursor;
                 targetControl = null;
             }

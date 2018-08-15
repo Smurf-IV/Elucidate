@@ -39,8 +39,6 @@ using Elucidate.Shared;
 
 namespace Elucidate
 {
-    // TODO: change additional commands to a checkbox and uncheck after a command has run using the addiitonal command to prevent it accidentally being include in the next command
-
     public sealed partial class ElucidateForm : Form
     {
         public ElucidateForm()
@@ -168,7 +166,9 @@ namespace Elucidate
         private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
+
             string userAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Elucidate");
+
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 InitialDirectory = Path.Combine(userAppData, @"Logs"),
@@ -179,6 +179,7 @@ namespace Elucidate
             };
 
             if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+
             if (Properties.Settings.Default.UseWindowsSettings)
             {
                 Process word = Process.Start("Wordpad.exe", '"' + openFileDialog.FileName + '"');

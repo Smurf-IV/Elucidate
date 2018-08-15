@@ -21,11 +21,10 @@ namespace Elucidate
             
             appPath = Properties.Settings.Default.SnapRAIDFileLocation;
             
-            // Find the meanings @ http://snapraid.sourceforge.net/manual.html  6 Options
+            // Find the meanings @ http://snapraid.sourceforge.net/manual.html
             // status|smart|up|down|diff|sync|scrub|fix|check|list|dup|pool|devices|touch|rehash
 
-            // TODO: use regex to enforce check on addiitonal commands
-            StringBuilder args = new StringBuilder(additionalCommands);
+            StringBuilder args = new StringBuilder(additionalCommands.Trim());
 
             args.Append(' ');
 
@@ -43,7 +42,7 @@ namespace Elucidate
 
             return args.ToString();
         }
-
+        
         public static double RoundUpToDecimalPlace(double numToRound, int decimalPlace)
         {
             if (decimalPlace < 1) return numToRound; // return original nmber if 0 decimal places requested
@@ -51,11 +50,13 @@ namespace Elucidate
             int intX = Convert.ToInt32(strX);
             return Math.Ceiling(numToRound * intX) / intX;
         }
+
         public static void CreateEmptyFile(string filename)
         {
             if (File.Exists(filename)) return;
             File.Create(filename).Dispose();
         }
+
         public static string ComputeSha1Hash(string rawData)
         {
             // Create a SHA1
@@ -215,6 +216,7 @@ namespace Elucidate
 
             return 0;
         }
+
         public static void ParityPathFreeBytesAvailable(string path, 
             out ulong freeBytesAvailable, 
             out ulong pathUsedBytes,

@@ -54,6 +54,7 @@ namespace Elucidate
             this.commandPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.btnSync = new Elucidate.Shared.CommandLinkButton();
             this.btnCheck = new Elucidate.Shared.CommandLinkButton();
+            this.btnForceFullSync = new Elucidate.Shared.CommandLinkButton();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabLogs = new System.Windows.Forms.TabPage();
             this.logsViewerControl = new Elucidate.Controls.LogsViewerControl();
@@ -71,7 +72,6 @@ namespace Elucidate
             this.changeLogOfNewVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.MenuItemNewVersionReadyForInstall = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnForceFullSync = new Elucidate.Shared.CommandLinkButton();
             this.statusStrip1.SuspendLayout();
             this.tabCoveragePage.SuspendLayout();
             this.tabSchedulePage.SuspendLayout();
@@ -330,6 +330,9 @@ namespace Elucidate
             // liveRunLogControl1
             // 
             this.liveRunLogControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.liveRunLogControl1.HighlightDebugEnabled = true;
+            this.liveRunLogControl1.HighlightErrorEnabled = true;
+            this.liveRunLogControl1.HighlightWarningEnabled = true;
             this.liveRunLogControl1.IsRunning = false;
             this.liveRunLogControl1.Location = new System.Drawing.Point(0, 0);
             this.liveRunLogControl1.Name = "liveRunLogControl1";
@@ -408,6 +411,34 @@ namespace Elucidate
             this.btnCheck.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCheck.UseVisualStyleBackColor = true;
             this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
+            // 
+            // btnForceFullSync
+            // 
+            this.btnForceFullSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnForceFullSync.ButtonDepress = ((sbyte)(2));
+            this.btnForceFullSync.Enabled = false;
+            this.btnForceFullSync.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnForceFullSync.HighlightColor = System.Drawing.SystemColors.Highlight;
+            this.btnForceFullSync.HighlightFillAlpha = ((byte)(200));
+            this.btnForceFullSync.HighlightFillAlphaMouse = ((byte)(100));
+            this.btnForceFullSync.HighlightFillAlphaNormal = ((byte)(50));
+            this.btnForceFullSync.HighlightWidth = 2F;
+            this.btnForceFullSync.Image = global::Elucidate.Properties.Resources.camera_add_48;
+            this.btnForceFullSync.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnForceFullSync.ImageMargin = 8F;
+            this.btnForceFullSync.Location = new System.Drawing.Point(309, 143);
+            this.btnForceFullSync.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnForceFullSync.Name = "btnForceFullSync";
+            this.btnForceFullSync.Rounding = 14F;
+            this.btnForceFullSync.Size = new System.Drawing.Size(300, 64);
+            this.btnForceFullSync.Subscript = "Force a full synchronization of all content.";
+            this.btnForceFullSync.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForceFullSync.TabIndex = 12;
+            this.btnForceFullSync.Text = "&Force Full Sync";
+            this.btnForceFullSync.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnForceFullSync.UseVisualStyleBackColor = true;
+            this.btnForceFullSync.Click += new System.EventHandler(this.btnForceFullSync_Click);
             // 
             // tabControl
             // 
@@ -493,14 +524,14 @@ namespace Elucidate
             // logViewToolStripMenuItem1
             // 
             this.logViewToolStripMenuItem1.Name = "logViewToolStripMenuItem1";
-            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(135, 22);
+            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.logViewToolStripMenuItem1.Text = "&View...";
             this.logViewToolStripMenuItem1.Click += new System.EventHandler(this.logViewToolStripMenuItem_Click);
             // 
             // changeLogLocationToolStripMenuItem
             // 
             this.changeLogLocationToolStripMenuItem.Name = "changeLogLocationToolStripMenuItem";
-            this.changeLogLocationToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.changeLogLocationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.changeLogLocationToolStripMenuItem.Text = "&Location...";
             this.changeLogLocationToolStripMenuItem.Click += new System.EventHandler(this.changeLogLocationToolStripMenuItem_Click);
             // 
@@ -591,34 +622,6 @@ namespace Elucidate
             this.MenuItemNewVersionReadyForInstall.Text = "New Version Ready For Install";
             this.MenuItemNewVersionReadyForInstall.Visible = false;
             this.MenuItemNewVersionReadyForInstall.Click += new System.EventHandler(this.MenuItemNewVersionReadyForInstall_Click);
-            // 
-            // btnForceFullSync
-            // 
-            this.btnForceFullSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnForceFullSync.ButtonDepress = ((sbyte)(2));
-            this.btnForceFullSync.Enabled = false;
-            this.btnForceFullSync.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnForceFullSync.HighlightColor = System.Drawing.SystemColors.Highlight;
-            this.btnForceFullSync.HighlightFillAlpha = ((byte)(200));
-            this.btnForceFullSync.HighlightFillAlphaMouse = ((byte)(100));
-            this.btnForceFullSync.HighlightFillAlphaNormal = ((byte)(50));
-            this.btnForceFullSync.HighlightWidth = 2F;
-            this.btnForceFullSync.Image = global::Elucidate.Properties.Resources.camera_add_48;
-            this.btnForceFullSync.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnForceFullSync.ImageMargin = 8F;
-            this.btnForceFullSync.Location = new System.Drawing.Point(309, 143);
-            this.btnForceFullSync.MinimumSize = new System.Drawing.Size(300, 64);
-            this.btnForceFullSync.Name = "btnForceFullSync";
-            this.btnForceFullSync.Rounding = 14F;
-            this.btnForceFullSync.Size = new System.Drawing.Size(300, 64);
-            this.btnForceFullSync.Subscript = "Force a full synchronization of all content.";
-            this.btnForceFullSync.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnForceFullSync.TabIndex = 12;
-            this.btnForceFullSync.Text = "&Force Full Sync";
-            this.btnForceFullSync.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnForceFullSync.UseVisualStyleBackColor = true;
-            this.btnForceFullSync.Click += new System.EventHandler(this.btnForceFullSync_Click);
             // 
             // ElucidateForm
             // 

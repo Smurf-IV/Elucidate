@@ -26,6 +26,7 @@ namespace Elucidate.Controls
         private const string MENU_STRIP_NEW_SYNC = "Sync";
         private const string MENU_STRIP_NEW_CHECK = "Check";
         private const string MENU_STRIP_NEW_DIFF = "Diff";
+        private const string MENU_STRIP_NEW_SCRUB = "Scrub";
         private const string TaskFolder = "Elucidate";
         private const string TaskName = "SnapRAID <TASK_TYPE> - task created by Elucidate";
 
@@ -182,7 +183,7 @@ namespace Elucidate.Controls
                     command: taskCommand.ToLower(),
                     additionalCommands: string.Empty,
                     appPath: out _);
-                args = AddLoggingToArgsForSchedule(args);
+                args = AddLoggingToArgsForSchedule(args, ScheduledTaskType);
                 args = args.Replace(@"""", @"\""");
                 ExecAction tsAction = new ExecAction
                 {
@@ -203,11 +204,11 @@ namespace Elucidate.Controls
             }
         }
 
-        private static string AddLoggingToArgsForSchedule(string args)
+        private static string AddLoggingToArgsForSchedule(string args, ScheduledTaskTypeEnum scheduledTaskType)
         {
             string appDir = Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation);
             string logDir = Properties.Settings.Default.LogFileDirectory;
-            string logFilename = "<DATETIME>.log"; // the powershell script will replace <DATETIME>
+            string logFilename = $"<DATETIME> {scheduledTaskType.ToString().ToLower()}.log"; // the powershell script will replace <DATETIME>
             string newArgs = $@"--log ""{appDir}\{logDir}\{logFilename}"" {args}";
             return newArgs;
         }

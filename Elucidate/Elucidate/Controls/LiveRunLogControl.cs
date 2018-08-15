@@ -148,7 +148,6 @@ namespace Elucidate.Controls
 
             CommandTypeRunning = commandToRun;
             timerScantilla.Enabled = true;
-            //UseWaitCursor = true;
             
             StringBuilder command = new StringBuilder();
             switch (commandToRun)
@@ -207,8 +206,7 @@ namespace Elucidate.Controls
             try
             {
                 IsRunning = true;
-                checkBoxCommandLineOptions.Enabled = false;
-
+                
                 OnTaskStarted(e);
 
                 BackgroundWorker worker = sender as BackgroundWorker;
@@ -366,11 +364,10 @@ namespace Elucidate.Controls
 
         private void actionWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //UseWaitCursor = false;
             //ElucidateForm.SetCommonButtonsEnabledState(true);
             
             IsRunning = false;
-
+            
             // continue running additional times if there is more work to be done
             if (CommandTypeRunning == CommandType.RecoverFix && _batchPaths.Any())
             {
@@ -381,9 +378,9 @@ namespace Elucidate.Controls
             OnTaskCompleted(e);
 
             comboBox1.Enabled = false;
-            checkBoxCommandLineOptions.Checked = false; // uncheck so the next command does not include this by accident
+            IsCommandLineOptionsEnabled = checkBoxCommandLineOptions.Checked = false; // uncheck so the next command does not include this by accident
             checkBoxCommandLineOptions.Enabled = true;
-
+            
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
             {
                 toolStripProgressBar1.Style = ProgressBarStyle.Continuous;
