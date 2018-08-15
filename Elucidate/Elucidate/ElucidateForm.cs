@@ -231,6 +231,12 @@ namespace Elucidate
         private void btnCheck_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
+            if (Util.IsExecutableRunning(Properties.Settings.Default.SnapRAIDFileLocation))
+            {
+                SetCommonButtonsEnabledState(true);
+                MessageBox.Show(@"SnapRAID is already running");
+                return;
+            }
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Check);
         }
 

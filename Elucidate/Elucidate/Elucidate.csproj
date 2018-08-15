@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.14.148</AssemblyVersion>
+    <AssemblyVersion>18.8.15.105</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -261,8 +261,17 @@
     <Compile Include="Shared\CommandLinkButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Shared\FilteredTaskListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Shared\MenuButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Shared\MessageBoxExtForm.cs" />
     <Compile Include="Shared\MessageBoxExtForm.Designer.cs" />
+    <Compile Include="Shared\SplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Shared\TextOverProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -369,6 +378,9 @@
   <ItemGroup>
     <EmbeddedResource Include="snapraid.conf.example" />
     <None Include="Resources\errorprovidericon.gif" />
+    <None Include="snapraid.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="wyDay.Controls\License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
