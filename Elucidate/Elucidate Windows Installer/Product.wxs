@@ -113,6 +113,9 @@
         <File Source="$(var.MgtSource)\ByteSize.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
+        <File Source="$(var.MgtSource)\CommandLineArgumentsParser.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+      </Component>
+      <Component>
         <File Source="$(var.MgtSource)\ComponentFactory.Krypton.Toolkit.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
