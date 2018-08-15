@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Elucidate.Logging;
-using Elucidate.Shared;
 using Microsoft.Win32.TaskScheduler;
 
 namespace Elucidate.Controls
@@ -19,7 +18,7 @@ namespace Elucidate.Controls
     public partial class Schedule : UserControl
     {
         private string appExecuteScript = "snapraid.ps1";
-        private string taskNameSelected { get; set; } = string.Empty;
+        private string TaskNameSelected { get; set; } = string.Empty;
         private readonly string _uniqueKeyForThisConfig;
         private readonly ContextMenuStrip _menuStripNew = new ContextMenuStrip();
         private enum ScheduledTaskTypeEnum { Sync, Check, Diff }
@@ -83,7 +82,7 @@ namespace Elucidate.Controls
         {
             if (!e.Task.Name.Contains(_uniqueKeyForThisConfig))
             {
-                taskNameSelected = string.Empty;
+                TaskNameSelected = string.Empty;
                 btnDelete.Enabled = false;
                 btnEdit.Enabled = false;
                 btnEnableDisable.Enabled = false;
@@ -91,7 +90,7 @@ namespace Elucidate.Controls
             }
             else
             {
-                taskNameSelected = e.Task.Name;
+                TaskNameSelected = e.Task.Name;
                 btnDelete.Enabled = true;
                 btnEdit.Enabled = true;
                 btnEnableDisable.Enabled = true;
@@ -131,8 +130,8 @@ namespace Elucidate.Controls
 
         private void CreateScheduledTask(ScheduledTaskTypeEnum scheduledTaskType)
         {
-            string taskCommand = null;
-            string taskDescription = null;
+            string taskCommand;
+            string taskDescription;
 
             switch (scheduledTaskType)
             {
@@ -182,10 +181,9 @@ namespace Elucidate.Controls
                 string args = Util.FormatSnapRaidCommandArgs(
                     command: taskCommand.ToLower(),
                     additionalCommands: string.Empty,
-                    appPath: out string appPath);
+                    appPath: out _);
                 args = AddLoggingToArgsForSchedule(args);
                 args = args.Replace(@"""", @"\""");
-                string appExe = $"{Path.GetFileName(appPath)}";
                 ExecAction tsAction = new ExecAction
                 {
                     Path = "powershell.exe",
@@ -311,7 +309,7 @@ namespace Elucidate.Controls
 
                 if (taskListView.SelectedIndex < 0) return;
 
-                if (string.IsNullOrEmpty(taskNameSelected)) return;
+                if (string.IsNullOrEmpty(TaskNameSelected)) return;
 
                 using (TaskService ts = new TaskService())
                 {
@@ -321,12 +319,12 @@ namespace Elucidate.Controls
 
                     foreach (Task task in tf.Tasks)
                     {
-                        if (task.Name != taskNameSelected) continue;
+                        if (task.Name != TaskNameSelected) continue;
                         if (DialogResult.Yes == MessageBox.Show(
                                 @"Do you want to delete the selected task?",
                                 @"Delete Scheduled Task", MessageBoxButtons.YesNoCancel))
                         {
-                            tf.DeleteTask(taskNameSelected);
+                            tf.DeleteTask(TaskNameSelected);
                             DisplayTaskScheduleItems();
                         }
                         break;
@@ -351,7 +349,7 @@ namespace Elucidate.Controls
 
                 if (taskListView.SelectedIndex < 0) return;
 
-                if (string.IsNullOrEmpty(taskNameSelected)) return;
+                if (string.IsNullOrEmpty(TaskNameSelected)) return;
 
                 using (TaskService ts = new TaskService())
                 {
@@ -361,7 +359,7 @@ namespace Elucidate.Controls
 
                         foreach (Task task in tf.Tasks)
                         {
-                            if (task.Name != taskNameSelected) continue;
+                            if (task.Name != TaskNameSelected) continue;
                             // Edit task and re-register if user clicks Ok
                             TaskEditDialog frm = new TaskEditDialog(task);
                             frm.AvailableTabs |= AvailableTaskTabs.RunTimes;
@@ -392,7 +390,7 @@ namespace Elucidate.Controls
 
                 if (taskListView.SelectedIndex < 0) return;
 
-                if (string.IsNullOrEmpty(taskNameSelected)) return;
+                if (string.IsNullOrEmpty(TaskNameSelected)) return;
 
                 using (TaskService ts = new TaskService())
                 {
@@ -402,7 +400,7 @@ namespace Elucidate.Controls
 
                         foreach (Task task in tf.Tasks)
                         {
-                            if (task.Name != taskNameSelected) continue;
+                            if (task.Name != TaskNameSelected) continue;
                             task.Enabled = !task.Enabled;
                             break;
                         }
@@ -429,7 +427,7 @@ namespace Elucidate.Controls
 
                 if (taskListView.SelectedIndex < 0) return;
 
-                if (string.IsNullOrEmpty(taskNameSelected)) return;
+                if (string.IsNullOrEmpty(TaskNameSelected)) return;
 
                 using (TaskService ts = new TaskService())
                 {
@@ -439,7 +437,7 @@ namespace Elucidate.Controls
 
                         foreach (Task task in tf.Tasks)
                         {
-                            if (task.Name != taskNameSelected) continue;
+                            if (task.Name != TaskNameSelected) continue;
                             task.Run();
                             break;
                         }
