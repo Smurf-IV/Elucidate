@@ -44,16 +44,6 @@ namespace Elucidate
             return args.ToString();
         }
 
-        public static string AddLoggingToArgs(string args)
-        {
-            string appDir = Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation);
-            string logDir = Properties.Settings.Default.LogFileDirectory;
-            //string logFilename = $"{DateTime.Now:yyyyMMddhhmmss}.log";
-            string logFilename = "%date:~10,4%%date:~4,2%%date:~7,2%%time:~0,2%%time:~3,2%%time:~6,2%.log";
-            string newArgs = $@"--log ""{appDir}\{logDir}\{logFilename}"" {args}";
-            return newArgs;
-        }
-
         public static double RoundUpToDecimalPlace(double numToRound, int decimalPlace)
         {
             if (decimalPlace < 1) return numToRound; // return original nmber if 0 decimal places requested
@@ -65,6 +55,24 @@ namespace Elucidate
         {
             if (File.Exists(filename)) return;
             File.Create(filename).Dispose();
+        }
+        public static string ComputeSha1Hash(string rawData)
+        {
+            // Create a SHA1
+            using (SHA1 sha1Hash = SHA1.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
         }
 
         public static string ComputeSha256Hash(string rawData)
@@ -84,6 +92,18 @@ namespace Elucidate
 
                 return builder.ToString();
             }
+        }
+
+        public static bool IsExecutableRunning(string exePath)
+        {
+            Process process = new Process();
+            // Pass your exe file path here.
+            string path = exePath;
+            string fileName = Path.GetFileName(path);
+            // Get the process that is already running as per the exe file name.
+            if (fileName == null) return false;
+            Process[] processName = Process.GetProcessesByName(fileName.Substring(0, fileName.LastIndexOf('.')));
+            return processName.Length > 0;
         }
 
         public static string SnapRaidLatestVersion()
