@@ -10,7 +10,7 @@ namespace Elucidate.Controls
 {
     // See the code in the following location for taskscheduler
     // http://taskscheduler.codeplex.com/wikipage?title=Examples&referringTitle=Documentation
-    
+
     // The TaskListView behaves strangely, the item
     // clicked event seems to not aways contain 
     // the item clicked, so instead we'll go directly
@@ -258,25 +258,22 @@ namespace Elucidate.Controls
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                using (new WaitCursor(true))
-                {
-                    btnDelete.Enabled = false;
-                    btnEdit.Enabled = false;
-                    btnEnableDisable.Enabled = false;
-                    btnRun.Enabled = false;
+                btnDelete.Enabled = false;
+                btnEdit.Enabled = false;
+                btnEnableDisable.Enabled = false;
+                btnRun.Enabled = false;
 
-                    using (TaskService ts = new TaskService())
-                    {
-                        // Display version and server state
-                        Version ver = ts.HighestSupportedVersion;
-                        Log.Instance.Debug("Highest version: {0}", ver);
-                        Log.Instance.Debug("Server: {0} ({1})", ts.TargetServer,
-                            ts.Connected ? "Connected" : "Disconnected");
-                        // Output all the tasks in the root folder with their triggers and actions
-                        TaskFolder tf = ts.GetFolder(TaskFolder);
-                        Log.Instance.Debug($"{TaskFolder} folder task count ({0}):", tf.Tasks.Count);
-                        taskListView.Tasks = tf.Tasks;
-                    }
+                using (TaskService ts = new TaskService())
+                {
+                    // Display version and server state
+                    Version ver = ts.HighestSupportedVersion;
+                    Log.Instance.Debug("Highest version: {0}", ver);
+                    Log.Instance.Debug("Server: {0} ({1})", ts.TargetServer,
+                        ts.Connected ? "Connected" : "Disconnected");
+                    // Output all the tasks in the root folder with their triggers and actions
+                    TaskFolder tf = ts.GetFolder(TaskFolder);
+                    Log.Instance.Debug($"{TaskFolder} folder task count ({0}):", tf.Tasks.Count);
+                    taskListView.Tasks = tf.Tasks;
                 }
             }
             catch
@@ -318,22 +315,21 @@ namespace Elucidate.Controls
 
                 using (TaskService ts = new TaskService())
                 {
-                    if (ts.RootFolder.SubFolders.Exists(TaskFolder))
-                    {
-                        TaskFolder tf = ts.GetFolder(TaskFolder);
+                    if (!ts.RootFolder.SubFolders.Exists(TaskFolder)) return;
 
-                        foreach (Task task in tf.Tasks)
+                    TaskFolder tf = ts.GetFolder(TaskFolder);
+
+                    foreach (Task task in tf.Tasks)
+                    {
+                        if (task.Name != taskNameSelected) continue;
+                        if (DialogResult.Yes == MessageBox.Show(
+                                @"Do you want to delete the selected task?",
+                                @"Delete Scheduled Task", MessageBoxButtons.YesNoCancel))
                         {
-                            if (task.Name != taskNameSelected) continue;
-                            if (DialogResult.Yes == MessageBox.Show(
-                                    @"Do you want to delete the selected task?",
-                                    @"Delete Scheduled Task", MessageBoxButtons.YesNoCancel))
-                            {
-                                tf.DeleteTask(taskNameSelected);
-                                DisplayTaskScheduleItems();
-                            }
-                            break;
+                            tf.DeleteTask(taskNameSelected);
+                            DisplayTaskScheduleItems();
                         }
+                        break;
                     }
                 }
             }
@@ -444,7 +440,6 @@ namespace Elucidate.Controls
                         foreach (Task task in tf.Tasks)
                         {
                             if (task.Name != taskNameSelected) continue;
-                            // Edit task and re-register if user clicks Ok
                             task.Run();
                             break;
                         }
