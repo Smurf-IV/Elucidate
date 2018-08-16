@@ -12,13 +12,21 @@ namespace Elucidate.Controls
 {
     public partial class LogsViewerControl : UserControl
     {
+        public enum LexerNameEnum { ScanRaid, NLog }
+
+        public LexerNameEnum LexerToUse { get; set; } = LexerNameEnum.NLog;
+
         private readonly LexerNlog _lexerNlog = new LexerNlog(
             keywordsError: new[] { "ERROR", "FATAL" }, 
             keywordsWarning: new[] { "WARN" }, 
             keywordsDebug: new[] { "DEBUG", "TRACE" });
 
-        private string _errorSearchTerm = "] ERROR ";
-        private string _warningSearchTerm = "] WARN ";
+        private readonly LexerScanRaid _lexerScanRaid = new LexerScanRaid();
+
+        private string _snapraidErrorSearchTerm = "error: ";
+        private string _snapraidWarningSearchTerm = "WARNING";
+        private string _elucidateErrorSearchTerm = "] ERROR ";
+        private string _elucidateWarningSearchTerm = "] WARN ";
 
         // log file path is based upon the config file location
         private string _logSourcePath;
@@ -34,24 +42,6 @@ namespace Elucidate.Controls
             comboBoxLogType.SelectedIndex = 0;
         }
 
-        private void ChangeLogDirectoryToView()
-        {
-            switch (comboBoxLogType.SelectedIndex)
-            {
-                case 0:
-                    // SnapRAID
-                    _logSourcePath =
-                        $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
-                    break;
-                case 1:
-                    // Elucidate
-                    _logSourcePath = LogFileLocation.GetActiveLogFileLocation();
-                    break;
-            }
-
-            Log.Instance.Debug($"_logSourcePath : {_logSourcePath}");
-        }
-
         // Read the contents of the file.  
         static string GetFileText(string name)
         {
@@ -63,8 +53,33 @@ namespace Elucidate.Controls
             return fileContents;
         }
 
-        private void UpdateLogFileList()
+        private void UpdateLogFileList(string selectedDirectoryTitle)
         {
+            string errorSearchTerm;
+            string warningSearchTerm;
+
+            switch (selectedDirectoryTitle)
+            {
+                case "SnapRAID Scheduled Jobs":
+                    // SnapRAID Scheduled Jobs
+                    _logSourcePath = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
+                    errorSearchTerm = _snapraidErrorSearchTerm;
+                    warningSearchTerm = _snapraidWarningSearchTerm;
+                    LexerToUse = LexerNameEnum.ScanRaid;
+                    break;
+                case "Elucidate":
+                    // Elucidate
+                    _logSourcePath = LogFileLocation.GetActiveLogFileLocation();
+                    errorSearchTerm = _elucidateErrorSearchTerm;
+                    warningSearchTerm = _elucidateWarningSearchTerm;
+                    LexerToUse = LexerNameEnum.NLog;
+                    break;
+                default:
+                    return;
+            }
+
+            Log.Instance.Debug($"_logSourcePath : {_logSourcePath}");
+
             listBoxViewLogFiles.Items.Clear();
 
             if (!Directory.Exists(_logSourcePath)) return;
@@ -79,7 +94,7 @@ namespace Elucidate.Controls
             {
                 IEnumerable<FileInfo> filesWithErrors = from file in allLogs
                                                         let fileText = GetFileText(file.FullName)
-                                                        where fileText.Contains(_errorSearchTerm)
+                                                        where fileText.Contains(errorSearchTerm)
                                                         select file;
                 filteredLogs = filteredLogs.Union(filesWithErrors).ToList();
             }
@@ -88,7 +103,7 @@ namespace Elucidate.Controls
             {
                 IEnumerable<FileInfo> filesWithWarnings = from file in allLogs
                                                           let fileText = GetFileText(file.FullName)
-                                                          where fileText.Contains(_warningSearchTerm)
+                                                          where fileText.Contains(warningSearchTerm)
                                                           select file;
                 filteredLogs = filteredLogs.Union(filesWithWarnings).ToList();
             }
@@ -100,13 +115,7 @@ namespace Elucidate.Controls
                 listBoxViewLogFiles.Items.Add(log.Name);
             }
         }
-
-        private void comboBoxLogType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ChangeLogDirectoryToView();
-            UpdateLogFileList();
-        }
-
+        
         private void listBoxViewLogFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!Directory.Exists(_logSourcePath)) return;
@@ -118,58 +127,82 @@ namespace Elucidate.Controls
             scintilla.ReadOnly = true;
         }
 
+        private void comboBoxLogType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateLogFileList(comboBoxLogType.SelectedItem.ToString());
+        }
+
         private void listBoxViewLogFiles_DoubleClick(object sender, EventArgs e)
         {
-            UpdateLogFileList();
+            UpdateLogFileList(comboBoxLogType.SelectedItem.ToString());
         }
 
         private void checkedFilesWithError_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateLogFileList();
+            UpdateLogFileList(comboBoxLogType.SelectedItem.ToString());
         }
 
         private void checkedFilesWithWarn_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateLogFileList();
+            UpdateLogFileList(comboBoxLogType.SelectedItem.ToString());
         }
 
         private void scintilla_TextChanged(object sender, EventArgs e)
         {
-            Scintilla scintilla = (sender as Scintilla);
-            if (scintilla == null) return;
+            Scintilla control = (sender as Scintilla);
+            if (control == null) return;
 
             // size the margin for the line numbers
-            var maxLineNumberCharLength = scintilla.Lines.Count.ToString().Length;
+            var maxLineNumberCharLength = control.Lines.Count.ToString().Length;
             const int padding = 2;
-            scintilla.Margins[0].Width = scintilla.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
-            
-            scintilla.StyleResetDefault();
-            scintilla.Styles[Style.Default].Font = "Consolas";
-            scintilla.Styles[Style.Default].Size = 10;
-            scintilla.StyleClearAll();
+            control.Margins[0].Width = control.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
 
-            scintilla.Styles[LexerNlog.StyleDefault].ForeColor = Color.Black;
-            scintilla.Styles[LexerNlog.StyleError].ForeColor = Color.White;
-            scintilla.Styles[LexerNlog.StyleError].BackColor = Color.Firebrick;
-            scintilla.Styles[LexerNlog.StyleError].Bold = true;
-            scintilla.Styles[LexerNlog.StyleWarning].ForeColor = Color.White;
-            scintilla.Styles[LexerNlog.StyleWarning].BackColor = Color.DarkOrange;
-            scintilla.Styles[LexerNlog.StyleWarning].Bold = true;
-            scintilla.Styles[LexerNlog.StyleDebug].ForeColor = Color.Gray;
-            
-            scintilla.Lexer = Lexer.Container;
-        }
+            control.StyleResetDefault();
+            control.Styles[Style.Default].Font = "Consolas";
+            control.Styles[Style.Default].Size = 10;
+            control.StyleClearAll();
 
-        private void scintillaNET_StyleNeeded(object sender, StyleNeededEventArgs e)
-        {
+            switch (LexerToUse)
+            {
+                case LexerNameEnum.NLog:
+                    control.Styles[LexerNlog.StyleDefault].ForeColor = Color.Black;
+                    control.Styles[LexerNlog.StyleError].ForeColor = Color.White;
+                    control.Styles[LexerNlog.StyleError].BackColor = Color.Firebrick;
+                    control.Styles[LexerNlog.StyleError].Bold = true;
+                    control.Styles[LexerNlog.StyleWarning].ForeColor = Color.White;
+                    control.Styles[LexerNlog.StyleWarning].BackColor = Color.DarkOrange;
+                    control.Styles[LexerNlog.StyleWarning].Bold = true;
+                    control.Styles[LexerNlog.StyleDebug].ForeColor = Color.Gray;
+                    break;
+                case LexerNameEnum.ScanRaid:
+                    control.Styles[LexerScanRaid.StyleDefault].ForeColor = Color.Black;
+                    control.Styles[LexerScanRaid.StyleError].ForeColor = Color.White;
+                    control.Styles[LexerScanRaid.StyleError].BackColor = Color.Firebrick;
+                    control.Styles[LexerScanRaid.StyleError].Bold = true;
+                    control.Styles[LexerScanRaid.StyleWarning].ForeColor = Color.White;
+                    control.Styles[LexerScanRaid.StyleWarning].BackColor = Color.DarkOrange;
+                    control.Styles[LexerScanRaid.StyleWarning].Bold = true;
+                    control.Styles[LexerScanRaid.StyleDebug].ForeColor = Color.Gray;
+                    break;
+            }
             
+            control.Lexer = Lexer.Container;
         }
 
         private void scintilla_StyleNeeded(object sender, StyleNeededEventArgs e)
         {
             var startPos = scintilla.GetEndStyled();
             var endPos = e.Position;
-            _lexerNlog.Style(scintilla, startPos, endPos);
+            
+            switch (LexerToUse)
+            {
+                case LexerNameEnum.NLog:
+                    _lexerNlog.Style(scintilla, startPos, endPos);
+                    break;
+                case LexerNameEnum.ScanRaid:
+                    _lexerScanRaid.Style(scintilla, startPos, endPos);
+                    break;
+            }
         }
     }
 }

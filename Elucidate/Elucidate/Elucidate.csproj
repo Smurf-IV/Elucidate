@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.15.125</AssemblyVersion>
+    <AssemblyVersion>18.8.16.36</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -261,7 +261,9 @@
     <Compile Include="HelperClasses\AppUpdate.cs" />
     <Compile Include="HelperClasses\CommandLineApp.cs" />
     <Compile Include="HelperClasses\CoveragePath.cs" />
+    <Compile Include="HelperClasses\LexerScanRaid.cs" />
     <Compile Include="HelperClasses\LexerNlog.cs" />
+    <Compile Include="HelperClasses\StringUtil.cs" />
     <Compile Include="Logging\LiveLog.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Shared\CommandLinkButton.cs">

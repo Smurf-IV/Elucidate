@@ -147,13 +147,9 @@ namespace Elucidate
         {
             if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
 
-            //new Settings().ShowDialog(this);
-
             var settingsForm = new Settings();
             settingsForm.FormClosed += RefreshDriveDisplayAfterConfigSaved;
             settingsForm.ShowDialog(this);
-
-            //if (settingsForm == System.Windows.Forms.DialogResult.OK)
 
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
         }
@@ -212,7 +208,7 @@ namespace Elucidate
 #if DEBUG
             bookmark = AppUpdate.GetLatestVersionInfo().Version.Replace(".", "");
 #endif
-            Process.Start("https://github.com/BlueBlock/Elucidate/wiki/ChangeLog#" + bookmark);
+            Process.Start($"https://github.com/BlueBlock/Elucidate/wiki/ChangeLog#{bookmark}");
         }
 
 #endregion Menu Handlers

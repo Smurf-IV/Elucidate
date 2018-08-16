@@ -19,7 +19,7 @@ namespace Elucidate.Controls
         public bool HighlightErrorEnabled { get; set; } = true;
         public bool HighlightWarningEnabled { get; set; } = true;
         public bool HighlightDebugEnabled { get; set; } = true;
-
+        
         // ReSharper disable once InconsistentNaming
         private const int MAX_COMMAND_ARG_LENGTH = 7000;
 

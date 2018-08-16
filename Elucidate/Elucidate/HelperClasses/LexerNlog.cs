@@ -33,7 +33,7 @@ namespace Elucidate.HelperClasses
 
         public LexerNlog(string[] keywordsError = null, string[] keywordsWarning = null, string[] keywordsDebug = null)
         {
-            // Put keywords in a HashSet
+            // Set keywords and put keywords in a HashSet
 
             if (keywordsError == null) _keywordsErrorHashSet = new HashSet<string>(_defaultKeywordsErrorArray.ToList());
             if (keywordsWarning == null) _keywordsWarningHashSet = new HashSet<string>(_defaultKeywordsWarningArray.ToList());
