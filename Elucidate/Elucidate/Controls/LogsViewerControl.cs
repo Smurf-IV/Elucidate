@@ -23,6 +23,10 @@ namespace Elucidate.Controls
 
         private readonly LexerScanRaid _lexerScanRaid = new LexerScanRaid();
 
+        private readonly FileSystemWatcher _logFileWatcher = new FileSystemWatcher();
+
+        private string _selectedDirectoryTitle = null;
+
         private string _snapraidErrorSearchTerm = "error: ";
         private string _snapraidWarningSearchTerm = "WARNING";
         private string _elucidateErrorSearchTerm = "] ERROR ";
@@ -34,6 +38,20 @@ namespace Elucidate.Controls
         public LogsViewerControl()
         {
             InitializeComponent();
+
+            _logFileWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName;
+            //_logFileWatcher.Changed += new FileSystemEventHandler(LogFileWatcher_OnChanged);
+            _logFileWatcher.Created += new FileSystemEventHandler(LogFileWatcher_OnChanged);
+            _logFileWatcher.Deleted += new FileSystemEventHandler(LogFileWatcher_OnChanged);
+            //_logFileWatcher.Renamed += new RenamedEventHandler(LogFileWatcher_OnChanged);
+            _logFileWatcher.EnableRaisingEvents = false;
+        }
+
+        private void LogFileWatcher_OnChanged(object sender, FileSystemEventArgs e)
+        {
+            // let's keep the file selected by the user as selected after the refresh
+            //UpdateLogFileList();
+            listBoxViewLogFiles.BeginInvoke((MethodInvoker)delegate { UpdateLogFileList(); });
         }
 
         private void LogsViewerControl_Load(object sender, EventArgs e)
@@ -53,28 +71,50 @@ namespace Elucidate.Controls
             return fileContents;
         }
 
-        private void UpdateLogFileList(string selectedDirectoryTitle)
+        private void UpdateLogFileList(string selectedDirectoryTitle = null)
         {
+            if (selectedDirectoryTitle == null)
+            {
+                selectedDirectoryTitle = _selectedDirectoryTitle;
+            }
+            else
+            {
+                _selectedDirectoryTitle = selectedDirectoryTitle;
+            }
+
             string errorSearchTerm;
             string warningSearchTerm;
+
+            // remember user selection
+            string selectedIndexValue = null;
+            int selectedIndex = -1;
+            selectedIndex = listBoxViewLogFiles.SelectedIndex;
+            if (selectedIndex >= 0) selectedIndexValue = listBoxViewLogFiles.SelectedItems[0].ToString();
 
             switch (selectedDirectoryTitle)
             {
                 case "SnapRAID Scheduled Jobs":
                     // SnapRAID Scheduled Jobs
-                    _logSourcePath = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
                     errorSearchTerm = _snapraidErrorSearchTerm;
                     warningSearchTerm = _snapraidWarningSearchTerm;
                     LexerToUse = LexerNameEnum.ScanRaid;
+                    _logSourcePath = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
+                    _logFileWatcher.Path = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
+                    _logFileWatcher.Filter = "*.log";
+                    _logFileWatcher.EnableRaisingEvents = true;
                     break;
                 case "Elucidate":
                     // Elucidate
-                    _logSourcePath = LogFileLocation.GetActiveLogFileLocation();
                     errorSearchTerm = _elucidateErrorSearchTerm;
                     warningSearchTerm = _elucidateWarningSearchTerm;
                     LexerToUse = LexerNameEnum.NLog;
+                    _logSourcePath = LogFileLocation.GetActiveLogFileLocation();
+                    _logFileWatcher.Path = LogFileLocation.GetActiveLogFileLocation();
+                    _logFileWatcher.Filter = "*.log";
+                    _logFileWatcher.EnableRaisingEvents = true;
                     break;
                 default:
+                    _logFileWatcher.EnableRaisingEvents = false;
                     return;
             }
 
@@ -114,8 +154,19 @@ namespace Elucidate.Controls
             {
                 listBoxViewLogFiles.Items.Add(log.Name);
             }
+
+            // restore user selection, if it stil lexists
+            if (selectedIndex >= 0 && !string.IsNullOrEmpty(selectedIndexValue))
+            {
+                int indexFound = -1;
+                indexFound = listBoxViewLogFiles.FindStringExact(selectedIndexValue);
+                if (indexFound >= 0)
+                {
+                    listBoxViewLogFiles.SelectedIndex = indexFound;
+                }
+            }
         }
-        
+
         private void listBoxViewLogFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!Directory.Exists(_logSourcePath)) return;
@@ -129,22 +180,22 @@ namespace Elucidate.Controls
 
         private void comboBoxLogType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UpdateLogFileList(comboBoxLogType.SelectedItem.ToString());
+            listBoxViewLogFiles.BeginInvoke((MethodInvoker)delegate { UpdateLogFileList(comboBoxLogType.SelectedItem.ToString()); });
         }
 
         private void listBoxViewLogFiles_DoubleClick(object sender, EventArgs e)
         {
-            UpdateLogFileList(comboBoxLogType.SelectedItem.ToString());
+            listBoxViewLogFiles.BeginInvoke((MethodInvoker)delegate { UpdateLogFileList(comboBoxLogType.SelectedItem.ToString()); });
         }
 
         private void checkedFilesWithError_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateLogFileList(comboBoxLogType.SelectedItem.ToString());
+            listBoxViewLogFiles.BeginInvoke((MethodInvoker)delegate { UpdateLogFileList(comboBoxLogType.SelectedItem.ToString()); });
         }
 
         private void checkedFilesWithWarn_CheckedChanged(object sender, EventArgs e)
         {
-            UpdateLogFileList(comboBoxLogType.SelectedItem.ToString());
+            listBoxViewLogFiles.BeginInvoke((MethodInvoker)delegate { UpdateLogFileList(comboBoxLogType.SelectedItem.ToString()); });
         }
 
         private void scintilla_TextChanged(object sender, EventArgs e)
