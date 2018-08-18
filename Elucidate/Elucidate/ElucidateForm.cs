@@ -277,7 +277,7 @@ namespace Elucidate
 
             VersionIndicator.Text = AppUpdate.GetInstalledVersion();
 
-            // check for vew version and notify if available
+            // check for new version and notify if available
             if (AppUpdate.IsNewVersionAvailable())
             {
                 MenuItemNewVersionAvailable.Visible = true;

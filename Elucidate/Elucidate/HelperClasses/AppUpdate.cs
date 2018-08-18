@@ -55,19 +55,23 @@ namespace Elucidate.HelperClasses
             {
                 int[] installed = Array.ConvertAll(GetInstalledVersion().Split('.'), Convert.ToInt32);
 
+                Log.Instance.Debug($"Version Installed: {string.Join(".", installed)}");
+
                 int[] latest = Array.ConvertAll(GetLatestVersionInfo().Version.Split('.'), Convert.ToInt32);
+
+                Log.Instance.Debug($"Latest Version Found: {string.Join(".", latest)}");
 
                 // check that all build numbers are retreived for the comparison
                 if (installed.Count() != _numberOfVersionBuildParts ||
                     latest.Count() != _numberOfVersionBuildParts) return false;
-
-                if (installed[0] > latest[0])
-                    return false;
-                if (installed[1] > latest[1])
-                    return false;
-                if (installed[2] > latest[2])
-                    return false;
-                return installed[3] < latest[3];
+                
+                if (latest[0] > installed[0])
+                    return true;
+                if (latest[1] > installed[1])
+                    return true;
+                if (latest[2] > installed[2])
+                    return true;
+                return latest[3] > installed[3];
             }
             catch (Exception ex)
             {
