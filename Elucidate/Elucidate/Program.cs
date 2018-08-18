@@ -53,10 +53,7 @@ namespace Elucidate
                 //    FileUtil.SetDirectoryAsCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation));
                 //}
 #if !DEBUG
-                if (!Properties.Settings.Default.DebugLoggingEnabled)
-                {
-                    Log.SetLogLevel(Log.LogLevels.Debug, true);
-                }
+                Log.SetLogLevel(Log.LogLevels.Debug, Properties.Settings.Default.DebugLoggingEnabled);
 #endif
             }
             catch (Exception ex)
@@ -85,7 +82,6 @@ namespace Elucidate
             {
                 Log.Instance.Debug("File Closing");
                 //Log.Instance.Info("=====================================================================");
-                // shutdown log
                 Log.Shutdown(); // Flush and close down internal threads and timers
             }
         }

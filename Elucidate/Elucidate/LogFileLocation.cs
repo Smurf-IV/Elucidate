@@ -48,7 +48,7 @@ namespace Elucidate
 
         private static string GetLogFileLocation()
         {
-            return string.IsNullOrEmpty(Properties.Settings.Default.NlogFileLocation) ? Log.DefaultLogLocation : Properties.Settings.Default.NlogFileLocation;
+            return string.IsNullOrEmpty(Properties.Settings.Default.NLogFileLocation) ? Log.DefaultLogLocation : Properties.Settings.Default.NLogFileLocation;
         }
         public static string GetActiveLogFileLocation()
         {

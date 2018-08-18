@@ -47,7 +47,7 @@
     <Setting Name="LogFileDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">logs</Value>
     </Setting>
-    <Setting Name="NlogFileLocation" Type="System.String" Scope="User">
+    <Setting Name="NLogFileLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="IsDisplayOutputEnabled" Type="System.Boolean" Scope="User">

@@ -200,12 +200,12 @@ namespace Elucidate.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string NlogFileLocation {
+        public string NLogFileLocation {
             get {
-                return ((string)(this["NlogFileLocation"]));
+                return ((string)(this["NLogFileLocation"]));
             }
             set {
-                this["NlogFileLocation"] = value;
+                this["NLogFileLocation"] = value;
             }
         }
         

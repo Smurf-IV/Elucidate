@@ -138,7 +138,7 @@ namespace Elucidate.Controls
                 Application.DoEvents();
             }
             
-            Log.Instance.Info(string.Join(", ", pathsOfInterest));
+            Log.Instance.Info("pathsOfInterest: " + string.Join(", ", pathsOfInterest));
 
             FillExpectedLayoutWorker.RunWorkerAsync(pathsOfInterest);
         }
