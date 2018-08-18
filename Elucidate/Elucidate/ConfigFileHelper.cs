@@ -68,6 +68,8 @@ namespace Elucidate
         public const int CHECKBOX_FIND_BY_NAME_IN_SYNC = 2;
         // ReSharper disable once InconsistentNaming
         public const int CHECKBOX_HIDDEN_FILES_EXCLUDED = 3;
+        // ReSharper disable once InconsistentNaming
+        public const int CHECKBOX_DEBUG_LOGGING_ENABLED = 4;
 
         /// <summary>
         /// constructor
