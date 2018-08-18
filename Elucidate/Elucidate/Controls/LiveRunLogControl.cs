@@ -52,7 +52,7 @@ namespace Elucidate.Controls
 
             IsRunning = false;
             timerScantilla.Enabled = false;
-            comboBox1.Enabled = false;
+            comboBoxProcessStatus.Enabled = false;
             checkBoxDisplayOutput.Checked = Properties.Settings.Default.IsDisplayOutputEnabled;
             
             ConfigureScintillaControl();
@@ -134,8 +134,8 @@ namespace Elucidate.Controls
             ActionWorker.DoWork += actionWorker_DoWork;
             ActionWorker.ProgressChanged += actionWorker_ProgressChanged;
             ActionWorker.RunWorkerCompleted += actionWorker_RunWorkerCompleted;
-            comboBox1.Text = @"Stopped";
-            comboBox1.Enabled = false;
+            comboBoxProcessStatus.Text = @"Stopped";
+            comboBoxProcessStatus.Enabled = false;
         }
 
         internal void StartSnapRaidProcess(CommandType commandToRun, List<string> paths = null)
@@ -150,6 +150,7 @@ namespace Elucidate.Controls
             timerScantilla.Enabled = true;
             
             StringBuilder command = new StringBuilder();
+
             switch (commandToRun)
             {
                 case CommandType.Status:
@@ -190,14 +191,22 @@ namespace Elucidate.Controls
                     break;
             }
 
-            comboBox1.Enabled = true;
-            comboBox1.Text = @"Running";
+            comboBoxProcessStatus.Enabled = true;
+
+            comboBoxProcessStatus.Text = @"Running";
+
             _requested = ProcessPriorityClass.Normal;
+
             ActionWorker.RunWorkerAsync(command.ToString());
+
             toolStripProgressBar1.DisplayText = "Running...";
+
             toolStripProgressBar1.State = ProgressBarState.Normal;
+
             toolStripProgressBar1.Style = ProgressBarStyle.Marquee;
+
             toolStripProgressBar1.Value = 0;
+
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
         }
         
@@ -281,6 +290,7 @@ namespace Elucidate.Controls
             {
                 Log.Instance.Info("Using: {0}", process.StartInfo.FileName);
                 Log.Instance.Info("with: {0}", process.StartInfo.Arguments);
+
                 process.Exited += Exited;
 
                 process.Start();
@@ -297,14 +307,14 @@ namespace Elucidate.Controls
                     if (process.HasExited) continue;
                     if (worker.CancellationPending)
                     {
-                        Log.Instance.Fatal("Attempting process KILL");
+                        Log.Instance.Fatal("Attempting to stop the process..");
                         process.Kill();
                     }
                     else
                     {
                         ProcessPriorityClass current = process.PriorityClass;
                         if (current == _requested) continue;
-                        Log.Instance.Fatal("Setting the processpriority to[{0}]", _requested);
+                        Log.Instance.Fatal("Setting the process priority to[{0}]", _requested);
                         process.PriorityClass = _requested;
                     }
                 }
@@ -326,6 +336,9 @@ namespace Elucidate.Controls
             switch (exitCode)
             {
                 case 0:
+                    break;
+                case -1:
+                    worker.ReportProgress(101, "Aborted");
                     break;
                 case 1:
                     worker.ReportProgress(101, "Error");
@@ -364,8 +377,6 @@ namespace Elucidate.Controls
 
         private void actionWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //ElucidateForm.SetCommonButtonsEnabledState(true);
-            
             IsRunning = false;
             
             // continue running additional times if there is more work to be done
@@ -377,7 +388,7 @@ namespace Elucidate.Controls
 
             OnTaskCompleted(e);
 
-            comboBox1.Enabled = false;
+            comboBoxProcessStatus.Enabled = false;
             IsCommandLineOptionsEnabled = checkBoxCommandLineOptions.Checked = false; // uncheck so the next command does not include this by accident
             checkBoxCommandLineOptions.Enabled = true;
             
@@ -390,14 +401,14 @@ namespace Elucidate.Controls
                 toolStripProgressBar1.State = ProgressBarState.Pause;
                 toolStripProgressBar1.DisplayText = "Cancelled";
                 Log.Instance.Error("The thread has been cancelled");
-                comboBox1.Text = @"Abort";
+                comboBoxProcessStatus.Text = @"Abort";
             }
             else if (e.Error != null)
             {
                 toolStripProgressBar1.State = ProgressBarState.Error;
                 toolStripProgressBar1.DisplayText = "Error";
                 Log.Instance.Error(e.Error, "Thread threw: ");
-                comboBox1.Text = @"Abort";
+                comboBoxProcessStatus.Text = @"Abort";
             }
             else
             {
@@ -405,7 +416,7 @@ namespace Elucidate.Controls
                 {
                     toolStripProgressBar1.DisplayText = "Completed";
                     toolStripProgressBar1.Value = 100;
-                    comboBox1.Text = @"Stopped";
+                    comboBoxProcessStatus.Text = @"Stopped";
                 }
             }
 
@@ -414,7 +425,7 @@ namespace Elucidate.Controls
                 toolStripProgressBar1.State = ProgressBarState.Normal;
                 toolStripProgressBar1.DisplayText = "Completed";
                 toolStripProgressBar1.Value = 100;
-                comboBox1.Text = @"Completed";
+                comboBoxProcessStatus.Text = @"Completed";
             }
             else
             {
@@ -529,6 +540,26 @@ namespace Elucidate.Controls
         private void checkBoxCommandLineOptions_CheckedChanged(object sender, EventArgs e)
         {
             if (sender is CheckBox senderControl) IsCommandLineOptionsEnabled = senderControl.Checked;
+        }
+
+        private void comboBoxProcessStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sender == null) return;
+            ComboBox control = (ComboBox)sender;
+            string strSelected = control.SelectedItem.ToString();
+            switch (strSelected)
+            {
+                case "Stopped":
+                    if (ActionWorker.IsBusy)
+                    {
+                        comboBoxProcessStatus.SelectedIndex = comboBoxProcessStatus.FindStringExact("Running");
+                    }
+                    break;
+                case "Abort":
+                    ActionWorker.CancelAsync();
+                    Log.Instance.Info("Cancelling the running process...");
+                    break;
+            }
         }
     }
 }

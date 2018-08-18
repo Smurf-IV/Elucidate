@@ -36,7 +36,7 @@ namespace Elucidate.Controls
             this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.runWithoutCaptureMenuItem = new System.Windows.Forms.CheckBox();
             this.checkBoxDisplayOutput = new System.Windows.Forms.CheckBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxProcessStatus = new System.Windows.Forms.ComboBox();
             this.timerScantilla = new System.Windows.Forms.Timer(this.components);
             this.scintilla = new ScintillaNET.Scintilla();
             this.txtAddCommands = new System.Windows.Forms.TextBox();
@@ -58,7 +58,7 @@ namespace Elucidate.Controls
             this.tableLayoutPanel1.Controls.Add(this.toolStripProgressBar1, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.runWithoutCaptureMenuItem, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.checkBoxDisplayOutput, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.comboBox1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxProcessStatus, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 385);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -124,20 +124,20 @@ namespace Elucidate.Controls
             this.checkBoxDisplayOutput.MouseLeave += new System.EventHandler(this.checkBoxDisplayOutput_MouseLeave);
             this.checkBoxDisplayOutput.MouseHover += new System.EventHandler(this.checkBoxDisplayOutput_MouseHover);
             // 
-            // comboBox1
+            // comboBoxProcessStatus
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.IntegralHeight = false;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.comboBoxProcessStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxProcessStatus.FormattingEnabled = true;
+            this.comboBoxProcessStatus.IntegralHeight = false;
+            this.comboBoxProcessStatus.Items.AddRange(new object[] {
             "Stopped",
             "Running",
-            "Abort",
-            "Idle"});
-            this.comboBox1.Location = new System.Drawing.Point(135, 3);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(113, 21);
-            this.comboBox1.TabIndex = 3;
+            "Abort"});
+            this.comboBoxProcessStatus.Location = new System.Drawing.Point(135, 3);
+            this.comboBoxProcessStatus.Name = "comboBoxProcessStatus";
+            this.comboBoxProcessStatus.Size = new System.Drawing.Size(113, 21);
+            this.comboBoxProcessStatus.TabIndex = 3;
+            this.comboBoxProcessStatus.SelectedIndexChanged += new System.EventHandler(this.comboBoxProcessStatus_SelectedIndexChanged);
             // 
             // timerScantilla
             // 
@@ -220,7 +220,7 @@ namespace Elucidate.Controls
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxProcessStatus;
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private System.Windows.Forms.CheckBox runWithoutCaptureMenuItem;
         private ScintillaNET.Scintilla scintilla;
