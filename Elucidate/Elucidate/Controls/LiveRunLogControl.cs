@@ -418,21 +418,22 @@ namespace Elucidate.Controls
                     toolStripProgressBar1.Value = 100;
                     comboBoxProcessStatus.Text = @"Stopped";
                 }
+                
+                if (CommandTypeRunning == CommandType.RecoverCheck || CommandTypeRunning == CommandType.RecoverFix)
+                {
+                    toolStripProgressBar1.State = ProgressBarState.Normal;
+                    toolStripProgressBar1.DisplayText = "Completed";
+                    toolStripProgressBar1.Value = 100;
+                    comboBoxProcessStatus.Text = @"Completed";
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(_lastError)) return;
+                    toolStripProgressBar1.DisplayText = "Error";
+                    Log.Instance.Debug($"Last Error: {_lastError}");
+                }
             }
 
-            if (CommandTypeRunning == CommandType.RecoverCheck || CommandTypeRunning == CommandType.RecoverFix)
-            {
-                toolStripProgressBar1.State = ProgressBarState.Normal;
-                toolStripProgressBar1.DisplayText = "Completed";
-                toolStripProgressBar1.Value = 100;
-                comboBoxProcessStatus.Text = @"Completed";
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(_lastError)) return;
-                toolStripProgressBar1.DisplayText = "Error";
-                Log.Instance.Debug($"Last Error: {_lastError}");
-            }
         }
 
         private void timerScantillaTimer_Tick(object sender, EventArgs e)
