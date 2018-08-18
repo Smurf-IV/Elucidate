@@ -738,6 +738,7 @@ namespace Elucidate
                 }
                 else
                 {
+                    // save the Elucidate settings
                     Properties.Settings.Default.ConfigFileIsValid = ValidateData();
                     Properties.Settings.Default.SnapRAIDFileLocation = snapRAIDFileLocation.Text;
                     Properties.Settings.Default.ConfigFileLocation = configFileLocation.Text;
@@ -745,7 +746,9 @@ namespace Elucidate
                     Properties.Settings.Default.UseVerboseMode = _advSettingsList[ConfigFileHelper.CHECKBOX_USE_VERBOSE_MODE].CheckState;
                     Properties.Settings.Default.FindByNameInSync = _advSettingsList[ConfigFileHelper.CHECKBOX_FIND_BY_NAME_IN_SYNC].CheckState;
                     Properties.Settings.Default.HiddenFilesExcluded = _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState;
+
                     Properties.Settings.Default.DebugLoggingEnabled = _advSettingsList[ConfigFileHelper.CHECKBOX_DEBUG_LOGGING_ENABLED].CheckState;
+                    Log.SetLogLevel(Log.LogLevels.Debug, Properties.Settings.Default.DebugLoggingEnabled);
 
                     Properties.Settings.Default.Save();
                     UnsavedChangesMade = false;
