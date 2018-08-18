@@ -93,6 +93,8 @@ namespace Elucidate
         private static void CheckAndRunSingleApp()
         {
             string mutexName = $"{Path.GetFileName(Application.ExecutablePath)} [{Environment.UserName}]";
+
+            // ReSharper disable once UnusedVariable
             using (Mutex appUserMutex = new Mutex(true, mutexName, out bool grantedOwnership))
             {
                 if (grantedOwnership)
