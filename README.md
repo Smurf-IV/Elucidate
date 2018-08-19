@@ -1,22 +1,24 @@
 # Elucidate
-  - [Project Description](#project-description)
-  - [System Requirements:](#os-requirements)
-  - [FAQs](#faqs)
-  - [roadmap](#roadmap)
-  - [Screenshots](#screenshots)
+
+- [Project Description](#project-description)
+- [System Requirements:](#os-requirements)
+- [FAQs](#faqs)
+- [roadmap](#roadmap)
+- [Screenshots](#screenshots)
 
 ## Project Description
-Elucidate is a GUI front-end for the command-line SnapRAID application.
 
-*This project is a fork of the great work done by Smurf-IV and other contributors. 
+Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
 
+*This project is a fork of the great work done by Smurf-IV and other contributors.
 
-## System Requirements:
+## System Requirements
+
 - Windows Operating System
 - SnapRaid Version 11.2 or lower
 - 10MB Free Space on target drive
 - .Net Runtime 4.7.2 or higher
- 
+
 ## FAQs
 
 **Q**: What is SnapRAID?<br/>
@@ -31,35 +33,35 @@ Elucidate is a GUI front-end for the command-line SnapRAID application.
 **Q**: So what are these "Larger Goals" ?<br/>
 **A**: See the roadmap below for a complete breakdown of what I mean by this.
 
-
 ## Roadmap
-* [x] Keep up with the minimum support of the latest SnapRAID. – **On-going.**
-* [x] Ease of use(Phase I) **[All Done]**
-  * SnapRAID has three commands, so lets make them simple to access for a novice
-  * Progress indicator(s)
-  * Logging – Interactive and straight to log.
-  * Auto start-up on user login
-  * Tool-tips to guide
-* [x] Phase II Phase II Feature requests (Upto V.15-0x)
-  * [x] Pause, Change priority, Abort.– **Done**
-  * [x] Command Extension – Allow extra parameters to the defaults used.– **Done**
-  * [x] Scheduling. – **Done**
-  * [x] Graphical view(s) of the protected data.– **Done**
-* [ ] Phase III – (Restart for V.18-xx onwards)
-  * [x] New Compiler – **Done**
-  * [x] New SnapRaid 11.2 – **Done**
-  * [x] Fix file coverage display. – **Done**
-  * [ ] Translations.
-  * [ ] New Commands.
-  * [ ] Log view(s) diagnostics.
-  * [ ] Mailer with status reports.
-* [ ] Phase IV (Recovery and new SnapRAID Commands ?)
-  * [ ] Extended Help with recovery – interactive guides etc..
-  * [ ] Show what could be recovered (This will require looking into the SnapRaid codebase to interpret the status file(s)). 
+
+- [x] Keep up with the minimum support of the latest SnapRAID. – **On-going.**
+- [x] Ease of use(Phase I) **[All Done]**
+  - SnapRAID has three commands, so lets make them simple to access for a novice
+  - Progress indicator(s)
+  - Logging – Interactive and straight to log.
+  - Auto start-up on user login
+  - Tool-tips to guide
+- [x] Phase II Phase II Feature requests (Upto V.15-0x)
+  - [x] Pause, Change priority, Abort.– **Done**
+  - [x] Command Extension – Allow extra parameters to the defaults used.– **Done**
+  - [x] Scheduling. – **Done**
+  - [x] Graphical view(s) of the protected data.– **Done**
+- [ ] Phase III – (Restart for V.18-xx onwards)
+  - [x] New Compiler – **Done**
+  - [x] New SnapRaid 11.2 – **Done**
+  - [x] Fix file coverage display. – **Done**
+  - [ ] Translations.
+  - [ ] New Commands.
+  - [ ] Log view(s) diagnostics.
+  - [ ] Mailer with status reports.
+- [ ] Phase IV (Recovery and new SnapRAID Commands ?)
+  - [ ] Extended Help with recovery – interactive guides etc..
+  - [ ] Show what could be recovered (This will require looking into the SnapRaid codebase to interpret the status file(s)).
 
 ## Screenshots
 
-![Layout With Scheduling](Images/Layout_With_Scheduling_12.1.26.png)
+![Starting View](Images/starting_view.png)
 
 
-![Coverage Tab](Images/CoverageTab_2.png)
+![Schedule View](Images/schedule_view.png)
