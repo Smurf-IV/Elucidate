@@ -33,7 +33,7 @@ Elucidate is a GUI front-end for the command-line SnapRAID application.
 
 
 ## Roadmap
-* [8] Keep up with the minimum support of the latest SnapRAID. – **On-going.**
+* [x] Keep up with the minimum support of the latest SnapRAID. – **On-going.**
 * [x] Ease of use(Phase I) **[All Done]**
   * SnapRAID has three commands, so lets make them simple to access for a novice
   * Progress indicator(s)
@@ -47,7 +47,7 @@ Elucidate is a GUI front-end for the command-line SnapRAID application.
   * [x] Graphical view(s) of the protected data.– **Done**
 * [ ] Phase III – (Restart for V.18-xx onwards)
   * [x] New Compiler – **Done**
-  * [x] New SnapRaid 11.x – **Done**
+  * [x] New SnapRaid 11.2 – **Done**
   * [x] Fix file coverage display. – **Done**
   * [ ] Translations.
   * [ ] New Commands.
