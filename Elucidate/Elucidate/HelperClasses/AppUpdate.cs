@@ -53,25 +53,29 @@ namespace Elucidate.HelperClasses
         {
             try
             {
-                int[] installed = Array.ConvertAll(GetInstalledVersion().Split('.'), Convert.ToInt32);
+                Version installed = new Version(GetInstalledVersion());
 
                 Log.Instance.Debug($"Version Installed: {string.Join(".", installed)}");
 
-                int[] latest = Array.ConvertAll(GetLatestVersionInfo().Version.Split('.'), Convert.ToInt32);
+                Version latest = new Version(GetLatestVersionInfo().Version);
 
                 Log.Instance.Debug($"Latest Version Found: {string.Join(".", latest)}");
 
-                // check that all build numbers are retreived for the comparison
-                if (installed.Count() != _numberOfVersionBuildParts ||
-                    latest.Count() != _numberOfVersionBuildParts) return false;
-                
-                if (latest[0] > installed[0])
-                    return true;
-                if (latest[1] > installed[1])
-                    return true;
-                if (latest[2] > installed[2])
-                    return true;
-                return latest[3] > installed[3];
+                // version compare
+                switch (installed.CompareTo(latest))
+                {
+                    case 0:
+                        // installed is the same as the latest
+                        return false;
+                    case 1:
+                        // installed is newer that the latest
+                        return false;
+                    case -1:
+                        // installed is older than the latest
+                        return true;
+                    default:
+                        return false;
+                }
             }
             catch (Exception ex)
             {
