@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using Elucidate.Controls;
+using Elucidate.Shared;
 
 namespace Elucidate
 {
@@ -65,14 +66,12 @@ namespace Elucidate
             this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.snapShotSourcesTreeView = new System.Windows.Forms.TreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.driveSpace = new Elucidate.Controls.DriveSpaceDisplay();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnGetRecommended = new System.Windows.Forms.Button();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.numAutoSaveGB = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.numBlockSizeKB = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.exludedFilesView = new System.Windows.Forms.DataGridView();
@@ -90,6 +89,8 @@ namespace Elucidate
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.numBlockSizeKB = new Elucidate.Shared.NumericUpDownPowerOfTwo();
+            this.driveSpace = new Elucidate.Controls.DriveSpaceDisplay();
             this.drivesAndDirectoriesMenu.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SnapShotsMenu.SuspendLayout();
@@ -100,18 +101,18 @@ namespace Elucidate
             this.splitContainer1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAutoSaveGB)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numBlockSizeKB)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exludedFilesView)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numBlockSizeKB)).BeginInit();
             this.SuspendLayout();
             // 
             // DRUnit_NewNode
             // 
             this.DRUnit_NewNode.Name = "DRUnit_NewNode";
             this.DRUnit_NewNode.ShortcutKeys = System.Windows.Forms.Keys.Insert;
-            this.DRUnit_NewNode.Size = new System.Drawing.Size(180, 22);
+            this.DRUnit_NewNode.Size = new System.Drawing.Size(155, 22);
             this.DRUnit_NewNode.Text = "&New Node";
             this.DRUnit_NewNode.Click += new System.EventHandler(this.DRUnit_NewNode_MenuItem_Click);
             // 
@@ -453,7 +454,7 @@ namespace Elucidate
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             this.removeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.removeToolStripMenuItem.Text = "&Delete";
             this.removeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
@@ -508,19 +509,6 @@ namespace Elucidate
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "S&nap Shot Sources";
-            // 
-            // driveSpace
-            // 
-            this.driveSpace.Cursor = System.Windows.Forms.Cursors.Default;
-            this.driveSpace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.driveSpace.Location = new System.Drawing.Point(231, 18);
-            this.driveSpace.Margin = new System.Windows.Forms.Padding(0);
-            this.driveSpace.Name = "driveSpace";
-            this.driveSpace.ShowXAxisText = false;
-            this.driveSpace.ShowYAxisText = false;
-            this.driveSpace.Size = new System.Drawing.Size(370, 322);
-            this.driveSpace.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.driveSpace, "Shows the space in GBytes");
             // 
             // splitContainer1
             // 
@@ -599,7 +587,7 @@ namespace Elucidate
             0});
             this.numAutoSaveGB.Location = new System.Drawing.Point(95, 51);
             this.numAutoSaveGB.Maximum = new decimal(new int[] {
-            1024,
+            2147483647,
             0,
             0,
             0});
@@ -610,10 +598,11 @@ namespace Elucidate
         "D\r\nAs a rule of thumb, with 4GB or more memory use the default 256, with 2GB use" +
         " 512, and with 1GB use 1024.");
             this.numAutoSaveGB.Value = new decimal(new int[] {
-            250,
+            50,
             0,
             0,
             0});
+            this.numAutoSaveGB.ValueChanged += new System.EventHandler(this.numAutoSaveGB_ValueChanged);
             // 
             // label6
             // 
@@ -624,36 +613,6 @@ namespace Elucidate
             this.label6.TabIndex = 3;
             this.label6.Text = "AutoSave &GB:";
             this.toolTip1.SetToolTip(this.label6, "The number of processed GigaBytes before a save; 0 is off.");
-            // 
-            // numBlockSizeKB
-            // 
-            this.numBlockSizeKB.Increment = new decimal(new int[] {
-            64,
-            0,
-            0,
-            0});
-            this.numBlockSizeKB.Location = new System.Drawing.Point(95, 24);
-            this.numBlockSizeKB.Maximum = new decimal(new int[] {
-            1024,
-            0,
-            0,
-            0});
-            this.numBlockSizeKB.Minimum = new decimal(new int[] {
-            32,
-            0,
-            0,
-            0});
-            this.numBlockSizeKB.Name = "numBlockSizeKB";
-            this.numBlockSizeKB.Size = new System.Drawing.Size(74, 22);
-            this.numBlockSizeKB.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.numBlockSizeKB, "You could increase this value if you do not have enough RAM memory to run SnapRAI" +
-        "D\r\nAs a rule of thumb, with 4GB or more memory use the default 256, with 2GB use" +
-        " 512, and with 1GB use 1024.");
-            this.numBlockSizeKB.Value = new decimal(new int[] {
-            256,
-            0,
-            0,
-            0});
             // 
             // label4
             // 
@@ -734,7 +693,7 @@ namespace Elucidate
             this.btnReset.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.helpProvider1.SetHelpKeyword(this.btnReset, "ResetToLastConfig");
             this.helpProvider1.SetHelpNavigator(this.btnReset, System.Windows.Forms.HelpNavigator.Topic);
-            this.btnReset.Location = new System.Drawing.Point(737, 2);
+            this.btnReset.Location = new System.Drawing.Point(740, 3);
             this.btnReset.Name = "btnReset";
             this.helpProvider1.SetShowHelp(this.btnReset, true);
             this.btnReset.Size = new System.Drawing.Size(127, 27);
@@ -748,17 +707,18 @@ namespace Elucidate
             // 
             this.configFileLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.configFileLocation.BackColor = System.Drawing.SystemColors.Window;
+            this.configFileLocation.BackColor = System.Drawing.SystemColors.ControlLight;
             this.errorProvider1.SetError(this.configFileLocation, "Config File does not exist");
             this.helpProvider1.SetHelpKeyword(this.configFileLocation, "SnapRAID.config");
             this.helpProvider1.SetHelpNavigator(this.configFileLocation, System.Windows.Forms.HelpNavigator.Topic);
             this.configFileLocation.Location = new System.Drawing.Point(135, 35);
             this.configFileLocation.Name = "configFileLocation";
+            this.configFileLocation.ReadOnly = true;
             this.helpProvider1.SetShowHelp(this.configFileLocation, true);
-            this.configFileLocation.Size = new System.Drawing.Size(609, 22);
+            this.configFileLocation.Size = new System.Drawing.Size(596, 22);
             this.configFileLocation.TabIndex = 4;
-            this.configFileLocation.Text = "Stick some text in here for config";
             this.toolTip1.SetToolTip(this.configFileLocation, "Full path to the SnapRAID config file.");
+            this.configFileLocation.WordWrap = false;
             this.configFileLocation.TextChanged += new System.EventHandler(this.configFileLocation_TextChanged);
             // 
             // snapRAIDFileLocation
@@ -773,7 +733,7 @@ namespace Elucidate
             this.snapRAIDFileLocation.Location = new System.Drawing.Point(135, 5);
             this.snapRAIDFileLocation.Name = "snapRAIDFileLocation";
             this.helpProvider1.SetShowHelp(this.snapRAIDFileLocation, true);
-            this.snapRAIDFileLocation.Size = new System.Drawing.Size(609, 22);
+            this.snapRAIDFileLocation.Size = new System.Drawing.Size(596, 22);
             this.snapRAIDFileLocation.TabIndex = 1;
             this.snapRAIDFileLocation.Text = "Stick some text in here";
             this.toolTip1.SetToolTip(this.snapRAIDFileLocation, "Full path to the SnapRAID application.");
@@ -843,7 +803,47 @@ namespace Elucidate
             // 
             // helpProvider1
             // 
-            this.helpProvider1.HelpNamespace = "https://github.com/Smurf-IV/Elucidatewikipage?title=Settings";
+            this.helpProvider1.HelpNamespace = "https://github.com/BlueBlock/Elucidatewikipage?title=Settings";
+            // 
+            // numBlockSizeKB
+            // 
+            this.numBlockSizeKB.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.numBlockSizeKB.Location = new System.Drawing.Point(95, 24);
+            this.numBlockSizeKB.Maximum = new decimal(new int[] {
+            16384,
+            0,
+            0,
+            0});
+            this.numBlockSizeKB.Minimum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.numBlockSizeKB.Name = "numBlockSizeKB";
+            this.numBlockSizeKB.Size = new System.Drawing.Size(74, 22);
+            this.numBlockSizeKB.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.numBlockSizeKB, resources.GetString("numBlockSizeKB.ToolTip"));
+            this.numBlockSizeKB.Value = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.numBlockSizeKB.ValueChanged += new System.EventHandler(this.numBlockSizeKB_ValueChanged);
+            // 
+            // driveSpace
+            // 
+            this.driveSpace.Cursor = System.Windows.Forms.Cursors.Default;
+            this.driveSpace.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.driveSpace.Location = new System.Drawing.Point(231, 18);
+            this.driveSpace.Margin = new System.Windows.Forms.Padding(0);
+            this.driveSpace.Name = "driveSpace";
+            this.driveSpace.Size = new System.Drawing.Size(370, 322);
+            this.driveSpace.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.driveSpace, "Shows the space in GBytes");
             // 
             // Settings
             // 
@@ -880,12 +880,12 @@ namespace Elucidate
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numAutoSaveGB)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numBlockSizeKB)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.exludedFilesView)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numBlockSizeKB)).EndInit();
             this.ResumeLayout(false);
 
       }
@@ -928,7 +928,7 @@ namespace Elucidate
       private FolderBrowserDialog folderBrowserDialog1;
       private CheckedListBox checkedListBox1;
       private GroupBox groupBox3;
-      private NumericUpDown numBlockSizeKB;
+      private NumericUpDownPowerOfTwo numBlockSizeKB;
       private Label label4;
       private NumericUpDown numAutoSaveGB;
       private Label label6;

@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.18.62</AssemblyVersion>
+    <AssemblyVersion>18.8.21.112</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -222,6 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedSettingsHelper.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Controls\LiveRunLogControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -254,7 +255,7 @@
     </Compile>
     <Compile Include="Controls\SnapRAIDThread.cs" />
     <Compile Include="ExceptionHandler.cs" />
-    <Compile Include="FileUtil.cs" />
+    <Compile Include="HelperClasses\FileUtil.cs" />
     <Compile Include="HelperClasses\AbortableBackgroundWorker.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -264,9 +265,11 @@
     <Compile Include="HelperClasses\ISynchronizeInvokeExtensions.cs" />
     <Compile Include="HelperClasses\LexerScanRaid.cs" />
     <Compile Include="HelperClasses\LexerNlog.cs" />
+    <Compile Include="HelperClasses\StorageUtil.cs" />
     <Compile Include="HelperClasses\StringUtil.cs" />
     <Compile Include="Logging\LiveLog.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Objects\StorageDevice.cs" />
     <Compile Include="Shared\CommandLinkButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -278,6 +281,9 @@
     </Compile>
     <Compile Include="Shared\MessageBoxExtForm.cs" />
     <Compile Include="Shared\MessageBoxExtForm.Designer.cs" />
+    <Compile Include="Shared\NumericUpDownPowerOfTwo.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Shared\SplitButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -427,6 +433,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Forms\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MountedFolderSupportLibrary\MountedFolderSupportLibrary.csproj">
+      <Project>{d4900af1-c6ce-45e8-82db-da255351ca62}</Project>
+      <Name>MountedFolderSupportLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

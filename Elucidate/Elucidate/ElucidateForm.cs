@@ -41,6 +41,8 @@ namespace Elucidate
 {
     public sealed partial class ElucidateForm : Form
     {
+        private ConfigFileHelper _srConfig = new ConfigFileHelper();
+
         public ElucidateForm()
         {
             InitializeComponent();
@@ -97,7 +99,7 @@ namespace Elucidate
             btnFix.Enabled = enabled;
             btnDupFinder.Enabled = enabled;
             btnForceFullSync.Enabled = enabled;
-            snapRAIDConfigToolStripMenuItem.Enabled = enabled;
+            editSnapRAIDConfigToolStripMenuItem.Enabled = enabled;
             logViewToolStripMenuItem.Enabled = enabled;
             if (enabled)
             {
@@ -138,27 +140,16 @@ namespace Elucidate
         {
             SetCommonButtonsEnabledState(enabled);
             // keep the config menu item accessible
-            snapRAIDConfigToolStripMenuItem.Enabled = true;
+            editSnapRAIDConfigToolStripMenuItem.Enabled = true;
         }
 
         #region Main Menu Toolbar Handlers
-
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
-
-            var settingsForm = new Settings();
-            settingsForm.FormClosed += RefreshDriveDisplayAfterConfigSaved;
-            settingsForm.ShowDialog(this);
-
-            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
-        }
 
         private void RefreshDriveDisplayAfterConfigSaved(object sender, FormClosedEventArgs formClosedEventArgs)
         {
             driveSpace.RefreshGraph();
         }
-        
+
         private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
@@ -211,7 +202,7 @@ namespace Elucidate
             Process.Start($"https://github.com/BlueBlock/Elucidate/wiki/ChangeLog#{bookmark}");
         }
 
-#endregion Menu Handlers
+        #endregion Menu Handlers
 
         private void btnStatus_Click(object sender, EventArgs e)
         {
@@ -231,7 +222,7 @@ namespace Elucidate
             if (Util.IsExecutableRunning(Properties.Settings.Default.SnapRAIDFileLocation))
             {
                 SetCommonButtonsEnabledState(true);
-                MessageBox.Show(@"SnapRAID is already running");
+                MessageBox.Show(@"A SnapRAID process is already running");
                 return;
             }
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Check);
@@ -286,25 +277,10 @@ namespace Elucidate
 
         private void ElucidateForm_Shown(object sender, EventArgs e)
         {
-            ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
-
-            if (!cfg.Read())
-            {
-                MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            Properties.Settings.Default.ConfigFileIsValid = cfg.ConfigFileExists;
-
+            LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
-
-            if (!Properties.Settings.Default.ConfigFileIsValid)
-            {
-                // open the settings form since the config is not valid
-                settingsToolStripMenuItem_Click(sender, e);
-            }
         }
-        
+
         private void installNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AppUpdate.VersionInfo info = AppUpdate.GetLatestVersionInfo();
@@ -313,13 +289,13 @@ namespace Elucidate
             {
                 MessageBox.Show(
                     @"A problem was encountered trying to download the new version. Please try again later.",
-                    @"New Version Download Failed", 
+                    @"New Version Download Failed",
                     MessageBoxButtons.OK);
                 return;
             }
 
             Task.Run(() => AppUpdate.DownloadLatestVersionAsync(info.DownloadUrl));
-            
+
         }
 
         private void changeLogOfNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -338,6 +314,81 @@ namespace Elucidate
         {
             SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.ForceFullSync);
+        }
+
+        private void openSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = @"Config Files|*.conf*|All files (*.*)|*.*";
+            openFileDialog1.Title = @"Select a Config File";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                LoadConfigFile(openFileDialog1.FileName);
+            }
+        }
+
+        private void LoadConfigFile(string configFile)
+        {
+            _srConfig.LoadConfigFile(configFile);
+            if (_srConfig.IsValid)
+            {
+                Properties.Settings.Default.ConfigFileIsValid = true;
+                Properties.Settings.Default.ConfigFileLocation = configFile;
+                BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(configFile); });
+            }
+            else
+            {
+                MessageBoxExt.Show(this, "The config file is not valid.", "Config File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Properties.Settings.Default.ConfigFileIsValid = false;
+                Properties.Settings.Default.ConfigFileLocation = string.Empty;
+                return;
+
+                //MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //Properties.Settings.Default.ConfigFileIsValid = false;
+                //return;
+            }
+
+            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
+        }
+
+        private void SetElucidateFormTitle(string filePath)
+        {
+            string newTitle = "Elucidate";
+
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                newTitle += $" - {filePath}";
+            }
+
+            this.Text = newTitle;
+        }
+
+        private void editSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
+
+            var settingsForm = new Settings();
+
+            if (!Properties.Settings.Default.ConfigFileIsValid)
+            {
+                Properties.Settings.Default.ConfigFileLocation = "";
+            }
+
+            settingsForm.FormClosed += RefreshDriveDisplayAfterConfigSaved;
+
+            settingsForm.ShowDialog(this);
+
+            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
         }
     }
 }

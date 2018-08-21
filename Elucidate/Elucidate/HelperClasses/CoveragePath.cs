@@ -6,7 +6,7 @@
     {
         public string FullPath { get; set; }
         public PathTypeEnum PathType { get; set; }
-        public string Drive => System.IO.Directory.GetDirectoryRoot(FullPath);
-        public string DirectoryPath => System.IO.Path.GetDirectoryName(FullPath) ?? Drive;
+        public string Drive => StorageUtil.GetPathRoot(FullPath);
+        public string DirectoryPath => FullPath;
     }
 }

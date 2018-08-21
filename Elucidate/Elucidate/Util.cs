@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using Elucidate.HelperClasses;
 using Elucidate.Logging;
 using Newtonsoft.Json.Linq;
 using RestSharp;
@@ -226,7 +227,7 @@ namespace Elucidate
             {
                 // get stats for parity location since it might be a folder
                 // ReSharper disable once UnusedVariable
-                GetDiskFreeSpaceExW(Path.GetPathRoot(path), out freeBytesAvailable, out ulong totalBytes, out ulong num3);
+                GetDiskFreeSpaceExW(StorageUtil.GetPathRoot(path), out freeBytesAvailable, out ulong totalBytes, out ulong num3);
                 ulong driveUsedBytes = totalBytes - freeBytesAvailable;
                 pathUsedBytes = (ulong) new FileInfo(path).Length;
                 if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/softlink path or file

@@ -54,6 +54,9 @@ namespace Elucidate
                 //}
 #if !DEBUG
                 Log.SetLogLevel(Log.LogLevels.Debug, Properties.Settings.Default.DebugLoggingEnabled);
+#else
+                Log.Instance.Debug("------------------------------------------------------------------");
+                Log.Instance.Debug("------------------------------------------------------------------");
 #endif
             }
             catch (Exception ex)

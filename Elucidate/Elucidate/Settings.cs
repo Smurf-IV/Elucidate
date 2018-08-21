@@ -38,6 +38,7 @@ using System.Media;
 using System.Windows.Forms;
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
+using Elucidate.Objects;
 using Elucidate.Shared;
 using MoreLinq;
 
@@ -46,6 +47,10 @@ namespace Elucidate
     public partial class Settings : Form
     {
         private bool _unsavedChangesMade;
+
+        private bool _initializing = true;
+
+        private List<CoveragePath> _pathsOfInterest = new List<CoveragePath>();
 
         private bool UnsavedChangesMade
         {
@@ -58,6 +63,7 @@ namespace Elucidate
         }
 
         private readonly BindingList<AdvancedSettingsHelper> _advSettingsList = new BindingList<AdvancedSettingsHelper>();
+
         private int _ttIndex;
 
         public Settings()
@@ -98,11 +104,7 @@ namespace Elucidate
             parityLocation5.TextChanged -= parityLocation5_TextChanged;
             parityLocation6.TextChanged -= parityLocation6_TextChanged;
 
-            snapRAIDFileLocation.Text = Properties.Settings.Default.SnapRAIDFileLocation;
-            configFileLocation.Text = Properties.Settings.Default.ConfigFileLocation;
             StartTree();
-            Properties.Settings.Default.ConfigFileIsValid = ValidateData();
-            UnsavedChangesMade = false;
 
             parityLocation1.TextChanged += parityLocation1_TextChanged;
             parityLocation2.TextChanged += parityLocation2_TextChanged;
@@ -114,6 +116,19 @@ namespace Elucidate
 
         private void Settings_Shown(object sender, EventArgs e)
         {
+            snapRAIDFileLocation.Text = Properties.Settings.Default.SnapRAIDFileLocation;
+
+            configFileLocation.Text = Properties.Settings.Default.ConfigFileLocation;
+
+            ReadConfigDetails();
+
+            errorProvider1.Clear();
+
+            UnsavedChangesMade = false;
+
+            _initializing = false;
+
+            Properties.Settings.Default.ConfigFileIsValid = ValidateData();
         }
 
         #region driveAndDirTreeView
@@ -133,12 +148,12 @@ namespace Elucidate
                 Log.Instance.Debug("Now we need to add any children to the root node.");
 
                 Log.Instance.Debug("Start with drives if you have to search the entire computer.");
-                string[] drives = Environment.GetLogicalDrives();
-                foreach (string dr in drives)
+
+                // retrieve all storage devices
+                var storageDevices = StorageUtil.GetStorageDevices();
+                foreach (var storageDevice in storageDevices)
                 {
-                    Log.Instance.Debug(dr);
-                    DriveInfo di = new DriveInfo(dr);
-                    FillInDirectoryType(tvwRoot, di);
+                    FillInStorageDeviceDirectoryType(tvwRoot, storageDevice);
                 }
 
                 tvwRoot.Expand();
@@ -154,11 +169,13 @@ namespace Elucidate
             }
         }
 
-        private void FillInDirectoryType(TreeNode parentNode, DriveInfo di)
+        private void FillInStorageDeviceDirectoryType(TreeNode parentNode, StorageDevice storageDevice)
         {
-            if (di == null) return;
-            TreeNode thisNode = new TreeNode { Text = di.Name, SelectedImageIndex = 8 };
-            switch (di.DriveType)
+            if (storageDevice == null) return;
+
+            TreeNode thisNode = new TreeNode { Text = storageDevice.Caption, SelectedImageIndex = 8 };
+
+            switch (storageDevice.DriveType)
             {
                 //                     case DriveType.Unknown:
                 //                     case DriveType.NoRootDirectory:
@@ -183,11 +200,9 @@ namespace Elucidate
                     thisNode.ImageIndex = 4;
                     break;
             }
-            thisNode.Tag = di.RootDirectory;
-            if (di.IsReady)
-            {
-                thisNode.Nodes.Add("PH");
-            }
+
+            thisNode.Tag = new DirectoryInfo(storageDevice.Caption);
+            thisNode.Nodes.Add("PH");
             parentNode.Nodes.Add(thisNode);
         }
 
@@ -206,7 +221,7 @@ namespace Elucidate
             driveAndDirTreeView.SelectedNode = selected;
             if (selected != null)
             {
-                PerformSnapShotSourceAdd(selected);
+                PerformSnapShotSourceAddNode(selected);
             }
         }
 
@@ -218,27 +233,32 @@ namespace Elucidate
             return newPath;
         }
 
-        private void PerformSnapShotSourceAdd(TreeNode selected)
+        private void PerformSnapShotSourceAddNode(TreeNode selected)
         {
             string newPath = GetSelectedNodesPath(selected);
-            string newDevice = Path.GetPathRoot(newPath);
-            if (String.IsNullOrEmpty(newPath)) return;
+            string newDevice = StorageUtil.GetPathRoot(newPath);
+            if (string.IsNullOrEmpty(newPath)) return;
             if (!Directory.Exists(newPath))
             {
                 Log.Instance.Warn($"Data source not added. Path does not exist. Attempted to add [{newPath}]");
                 return;
             }
+
             // check if device is already added by an existing entry; a device cannot be entered more than once
             foreach (TreeNode node in snapShotSourcesTreeView.Nodes)
             {
-                string nodeDevice = Path.GetPathRoot(node.FullPath);
+                string nodeDevice = StorageUtil.GetPathRoot(node.FullPath);
+                Log.Instance.Debug($"adding new node, so compare, nodeDevice = {nodeDevice}");
                 if (newDevice != nodeDevice) continue;
                 Log.Instance.Warn($"Data source not added. The path is on a device for an existing path. Attempted to add [{newPath}] which is on the same device as the existing path [{node.FullPath}]");
                 MessageBoxExt.Show(this, $"The path is on a device for an existing path.\n\nExisting device path:\n{node.FullPath}", "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
+
             snapShotSourcesTreeView.Nodes.Add(new TreeNode(newPath, selected.ImageIndex, selected.ImageIndex));
+
             UnsavedChangesMade = true;
+
             driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
 
@@ -345,7 +365,7 @@ namespace Elucidate
 
         private void removeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DeleteNode();
+            PerformSnapShotSourceDeleteNode();
         }
 
         private void snapShotSourcesTreeView_KeyUp(object sender, KeyEventArgs e)
@@ -354,11 +374,11 @@ namespace Elucidate
             {
                 return;
             }
-            DeleteNode();
+            PerformSnapShotSourceDeleteNode();
             e.Handled = true;
         }
 
-        private void DeleteNode()
+        private void PerformSnapShotSourceDeleteNode()
         {
             TreeNode selected = snapShotSourcesTreeView.SelectedNode;
             if (selected != null)
@@ -385,7 +405,7 @@ namespace Elucidate
         {
             if (e.Data.GetData(typeof(TreeNode)) is TreeNode ud)
             {
-                PerformSnapShotSourceAdd(ud);
+                PerformSnapShotSourceAddNode(ud);
             }
         }
 
@@ -397,7 +417,7 @@ namespace Elucidate
             TreeNode tvwChild = new TreeNode { Text = dirInfo.Name, SelectedImageIndex = 8, ImageIndex = 7, Tag = dirInfo };
             driveAndDirTreeView.Nodes.Add(tvwChild);
             driveAndDirTreeView.SelectedNode = tvwChild;
-            PerformSnapShotSourceAdd(tvwChild);
+            PerformSnapShotSourceAddNode(tvwChild);
         }
 
         private void snapShotSourcesTreeView_MouseUp(object sender, MouseEventArgs e)
@@ -409,10 +429,43 @@ namespace Elucidate
 
         #endregion snapShotSourcesTreeView
 
+        private List<CoveragePath> GetPathsOfInterest()
+        {
+            List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
+
+            // SnapShotsource might be root or folders, so we handle both cases
+            foreach (TreeNode snapShotSource in snapShotSourcesTreeView.Nodes)
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    FullPath = Path.GetDirectoryName(snapShotSource.FullPath) ?? Path.GetFullPath(snapShotSource.FullPath),
+                    PathType = PathTypeEnum.Source
+                });
+            }
+
+            if (!string.IsNullOrEmpty(parityLocation1.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation1.Text), PathType = PathTypeEnum.Parity }); }
+
+            if (!string.IsNullOrEmpty(parityLocation2.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation2.Text), PathType = PathTypeEnum.Parity }); }
+
+            if (!string.IsNullOrEmpty(parityLocation3.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation3.Text), PathType = PathTypeEnum.Parity }); }
+
+            if (!string.IsNullOrEmpty(parityLocation4.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation4.Text), PathType = PathTypeEnum.Parity }); }
+
+            if (!string.IsNullOrEmpty(parityLocation5.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation5.Text), PathType = PathTypeEnum.Parity }); }
+        
+            if (!string.IsNullOrEmpty(parityLocation6.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation6.Text), PathType = PathTypeEnum.Parity }); }
+
+            return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
+        }
+
         private bool ValidateData()
         {
             errorProvider1.Clear();
+
+            if (_initializing) return true;
+
             bool isValid = true;
+
             if (!File.Exists(snapRAIDFileLocation.Text))
             {
                 isValid = false;
@@ -439,18 +492,25 @@ namespace Elucidate
             }
 
             List<string> deviceList = new List<string>();
+
             foreach (TreeNode node in snapShotSourcesTreeView.Nodes)
             {
                 node.BackColor = Color.Empty;
 
                 string errMsg = string.Empty;
 
+                //Log.Instance.Debug($"node tag {node.Tag}");
+                Log.Instance.Debug($"node fullpath = {node.FullPath}");
+                Log.Instance.Debug($"is fullpath root = {StorageUtil.IsPathRoot(node.FullPath)}");
+                Log.Instance.Debug($"fullpath root = {StorageUtil.GetPathRoot(node.FullPath)}");
+
                 // test if device already exists in list; SnapRAID only permits one device entry per device
-                if (deviceList.Contains(Path.GetPathRoot(node.FullPath)))
+                if (deviceList.Contains(StorageUtil.GetPathRoot(node.FullPath)))
                 {
                     errMsg = $"{node.Index} A device may only appear once in the data source list!";
                 }
-                deviceList.Add(Path.GetPathRoot(node.FullPath));
+
+                deviceList.Add(StorageUtil.GetPathRoot(node.FullPath));
 
                 // test is path exists
                 if (!Directory.Exists(node.FullPath))
@@ -482,6 +542,7 @@ namespace Elucidate
                 if (DialogResult.OK == ofd.ShowDialog())
                 {
                     snapRAIDFileLocation.Text = Path.GetFullPath(ofd.FileName);
+                    UnsavedChangesMade = true;
                 }
             }
         }
@@ -489,6 +550,7 @@ namespace Elucidate
         private void snapRAIDFileLocation_TextChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
+
             ValidateData();
         }
 
@@ -510,75 +572,83 @@ namespace Elucidate
 
         private void configFileLocation_TextChanged(object sender, EventArgs e)
         {
-            UnsavedChangesMade = true;
             ReadConfigDetails();
+
             ValidateData();
         }
 
         private void btnReset_Click(object sender, EventArgs e)
         {
             ReadConfigDetails();
+
             ValidateData();
         }
 
         private void ReadConfigDetails()
         {
-            exludedFilesView.Rows.Clear();
-
-            snapShotSourcesTreeView.Nodes.Clear();
-
-            ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text);
-
-            if (!File.Exists(configFileLocation.Text))
+            try
             {
-                if (Properties.Settings.Default.UseWindowsSettings)
+                exludedFilesView.Rows.Clear();
+
+                snapShotSourcesTreeView.Nodes.Clear();
+
+                ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+
+                if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
                 {
-                    exludedFilesView.Rows.Add(@"*.covefs");
-                    exludedFilesView.Rows.Add(@"*.unrecoverable");
-                    exludedFilesView.Rows.Add(@"Thumbs.db");
-                    exludedFilesView.Rows.Add(@"\$RECYCLE.BIN");
-                    exludedFilesView.Rows.Add(@"\System Volume Information");
-                    exludedFilesView.Rows.Add(@"\Program Files\");
-                    exludedFilesView.Rows.Add(@"\Program Files(x86)\");
-                    exludedFilesView.Rows.Add(@"\Windows\");
+                    if (Properties.Settings.Default.UseWindowsSettings)
+                    {
+                        exludedFilesView.Rows.Add(@"*.covefs");
+                        exludedFilesView.Rows.Add(@"*.unrecoverable");
+                        exludedFilesView.Rows.Add(@"Thumbs.db");
+                        exludedFilesView.Rows.Add(@"\$RECYCLE.BIN");
+                        exludedFilesView.Rows.Add(@"\System Volume Information");
+                        exludedFilesView.Rows.Add(@"\Program Files\");
+                        exludedFilesView.Rows.Add(@"\Program Files(x86)\");
+                        exludedFilesView.Rows.Add(@"\Windows\");
+                    }
+                    else
+                    {
+                        exludedFilesView.Rows.Add(@"/lost+found/");
+                        exludedFilesView.Rows.Add(@"/tmp/");
+                    }
                 }
                 else
                 {
-                    exludedFilesView.Rows.Add(@"/lost+found/");
-                    exludedFilesView.Rows.Add(@"/tmp/");
+                    if (!cfg.Read())
+                    {
+                        MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    IncludePatterns = cfg.IncludePatterns;
+                    numBlockSizeKB.Value = cfg.BlockSizeKB;
+                    _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState = cfg.Nohidden;
+                    numAutoSaveGB.Value = cfg.AutoSaveGB;
+                    foreach (string excludePattern in cfg.ExcludePatterns.Where(excludePattern => !string.IsNullOrWhiteSpace(excludePattern)))
+                    {
+                        exludedFilesView.Rows.Add(excludePattern);
+                    }
+                    foreach (string source in cfg.SnapShotSources.Where(source => !string.IsNullOrWhiteSpace(source)))
+                    {
+                        snapShotSourcesTreeView.Nodes.Add(new TreeNode(source, 7, 7));
+                    }
+                    parityLocation1.Text = cfg.ParityFile1;
+                    parityLocation2.Text = cfg.ParityFile2;
+                    parityLocation3.Text = cfg.ParityFile3;
+                    parityLocation4.Text = cfg.ParityFile4;
+                    parityLocation5.Text = cfg.ParityFile5;
+                    parityLocation6.Text = cfg.ParityFile6;
                 }
+
+                UnsavedChangesMade = false;
+
+                driveSpace.StartProcessing(GetPathsOfInterestFromForm());
             }
-            else
+            catch (Exception)
             {
-                if (!cfg.Read())
-                {
-                    MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                IncludePatterns = cfg.IncludePatterns;
-                numBlockSizeKB.Value = cfg.BlockSizeKB;
-                _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState = cfg.Nohidden;
-                numAutoSaveGB.Value = cfg.AutoSaveGB;
-                foreach (string excludePattern in cfg.ExcludePatterns.Where(excludePattern => !string.IsNullOrWhiteSpace(excludePattern)))
-                {
-                    exludedFilesView.Rows.Add(excludePattern);
-                }
-                foreach (string source in cfg.SnapShotSources.Where(source => !string.IsNullOrWhiteSpace(source)))
-                {
-                    snapShotSourcesTreeView.Nodes.Add(new TreeNode(source, 7, 7));
-                }
-                parityLocation1.Text = cfg.ParityFile1;
-                parityLocation2.Text = cfg.ParityFile2;
-                parityLocation3.Text = cfg.ParityFile3;
-                parityLocation4.Text = cfg.ParityFile4;
-                parityLocation5.Text = cfg.ParityFile5;
-                parityLocation6.Text = cfg.ParityFile6;
+                MessageBox.Show(@"Failed to read config file.", @"Config File");
             }
-
-            UnsavedChangesMade = false;
-
-            driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
 
         private List<CoveragePath> GetPathsOfInterestFromForm()
@@ -650,6 +720,156 @@ namespace Elucidate
         }
 
         private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text)
+                {
+                    IncludePatterns = IncludePatterns,
+                    BlockSizeKB = (uint)numBlockSizeKB.Value,
+                    Nohidden = _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState,
+                    AutoSaveGB = (uint)numAutoSaveGB.Value
+                };
+
+                cfg.ExcludePatterns.Clear();
+                cfg.SnapShotSources.Clear();
+                cfg.ContentFiles.Clear();
+
+                foreach (DataGridViewRow row in exludedFilesView.Rows)
+                {
+                    string value = $"{row.Cells[0].Value}";
+                    if (!string.IsNullOrWhiteSpace(value))
+                    {
+                        cfg.ExcludePatterns.Add(value);
+                    }
+                }
+
+                foreach (string text in snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text)
+                    .Where(text => !string.IsNullOrWhiteSpace(text)))
+                {
+                    cfg.SnapShotSources.Add(text);
+                    cfg.ContentFiles.Add(text);
+                }
+
+                switch (!string.IsNullOrEmpty(parityLocation1.Text.Trim()))
+                {
+                    case true:
+
+                        string trim1 = parityLocation1.Text.Trim();
+                        trim1 = MakeParityLocationFullFilePath(trim1);
+                        if (string.IsNullOrEmpty(trim1)) break;
+                        cfg.ParityFile1 = trim1;
+                        Util.CreateEmptyFile(trim1);
+                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim1));
+
+                        string trim2 = parityLocation2.Text.Trim();
+                        trim2 = MakeParityLocationFullFilePath(trim2);
+                        if (string.IsNullOrEmpty(trim2)) break;
+                        cfg.ParityFile2 = trim2;
+                        Util.CreateEmptyFile(trim2);
+                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim2));
+
+                        string trim3 = parityLocation3.Text.Trim();
+                        trim3 = MakeParityLocationFullFilePath(trim3);
+                        if (string.IsNullOrEmpty(trim3)) break;
+                        cfg.ParityFile3 = trim3;
+                        Util.CreateEmptyFile(trim3);
+                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim3));
+
+                        string trim4 = parityLocation4.Text.Trim();
+                        trim4 = MakeParityLocationFullFilePath(trim4);
+                        if (string.IsNullOrEmpty(trim4)) break;
+                        cfg.ParityFile4 = trim4;
+                        Util.CreateEmptyFile(trim4);
+                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim4));
+
+                        string trim5 = parityLocation5.Text.Trim();
+                        trim5 = MakeParityLocationFullFilePath(trim5);
+                        if (string.IsNullOrEmpty(trim5)) break;
+                        cfg.ParityFile5 = trim5;
+                        Util.CreateEmptyFile(trim5);
+                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim5));
+
+                        string trim6 = parityLocation6.Text.Trim();
+                        trim6 = MakeParityLocationFullFilePath(trim6);
+                        if (string.IsNullOrEmpty(trim6)) break;
+                        cfg.ParityFile6 = trim6;
+                        Util.CreateEmptyFile(trim6);
+                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim6));
+
+                        break;
+                }
+
+                // temp backup current config
+                if (File.Exists(configFileLocation.Text))
+                {
+                    File.Copy(configFileLocation.Text, $"{configFileLocation.Text}.temp", overwrite: true);
+                }
+
+                string writeResult;
+                if (!string.IsNullOrEmpty(writeResult = cfg.Write()))
+                {
+                    MessageBoxExt.Show(this, writeResult, "Config Write Error:", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                else
+                {
+                    // save the Elucidate settings
+                    Properties.Settings.Default.ConfigFileIsValid = ValidateData();
+                    Properties.Settings.Default.SnapRAIDFileLocation = snapRAIDFileLocation.Text;
+                    Properties.Settings.Default.ConfigFileLocation = configFileLocation.Text;
+                    Properties.Settings.Default.IsDisplayOutputEnabled = _advSettingsList[ConfigFileHelper.CHECKBOX_DISPLAY_OUTPUT_ENABLED].CheckState;
+                    Properties.Settings.Default.UseVerboseMode = _advSettingsList[ConfigFileHelper.CHECKBOX_USE_VERBOSE_MODE].CheckState;
+                    Properties.Settings.Default.FindByNameInSync = _advSettingsList[ConfigFileHelper.CHECKBOX_FIND_BY_NAME_IN_SYNC].CheckState;
+                    Properties.Settings.Default.HiddenFilesExcluded = _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState;
+
+                    Properties.Settings.Default.DebugLoggingEnabled = _advSettingsList[ConfigFileHelper.CHECKBOX_DEBUG_LOGGING_ENABLED].CheckState;
+                    Log.SetLogLevel(Log.LogLevels.Debug, Properties.Settings.Default.DebugLoggingEnabled);
+
+                    Properties.Settings.Default.Save();
+                    UnsavedChangesMade = false;
+
+                    // keep config backup - by day, otherwise include minute, otherwise include second
+                    var backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMdd}";
+                    if (File.Exists(backupConfig))
+                        backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmm}";
+                    if (File.Exists(backupConfig))
+                        backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmmss}";
+                    if (!File.Exists($"{configFileLocation.Text}.temp")) return;
+                    File.Copy($"{configFileLocation.Text}.temp", backupConfig);
+                    File.Delete($"{configFileLocation.Text}.temp");
+
+                    driveSpace.RefreshGraph(GetPathsOfInterest());
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.ReportException(ex, "Failed to save config file.");
+            }
+        }
+
+        private string MakeParityLocationFullFilePath(string parityPath)
+        {
+            if (string.IsNullOrEmpty(parityPath)) return string.Empty;
+
+            try
+            {
+                // get the file attributes for file or directory
+                FileAttributes attr = File.GetAttributes(parityPath);
+
+                return attr.HasFlag(FileAttributes.Directory)
+                    ? Path.Combine(parityPath, "SnapRAID.parity")
+                    : parityPath;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return string.Empty;
+        }
+
+        private void btnSave_Click2(object sender, EventArgs e)
         {
             try
             {
@@ -763,7 +983,7 @@ namespace Elucidate
                     File.Copy($"{configFileLocation.Text}.temp", backupConfig);
                     File.Delete($"{configFileLocation.Text}.temp");
 
-                    driveSpace.RefreshGraph();
+                    driveSpace.RefreshGraph(GetPathsOfInterest());
                 }
             }
             catch (Exception ex)
@@ -771,7 +991,7 @@ namespace Elucidate
                 ExceptionHandler.ReportException(ex, "Failed to save config file.");
             }
         }
-        
+
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!UnsavedChangesMade || (e.CloseReason != CloseReason.UserClosing)) return;
@@ -784,8 +1004,8 @@ namespace Elucidate
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            _advSettingsList[e.Index].CheckState = (e.NewValue == CheckState.Checked);
             UnsavedChangesMade = true;
+            _advSettingsList[e.Index].CheckState = (e.NewValue == CheckState.Checked);
         }
 
         private void findParity1_Click(object sender, EventArgs e)
@@ -959,6 +1179,20 @@ namespace Elucidate
                 }
             }
             calc.ShowDialog(this);
+        }
+
+        private void numBlockSizeKB_ValueChanged(object sender, EventArgs e)
+        {
+            UnsavedChangesMade = true;
+            if (numBlockSizeKB.Value < Constants.MinBlockSize) numBlockSizeKB.Value = Constants.MinBlockSize;
+            if (numBlockSizeKB.Value > Constants.MaxBlockSize) numBlockSizeKB.Value = Constants.MaxBlockSize;
+        }
+
+        private void numAutoSaveGB_ValueChanged(object sender, EventArgs e)
+        {
+            UnsavedChangesMade = true;
+            if (numAutoSaveGB.Value < Constants.MinAutoSave) numBlockSizeKB.Value = Constants.MinAutoSave;
+            if (numAutoSaveGB.Value > Constants.MaxAutoSave) numBlockSizeKB.Value = Constants.MaxAutoSave;
         }
     }
 }

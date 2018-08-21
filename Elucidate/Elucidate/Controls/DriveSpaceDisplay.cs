@@ -108,6 +108,7 @@ namespace Elucidate.Controls
                     _snapRaidConfig.Read();
                     pathsOfInterest = GetPathsOfInterest();
                 }
+
                 StartProcessing(pathsOfInterest);
             }
             catch (Exception ex)
@@ -121,6 +122,7 @@ namespace Elucidate.Controls
             ShowXAxisText = true;
             ShowLegend = true;
             ShowYAxisText = true;
+
             if (pathsOfInterest == null)
             {
                 pathsOfInterest = GetPathsOfInterest();
@@ -183,6 +185,7 @@ namespace Elucidate.Controls
         private void ClearExpectedListMethodInvoker()
         {
             _chartDataList.Clear();
+
             foreach (Series series in chart1.Series)
             {
                 series.Points.Clear();
@@ -241,7 +244,9 @@ namespace Elucidate.Controls
         private string GetLargestWholenumberSymbolOfChartData()
         {
             List<string> availableSymbols = new List<string> { "", "b", "B", "KB", "MB", "GB", "TB" };
+
             string currentMaxSymbol = string.Empty;
+
             foreach (var item in _chartDataList)
             {
                 string[] symbols =
@@ -258,7 +263,9 @@ namespace Elucidate.Controls
                     }
                 }
             }
+
             Log.Instance.Debug($"GetLargestWholenumberSymbolOfChartData is {currentMaxSymbol}");
+
             return currentMaxSymbol;
         }
 
@@ -346,7 +353,7 @@ namespace Elucidate.Controls
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    FullPath = Path.GetDirectoryName(snapShotSource) ?? Path.GetFullPath(snapShotSource),
+                    FullPath = Path.GetDirectoryName(snapShotSource) ?? StorageUtil.GetPathRoot(snapShotSource),
                     PathType = PathTypeEnum.Source
                 });
             }

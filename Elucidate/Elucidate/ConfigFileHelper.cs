@@ -33,13 +33,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Elucidate.HelperClasses;
 using Elucidate.Logging;
+using MoreLinq.Extensions;
 
 namespace Elucidate
 {
     public class ConfigFileHelper
     {
-        private string ConfigPath { get; set; }
+        public bool IsValid { get; set; }
+        public string ConfigPath { get; set; }
 
         public bool ConfigFileExists => File.Exists(ConfigPath);
 
@@ -75,13 +78,53 @@ namespace Elucidate
         /// constructor
         /// </summary>
         /// <param name="configPath"></param>
-        public ConfigFileHelper(string configPath)
+        public ConfigFileHelper(string configPath = null)
         {
             ConfigPath = configPath;
             ContentFiles = new List<string>();
             SnapShotSources = new List<string>();
             ExcludePatterns = new List<string>();
             IncludePatterns = new List<string>();
+            if (!string.IsNullOrEmpty(configPath))
+            {
+                LoadConfigFile(configPath);
+            }
+        }
+        
+        public bool LoadConfigFile(string configFile)
+        {
+            Log.Instance.Debug($"Loading config file {configFile}");
+
+            ConfigPath = configFile;
+
+            if (Read())
+            {
+                if (Validate())
+                {
+                    IsValid = true;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool Validate()
+        {
+            // data sources must be unique devices
+            List<string> roots = new List<string>();
+            foreach (string item in SnapShotSources)
+            {
+                string root = StorageUtil.GetPathRoot(item);
+                if (roots.Contains(root))
+                {
+                    return false; // a data source overlaps
+                }
+                roots.Add(root);
+            }
+            
+            // all validation steps have passed
+            return true;
         }
 
         /// <summary>
@@ -90,9 +133,16 @@ namespace Elucidate
         /// <returns>an empty string if no exception occurrs</returns>
         public bool Read()
         {
+            Log.Instance.Debug("ConfigFileHelper.Read() ...");
+
             try
             {
                 if (!ConfigFileExists) return false;
+
+                bool isConfigRead = true;
+
+                // it is criticial for the order to be preserved, d1, d2, d3 etc so we treat the data sources carefully to preserve the order
+                Dictionary<string, string> dataSources = new Dictionary<string, string>();
 
                 ParityFile1 = string.Empty;
                 ParityFile2 = string.Empty;
@@ -104,8 +154,8 @@ namespace Elucidate
                 SnapShotSources.Clear();
                 ExcludePatterns.Clear();
                 IncludePatterns.Clear();
-                BlockSizeKB = 256;
-                AutoSaveGB = 250;
+                BlockSizeKB = Constants.DefaultBlockSize;
+                AutoSaveGB = Constants.DefaultAutoSave;
 
                 foreach (string line in File.ReadLines(ConfigPath))
                 {
@@ -162,9 +212,16 @@ namespace Elucidate
                             break;
 
                         case "disk":
-                            // Step over the disk name
+                            // get the data name, d1,d2,d3 etc
+                            string diskName = configItemValue.Split(' ')[0];
+
+                            // get the path
                             int diskSplitIndex = configItemValue.IndexOf(' ');
-                            SnapShotSources.Add(configItemValue.Substring(diskSplitIndex + 1));
+                            string diskPath = configItemValue.Substring(diskSplitIndex + 1);
+
+                            if (!string.IsNullOrEmpty(diskName) && !string.IsNullOrEmpty(diskPath))
+                                dataSources.Add(diskName, diskPath);
+                            
                             break;
 
                         case "exclude":
@@ -177,24 +234,66 @@ namespace Elucidate
 
                         case "block_size":
                             BlockSizeKB = uint.Parse(configItemValue);
+                            if (BlockSizeKB < Constants.MinBlockSize || BlockSizeKB > Constants.MaxBlockSize)
+                                isConfigRead = false;
+                            break;
+
+                        case "autosave":
+                            AutoSaveGB = uint.Parse(configItemValue);
+                            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                            if (AutoSaveGB < Constants.MinAutoSave || AutoSaveGB > Constants.MaxAutoSave)
+                                isConfigRead = false;
                             break;
 
                         case "nohidden":
                             Nohidden = true;
                             break;
-
-                        case "autosave":
-                            AutoSaveGB = uint.Parse(configItemValue);
-                            break;
                     }
                 }
+
+                // special handling of data sources since order preservation is extremely important
+                IOrderedEnumerable<KeyValuePair<string, string>> dataSourcesOrdered = dataSources.OrderBy(a => a.Key);
+                foreach (var item in dataSourcesOrdered)
+                {
+                    SnapShotSources.Add(item.Value);
+                }
+
+                return isConfigRead;
             }
             catch (Exception ex)
             {
                 Log.Instance.Error(ex);
                 return false;
             }
-            return true;
+        }
+        
+        public List<CoveragePath> GetPathsOfInterest()
+        {
+            List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
+
+            // SnapShotsource might be root or folders, so we handle both cases
+            foreach (string snapShotSource in SnapShotSources)
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    FullPath = Path.GetDirectoryName(snapShotSource) ?? Path.GetFullPath(snapShotSource),
+                    PathType = PathTypeEnum.Source
+                });
+            }
+
+            if (!string.IsNullOrEmpty(ParityFile1)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile1), PathType = PathTypeEnum.Parity }); }
+
+            if (!string.IsNullOrEmpty(ParityFile2)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile2), PathType = PathTypeEnum.Parity }); }
+
+            if (!string.IsNullOrEmpty(ParityFile3)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile3), PathType = PathTypeEnum.Parity }); }
+
+            if (!string.IsNullOrEmpty(ParityFile4)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile4), PathType = PathTypeEnum.Parity }); }
+
+            if (!string.IsNullOrEmpty(ParityFile5)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile5), PathType = PathTypeEnum.Parity }); }
+
+            if (!string.IsNullOrEmpty(ParityFile6)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile6), PathType = PathTypeEnum.Parity }); }
+
+            return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
         }
 
         /// <summary>
@@ -265,13 +364,16 @@ namespace Elucidate
 
                 // blocksize
                 fileContents.Append(Section8);
-                fileContents.AppendLine("block_size " + BlockSizeKB);
+                BlockSizeKB = BlockSizeKB >= Constants.MinBlockSize && BlockSizeKB <= Constants.MaxBlockSize ? BlockSizeKB : Constants.DefaultBlockSize;
+                fileContents.AppendLine($"block_size {BlockSizeKB}");
                 
                 // hashsize
                 fileContents.Append(Section9);
                 
                 // autosave
                 fileContents.Append(Section10);
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+                AutoSaveGB = AutoSaveGB >= Constants.MinAutoSave && AutoSaveGB <= Constants.MaxAutoSave ? AutoSaveGB : Constants.DefaultAutoSave;
                 fileContents.AppendLine("autosave " + AutoSaveGB);
 
                 // pool
