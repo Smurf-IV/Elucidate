@@ -62,6 +62,32 @@ namespace Elucidate
             AppUpdate.NewVersonInstallReady += VersionCheck_NewVersonInstallReady;
         }
 
+        private void ElucidateForm_Load(object sender, EventArgs e)
+        {
+            if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
+            {
+                Properties.Settings.Default.ConfigFileIsValid = false;
+            }
+
+            VersionIndicator.Text = AppUpdate.GetInstalledVersion();
+
+            // check for new version and notify if available
+            if (AppUpdate.IsNewVersionAvailable())
+            {
+                MenuItemNewVersionAvailable.Visible = true;
+            }
+        }
+
+        private void ElucidateForm_Shown(object sender, EventArgs e)
+        {
+            if (File.Exists(Properties.Settings.Default.ConfigFileLocation))
+            {
+                LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
+            }
+
+            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
+        }
+
         private void VersionCheck_NewVersonAvailable(object sender, EventArgs e)
         {
             MenuItemNewVersionReadyForInstall.Enabled = false;
@@ -91,6 +117,7 @@ namespace Elucidate
 
         private void SetCommonButtonsEnabledState(bool enabled)
         {
+            editSnapRAIDConfigToolStripMenuItem.Enabled = enabled;
             btnDiff.Enabled = enabled;
             btnSync.Enabled = enabled;
             btnCheck.Enabled = enabled;
@@ -99,7 +126,6 @@ namespace Elucidate
             btnFix.Enabled = enabled;
             btnDupFinder.Enabled = enabled;
             btnForceFullSync.Enabled = enabled;
-            editSnapRAIDConfigToolStripMenuItem.Enabled = enabled;
             logViewToolStripMenuItem.Enabled = enabled;
             if (enabled)
             {
@@ -139,8 +165,6 @@ namespace Elucidate
         private void EnableIfValid(bool enabled)
         {
             SetCommonButtonsEnabledState(enabled);
-            // keep the config menu item accessible
-            editSnapRAIDConfigToolStripMenuItem.Enabled = true;
         }
 
         #region Main Menu Toolbar Handlers
@@ -259,28 +283,6 @@ namespace Elucidate
             Properties.Settings.Default.Save();
         }
 
-        private void ElucidateForm_Load(object sender, EventArgs e)
-        {
-            if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
-            {
-                Properties.Settings.Default.ConfigFileIsValid = false;
-            }
-
-            VersionIndicator.Text = AppUpdate.GetInstalledVersion();
-
-            // check for new version and notify if available
-            if (AppUpdate.IsNewVersionAvailable())
-            {
-                MenuItemNewVersionAvailable.Visible = true;
-            }
-        }
-
-        private void ElucidateForm_Shown(object sender, EventArgs e)
-        {
-            LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
-            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
-        }
-
         private void installNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AppUpdate.VersionInfo info = AppUpdate.GetLatestVersionInfo();
@@ -318,9 +320,12 @@ namespace Elucidate
 
         private void openSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = @"Config Files|*.conf*|All files (*.*)|*.*";
-            openFileDialog1.Title = @"Select a Config File";
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                Filter = @"Config Files|*.conf*|All files (*.*)|*.*",
+                Title = @"Select a Config File"
+            };
+
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 LoadConfigFile(openFileDialog1.FileName);
@@ -330,6 +335,7 @@ namespace Elucidate
         private void LoadConfigFile(string configFile)
         {
             _srConfig.LoadConfigFile(configFile);
+
             if (_srConfig.IsValid)
             {
                 Properties.Settings.Default.ConfigFileIsValid = true;
@@ -342,10 +348,6 @@ namespace Elucidate
                 Properties.Settings.Default.ConfigFileIsValid = false;
                 Properties.Settings.Default.ConfigFileLocation = string.Empty;
                 return;
-
-                //MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //Properties.Settings.Default.ConfigFileIsValid = false;
-                //return;
             }
 
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
@@ -367,7 +369,7 @@ namespace Elucidate
         {
             if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
 
-            var settingsForm = new Settings();
+            Settings settingsForm = new Settings();
 
             if (!Properties.Settings.Default.ConfigFileIsValid)
             {
@@ -388,7 +390,15 @@ namespace Elucidate
 
         private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Properties.Settings.Default.Save();
+        }
 
+        private void closeSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(string.Empty); });
+            Properties.Settings.Default.ConfigFileLocation = string.Empty;
+            Properties.Settings.Default.ConfigFileIsValid = false;
+            EnableIfValid(false);
         }
     }
 }

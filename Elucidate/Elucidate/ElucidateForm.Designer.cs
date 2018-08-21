@@ -76,6 +76,7 @@ namespace Elucidate
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemNewVersionReadyForInstall = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeSnapRAIDConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.tabCoveragePage.SuspendLayout();
             this.tabSchedulePage.SuspendLayout();
@@ -616,6 +617,7 @@ namespace Elucidate
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openSnapRAIDConfigToolStripMenuItem,
             this.editSnapRAIDConfigToolStripMenuItem,
+            this.closeSnapRAIDConfigToolStripMenuItem,
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -662,6 +664,13 @@ namespace Elucidate
             this.MenuItemNewVersionReadyForInstall.Text = "New Version Ready For Install";
             this.MenuItemNewVersionReadyForInstall.Visible = false;
             this.MenuItemNewVersionReadyForInstall.Click += new System.EventHandler(this.MenuItemNewVersionReadyForInstall_Click);
+            // 
+            // closeSnapRAIDConfigToolStripMenuItem
+            // 
+            this.closeSnapRAIDConfigToolStripMenuItem.Name = "closeSnapRAIDConfigToolStripMenuItem";
+            this.closeSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.closeSnapRAIDConfigToolStripMenuItem.Text = "Close SnapRAID Config";
+            this.closeSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.closeSnapRAIDConfigToolStripMenuItem_Click);
             // 
             // ElucidateForm
             // 
@@ -747,6 +756,7 @@ namespace Elucidate
         private ToolStripMenuItem editSnapRAIDConfigToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem closeSnapRAIDConfigToolStripMenuItem;
     }
 }
 
