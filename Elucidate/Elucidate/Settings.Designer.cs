@@ -37,7 +37,7 @@ namespace Elucidate
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.DRUnit_NewNode = new System.Windows.Forms.ToolStripMenuItem();
-            this.driveAndDirTreeView = new System.Windows.Forms.TreeView();
+            this.driveAndDirTreeView = new BufferedTreeView();
             this.drivesAndDirectoriesMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.refreshStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +64,7 @@ namespace Elucidate
             this.findParity1 = new System.Windows.Forms.Button();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.snapShotSourcesTreeView = new System.Windows.Forms.TreeView();
+            this.snapShotSourcesTreeView = new BufferedTreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -893,7 +893,7 @@ namespace Elucidate
       #endregion
 
       private ToolStripMenuItem DRUnit_NewNode;
-      private TreeView driveAndDirTreeView;
+      private BufferedTreeView driveAndDirTreeView;
       private ContextMenuStrip drivesAndDirectoriesMenu;
       private ToolStripMenuItem refreshStripMenuItem;
       private ToolStripMenuItem toolStripMenuItem1;
@@ -903,7 +903,7 @@ namespace Elucidate
       private GroupBox groupBox2;
       private ToolStripMenuItem removeToolStripMenuItem;
       private ContextMenuStrip SnapShotsMenu;
-      private TreeView snapShotSourcesTreeView;
+      private BufferedTreeView snapShotSourcesTreeView;
       private GroupBox groupBox1;
       private SplitContainer splitContainer1;
       private TableLayoutPanel tableLayoutPanel1;

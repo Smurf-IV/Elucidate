@@ -281,9 +281,6 @@ namespace Elucidate
 
         private void driveAndDirTreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            Enabled = false;
-            UseWaitCursor = true;
-
             try
             {
                 Log.Instance.Trace("Remove the placeholder node.");
@@ -298,11 +295,6 @@ namespace Elucidate
             catch (Exception ex)
             {
                 ExceptionHandler.ReportException(ex);
-            }
-            finally
-            {
-                Enabled = true;
-                UseWaitCursor = false;
             }
         }
 
