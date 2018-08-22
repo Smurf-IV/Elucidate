@@ -268,7 +268,7 @@ namespace Elucidate
             this.parityLocation6.Size = new System.Drawing.Size(473, 22);
             this.parityLocation6.TabIndex = 11;
             this.toolTip1.SetToolTip(this.parityLocation6, "Optional disk failure protection root location.");
-            this.parityLocation6.TextChanged += new System.EventHandler(this.parityLocation6_TextChanged);
+            this.parityLocation6.Leave += new System.EventHandler(this.parityLocation6_Leave);
             // 
             // parityLocation5
             // 
@@ -284,7 +284,7 @@ namespace Elucidate
             this.parityLocation5.Size = new System.Drawing.Size(473, 22);
             this.parityLocation5.TabIndex = 9;
             this.toolTip1.SetToolTip(this.parityLocation5, "Optional disk failure protection root location.");
-            this.parityLocation5.TextChanged += new System.EventHandler(this.parityLocation5_TextChanged);
+            this.parityLocation5.Leave += new System.EventHandler(this.parityLocation5_Leave);
             // 
             // parityLocation4
             // 
@@ -300,7 +300,7 @@ namespace Elucidate
             this.parityLocation4.Size = new System.Drawing.Size(473, 22);
             this.parityLocation4.TabIndex = 7;
             this.toolTip1.SetToolTip(this.parityLocation4, "Optional disk failure protection root location.");
-            this.parityLocation4.TextChanged += new System.EventHandler(this.parityLocation4_TextChanged);
+            this.parityLocation4.Leave += new System.EventHandler(this.parityLocation4_Leave);
             // 
             // findParity3
             // 
@@ -369,7 +369,7 @@ namespace Elucidate
             this.parityLocation3.Size = new System.Drawing.Size(473, 22);
             this.parityLocation3.TabIndex = 5;
             this.toolTip1.SetToolTip(this.parityLocation3, "Optional disk failure protection root location.");
-            this.parityLocation3.TextChanged += new System.EventHandler(this.parityLocation3_TextChanged);
+            this.parityLocation3.Leave += new System.EventHandler(this.parityLocation3_Leave);
             // 
             // labelParity2
             // 
@@ -395,7 +395,7 @@ namespace Elucidate
             this.parityLocation2.Size = new System.Drawing.Size(473, 22);
             this.parityLocation2.TabIndex = 3;
             this.toolTip1.SetToolTip(this.parityLocation2, "Optional disk failure protection root location.");
-            this.parityLocation2.TextChanged += new System.EventHandler(this.parityLocation2_TextChanged);
+            this.parityLocation2.Leave += new System.EventHandler(this.parityLocation2_Leave);
             // 
             // findParity2
             // 
@@ -435,7 +435,7 @@ namespace Elucidate
             this.parityLocation1.TabIndex = 1;
             this.parityLocation1.Text = "Z:\\";
             this.toolTip1.SetToolTip(this.parityLocation1, "Mandatory root location for minimum protection");
-            this.parityLocation1.TextChanged += new System.EventHandler(this.parityLocation1_TextChanged);
+            this.parityLocation1.Leave += new System.EventHandler(this.parityLocation1_Leave);
             // 
             // findParity1
             // 

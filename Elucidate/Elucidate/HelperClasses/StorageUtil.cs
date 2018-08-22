@@ -9,6 +9,13 @@ namespace Elucidate.HelperClasses
 {
     public static class StorageUtil
     {
+        public static string NormalizePath(string path)
+        {
+            return Path.GetFullPath(new Uri(path).LocalPath)
+                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                .ToUpperInvariant();
+        }
+
         public static bool IsPathRoot(string path)
         {
             if (string.IsNullOrEmpty(path)) return false;

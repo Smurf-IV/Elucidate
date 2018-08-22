@@ -97,21 +97,7 @@ namespace Elucidate
 
         private void Settings_Load(object sender, EventArgs e)
         {
-            parityLocation1.TextChanged -= parityLocation1_TextChanged;
-            parityLocation2.TextChanged -= parityLocation2_TextChanged;
-            parityLocation3.TextChanged -= parityLocation3_TextChanged;
-            parityLocation4.TextChanged -= parityLocation4_TextChanged;
-            parityLocation5.TextChanged -= parityLocation5_TextChanged;
-            parityLocation6.TextChanged -= parityLocation6_TextChanged;
-
             StartTree();
-
-            parityLocation1.TextChanged += parityLocation1_TextChanged;
-            parityLocation2.TextChanged += parityLocation2_TextChanged;
-            parityLocation3.TextChanged += parityLocation3_TextChanged;
-            parityLocation4.TextChanged += parityLocation4_TextChanged;
-            parityLocation5.TextChanged += parityLocation5_TextChanged;
-            parityLocation6.TextChanged += parityLocation6_TextChanged;
         }
 
         private void Settings_Shown(object sender, EventArgs e)
@@ -653,70 +639,79 @@ namespace Elucidate
 
         private List<CoveragePath> GetPathsOfInterestFromForm()
         {
-            var paths = (from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList();
-
-            List<CoveragePath> pathsOfInterest = paths.Select(
-                path => new CoveragePath
-                {
-                    FullPath = path,
-                    PathType = PathTypeEnum.Source
-                }).ToList();
-
-            if (!string.IsNullOrEmpty(parityLocation1.Text))
+            try
             {
-                pathsOfInterest.Add(new CoveragePath
+                var paths = (from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList();
+
+                List<CoveragePath> pathsOfInterest = paths.Select(
+                    path => new CoveragePath
+                    {
+                        FullPath = path,
+                        PathType = PathTypeEnum.Source
+                    }).ToList();
+
+                if (!string.IsNullOrEmpty(parityLocation1.Text))
                 {
-                    FullPath = Path.GetFullPath(parityLocation1.Text),
-                    PathType = PathTypeEnum.Parity
-                });
+                    pathsOfInterest.Add(new CoveragePath
+                    {
+                        FullPath = Path.GetFullPath(parityLocation1.Text),
+                        PathType = PathTypeEnum.Parity
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(parityLocation2.Text))
+                {
+                    pathsOfInterest.Add(new CoveragePath
+                    {
+                        FullPath = Path.GetFullPath(parityLocation2.Text),
+                        PathType = PathTypeEnum.Parity
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(parityLocation3.Text))
+                {
+                    pathsOfInterest.Add(new CoveragePath
+                    {
+                        FullPath = Path.GetFullPath(parityLocation3.Text),
+                        PathType = PathTypeEnum.Parity
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(parityLocation4.Text))
+                {
+                    pathsOfInterest.Add(new CoveragePath
+                    {
+                        FullPath = Path.GetFullPath(parityLocation4.Text),
+                        PathType = PathTypeEnum.Parity
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(parityLocation5.Text))
+                {
+                    pathsOfInterest.Add(new CoveragePath
+                    {
+                        FullPath = Path.GetFullPath(parityLocation5.Text),
+                        PathType = PathTypeEnum.Parity
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(parityLocation6.Text))
+                {
+                    pathsOfInterest.Add(new CoveragePath
+                    {
+                        FullPath = Path.GetFullPath(parityLocation6.Text),
+                        PathType = PathTypeEnum.Parity
+                    });
+                }
+
+                return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(s => s.Drive).ToList();
+            }
+            catch
+            {
+                // ignored
             }
 
-            if (!string.IsNullOrEmpty(parityLocation2.Text))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(parityLocation2.Text),
-                    PathType = PathTypeEnum.Parity
-                });
-            }
-
-            if (!string.IsNullOrEmpty(parityLocation3.Text))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(parityLocation3.Text),
-                    PathType = PathTypeEnum.Parity
-                });
-            }
-
-            if (!string.IsNullOrEmpty(parityLocation4.Text))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(parityLocation4.Text),
-                    PathType = PathTypeEnum.Parity
-                });
-            }
-
-            if (!string.IsNullOrEmpty(parityLocation5.Text))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(parityLocation5.Text),
-                    PathType = PathTypeEnum.Parity
-                });
-            }
-
-            if (!string.IsNullOrEmpty(parityLocation6.Text))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(parityLocation6.Text),
-                    PathType = PathTypeEnum.Parity
-                });
-            }
-
-            return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(s => s.Drive).ToList();
+            return null;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -1062,88 +1057,6 @@ namespace Elucidate
             driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
 
-        private void parityLocation1_TextChanged(object sender, EventArgs e)
-        {
-            UnsavedChangesMade = true;
-            if (!(sender is TextBox)) return;
-            RefreshDriveSspaceDisplayUsingFormData();
-        }
-
-        private void parityLocation2_TextChanged(object sender, EventArgs e)
-        {
-            UnsavedChangesMade = true;
-            if (!(sender is TextBox textBox)) return;
-            RefreshDriveSspaceDisplayUsingFormData();
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-            toolTip1.SetToolTip(parityLocation2, tooltip);
-            toolTip1.SetToolTip(findParity2, tooltip);
-            toolTip1.SetToolTip(labelParity2, tooltip);
-        }
-
-        private void parityLocation3_TextChanged(object sender, EventArgs e)
-        {
-            UnsavedChangesMade = true;
-            if (!(sender is TextBox textBox)) return;
-            RefreshDriveSspaceDisplayUsingFormData();
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-            toolTip1.SetToolTip(parityLocation3, tooltip);
-            toolTip1.SetToolTip(findParity3, tooltip);
-            toolTip1.SetToolTip(labelParity3, tooltip);
-        }
-
-        private void parityLocation4_TextChanged(object sender, EventArgs e)
-        {
-            UnsavedChangesMade = true;
-            if (!(sender is TextBox textBox)) return;
-            RefreshDriveSspaceDisplayUsingFormData();
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-            toolTip1.SetToolTip(parityLocation4, tooltip);
-            toolTip1.SetToolTip(findParity4, tooltip);
-            toolTip1.SetToolTip(labelParity4, tooltip);
-        }
-
-        private void parityLocation5_TextChanged(object sender, EventArgs e)
-        {
-            UnsavedChangesMade = true;
-            if (!(sender is TextBox textBox)) return;
-            RefreshDriveSspaceDisplayUsingFormData();
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-            toolTip1.SetToolTip(parityLocation5, tooltip);
-            toolTip1.SetToolTip(findParity5, tooltip);
-            toolTip1.SetToolTip(labelParity5, tooltip);
-        }
-
-        private void parityLocation6_TextChanged(object sender, EventArgs e)
-        {
-            UnsavedChangesMade = true;
-            if (!(sender is TextBox textBox)) return;
-            RefreshDriveSspaceDisplayUsingFormData();
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-            toolTip1.SetToolTip(parityLocation6, tooltip);
-            toolTip1.SetToolTip(findParity6, tooltip);
-            toolTip1.SetToolTip(labelParity6, tooltip);
-        }
-
         private void checkedListBox1_MouseMove(object sender, MouseEventArgs e)
         {
             //Make ttIndex a global integer variable to store index of item currently showing tooltip.
@@ -1193,6 +1106,109 @@ namespace Elucidate
             UnsavedChangesMade = true;
             if (numAutoSaveGB.Value < Constants.MinAutoSave) numBlockSizeKB.Value = Constants.MinAutoSave;
             if (numAutoSaveGB.Value > Constants.MaxAutoSave) numBlockSizeKB.Value = Constants.MaxAutoSave;
+        }
+
+        private void parityLocation1_Leave(object sender, EventArgs e)
+        {
+            if (!(sender is TextBox textBox)) return;
+            ParityLocationChanged(textBox.Text);
+        }
+
+        private void parityLocation2_Leave(object sender, EventArgs e)
+        {
+            if (!(sender is TextBox textBox)) return;
+
+            ParityLocationChanged(textBox.Text);
+
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
+            {
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
+            }
+            toolTip1.SetToolTip(parityLocation2, tooltip);
+            toolTip1.SetToolTip(findParity2, tooltip);
+            toolTip1.SetToolTip(labelParity2, tooltip);
+        }
+
+        private void parityLocation3_Leave(object sender, EventArgs e)
+        {
+            if (!(sender is TextBox textBox)) return;
+
+            ParityLocationChanged(textBox.Text);
+
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
+            {
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
+            }
+            toolTip1.SetToolTip(parityLocation3, tooltip);
+            toolTip1.SetToolTip(findParity3, tooltip);
+            toolTip1.SetToolTip(labelParity3, tooltip);
+        }
+
+        private void parityLocation4_Leave(object sender, EventArgs e)
+        {
+            if (!(sender is TextBox textBox)) return;
+
+            ParityLocationChanged(textBox.Text);
+
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
+            {
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
+            }
+            toolTip1.SetToolTip(parityLocation3, tooltip);
+            toolTip1.SetToolTip(findParity4, tooltip);
+            toolTip1.SetToolTip(labelParity4, tooltip);
+        }
+
+        private void parityLocation5_Leave(object sender, EventArgs e)
+        {
+            if (!(sender is TextBox textBox)) return;
+
+            ParityLocationChanged(textBox.Text);
+
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
+            {
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
+            }
+            toolTip1.SetToolTip(parityLocation3, tooltip);
+            toolTip1.SetToolTip(findParity5, tooltip);
+            toolTip1.SetToolTip(labelParity5, tooltip);
+        }
+
+        private void parityLocation6_Leave(object sender, EventArgs e)
+        {
+            if (!(sender is TextBox textBox)) return;
+
+            ParityLocationChanged(textBox.Text);
+
+            string tooltip = "Optional disk failure protection root location.";
+            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
+            {
+                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
+            }
+            toolTip1.SetToolTip(parityLocation3, tooltip);
+            toolTip1.SetToolTip(findParity6, tooltip);
+            toolTip1.SetToolTip(labelParity6, tooltip);
+        }
+
+        private void ParityLocationChanged(string textBoxText)
+        {
+            UnsavedChangesMade = true;
+
+            if (!string.IsNullOrEmpty(textBoxText))
+            {
+                // create the directory and file if needed
+                string path = Path.GetDirectoryName(textBoxText);
+                if (!Directory.Exists(path) && path != null)
+                        Directory.CreateDirectory(path);
+                if (!File.Exists(textBoxText))
+                    using (File.Create(textBoxText)) { }
+            }
+
+            RefreshDriveSspaceDisplayUsingFormData();
         }
     }
 }

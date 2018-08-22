@@ -248,18 +248,23 @@ namespace Elucidate
             }
         }
 
-        public static void SourcePathFreeBytesAvailable(string path, 
+        public static void SourcePathFreeBytesAvailable(
+            string path, 
             out ulong freeBytesAvailable, 
             out ulong pathUsedBytes,
             out ulong rootBytesNotCoveredByPath)
         {
-            DirectoryInfo di = new DirectoryInfo(path);
+            string fullPath = StorageUtil.NormalizePath(Path.GetFullPath(path));
+            string rootPath = StorageUtil.NormalizePath(StorageUtil.GetPathRoot(path));
+
             // ReSharper disable once UnusedVariable
-            GetDiskFreeSpaceExW(di.Root.FullName, out freeBytesAvailable, out ulong totalBytes, out ulong num3);
+            GetDiskFreeSpaceExW(rootPath, out freeBytesAvailable, out ulong totalBytes, out ulong num3);
+
             ulong driveUsedBytes = totalBytes - freeBytesAvailable;
             
             rootBytesNotCoveredByPath = 0;
-            if (di.Root.FullName == di.FullName)
+
+            if (rootPath == fullPath)
             {
                 Log.Instance.Debug("Nothing more to do, so get values for the series");
                 pathUsedBytes = driveUsedBytes;
@@ -267,7 +272,9 @@ namespace Elucidate
             else
             {
                 Log.Instance.Debug("Need to perform some calculations of Path usage. TotalBytes[{0}]", totalBytes);
-                pathUsedBytes = DirSize(di);
+
+                pathUsedBytes = DirSize(new DirectoryInfo(path));
+
                 if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/softlink path or file
                 {
                     rootBytesNotCoveredByPath = driveUsedBytes - pathUsedBytes;
