@@ -16,7 +16,6 @@ namespace Elucidate.HelperClasses
         private static readonly string repoUrl = "https://api.github.com/repos/blueblock/elucidate/releases/latest";
         private static readonly string changelogUrl = "https://github.com/BlueBlock/Elucidate/wiki/ChangeLog";
         private static readonly string installerName = "Elucidate.Windows.Installer.msi";
-        private static int _numberOfVersionBuildParts = 4;
 
         private static string InstallFile { get; set; }
 
