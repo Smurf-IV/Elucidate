@@ -133,7 +133,7 @@ namespace Elucidate
         /// <returns>an empty string if no exception occurrs</returns>
         public bool Read()
         {
-            Log.Instance.Debug("ConfigFileHelper.Read() ...");
+            Log.Instance.Trace("ConfigFileHelper.Read() ...");
 
             try
             {
