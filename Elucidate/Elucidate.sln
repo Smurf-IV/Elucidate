@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elucidate", "Elucidate\Elucidate.csproj", "{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Elucidate Windows Installer", "Elucidate Windows Installer\Elucidate Windows Installer.wixproj", "{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D4900AF1-C6CE-45E8-82DB-DA255351CA62} = {D4900AF1-C6CE-45E8-82DB-DA255351CA62}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MountedFolderSupportLibrary", "MountedFolderSupportLibrary\MountedFolderSupportLibrary.csproj", "{D4900AF1-C6CE-45E8-82DB-DA255351CA62}"
 EndProject
