@@ -134,6 +134,9 @@
         <File Source="$(var.MgtSource)\MoreLinq.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
+        <File Source="$(var.MgtSource)\MountedFolderSupportLibrary.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+      </Component>
+      <Component>
         <File Source="$(var.MgtSource)\Newtonsoft.Json.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
       </Component>
       <Component>
