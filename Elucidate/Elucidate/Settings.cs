@@ -50,8 +50,6 @@ namespace Elucidate
 
         private bool _initializing = true;
 
-        private List<CoveragePath> _pathsOfInterest = new List<CoveragePath>();
-
         private bool UnsavedChangesMade
         {
             get => _unsavedChangesMade;
