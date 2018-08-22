@@ -204,7 +204,9 @@ namespace Elucidate
         {
             try
             {
-                return dir.GetFiles().Sum(fi => (ulong) fi.Length) + dir.GetDirectories().Sum(DirSize);
+                return dir.GetFiles().Sum(fi => (ulong) fi.Length) + dir.GetDirectories()
+                           .Where(d => (d.Attributes & FileAttributes.System) == 0 && (d.Attributes & FileAttributes.Hidden) == 0)
+                           .Sum(DirSize);
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -226,10 +228,14 @@ namespace Elucidate
             try
             {
                 // get stats for parity location since it might be a folder
+                
                 // ReSharper disable once UnusedVariable
                 GetDiskFreeSpaceExW(StorageUtil.GetPathRoot(path), out freeBytesAvailable, out ulong totalBytes, out ulong num3);
+
                 ulong driveUsedBytes = totalBytes - freeBytesAvailable;
+
                 pathUsedBytes = (ulong) new FileInfo(path).Length;
+
                 if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/softlink path or file
                 {
                     rootBytesNotCoveredByPath = driveUsedBytes - pathUsedBytes;
@@ -266,7 +272,8 @@ namespace Elucidate
 
             if (rootPath == fullPath)
             {
-                Log.Instance.Debug("Nothing more to do, so get values for the series");
+                Log.Instance.Trace("Nothing more to do, so get values for the series");
+
                 pathUsedBytes = driveUsedBytes;
             }
             else
