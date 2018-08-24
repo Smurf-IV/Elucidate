@@ -52,12 +52,12 @@ namespace Elucidate
 
             if (Properties.Settings.Default.UpdateRequired)
             {
-                // Thanks go to http://cs.rthand.com/blogs/blog_with_righthand/archive/2005/12/09/246.aspx
                 Properties.Settings.Default.Upgrade();
                 Properties.Settings.Default.UpdateRequired = false;
                 Properties.Settings.Default.Save();
             }
             WindowLocation.GeometryFromString(Properties.Settings.Default.WindowLocation, this);
+
             liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
             recover1.TaskStarted += Recover1_TaskStarted;
             recover1.TaskCompleted += Recover1_TaskCompleted;
