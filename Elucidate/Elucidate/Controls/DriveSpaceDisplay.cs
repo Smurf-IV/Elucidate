@@ -48,6 +48,7 @@ namespace Elucidate.Controls
         
         private class ChartDataItem
         {
+            public PathTypeEnum PathType { get; set; }
             public string Path { get; set; }
             public ByteSize ParityUsedBytes { get; set; }
             public ByteSize RootBytesNotCoveredByPath { get; set; }
@@ -202,41 +203,53 @@ namespace Elucidate.Controls
         // Need to be aware of Junctions
         private void CompileChartDataItemForPath(CoveragePath pathOfInterest)
         {
-            if (pathOfInterest.PathType == PathTypeEnum.Parity)
+            switch (pathOfInterest.PathType)
             {
-                if (!File.Exists(pathOfInterest.FullPath)) return;
+                //case PathTypeEnum.Parity when !File.Exists(pathOfInterest.FullPath):
+                //    return;
+                case PathTypeEnum.Parity:
+                    {
+                        // parity is always a single file
 
-                Util.ParityPathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable,
-                    out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+                        Util.ParityPathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
 
-                var chartDataItem = new ChartDataItem
-                {
-                    Path = pathOfInterest.DirectoryPath,
-                    ParityUsedBytes = ByteSize.FromBytes(pathUsedBytes),
-                    FreeBytesAvailable = ByteSize.FromBytes(freeBytesAvailable),
-                    PathUsedBytes = new ByteSize(0),
-                    RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
-                };
+                        var chartDataItem = new ChartDataItem
+                        {
+                            PathType = PathTypeEnum.Parity,
+                            Path = pathOfInterest.DirectoryPath,
+                            ParityUsedBytes = ByteSize.FromBytes(File.Exists(pathOfInterest.FullPath) ? new FileInfo(pathOfInterest.FullPath).Length : 0),
+                            FreeBytesAvailable = ByteSize.FromBytes(freeBytesAvailable),
+                            PathUsedBytes = new ByteSize(0),
+                            RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
+                        };
 
-                _chartDataList.Add(chartDataItem);
-            }
-            else
-            {
-                if (!Directory.Exists(pathOfInterest.FullPath)) return;
+                        _chartDataList.Add(chartDataItem);
+                        break;
+                    }
+                case PathTypeEnum.Source when !Directory.Exists(pathOfInterest.FullPath):
+                    return;
+                // data source is always a directory
+                case PathTypeEnum.Source:
+                    {
+                        Util.SourcePathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
 
-                Util.SourcePathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable,
-                    out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+                        var chartDataItem = new ChartDataItem
+                        {
+                            PathType = PathTypeEnum.Source,
+                            Path = pathOfInterest.DirectoryPath,
+                            ParityUsedBytes = new ByteSize(0),
+                            FreeBytesAvailable = ByteSize.FromBytes(freeBytesAvailable),
+                            PathUsedBytes = ByteSize.FromBytes(pathUsedBytes),
+                            RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
+                        };
 
-                var chartDataItem = new ChartDataItem
-                {
-                    Path = pathOfInterest.DirectoryPath,
-                    ParityUsedBytes = new ByteSize(0),
-                    FreeBytesAvailable = ByteSize.FromBytes(freeBytesAvailable),
-                    PathUsedBytes = ByteSize.FromBytes(pathUsedBytes),
-                    RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
-                };
+                        _chartDataList.Add(chartDataItem);
+                        break;
+                    }
 
-                _chartDataList.Add(chartDataItem);
+                default:
+                    Log.Instance.Error($"PathType is not supported for the graph.");
+                    break;
             }
         }
 
@@ -276,9 +289,9 @@ namespace Elucidate.Controls
 
         private void AddDataToDisplayMethodInvoker()
         {
-            string largestWholenumberSymbolOfChartData = "GB";
+            string largestWholenNumberSymbolOfChartData = "GB";
 
-            foreach (var item in _chartDataList)
+            foreach (ChartDataItem item in _chartDataList)
             {
                 double[] points =
                 {
@@ -289,12 +302,16 @@ namespace Elucidate.Controls
                     Util.RoundUpToDecimalPlace(item.FreeBytesAvailable.GigaBytes, 2)
                 };
 
-                chart1.Series[0].Points.AddXY(item.Path, points[0]);
-                chart1.Series[1].Points.AddXY(item.Path, points[1]);
-                chart1.Series[2].Points.AddXY(item.Path, points[2]);
-                chart1.Series[3].Points.AddXY(item.Path, points[3]);
+                string itemPathDisplay = item.PathType == PathTypeEnum.Parity
+                    ? StorageUtil.GetPathRoot(item.Path)
+                    : item.Path;
 
-                Log.Instance.Info($"path[{item.Path}], parityUsedBytes[{points[0]}], rootBytesNotCoveredByPath[{points[1]}], pathUsedBytes[{points[2]}], freeBytesAvailable[{points[3]}]");
+                chart1.Series[0].Points.AddXY(itemPathDisplay, points[0]);
+                chart1.Series[1].Points.AddXY(itemPathDisplay, points[1]);
+                chart1.Series[2].Points.AddXY(itemPathDisplay, points[2]);
+                chart1.Series[3].Points.AddXY(itemPathDisplay, points[3]);
+
+                Log.Instance.Info($"Storage info: pathType[{item.PathType}], path[{item.Path}], parityUsedBytes[{points[0]}], rootBytesNotCoveredByPath[{points[1]}], pathUsedBytes[{points[2]}], freeBytesAvailable[{points[3]}]");
             }
 
             // set formatting:
@@ -312,7 +329,7 @@ namespace Elucidate.Controls
                         }
                         else
                         {
-                            dp.Label = $"#VALY\n{largestWholenumberSymbolOfChartData}";
+                            dp.Label = $"#VALY\n{largestWholenNumberSymbolOfChartData}";
                         }
                     }
                 }
@@ -322,7 +339,9 @@ namespace Elucidate.Controls
         private void chart1_Click(object sender, EventArgs e)
         {
             _percentage = !_percentage;
+
             SeriesChartType chartType = _percentage ? SeriesChartType.StackedBar100 : SeriesChartType.StackedBar;
+
             foreach (Series series in chart1.Series)
             {
                 series.ChartType = chartType;
@@ -334,8 +353,11 @@ namespace Elucidate.Controls
             try
             {
                 _snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+
                 _snapRaidConfig.Read();
+
                 List<CoveragePath> pathsOfInterest = GetPathsOfInterest();
+
                 StartProcessing(pathsOfInterest);
             }
             catch
