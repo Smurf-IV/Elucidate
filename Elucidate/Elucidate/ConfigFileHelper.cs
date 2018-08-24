@@ -50,6 +50,10 @@ namespace Elucidate
         {
             "parity",
             "2-parity",
+            "3-parity",
+            "4-parity",
+            "5-parity",
+            "6-parity",
             "q-parity",
             "content",
             "disk",
@@ -73,6 +77,34 @@ namespace Elucidate
         public const int CHECKBOX_HIDDEN_FILES_EXCLUDED = 3;
         // ReSharper disable once InconsistentNaming
         public const int CHECKBOX_DEBUG_LOGGING_ENABLED = 4;
+
+        public string ParityFile1 { get; set; }
+
+        public string ParityFile2 { get; set; }
+
+        public string ParityFile3 { get; set; }
+
+        public string ParityFile4 { get; set; }
+
+        public string ParityFile5 { get; set; }
+
+        public string ParityFile6 { get; set; }
+
+        public List<string> ContentFiles { get; private set; }
+
+        public List<string> SnapShotSources { get; private set; }
+
+        public List<string> ExcludePatterns { get; private set; }
+
+        public List<string> IncludePatterns { get; set; }
+
+        // ReSharper disable once InconsistentNaming
+        public uint BlockSizeKB { get; set; }
+
+        // ReSharper disable once InconsistentNaming
+        public uint AutoSaveGB { get; set; }
+
+        public bool Nohidden { get; set; }
 
         /// <summary>
         /// constructor
@@ -141,7 +173,7 @@ namespace Elucidate
 
                 bool isConfigRead = true;
 
-                // it is criticial for the order to be preserved, d1, d2, d3 etc so we treat the data sources carefully to preserve the order
+                // it is critical for the order to be preserved, d1, d2, d3 etc so we treat the data sources carefully to preserve the order
                 Dictionary<string, string> dataSources = new Dictionary<string, string>();
 
                 ParityFile1 = string.Empty;
@@ -150,11 +182,17 @@ namespace Elucidate
                 ParityFile4 = string.Empty;
                 ParityFile5 = string.Empty;
                 ParityFile6 = string.Empty;
+
                 ContentFiles.Clear();
+
                 SnapShotSources.Clear();
+
                 ExcludePatterns.Clear();
+
                 IncludePatterns.Clear();
+
                 BlockSizeKB = Constants.DefaultBlockSize;
+
                 AutoSaveGB = Constants.DefaultAutoSave;
 
                 foreach (string line in File.ReadLines(ConfigPath))
@@ -296,6 +334,24 @@ namespace Elucidate
             return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
         }
 
+        public static bool IsRulePassPreviousCannotBeEmpty(string previous, string current)
+        {
+            // handle special case of first parity textbox; previous of null means we are at the first textbox which also cannot be empty
+            if (previous == null && string.IsNullOrEmpty(current)) return false;
+
+            // handle all other parity textbox's
+            if (previous == string.Empty && !string.IsNullOrEmpty(current)) return false;
+
+            return true;
+        }
+
+        internal static bool IsRulePassParityLocationDeviceMustNotRepeat(List<string> allTextValues, string current)
+        {
+            if (allTextValues == null || string.IsNullOrEmpty(current)) return true;
+            var count = allTextValues.Where(s => !string.IsNullOrEmpty(s)).Count(temp => StorageUtil.GetPathRoot(temp).Equals(StorageUtil.GetPathRoot(current)));
+            return count <= 1;
+        }
+
         /// <summary>
         /// Writes the config file
         /// </summary>
@@ -310,34 +366,34 @@ namespace Elucidate
 
                 // parity
                 fileContents.Append(Section2);
-                fileContents.AppendLine($"parity {(Directory.Exists(ParityFile1) ? Path.Combine(ParityFile1, "SnapRAID.parity") : ParityFile1)}");
+                fileContents.AppendLine($"parity {(Directory.Exists(ParityFile1) ? Path.Combine(ParityFile1, "snapraid.1.parity") : ParityFile1)}");
 
                 // X-parity
                 fileContents.Append(Section3);
                 if (!string.IsNullOrEmpty(ParityFile2))
                 {
-                    fileContents.AppendLine($"2-parity {(Directory.Exists(ParityFile2) ? Path.Combine(ParityFile2, "SnapRAID.2-parity") : ParityFile2)}");
+                    fileContents.AppendLine($"2-parity {(Directory.Exists(ParityFile2) ? Path.Combine(ParityFile2, "snapraid.2.parity") : ParityFile2)}");
                 }
                 if (!string.IsNullOrEmpty(ParityFile3))
                 {
-                    fileContents.AppendLine($"3-parity {(Directory.Exists(ParityFile3) ? Path.Combine(ParityFile3, "SnapRAID.3-parity") : ParityFile3)}");
+                    fileContents.AppendLine($"3-parity {(Directory.Exists(ParityFile3) ? Path.Combine(ParityFile3, "snapraid.3.parity") : ParityFile3)}");
                 }
                 if (!string.IsNullOrEmpty(ParityFile4))
                 {
-                    fileContents.AppendLine($"4-parity {(Directory.Exists(ParityFile4) ? Path.Combine(ParityFile4, "SnapRAID.4-parity") : ParityFile4)}");
+                    fileContents.AppendLine($"4-parity {(Directory.Exists(ParityFile4) ? Path.Combine(ParityFile4, "snapraid.4.parity") : ParityFile4)}");
                 }
                 if (!string.IsNullOrEmpty(ParityFile5))
                 {
-                    fileContents.AppendLine($"5-parity {(Directory.Exists(ParityFile5) ? Path.Combine(ParityFile5, "SnapRAID.5-parity") : ParityFile5)}");
+                    fileContents.AppendLine($"5-parity {(Directory.Exists(ParityFile5) ? Path.Combine(ParityFile5, "snapraid.5.parity") : ParityFile5)}");
                 }
                 if (!string.IsNullOrEmpty(ParityFile6))
                 {
-                    fileContents.AppendLine($"6-parity {(Directory.Exists(ParityFile6) ? Path.Combine(ParityFile6, "SnapRAID.6-parity") : ParityFile6)}");
+                    fileContents.AppendLine($"6-parity {(Directory.Exists(ParityFile6) ? Path.Combine(ParityFile6, "snapraid.6.parity") : ParityFile6)}");
                 }
 
                 // content
                 fileContents.Append(Section4);
-                ContentFiles.ForEach(item => fileContents.AppendLine($"content {(Directory.Exists(item) ? Path.Combine(item, "SnapRAID.content") : item)}"));
+                ContentFiles.ForEach(item => fileContents.AppendLine($"content {(Directory.Exists(item) ? Path.Combine(item, "snapraid.content") : item)}"));
 
                 // data sources
                 fileContents.Append(Section5);
@@ -393,34 +449,6 @@ namespace Elucidate
             return string.Empty;
         }
         
-        public string ParityFile1 { get; set; }
-
-        public string ParityFile2 { get; set; }
-
-        public string ParityFile3 { get; set; }
-
-        public string ParityFile4 { get; set; }
-
-        public string ParityFile5 { get; set; }
-
-        public string ParityFile6 { get; set; }
-        
-        public List<string> ContentFiles { get; private set; }
-
-        public List<string> SnapShotSources { get; private set; }
-
-        public List<string> ExcludePatterns { get; private set; }
-
-        public List<string> IncludePatterns { get; set; }
-
-        // ReSharper disable once InconsistentNaming
-        public uint BlockSizeKB { get; set; }
-
-        // ReSharper disable once InconsistentNaming
-        public uint AutoSaveGB { get; set; }
-
-        public bool Nohidden { get; set; }
-
         private StringBuilder Section1
         {
             get
