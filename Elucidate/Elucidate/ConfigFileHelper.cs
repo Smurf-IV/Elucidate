@@ -163,7 +163,7 @@ namespace Elucidate
 
         public void LoadConfigFile(string configFile)
         {
-            Log.Instance.Debug($"Loading config file {configFile}");
+            Log.Instance.Trace($"Loading config file {configFile}");
 
             ConfigErrors.Clear();
 
@@ -174,7 +174,6 @@ namespace Elucidate
             if (Read())
             {
                 DoValidation();
-
             }
             else
             {

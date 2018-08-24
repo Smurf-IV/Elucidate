@@ -124,6 +124,8 @@ namespace Elucidate
             _initializing = false;
 
             Properties.Settings.Default.ConfigFileIsValid = ValidateFormData();
+
+            ValidateParityTextBox();
         }
 
         #region driveAndDirTreeView
@@ -975,51 +977,68 @@ namespace Elucidate
 
         private void findParity1_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                parityLocation1.Text = folderBrowserDialog1.SelectedPath;
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
 
-            }
+            parityLocation1.Text = folderBrowserDialog1.SelectedPath;
+
+            ValidateParityTextBox();
+
+            ParityLocationChanged();
         }
 
         private void findParity2_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                parityLocation2.Text = folderBrowserDialog1.SelectedPath;
-            }
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+
+            parityLocation2.Text = folderBrowserDialog1.SelectedPath;
+
+            ValidateParityTextBox();
+
+            ParityLocationChanged();
         }
 
         private void findParity3_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                parityLocation3.Text = folderBrowserDialog1.SelectedPath;
-            }
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+
+            parityLocation3.Text = folderBrowserDialog1.SelectedPath;
+
+            ValidateParityTextBox();
+
+            ParityLocationChanged();
         }
 
         private void findParity4_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                parityLocation4.Text = folderBrowserDialog1.SelectedPath;
-            }
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+
+            parityLocation4.Text = folderBrowserDialog1.SelectedPath;
+
+            ValidateParityTextBox();
+
+            ParityLocationChanged();
         }
 
         private void findParity5_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                parityLocation5.Text = folderBrowserDialog1.SelectedPath;
-            }
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+
+            parityLocation5.Text = folderBrowserDialog1.SelectedPath;
+
+            ValidateParityTextBox();
+
+            ParityLocationChanged();
         }
 
         private void findParity6_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) == DialogResult.OK)
-            {
-                parityLocation6.Text = folderBrowserDialog1.SelectedPath;
-            }
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+
+            parityLocation6.Text = folderBrowserDialog1.SelectedPath;
+                
+            ValidateParityTextBox();
+
+            ParityLocationChanged();
         }
 
         private void checkedListBox1_MouseMove(object sender, MouseEventArgs e)
@@ -1035,9 +1054,13 @@ namespace Elucidate
         private void ShowToolTip()
         {
             _ttIndex = checkedListBox1.IndexFromPoint(checkedListBox1.PointToClient(MousePosition));
+
             if (_ttIndex <= -1) return;
+
             PointToClient(MousePosition);
+
             toolTip1.ToolTipTitle = _advSettingsList[_ttIndex].DisplayName;
+
             toolTip1.SetToolTip(checkedListBox1, _advSettingsList[_ttIndex].TootTip);
         }
 
@@ -1136,7 +1159,7 @@ namespace Elucidate
             if (!(sender is TextBox textBox)) return;
 
             ValidateParityTextBox();
-
+            
             if (textBox.Text.Trim() == _cfg.ParityFile4) return;
 
             ParityLocationChanged();
@@ -1150,14 +1173,14 @@ namespace Elucidate
             toolTip1.SetToolTip(findParity4, tooltip);
             toolTip1.SetToolTip(labelParity4, tooltip);
         }
-
+        
         private void parityLocation5_Leave(object sender, EventArgs e)
         {
             if (!(sender is TextBox textBox)) return;
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile5) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile5) return; // unchanged
 
             ParityLocationChanged();
 
@@ -1190,7 +1213,7 @@ namespace Elucidate
             toolTip1.SetToolTip(findParity6, tooltip);
             toolTip1.SetToolTip(labelParity6, tooltip);
         }
-
+        
         private void ValidateParityTextBox()
         {
             IOrderedEnumerable<TextBox> parityTextBoxes;
@@ -1201,7 +1224,7 @@ namespace Elucidate
             foreach (TextBox item in parityTextBoxes)
             {
                 errorProvider1.SetErrorWithCount(item, "");
-                
+
                 string current = item.Text.Trim();
 
                 if (!ConfigFileHelper.IsRulePassPreviousCannotBeEmpty(previous, current))
