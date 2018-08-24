@@ -61,7 +61,7 @@ namespace Elucidate
             liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
             recover1.TaskStarted += Recover1_TaskStarted;
             recover1.TaskCompleted += Recover1_TaskCompleted;
-            AppUpdate.NewVersionAvailable += VersionCheck_NewVersonAvailable;
+            AppUpdate.NewVersionAvailable += VersionCheck_NewVersionAvailable;
             AppUpdate.NewVersionInstallReady += VersionCheck_NewVersonInstallReady;
             Settings.ConfigSaved += Settings_ConfigUpdated;
         }
@@ -99,10 +99,21 @@ namespace Elucidate
                 LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
             }
 
-            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
+            EnableIfValid(_srConfig.IsValid);
+            
+            // display any warnings from the config validation
+            if (_srConfig.IsWarnings)
+            {
+                MessageBoxExt.Show(
+                    this,
+                    $"There are warnings for the configuration file:{Environment.NewLine} - {string.Join(" - ", _srConfig.ConfigWarnings)}",
+                    "Configuration File Warnings",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
         }
 
-        private void VersionCheck_NewVersonAvailable(object sender, EventArgs e)
+        private void VersionCheck_NewVersionAvailable(object sender, EventArgs e)
         {
             MenuItemNewVersionReadyForInstall.Enabled = false;
             MenuItemNewVersionReadyForInstall.Visible = false;
@@ -303,15 +314,16 @@ namespace Elucidate
 
             if (info?.DownloadUrl == null)
             {
-                MessageBox.Show(
+                MessageBoxExt.Show(
+                    this,
                     @"A problem was encountered trying to download the new version. Please try again later.",
                     @"New Version Download Failed",
-                    MessageBoxButtons.OK);
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
 
             Task.Run(() => AppUpdate.DownloadLatestVersionAsync(info.DownloadUrl));
-
         }
 
         private void changeLogOfNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -350,17 +362,27 @@ namespace Elucidate
         {
             _srConfig.LoadConfigFile(configFile);
 
+            Properties.Settings.Default.ConfigFileIsValid = _srConfig.IsValid;
+
             if (_srConfig.IsValid)
             {
-                Properties.Settings.Default.ConfigFileIsValid = true;
                 Properties.Settings.Default.ConfigFileLocation = configFile;
+
                 BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(configFile); });
             }
             else
             {
-                MessageBoxExt.Show(this, "The config file is not valid.", "Config File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Properties.Settings.Default.ConfigFileIsValid = false;
+                MessageBoxExt.Show(
+                    this, 
+                    $"The config file is not valid.{Environment.NewLine} - {string.Join(" - ", _srConfig.ConfigErrors)}", 
+                    "Config File Error", 
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+#if !DEBUG
                 Properties.Settings.Default.ConfigFileLocation = string.Empty;
+#endif
+
                 return;
             }
 

@@ -41,8 +41,17 @@ namespace Elucidate
 {
     public class ConfigFileHelper
     {
-        public bool IsValid { get; set; }
+        public bool IsValid => !ConfigErrors.Any();
+
+        public bool IsErrors => ConfigErrors.Any();
+
+        public bool IsWarnings => ConfigWarnings.Any();
+
         public string ConfigPath { get; set; }
+
+        public List<string> ConfigErrors { get; set; }
+
+        public List<string> ConfigWarnings { get; set; }
 
         public bool ConfigFileExists => File.Exists(ConfigPath);
 
@@ -106,6 +115,33 @@ namespace Elucidate
 
         public bool Nohidden { get; set; }
 
+        public List<string> ParityPaths
+        {
+            get
+            {
+                List<string> allParityPaths = new List<string>
+                {
+                    ParityFile1,
+                    ParityFile2,
+                    ParityFile3,
+                    ParityFile4,
+                    ParityFile5,
+                    ParityFile6
+                };
+                return allParityPaths;
+            }
+        }
+
+        public List<string> DataParityPaths
+        {
+            get
+            {
+                List<string> allDataParityPaths = SnapShotSources.ToList();
+                allDataParityPaths.AddRange(ParityPaths);
+                return allDataParityPaths;
+            }
+        }
+
         /// <summary>
         /// constructor
         /// </summary>
@@ -113,6 +149,8 @@ namespace Elucidate
         public ConfigFileHelper(string configPath = null)
         {
             ConfigPath = configPath;
+            ConfigErrors = new List<string>();
+            ConfigWarnings = new List<string>();
             ContentFiles = new List<string>();
             SnapShotSources = new List<string>();
             ExcludePatterns = new List<string>();
@@ -122,47 +160,147 @@ namespace Elucidate
                 LoadConfigFile(configPath);
             }
         }
-        
-        public bool LoadConfigFile(string configFile)
+
+        public void LoadConfigFile(string configFile)
         {
             Log.Instance.Debug($"Loading config file {configFile}");
+
+            ConfigErrors.Clear();
+
+            ConfigWarnings.Clear();
 
             ConfigPath = configFile;
 
             if (Read())
             {
-                if (Validate())
-                {
-                    IsValid = true;
-                    return true;
-                }
-            }
+                DoValidation();
 
-            return false;
+            }
+            else
+            {
+                ConfigErrors.Add($"Failed to read the configuration file {configFile}");
+            }
         }
 
-        private bool Validate()
+        private void DoValidation()
         {
-            // data sources must be unique devices
-            List<string> roots = new List<string>();
-            foreach (string item in SnapShotSources)
+            if (string.IsNullOrEmpty(ConfigPath))
             {
-                string root = StorageUtil.GetPathRoot(item);
-                if (roots.Contains(root))
-                {
-                    return false; // a data source overlaps
-                }
-                roots.Add(root);
+                ConfigErrors.Add("Config validation failed. There is no config file set.");
+                Log.Instance.Error("Config validation failed. There is no config file set.");
+                return;
             }
-            
-            // all validation steps have passed
+
+            Log.Instance.Debug($"validating config file {ConfigPath}");
+
+            // RULE: at least one data source must be specified
+            if (!SnapShotSources.Any())
+            {
+                ConfigErrors.Add("At least one data source must be specified. Check the value for \"d1\" \r\n");
+            }
+
+            // RULE: the first parity location must not be empty
+            if (string.IsNullOrEmpty(ParityFile1))
+            {
+                ConfigErrors.Add("The first parity location must not be empty. Check the value for \"parity\"");
+            }
+
+            // RULE: check that devices are not repeated
+            if (!IsRulePassDevicesMustNotRepeat(DataParityPaths))
+            {
+                ConfigErrors.Add("Devices for data and parity must be unique. Check the values for data and parity");
+            }
+
+            // RULE: data paths must be accessible
+            foreach (string path in SnapShotSources)
+            {
+                // test if path exists
+                if (Directory.Exists(path)) continue;
+
+                ConfigErrors.Add($"Data source is inaccessible: {path}");
+            }
+
+            // RULE: parity devices should be greater or equal to data devices
+            ulong largestDataDevice = StorageUtil.GetDriveSizes(SnapShotSources).Max();
+            ulong smallestParityDevice = StorageUtil.GetDriveSizes(ParityPaths).Min();
+            if (largestDataDevice > smallestParityDevice)
+            {
+                ConfigWarnings.Add("One or more data devices are larger than the smallest parity device. All parity devices should be equal or greater in size than all data devices.");
+            }
+
+            // RULE: blocksize valid value
+            if (BlockSizeKB < 1 || BlockSizeKB > 16384)
+            {
+                ConfigErrors.Add($"The blocksize value is invalid and must be between 1 and 16384");
+            }
+
+            // RULE: autosave valid value
+            if (AutoSaveGB > Constants.MaxAutoSave)
+            {
+                ConfigErrors.Add($"The blocksize value is invalid and must be between {Constants.MinAutoSave} and {Constants.MaxAutoSave}");
+            }
+
+            if (!IsValid)
+            {
+                Log.Instance.Error("The configuration file is not valid. See errors below:");
+
+                foreach (var error in ConfigErrors)
+                {
+                    Log.Instance.Error($" - {error}");
+                }
+            }
+        }
+
+        private static bool IsRulePassDevicesMustNotRepeat(List<string> paths)
+        {
+            List<string> roots = new List<string>();
+
+            try
+            {
+                foreach (string path in paths.Where(s => !string.IsNullOrEmpty(s)))
+                {
+                    string root = StorageUtil.GetPathRoot(path);
+
+                    if (roots.Contains(root))
+                    {
+                        return false; // a data source overlaps
+                    }
+
+                    roots.Add(root);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Instance.Error($"Path could not be checked: {ex.Message}");
+                return false;
+            }
+            return true;
+        }
+
+        internal static bool IsRulePassDevicesMustNotRepeat(List<string> paths, string current)
+        {
+            if (paths == null || string.IsNullOrEmpty(current)) return true;
+
+            var count = paths.Where(s => !string.IsNullOrEmpty(s)).Count(temp => StorageUtil.GetPathRoot(temp).Equals(StorageUtil.GetPathRoot(current)));
+
+            return count <= 1;
+        }
+
+        public static bool IsRulePassPreviousCannotBeEmpty(string previous, string current)
+        {
+            // handle special case of first parity textbox; previous of null means we are at the first textbox which also cannot be empty
+            if (previous == null && string.IsNullOrEmpty(current)) return false;
+
+            // handle all other parity textbox's
+            if (previous == string.Empty && !string.IsNullOrEmpty(current)) return false;
+
             return true;
         }
 
         /// <summary>
         /// Reads the config file
         /// </summary>
-        /// <returns>an empty string if no exception occurrs</returns>
+        /// <returns>an empty string if no exception occurs</returns>
         public bool Read()
         {
             Log.Instance.Trace("ConfigFileHelper.Read() ...");
@@ -183,6 +321,10 @@ namespace Elucidate
                 ParityFile5 = string.Empty;
                 ParityFile6 = string.Empty;
 
+                ConfigErrors.Clear();
+
+                ConfigWarnings.Clear();
+
                 ContentFiles.Clear();
 
                 SnapShotSources.Clear();
@@ -198,8 +340,9 @@ namespace Elucidate
                 foreach (string line in File.ReadLines(ConfigPath))
                 {
                     string lineStart = line.Trim();
+
                     if (string.IsNullOrWhiteSpace(lineStart) || lineStart.StartsWith("#")) continue;
-                    
+
                     // Not a comment so process the line
 
                     // split the line by the first space encountered
@@ -217,7 +360,7 @@ namespace Elucidate
                             break;
 
                         case "q-parity":
-                            Log.Instance.Warn("'q-parity' entry in config file should be changed to '2-parity'");
+                            Log.Instance.Warn("'q-parity' entry in config file will be changed to '2-parity' when config is saved");
                             ParityFile2 = configItemValue;
                             break;
 
@@ -255,11 +398,14 @@ namespace Elucidate
 
                             // get the path
                             int diskSplitIndex = configItemValue.IndexOf(' ');
+
                             string diskPath = configItemValue.Substring(diskSplitIndex + 1);
 
                             if (!string.IsNullOrEmpty(diskName) && !string.IsNullOrEmpty(diskPath))
+                            {
                                 dataSources.Add(diskName, diskPath);
-                            
+                            }
+
                             break;
 
                         case "exclude":
@@ -273,14 +419,18 @@ namespace Elucidate
                         case "block_size":
                             BlockSizeKB = uint.Parse(configItemValue);
                             if (BlockSizeKB < Constants.MinBlockSize || BlockSizeKB > Constants.MaxBlockSize)
+                            {
                                 isConfigRead = false;
+                            }
                             break;
 
                         case "autosave":
                             AutoSaveGB = uint.Parse(configItemValue);
                             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                             if (AutoSaveGB < Constants.MinAutoSave || AutoSaveGB > Constants.MaxAutoSave)
+                            {
                                 isConfigRead = false;
+                            }
                             break;
 
                         case "nohidden":
@@ -291,6 +441,7 @@ namespace Elucidate
 
                 // special handling of data sources since order preservation is extremely important
                 IOrderedEnumerable<KeyValuePair<string, string>> dataSourcesOrdered = dataSources.OrderBy(a => a.Key);
+
                 foreach (var item in dataSourcesOrdered)
                 {
                     SnapShotSources.Add(item.Value);
@@ -304,7 +455,7 @@ namespace Elucidate
                 return false;
             }
         }
-        
+
         public List<CoveragePath> GetPathsOfInterest()
         {
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
@@ -332,24 +483,6 @@ namespace Elucidate
             if (!string.IsNullOrEmpty(ParityFile6)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile6), PathType = PathTypeEnum.Parity }); }
 
             return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
-        }
-
-        public static bool IsRulePassPreviousCannotBeEmpty(string previous, string current)
-        {
-            // handle special case of first parity textbox; previous of null means we are at the first textbox which also cannot be empty
-            if (previous == null && string.IsNullOrEmpty(current)) return false;
-
-            // handle all other parity textbox's
-            if (previous == string.Empty && !string.IsNullOrEmpty(current)) return false;
-
-            return true;
-        }
-
-        internal static bool IsRulePassParityLocationDeviceMustNotRepeat(List<string> allTextValues, string current)
-        {
-            if (allTextValues == null || string.IsNullOrEmpty(current)) return true;
-            var count = allTextValues.Where(s => !string.IsNullOrEmpty(s)).Count(temp => StorageUtil.GetPathRoot(temp).Equals(StorageUtil.GetPathRoot(current)));
-            return count <= 1;
         }
 
         /// <summary>
@@ -398,7 +531,7 @@ namespace Elucidate
                 // data sources
                 fileContents.Append(Section5);
                 List<string> strSnapShotSources = new List<string>();
-                strSnapShotSources.AddRange(SnapShotSources.Select((t, index) => string.Concat("disk d", index+1, ' ', t)));
+                strSnapShotSources.AddRange(SnapShotSources.Select((t, index) => string.Concat("disk d", index + 1, ' ', t)));
                 strSnapShotSources.ForEach(item => fileContents.AppendLine(item));
 
                 // exclude hidden files
@@ -422,10 +555,10 @@ namespace Elucidate
                 fileContents.Append(Section8);
                 BlockSizeKB = BlockSizeKB >= Constants.MinBlockSize && BlockSizeKB <= Constants.MaxBlockSize ? BlockSizeKB : Constants.DefaultBlockSize;
                 fileContents.AppendLine($"block_size {BlockSizeKB}");
-                
+
                 // hashsize
                 fileContents.Append(Section9);
-                
+
                 // autosave
                 fileContents.Append(Section10);
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
@@ -448,7 +581,7 @@ namespace Elucidate
             }
             return string.Empty;
         }
-        
+
         private StringBuilder Section1
         {
             get
@@ -577,21 +710,21 @@ namespace Elucidate
         }
 
         private StringBuilder Section10
+        {
+            get
             {
-                get
-                {
-                    var sb = new StringBuilder();
-                    sb.AppendLine();
-                    sb.AppendLine("# Automatically save the state when syncing after the specified amount");
-                    sb.AppendLine("# of GB processed (uncomment to enable).");
-                    sb.AppendLine("# This option is useful to avoid to restart from scratch long 'sync'");
-                    sb.AppendLine("# commands interrupted by a machine crash.");
-                    sb.AppendLine("# It also improves the recovering if a disk break during a 'sync'.");
-                    sb.AppendLine("# Default value is 0, meaning disabled.");
-                    sb.AppendLine("# Format: \"autosave SIZE_IN_GB\"");
-                    return sb;
-                }
+                var sb = new StringBuilder();
+                sb.AppendLine();
+                sb.AppendLine("# Automatically save the state when syncing after the specified amount");
+                sb.AppendLine("# of GB processed (uncomment to enable).");
+                sb.AppendLine("# This option is useful to avoid to restart from scratch long 'sync'");
+                sb.AppendLine("# commands interrupted by a machine crash.");
+                sb.AppendLine("# It also improves the recovering if a disk break during a 'sync'.");
+                sb.AppendLine("# Default value is 0, meaning disabled.");
+                sb.AppendLine("# Format: \"autosave SIZE_IN_GB\"");
+                return sb;
             }
+        }
 
         private StringBuilder Section11
         {

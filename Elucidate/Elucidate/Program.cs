@@ -64,6 +64,7 @@ namespace Elucidate
                 try
                 {
                     ExceptionHandler.ReportException(ex, "Failed to attach unhandled exception handler...");
+                    Log.Instance.Error(ex);
                 }
                 catch
                 {
@@ -73,12 +74,13 @@ namespace Elucidate
             try
             {
                 Log.Instance.Info($"File Re-opened: Ver :{Assembly.GetExecutingAssembly().GetName().Version}");
+
                 CheckAndRunSingleApp();
             }
             catch (Exception ex)
             {
                 ExceptionHandler.ReportException(ex, "Application Exception");
-                //MessageBox.Show(ex.Message, @"Uncaught Exception - Exiting !");
+                Log.Instance.Error(ex);
             }
             finally
             {
@@ -103,6 +105,7 @@ namespace Elucidate
                 else
                 {
                     MessageBox.Show($@"{mutexName} is already running");
+                    Log.Instance.Error($@"{mutexName} is already running");
                 }
             }
         }
@@ -112,6 +115,7 @@ namespace Elucidate
             try
             {
                 Log.Instance.Fatal("Unhandled exception.\r\n{0}", e.ExceptionObject);
+
                 if (e.ExceptionObject is Exception ex)
                 {
                     Log.Instance.Fatal(ex, "Exception details");
@@ -120,6 +124,7 @@ namespace Elucidate
                 {
                     Log.Instance.Fatal("Unexpected exception.");
                 }
+
                 ExceptionHandler.ReportException((Exception) e.ExceptionObject);
             }
             catch

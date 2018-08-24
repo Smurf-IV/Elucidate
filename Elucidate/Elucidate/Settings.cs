@@ -41,7 +41,6 @@ using Elucidate.Logging;
 using Elucidate.Objects;
 using Elucidate.Shared;
 using MoreLinq;
-using Vanara.Interop;
 
 namespace Elucidate
 {
@@ -58,7 +57,7 @@ namespace Elucidate
 
         private bool _unsavedChangesMade;
 
-        private ConfigFileHelper cfg = new ConfigFileHelper();
+        private ConfigFileHelper _cfg = new ConfigFileHelper();
 
         private bool _initializing = true;
 
@@ -124,7 +123,7 @@ namespace Elucidate
 
             _initializing = false;
 
-            Properties.Settings.Default.ConfigFileIsValid = ValidateData();
+            Properties.Settings.Default.ConfigFileIsValid = ValidateFormData();
         }
 
         #region driveAndDirTreeView
@@ -420,7 +419,7 @@ namespace Elucidate
                 SystemSounds.Beep.Play();
             }
 
-            ValidateData();
+            ValidateFormData();
         }
 
         private void snapShotSourcesTreeView_DragOver(object sender, DragEventArgs e)
@@ -499,7 +498,7 @@ namespace Elucidate
             return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
         }
 
-        private bool ValidateData()
+        private bool ValidateFormData()
         {
             errorProvider1.Clear();
 
@@ -548,7 +547,7 @@ namespace Elucidate
 
                 deviceList.Add(StorageUtil.GetPathRoot(node.FullPath));
 
-                // test is path exists
+                // test if path exists
                 if (!Directory.Exists(node.FullPath))
                 {
                     errMsg = "Data source is inaccessible!";
@@ -592,7 +591,7 @@ namespace Elucidate
         {
             UnsavedChangesMade = true;
 
-            ValidateData();
+            ValidateFormData();
         }
 
         private void findConfigFile_Click(object sender, EventArgs e)
@@ -601,7 +600,7 @@ namespace Elucidate
             {
                 ofd.InitialDirectory = Path.GetFullPath(configFileLocation.Text);
 
-                Log.Instance.Info("configFileLocation from [{0}]", ofd.InitialDirectory);
+                Log.Instance.Trace("configFileLocation from [{0}]", ofd.InitialDirectory);
 
                 ofd.Filter = @"Snap Raid Config|*.conf*|All Files|*.*";
 
@@ -620,14 +619,14 @@ namespace Elucidate
         {
             ReadConfigDetails();
 
-            ValidateData();
+            ValidateFormData();
         }
 
         private void btnReset_Click(object sender, EventArgs e)
         {
             ReadConfigDetails();
 
-            ValidateData();
+            ValidateFormData();
         }
 
         private void ReadConfigDetails()
@@ -638,7 +637,7 @@ namespace Elucidate
 
                 snapShotSourcesTreeView.Nodes.Clear();
 
-                cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                _cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
 
                 if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
                 {
@@ -661,36 +660,41 @@ namespace Elucidate
                 }
                 else
                 {
-                    if (!cfg.Read())
+                    if (!_cfg.Read())
                     {
-                        MessageBoxExt.Show(this, "Failed to read the config file.", "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBoxExt.Show(
+                            this, 
+                            "Failed to read the config file.", 
+                            "Config Read Error:", 
+                            MessageBoxButtons.OK, 
+                            MessageBoxIcon.Error);
                         return;
                     }
 
-                    IncludePatterns = cfg.IncludePatterns;
+                    IncludePatterns = _cfg.IncludePatterns;
 
-                    numBlockSizeKB.Value = cfg.BlockSizeKB;
+                    numBlockSizeKB.Value = _cfg.BlockSizeKB;
 
-                    _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState = cfg.Nohidden;
+                    _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState = _cfg.Nohidden;
 
-                    numAutoSaveGB.Value = cfg.AutoSaveGB;
+                    numAutoSaveGB.Value = _cfg.AutoSaveGB;
 
-                    foreach (string excludePattern in cfg.ExcludePatterns.Where(excludePattern => !string.IsNullOrWhiteSpace(excludePattern)))
+                    foreach (string excludePattern in _cfg.ExcludePatterns.Where(excludePattern => !string.IsNullOrWhiteSpace(excludePattern)))
                     {
                         exludedFilesView.Rows.Add(excludePattern);
                     }
 
-                    foreach (string source in cfg.SnapShotSources.Where(source => !string.IsNullOrWhiteSpace(source)))
+                    foreach (string source in _cfg.SnapShotSources.Where(source => !string.IsNullOrWhiteSpace(source)))
                     {
                         snapShotSourcesTreeView.Nodes.Add(new TreeNode(source, 7, 7));
                     }
 
-                    parityLocation1.Text = cfg.ParityFile1;
-                    parityLocation2.Text = cfg.ParityFile2;
-                    parityLocation3.Text = cfg.ParityFile3;
-                    parityLocation4.Text = cfg.ParityFile4;
-                    parityLocation5.Text = cfg.ParityFile5;
-                    parityLocation6.Text = cfg.ParityFile6;
+                    parityLocation1.Text = _cfg.ParityFile1;
+                    parityLocation2.Text = _cfg.ParityFile2;
+                    parityLocation3.Text = _cfg.ParityFile3;
+                    parityLocation4.Text = _cfg.ParityFile4;
+                    parityLocation5.Text = _cfg.ParityFile5;
+                    parityLocation6.Text = _cfg.ParityFile6;
                 }
 
                 UnsavedChangesMade = false;
@@ -786,7 +790,12 @@ namespace Elucidate
             {
                 if (errorProvider1.GetErrorCount() > 0)
                 {
-                    MessageBoxExt.Show(this, $@"Configuration errors still exist.", "Unable to save configuration", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBoxExt.Show(
+                        this, 
+                        @"Configuration errors still exist.", 
+                        "Unable to save configuration", 
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Exclamation);
                     return;
                 }
 
@@ -826,42 +835,36 @@ namespace Elucidate
                         cfgToSave.ParityFile1 = trim1;
                         if (string.IsNullOrEmpty(trim1)) break;
                         CreateFullDirectoryPath(trim1);
-                        //Util.CreateEmptyFile(trim1);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim1));
 
                         string trim2 = parityLocation2.Text.Trim();
                         cfgToSave.ParityFile2 = trim2;
                         if (string.IsNullOrEmpty(trim2)) break;
                         CreateFullDirectoryPath(trim2);
-                        //Util.CreateEmptyFile(trim2);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim2));
 
                         string trim3 = parityLocation3.Text.Trim();
                         cfgToSave.ParityFile3 = trim3;
                         if (string.IsNullOrEmpty(trim3)) break;
                         CreateFullDirectoryPath(trim3);
-                        //Util.CreateEmptyFile(trim3);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim3));
 
                         string trim4 = parityLocation4.Text.Trim();
                         cfgToSave.ParityFile4 = trim4;
                         if (string.IsNullOrEmpty(trim4)) break;
                         CreateFullDirectoryPath(trim4);
-                        //Util.CreateEmptyFile(trim4);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim4));
 
                         string trim5 = parityLocation5.Text.Trim();
                         cfgToSave.ParityFile5 = trim5;
                         if (string.IsNullOrEmpty(trim5)) break;
                         CreateFullDirectoryPath(trim5);
-                        //Util.CreateEmptyFile(trim5);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim5));
 
                         string trim6 = parityLocation6.Text.Trim();
                         cfgToSave.ParityFile6 = trim6;
                         if (string.IsNullOrEmpty(trim6)) break;
                         CreateFullDirectoryPath(trim6);
-                        //Util.CreateEmptyFile(trim6);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim6));
 
                         break;
@@ -874,15 +877,20 @@ namespace Elucidate
                 }
 
                 string writeResult;
+
                 if (!string.IsNullOrEmpty(writeResult = cfgToSave.Write()))
                 {
-                    MessageBoxExt.Show(this, writeResult, "Config Write Error:", MessageBoxButtons.OK,
+                    MessageBoxExt.Show(
+                        this, 
+                        writeResult, 
+                        "Config Write Error:", 
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
                 else
                 {
                     // save the Elucidate settings
-                    Properties.Settings.Default.ConfigFileIsValid = ValidateData();
+                    Properties.Settings.Default.ConfigFileIsValid = ValidateFormData();
                     Properties.Settings.Default.SnapRAIDFileLocation = snapRAIDFileLocation.Text;
                     Properties.Settings.Default.ConfigFileLocation = configFileLocation.Text;
                     Properties.Settings.Default.IsDisplayOutputEnabled = _advSettingsList[ConfigFileHelper.CHECKBOX_DISPLAY_OUTPUT_ENABLED].CheckState;
@@ -891,19 +899,26 @@ namespace Elucidate
                     Properties.Settings.Default.HiddenFilesExcluded = _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState;
 
                     Properties.Settings.Default.DebugLoggingEnabled = _advSettingsList[ConfigFileHelper.CHECKBOX_DEBUG_LOGGING_ENABLED].CheckState;
+
                     Log.SetLogLevel(Log.LogLevels.Debug, Properties.Settings.Default.DebugLoggingEnabled);
 
                     Properties.Settings.Default.Save();
+
                     UnsavedChangesMade = false;
 
                     // keep config backup - by day, otherwise include minute, otherwise include second
-                    var backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMdd}";
+                    string backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMdd}";
+
                     if (File.Exists(backupConfig))
                         backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmm}";
+
                     if (File.Exists(backupConfig))
                         backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmmss}";
+
                     if (!File.Exists($"{configFileLocation.Text}.temp")) return;
+
                     File.Copy($"{configFileLocation.Text}.temp", backupConfig);
+
                     File.Delete($"{configFileLocation.Text}.temp");
 
                     driveSpace.RefreshGraph(GetPathsOfInterest());
@@ -913,7 +928,8 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex, "Failed to save config file.");
+                ExceptionHandler.ReportException(ex, "Failed to save the config file.");
+                Log.Instance.Error("Failed to save the config file.");
             }
         }
 
@@ -938,8 +954,14 @@ namespace Elucidate
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!UnsavedChangesMade || (e.CloseReason != CloseReason.UserClosing)) return;
-            if (DialogResult.No == MessageBoxExt.Show(this, "You have made changes that have not been saved.\n\nDo you wish to discard and exit?",
-                    "Settings have changed..", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+
+            if (DialogResult.No == MessageBoxExt.Show(
+                    this, 
+                    "You have made changes that have not been saved.\n\nDo you wish to discard and exit?",
+                    "Settings have changed..", 
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question)
+                )
             {
                 e.Cancel = true;
             }
@@ -1022,18 +1044,25 @@ namespace Elucidate
         private void btnGetRecommended_Click(object sender, EventArgs e)
         {
             CalculateBlockSize calc = new CalculateBlockSize();
+
             List<string> snaps = snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text).Where(text => !string.IsNullOrWhiteSpace(text)).ToList();
+
             calc.SnapShotSources = snaps;
+
             string trim1 = parityLocation1.Text.Trim();
+
             if (!string.IsNullOrEmpty(trim1))
             {
                 calc.ParityTargets.Add(trim1);
+
                 string trim2 = parityLocation2.Text.Trim();
+
                 if (!string.IsNullOrEmpty(trim2))
                 {
                     calc.ParityTargets.Add(trim2);
                 }
             }
+
             calc.ShowDialog(this);
         }
 
@@ -1057,9 +1086,9 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == cfg.ParityFile1) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile1) return;
 
-            ParityLocationChanged(textBox.Text);
+            ParityLocationChanged();
         }
 
         private void parityLocation2_Leave(object sender, EventArgs e)
@@ -1068,9 +1097,9 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == cfg.ParityFile2) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile2) return;
 
-            ParityLocationChanged(textBox.Text);
+            ParityLocationChanged();
 
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
@@ -1088,9 +1117,9 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == cfg.ParityFile3) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile3) return;
 
-            ParityLocationChanged(textBox.Text);
+            ParityLocationChanged();
 
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
@@ -1108,9 +1137,9 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == cfg.ParityFile4) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile4) return;
 
-            ParityLocationChanged(textBox.Text);
+            ParityLocationChanged();
 
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
@@ -1128,9 +1157,9 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == cfg.ParityFile5) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile5) return;
 
-            ParityLocationChanged(textBox.Text);
+            ParityLocationChanged();
 
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
@@ -1148,9 +1177,9 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == cfg.ParityFile6) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile6) return;
 
-            ParityLocationChanged(textBox.Text);
+            ParityLocationChanged();
 
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
@@ -1180,7 +1209,7 @@ namespace Elucidate
                     errorProvider1.SetErrorWithCount(item, "There cannot be empty parity locations between parity locations.");
                 }
 
-                if (!ConfigFileHelper.IsRulePassParityLocationDeviceMustNotRepeat(parityTextBoxesList.Select(c => c.Text).ToList(), current))
+                if (!ConfigFileHelper.IsRulePassDevicesMustNotRepeat(parityTextBoxesList.Select(c => c.Text).ToList(), current))
                 {
                     errorProvider1.SetErrorWithCount(item, "Only one device can be used per parity location.");
                 }
@@ -1189,19 +1218,9 @@ namespace Elucidate
             }
         }
 
-        private void ParityLocationChanged(string textBoxText)
+        private void ParityLocationChanged()
         {
             UnsavedChangesMade = true;
-
-            //if (!string.IsNullOrEmpty(textBoxText))
-            //{
-            //    // create the directory if it does not exist
-
-            //    string directory = Path.GetDirectoryName(textBoxText);
-
-            //    if (directory != null && !Directory.Exists(directory))
-            //            Directory.CreateDirectory(directory);
-            //}
 
             driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
