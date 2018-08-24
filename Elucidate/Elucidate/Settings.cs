@@ -41,12 +41,24 @@ using Elucidate.Logging;
 using Elucidate.Objects;
 using Elucidate.Shared;
 using MoreLinq;
+using Vanara.Interop;
 
 namespace Elucidate
 {
     public partial class Settings : Form
     {
+        public static event EventHandler ConfigSaved;
+
+        // ReSharper disable once UnusedMember.Local
+        private static void OnConfigSaved(EventArgs e)
+        {
+            EventHandler handler = ConfigSaved;
+            handler?.Invoke(null, e);
+        }
+
         private bool _unsavedChangesMade;
+
+        private ConfigFileHelper cfg = new ConfigFileHelper();
 
         private bool _initializing = true;
 
@@ -450,7 +462,7 @@ namespace Elucidate
         private void snapShotSourcesTreeView_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right) return;
-            
+
             Log.Instance.Trace("Select the clicked node");
 
             snapShotSourcesTreeView.SelectedNode = snapShotSourcesTreeView.GetNodeAt(e.X, e.Y);
@@ -481,7 +493,7 @@ namespace Elucidate
             if (!string.IsNullOrEmpty(parityLocation4.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation4.Text), PathType = PathTypeEnum.Parity }); }
 
             if (!string.IsNullOrEmpty(parityLocation5.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation5.Text), PathType = PathTypeEnum.Parity }); }
-        
+
             if (!string.IsNullOrEmpty(parityLocation6.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation6.Text), PathType = PathTypeEnum.Parity }); }
 
             return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
@@ -626,7 +638,7 @@ namespace Elucidate
 
                 snapShotSourcesTreeView.Nodes.Clear();
 
-                ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
 
                 if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
                 {
@@ -772,7 +784,13 @@ namespace Elucidate
         {
             try
             {
-                ConfigFileHelper cfg = new ConfigFileHelper(configFileLocation.Text)
+                if (errorProvider1.GetErrorCount() > 0)
+                {
+                    MessageBoxExt.Show(this, $@"Configuration errors still exist.", "Unable to save configuration", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                ConfigFileHelper cfgToSave = new ConfigFileHelper(configFileLocation.Text)
                 {
                     IncludePatterns = IncludePatterns,
                     BlockSizeKB = (uint)numBlockSizeKB.Value,
@@ -780,24 +798,24 @@ namespace Elucidate
                     AutoSaveGB = (uint)numAutoSaveGB.Value
                 };
 
-                cfg.ExcludePatterns.Clear();
-                cfg.SnapShotSources.Clear();
-                cfg.ContentFiles.Clear();
+                cfgToSave.ExcludePatterns.Clear();
+                cfgToSave.SnapShotSources.Clear();
+                cfgToSave.ContentFiles.Clear();
 
                 foreach (DataGridViewRow row in exludedFilesView.Rows)
                 {
                     string value = $"{row.Cells[0].Value}";
                     if (!string.IsNullOrWhiteSpace(value))
                     {
-                        cfg.ExcludePatterns.Add(value);
+                        cfgToSave.ExcludePatterns.Add(value);
                     }
                 }
 
                 foreach (string text in snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text)
                     .Where(text => !string.IsNullOrWhiteSpace(text)))
                 {
-                    cfg.SnapShotSources.Add(text);
-                    cfg.ContentFiles.Add(text);
+                    cfgToSave.SnapShotSources.Add(text);
+                    cfgToSave.ContentFiles.Add(text);
                 }
 
                 switch (!string.IsNullOrEmpty(parityLocation1.Text.Trim()))
@@ -805,46 +823,46 @@ namespace Elucidate
                     case true:
 
                         string trim1 = parityLocation1.Text.Trim();
-                        trim1 = MakeParityLocationFullFilePath(trim1);
+                        cfgToSave.ParityFile1 = trim1;
                         if (string.IsNullOrEmpty(trim1)) break;
-                        cfg.ParityFile1 = trim1;
-                        Util.CreateEmptyFile(trim1);
-                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim1));
+                        CreateFullDirectoryPath(trim1);
+                        //Util.CreateEmptyFile(trim1);
+                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim1));
 
                         string trim2 = parityLocation2.Text.Trim();
-                        trim2 = MakeParityLocationFullFilePath(trim2);
+                        cfgToSave.ParityFile2 = trim2;
                         if (string.IsNullOrEmpty(trim2)) break;
-                        cfg.ParityFile2 = trim2;
-                        Util.CreateEmptyFile(trim2);
-                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim2));
+                        CreateFullDirectoryPath(trim2);
+                        //Util.CreateEmptyFile(trim2);
+                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim2));
 
                         string trim3 = parityLocation3.Text.Trim();
-                        trim3 = MakeParityLocationFullFilePath(trim3);
+                        cfgToSave.ParityFile3 = trim3;
                         if (string.IsNullOrEmpty(trim3)) break;
-                        cfg.ParityFile3 = trim3;
-                        Util.CreateEmptyFile(trim3);
-                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim3));
+                        CreateFullDirectoryPath(trim3);
+                        //Util.CreateEmptyFile(trim3);
+                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim3));
 
                         string trim4 = parityLocation4.Text.Trim();
-                        trim4 = MakeParityLocationFullFilePath(trim4);
+                        cfgToSave.ParityFile4 = trim4;
                         if (string.IsNullOrEmpty(trim4)) break;
-                        cfg.ParityFile4 = trim4;
-                        Util.CreateEmptyFile(trim4);
-                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim4));
+                        CreateFullDirectoryPath(trim4);
+                        //Util.CreateEmptyFile(trim4);
+                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim4));
 
                         string trim5 = parityLocation5.Text.Trim();
-                        trim5 = MakeParityLocationFullFilePath(trim5);
+                        cfgToSave.ParityFile5 = trim5;
                         if (string.IsNullOrEmpty(trim5)) break;
-                        cfg.ParityFile5 = trim5;
-                        Util.CreateEmptyFile(trim5);
-                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim5));
+                        CreateFullDirectoryPath(trim5);
+                        //Util.CreateEmptyFile(trim5);
+                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim5));
 
                         string trim6 = parityLocation6.Text.Trim();
-                        trim6 = MakeParityLocationFullFilePath(trim6);
+                        cfgToSave.ParityFile6 = trim6;
                         if (string.IsNullOrEmpty(trim6)) break;
-                        cfg.ParityFile6 = trim6;
-                        Util.CreateEmptyFile(trim6);
-                        cfg.ContentFiles.Add(Path.GetDirectoryName(trim6));
+                        CreateFullDirectoryPath(trim6);
+                        //Util.CreateEmptyFile(trim6);
+                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim6));
 
                         break;
                 }
@@ -856,7 +874,7 @@ namespace Elucidate
                 }
 
                 string writeResult;
-                if (!string.IsNullOrEmpty(writeResult = cfg.Write()))
+                if (!string.IsNullOrEmpty(writeResult = cfgToSave.Write()))
                 {
                     MessageBoxExt.Show(this, writeResult, "Config Write Error:", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
@@ -889,6 +907,8 @@ namespace Elucidate
                     File.Delete($"{configFileLocation.Text}.temp");
 
                     driveSpace.RefreshGraph(GetPathsOfInterest());
+
+                    OnConfigSaved(e);
                 }
             }
             catch (Exception ex)
@@ -897,25 +917,22 @@ namespace Elucidate
             }
         }
 
-        private string MakeParityLocationFullFilePath(string parityPath)
+        private void CreateFullDirectoryPath(string path)
         {
-            if (string.IsNullOrEmpty(parityPath)) return string.Empty;
+            if (string.IsNullOrEmpty(path)) return;
+
+            string dir = Path.GetDirectoryName(path);
 
             try
             {
-                // get the file attributes for file or directory
-                FileAttributes attr = File.GetAttributes(parityPath);
+                if (dir == null || Directory.Exists(dir)) return;
 
-                return attr.HasFlag(FileAttributes.Directory)
-                    ? Path.Combine(parityPath, "SnapRAID.parity")
-                    : parityPath;
+                Directory.CreateDirectory(dir);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex);
+                Log.Instance.Warn($"Directory could not be created: {dir}");
             }
-
-            return string.Empty;
         }
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
@@ -983,11 +1000,6 @@ namespace Elucidate
             }
         }
 
-        private void RefreshDriveSspaceDisplayUsingFormData()
-        {
-            driveSpace.StartProcessing(GetPathsOfInterestFromForm());
-        }
-
         private void checkedListBox1_MouseMove(object sender, MouseEventArgs e)
         {
             //Make ttIndex a global integer variable to store index of item currently showing tooltip.
@@ -1042,12 +1054,21 @@ namespace Elucidate
         private void parityLocation1_Leave(object sender, EventArgs e)
         {
             if (!(sender is TextBox textBox)) return;
+
+            ValidateParityTextBox();
+
+            if (textBox.Text.Trim() == cfg.ParityFile1) return;
+
             ParityLocationChanged(textBox.Text);
         }
 
         private void parityLocation2_Leave(object sender, EventArgs e)
         {
             if (!(sender is TextBox textBox)) return;
+
+            ValidateParityTextBox();
+
+            if (textBox.Text.Trim() == cfg.ParityFile2) return;
 
             ParityLocationChanged(textBox.Text);
 
@@ -1065,6 +1086,10 @@ namespace Elucidate
         {
             if (!(sender is TextBox textBox)) return;
 
+            ValidateParityTextBox();
+
+            if (textBox.Text.Trim() == cfg.ParityFile3) return;
+
             ParityLocationChanged(textBox.Text);
 
             string tooltip = "Optional disk failure protection root location.";
@@ -1081,6 +1106,10 @@ namespace Elucidate
         {
             if (!(sender is TextBox textBox)) return;
 
+            ValidateParityTextBox();
+
+            if (textBox.Text.Trim() == cfg.ParityFile4) return;
+
             ParityLocationChanged(textBox.Text);
 
             string tooltip = "Optional disk failure protection root location.";
@@ -1088,7 +1117,7 @@ namespace Elucidate
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
-            toolTip1.SetToolTip(parityLocation3, tooltip);
+            toolTip1.SetToolTip(parityLocation4, tooltip);
             toolTip1.SetToolTip(findParity4, tooltip);
             toolTip1.SetToolTip(labelParity4, tooltip);
         }
@@ -1097,6 +1126,10 @@ namespace Elucidate
         {
             if (!(sender is TextBox textBox)) return;
 
+            ValidateParityTextBox();
+
+            if (textBox.Text.Trim() == cfg.ParityFile5) return;
+
             ParityLocationChanged(textBox.Text);
 
             string tooltip = "Optional disk failure protection root location.";
@@ -1104,7 +1137,7 @@ namespace Elucidate
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
-            toolTip1.SetToolTip(parityLocation3, tooltip);
+            toolTip1.SetToolTip(parityLocation5, tooltip);
             toolTip1.SetToolTip(findParity5, tooltip);
             toolTip1.SetToolTip(labelParity5, tooltip);
         }
@@ -1113,6 +1146,10 @@ namespace Elucidate
         {
             if (!(sender is TextBox textBox)) return;
 
+            ValidateParityTextBox();
+
+            if (textBox.Text.Trim() == cfg.ParityFile6) return;
+
             ParityLocationChanged(textBox.Text);
 
             string tooltip = "Optional disk failure protection root location.";
@@ -1120,26 +1157,53 @@ namespace Elucidate
             {
                 tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
             }
-            toolTip1.SetToolTip(parityLocation3, tooltip);
+            toolTip1.SetToolTip(parityLocation6, tooltip);
             toolTip1.SetToolTip(findParity6, tooltip);
             toolTip1.SetToolTip(labelParity6, tooltip);
+        }
+
+        private void ValidateParityTextBox()
+        {
+            IOrderedEnumerable<TextBox> parityTextBoxes;
+            List<TextBox> parityTextBoxesList = (parityTextBoxes = groupBox2.Controls.OfType<TextBox>().OrderBy(c => c.TabIndex)).ToList();
+
+            string previous = null;
+
+            foreach (TextBox item in parityTextBoxes)
+            {
+                errorProvider1.SetErrorWithCount(item, "");
+                
+                string current = item.Text.Trim();
+
+                if (!ConfigFileHelper.IsRulePassPreviousCannotBeEmpty(previous, current))
+                {
+                    errorProvider1.SetErrorWithCount(item, "There cannot be empty parity locations between parity locations.");
+                }
+
+                if (!ConfigFileHelper.IsRulePassParityLocationDeviceMustNotRepeat(parityTextBoxesList.Select(c => c.Text).ToList(), current))
+                {
+                    errorProvider1.SetErrorWithCount(item, "Only one device can be used per parity location.");
+                }
+
+                previous = current;
+            }
         }
 
         private void ParityLocationChanged(string textBoxText)
         {
             UnsavedChangesMade = true;
 
-            if (!string.IsNullOrEmpty(textBoxText))
-            {
-                // create the directory and file if needed
-                string path = Path.GetDirectoryName(textBoxText);
-                if (!Directory.Exists(path) && path != null)
-                        Directory.CreateDirectory(path);
-                if (!File.Exists(textBoxText))
-                    using (File.Create(textBoxText)) { }
-            }
+            //if (!string.IsNullOrEmpty(textBoxText))
+            //{
+            //    // create the directory if it does not exist
 
-            RefreshDriveSspaceDisplayUsingFormData();
+            //    string directory = Path.GetDirectoryName(textBoxText);
+
+            //    if (directory != null && !Directory.Exists(directory))
+            //            Directory.CreateDirectory(directory);
+            //}
+
+            driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
     }
 }
