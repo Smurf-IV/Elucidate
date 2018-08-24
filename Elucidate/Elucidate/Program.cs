@@ -72,19 +72,17 @@ namespace Elucidate
             }
             try
             {
-                //Log.Instance.Info("=====================================================================");
                 Log.Instance.Info($"File Re-opened: Ver :{Assembly.GetExecutingAssembly().GetName().Version}");
                 CheckAndRunSingleApp();
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex, "Exception has not been caught by the rest of the application!");
-                MessageBox.Show(ex.Message, @"Uncaught Exception - Exiting !");
+                ExceptionHandler.ReportException(ex, "Application Exception");
+                //MessageBox.Show(ex.Message, @"Uncaught Exception - Exiting !");
             }
             finally
             {
                 Log.Instance.Debug("File Closing");
-                //Log.Instance.Info("=====================================================================");
                 Log.Shutdown(); // Flush and close down internal threads and timers
             }
         }
