@@ -510,7 +510,7 @@ namespace Elucidate
             if (!File.Exists(snapRAIDFileLocation.Text))
             {
                 isValid = false;
-                errorProvider1.SetError(snapRAIDFileLocation, "Executeable not found!");
+                errorProvider1.SetError(snapRAIDFileLocation, "Executable not found!");
             }
             if (!File.Exists(configFileLocation.Text))
             {
