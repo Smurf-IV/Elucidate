@@ -29,19 +29,22 @@
 #endregion Copyright (C)
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Elucidate.Controls;
 using Elucidate.HelperClasses;
+using Elucidate.Logging;
 using Elucidate.Shared;
 
 namespace Elucidate
 {
     public sealed partial class ElucidateForm : Form
     {
-        private ConfigFileHelper _srConfig = new ConfigFileHelper();
+        private readonly ConfigFileHelper _srConfig = new ConfigFileHelper();
 
         public ElucidateForm()
         {
@@ -58,8 +61,19 @@ namespace Elucidate
             liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
             recover1.TaskStarted += Recover1_TaskStarted;
             recover1.TaskCompleted += Recover1_TaskCompleted;
-            AppUpdate.NewVersonAvailable += VersionCheck_NewVersonAvailable;
-            AppUpdate.NewVersonInstallReady += VersionCheck_NewVersonInstallReady;
+            AppUpdate.NewVersionAvailable += VersionCheck_NewVersonAvailable;
+            AppUpdate.NewVersionInstallReady += VersionCheck_NewVersonInstallReady;
+            Settings.ConfigSaved += Settings_ConfigUpdated;
+        }
+
+        private void Settings_ConfigUpdated(object sender, EventArgs e)
+        {
+            if (File.Exists(Properties.Settings.Default.ConfigFileLocation))
+            {
+                LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
+            }
+
+            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
         }
 
         private void ElucidateForm_Load(object sender, EventArgs e)
@@ -362,7 +376,7 @@ namespace Elucidate
                 newTitle += $" - {filePath}";
             }
 
-            this.Text = newTitle;
+            Text = newTitle;
         }
 
         private void editSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
@@ -399,6 +413,83 @@ namespace Elucidate
             Properties.Settings.Default.ConfigFileLocation = string.Empty;
             Properties.Settings.Default.ConfigFileIsValid = false;
             EnableIfValid(false);
+        }
+
+        private void deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> parityFiles = new List<string>();
+
+            List<string> contentFiles = new List<string>();
+
+            if (!string.IsNullOrEmpty(_srConfig.ParityFile1))
+                parityFiles.Add(_srConfig.ParityFile1);
+
+            if (!string.IsNullOrEmpty(_srConfig.ParityFile2))
+                parityFiles.Add(_srConfig.ParityFile2);
+
+            if (!string.IsNullOrEmpty(_srConfig.ParityFile3))
+                parityFiles.Add(_srConfig.ParityFile3);
+
+            if (!string.IsNullOrEmpty(_srConfig.ParityFile4))
+                parityFiles.Add(_srConfig.ParityFile4);
+
+            if (!string.IsNullOrEmpty(_srConfig.ParityFile5))
+                parityFiles.Add(_srConfig.ParityFile5);
+
+            if (!string.IsNullOrEmpty(_srConfig.ParityFile6))
+                parityFiles.Add(_srConfig.ParityFile6);
+
+            foreach (var file in _srConfig.ContentFiles)
+            {
+                contentFiles.Add(file);
+            }
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine(@"Are you sure you want to remove the files below?");
+
+            sb.AppendLine(@"This action cannot be undone.");
+
+            sb.AppendLine("");
+
+            foreach (var file in parityFiles)
+            {
+                sb.AppendLine($"Parity File: {file}");
+            }
+
+            foreach (var file in contentFiles)
+            {
+                sb.AppendLine($"Content File: {file}");
+            }
+            
+            var result = MessageBox.Show(
+                this, 
+                sb.ToString(), 
+                @"Delete All SnapRAID Files", 
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    foreach (var file in parityFiles)
+                    {
+                        File.Delete(file);
+                    }
+
+                    foreach (var file in contentFiles)
+                    {
+                        File.Delete(file);
+                    }
+
+                    MessageBoxExt.Show(this, @"The SnapRAID files have been removed", @"Files Removed");
+                }
+                catch (Exception ex)
+                {
+                    Log.Instance.Error(ex);
+                }
+            }
         }
     }
 }
