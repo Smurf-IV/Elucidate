@@ -19,20 +19,20 @@ namespace Elucidate.HelperClasses
 
         private static string InstallFile { get; set; }
 
-        public static event EventHandler NewVersonAvailable;
-        public static event EventHandler NewVersonInstallReady;
+        public static event EventHandler NewVersionAvailable;
+        public static event EventHandler NewVersionInstallReady;
         
         // ReSharper disable once UnusedMember.Local
-        private static void OnNewVersonAvailable(EventArgs e)
+        private static void OnNewVersionAvailable(EventArgs e)
         {
-            EventHandler handler = NewVersonAvailable;
+            EventHandler handler = NewVersionAvailable;
             handler?.Invoke(null, e);
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static void OnNewVersonInstallReady(EventArgs e)
+        private static void OnNewVersionInstallReady(EventArgs e)
         {
-            EventHandler handler = NewVersonInstallReady;
+            EventHandler handler = NewVersionInstallReady;
             handler?.Invoke(null, e);
         }
 
@@ -156,7 +156,7 @@ namespace Elucidate.HelperClasses
                 await wc.DownloadFileTaskAsync(uri, InstallFile);
                 Log.Instance.Debug("DownloadLatestVersionAsync END");
                 File.SetAttributes(InstallFile, FileAttributes.Temporary);
-                NewVersonInstallReady?.Invoke(null, new EventArgs());
+                NewVersionInstallReady?.Invoke(null, new EventArgs());
                 return true;
             }
             catch (Exception ex)
