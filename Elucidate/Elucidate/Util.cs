@@ -87,6 +87,7 @@ namespace Elucidate
 
                 // Convert byte array to a string   
                 StringBuilder builder = new StringBuilder();
+
                 for (int i = 0; i < bytes.Length; i++)
                 {
                     builder.Append(bytes[i].ToString("x2"));
@@ -98,13 +99,16 @@ namespace Elucidate
 
         public static bool IsExecutableRunning(string exePath)
         {
-            Process process = new Process();
-            // Pass your exe file path here.
             string path = exePath;
+
             string fileName = Path.GetFileName(path);
+
             // Get the process that is already running as per the exe file name.
+
             if (fileName == null) return false;
+
             Process[] processName = Process.GetProcessesByName(fileName.Substring(0, fileName.LastIndexOf('.')));
+
             return processName.Length > 0;
         }
 
@@ -118,10 +122,15 @@ namespace Elucidate
                 var request = new RestRequest(Method.GET);
 
                 // execute the request
+
                 IRestResponse response = client.Execute(request);
+
                 var content = response.Content; // raw content as string
+
                 var releases = JArray.Parse($"[{content}]");
+
                 List<JToken> version = (from p in releases select p["tag_name"]).ToList();
+
                 if (version.Count > 0 && version.FirstOrDefault() != null)
                 {
                     return version.FirstOrDefault()?.ToString();
@@ -228,13 +237,15 @@ namespace Elucidate
             try
             {
                 // get stats for parity location since it might be a folder
-                
+
+                string rootPath = StorageUtil.NormalizePath(StorageUtil.GetPathRoot(path));
+
                 // ReSharper disable once UnusedVariable
-                GetDiskFreeSpaceExW(StorageUtil.GetPathRoot(path), out freeBytesAvailable, out ulong totalBytes, out ulong num3);
+                GetDiskFreeSpaceExW(rootPath, out freeBytesAvailable, out ulong totalBytes, out ulong num3);
 
                 ulong driveUsedBytes = totalBytes - freeBytesAvailable;
 
-                pathUsedBytes = (ulong) new FileInfo(path).Length;
+                pathUsedBytes = File.Exists(path) ? (ulong) new FileInfo(path).Length : 0;
 
                 if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/softlink path or file
                 {
@@ -247,7 +258,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Instance.Error($"ParityPathFreeBytesAvailable failed for path {path} Exception Message: {ex.Message}");
                 freeBytesAvailable = 0;
                 pathUsedBytes = 0;
                 rootBytesNotCoveredByPath = 0;
