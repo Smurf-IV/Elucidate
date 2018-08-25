@@ -64,6 +64,7 @@ namespace Elucidate
         }
 
         public List<string> SnapShotSources { private get; set; }
+
         public List<string> ParityTargets { get; private set; }
 
         // Need to find 3 values, Total drive size, Root drive used, actual used by path
@@ -71,7 +72,9 @@ namespace Elucidate
         // Need to be aware of Junctions
         private static void FindAndAddDisplaySizes(string path, ref UInt64 min, ref UInt64 max)
         {
+            // ReSharper disable once UnusedVariable
             Util.SourcePathFreeBytesAvailable(path, out var freeBytesAvailable, out var pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+
             min += pathUsedBytes;
             max += pathUsedBytes;
             max += freeBytesAvailable;
@@ -123,9 +126,14 @@ namespace Elucidate
                     ulong maxProjectedSource = 0;
                     foreach (string path in SnapShotSources)
                     {
-                        Util.SourcePathFreeBytesAvailable(path, out freeBytesAvailable, out pathUsedBytes,
+                        Util.SourcePathFreeBytesAvailable(
+                            path, 
+                            out freeBytesAvailable, 
+                            out pathUsedBytes,
                             out rootBytesNotCoveredByPath);
+
                         ulong currentSource = freeBytesAvailable + pathUsedBytes;
+
                         if (maxProjectedSource < currentSource)
                         {
                             maxProjectedSource = currentSource;
@@ -140,14 +148,14 @@ namespace Elucidate
                     if (maxParityNeeded > maxParitySizeAvailable)
                     {
                         lblBadNews.Text =
-                            @"Display badnews about theoretical projected value - maxParityNeeded > maxParitySizeAvailable";
+                            @"Display bad news about theoretical projected value - maxParityNeeded > maxParitySizeAvailable";
                     }
 
                     if (minParityNeeded > maxParitySizeAvailable)
                     {
                         // Display bad news about theoretical projected value;
                         lblBadNews.Text =
-                            @"Display badnews about theoretical projected value - minParityNeeded > maxParitySizeAvailable";
+                            @"Display bad news about theoretical projected value - minParityNeeded > maxParitySizeAvailable";
                     }
                 }
             }

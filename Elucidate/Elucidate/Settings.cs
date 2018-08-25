@@ -776,6 +776,8 @@ namespace Elucidate
                     });
                 }
 
+                Util.Dump(pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(s => s.Drive).ToList());
+
                 return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(s => s.Drive).ToList();
             }
             catch
@@ -836,37 +838,37 @@ namespace Elucidate
                         string trim1 = parityLocation1.Text.Trim();
                         cfgToSave.ParityFile1 = trim1;
                         if (string.IsNullOrEmpty(trim1)) break;
-                        CreateFullDirectoryPath(trim1);
+                        Util.CreateFullDirectoryPath(trim1);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim1));
 
                         string trim2 = parityLocation2.Text.Trim();
                         cfgToSave.ParityFile2 = trim2;
                         if (string.IsNullOrEmpty(trim2)) break;
-                        CreateFullDirectoryPath(trim2);
+                        Util.CreateFullDirectoryPath(trim2);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim2));
 
                         string trim3 = parityLocation3.Text.Trim();
                         cfgToSave.ParityFile3 = trim3;
                         if (string.IsNullOrEmpty(trim3)) break;
-                        CreateFullDirectoryPath(trim3);
+                        Util.CreateFullDirectoryPath(trim3);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim3));
 
                         string trim4 = parityLocation4.Text.Trim();
                         cfgToSave.ParityFile4 = trim4;
                         if (string.IsNullOrEmpty(trim4)) break;
-                        CreateFullDirectoryPath(trim4);
+                        Util.CreateFullDirectoryPath(trim4);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim4));
 
                         string trim5 = parityLocation5.Text.Trim();
                         cfgToSave.ParityFile5 = trim5;
                         if (string.IsNullOrEmpty(trim5)) break;
-                        CreateFullDirectoryPath(trim5);
+                        Util.CreateFullDirectoryPath(trim5);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim5));
 
                         string trim6 = parityLocation6.Text.Trim();
                         cfgToSave.ParityFile6 = trim6;
                         if (string.IsNullOrEmpty(trim6)) break;
-                        CreateFullDirectoryPath(trim6);
+                        Util.CreateFullDirectoryPath(trim6);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim6));
 
                         break;
@@ -934,25 +936,7 @@ namespace Elucidate
                 Log.Instance.Error("Failed to save the config file.");
             }
         }
-
-        private void CreateFullDirectoryPath(string path)
-        {
-            if (string.IsNullOrEmpty(path)) return;
-
-            string dir = Path.GetDirectoryName(path);
-
-            try
-            {
-                if (dir == null || Directory.Exists(dir)) return;
-
-                Directory.CreateDirectory(dir);
-            }
-            catch (Exception)
-            {
-                Log.Instance.Warn($"Directory could not be created: {dir}");
-            }
-        }
-
+        
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!UnsavedChangesMade || (e.CloseReason != CloseReason.UserClosing)) return;

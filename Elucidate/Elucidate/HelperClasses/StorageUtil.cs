@@ -45,7 +45,7 @@ namespace Elucidate.HelperClasses
         public static bool IsPathRoot(string path)
         {
             if (string.IsNullOrEmpty(path)) return false;
-            string root = MountedFolderSupportLibrary.MountedFolder.GetVolumePathName(path);
+            string root = StorageUtil.GetVolumePathName(path);
             return path == root;
         }
 
@@ -56,9 +56,10 @@ namespace Elucidate.HelperClasses
         /// <returns>System.String.</returns>
         public static string GetPathRoot(string path)
         {
-            string root = MountedFolderSupportLibrary.MountedFolder.GetVolumePathName(path);
+            string root = StorageUtil.GetVolumePathName(path);
             return Path.GetFullPath(root);
         }
+
         static string GetVolumeGuidPath(string mountPoint)
         {
             StringBuilder sb = new StringBuilder(50);

@@ -35,6 +35,7 @@ using System.Linq;
 using System.Text;
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
+using Elucidate.Objects;
 using MoreLinq.Extensions;
 
 namespace Elucidate

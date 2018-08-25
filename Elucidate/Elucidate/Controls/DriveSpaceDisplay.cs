@@ -35,6 +35,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using ByteSizeLib;
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
+using Elucidate.Objects;
 using MoreLinq;
 
 namespace Elucidate.Controls
@@ -105,8 +106,11 @@ namespace Elucidate.Controls
                 if (pathsOfInterest == null)
                 {
                     _snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+
                     if (!_snapRaidConfig.ConfigFileExists) return;
+
                     _snapRaidConfig.Read();
+
                     pathsOfInterest = GetPathsOfInterest();
                 }
 
@@ -154,7 +158,7 @@ namespace Elucidate.Controls
 
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            if (pathsOfInterest == null || worker == null)
+            if (pathsOfInterest == null || !pathsOfInterest.Any() || worker == null)
             {
                 Log.Instance.Error("Worker, or auguments are null, exiting.");
                 return;
@@ -166,17 +170,19 @@ namespace Elucidate.Controls
                 {
                     return;
                 }
+
                 if (!Directory.Exists(coveragePath.DirectoryPath) && !File.Exists(coveragePath.FullPath))
                 {
                     Log.Instance.Warn($"Directory path does not exist: {coveragePath.FullPath}");
                     continue;
                 }
+
                 CompileChartDataItemForPath(coveragePath);
             }
 
             AddDataToDisplay();
         }
-
+        
         private void FillExpectedLayoutWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             UseWaitCursor = false;
@@ -251,10 +257,12 @@ namespace Elucidate.Controls
                     Log.Instance.Error($"PathType is not supported for the graph.");
                     break;
             }
+
+            Util.Dump(_chartDataList);
         }
 
         // ReSharper disable once UnusedMember.Local
-        private string GetLargestWholenumberSymbolOfChartData()
+        private string GetLargestWholeNumberSymbolOfChartData()
         {
             List<string> availableSymbols = new List<string> { "", "b", "B", "KB", "MB", "GB", "TB" };
 
@@ -289,7 +297,7 @@ namespace Elucidate.Controls
 
         private void AddDataToDisplayMethodInvoker()
         {
-            string largestWholenNumberSymbolOfChartData = "GB";
+            string largestWholeNumberSymbolOfChartData = "GB";
 
             foreach (ChartDataItem item in _chartDataList)
             {
@@ -304,7 +312,7 @@ namespace Elucidate.Controls
 
                 string itemPathDisplay = item.PathType == PathTypeEnum.Parity
                     ? StorageUtil.GetPathRoot(item.Path)
-                    : item.Path;
+                    : item.Path; 
 
                 chart1.Series[0].Points.AddXY(itemPathDisplay, points[0]);
                 chart1.Series[1].Points.AddXY(itemPathDisplay, points[1]);
@@ -329,7 +337,7 @@ namespace Elucidate.Controls
                         }
                         else
                         {
-                            dp.Label = $"#VALY\n{largestWholenNumberSymbolOfChartData}";
+                            dp.Label = $"#VALY\n{largestWholeNumberSymbolOfChartData}";
                         }
                     }
                 }
@@ -370,12 +378,12 @@ namespace Elucidate.Controls
         {
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
-            // SnapShotsource might be root or folders, so we handle both cases
+            // SnapShotSource might be root or folders, so we handle both cases
             foreach (string snapShotSource in _snapRaidConfig.SnapShotSources)
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    FullPath = Path.GetDirectoryName(snapShotSource) ?? StorageUtil.GetPathRoot(snapShotSource),
+                    FullPath = snapShotSource,
                     PathType = PathTypeEnum.Source
                 });
             }

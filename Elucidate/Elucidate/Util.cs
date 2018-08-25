@@ -16,6 +16,30 @@ namespace Elucidate
 {
     public static class Util
     {
+        internal static void Dump(object o)
+        {
+            //string json = JsonConvert.SerializeObject(o, Formatting.Indented);
+            //Log.Instance.Debug(json);
+        }
+        
+        public static void CreateFullDirectoryPath(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return;
+
+            string dir = Path.GetDirectoryName(path);
+
+            try
+            {
+                if (dir == null || Directory.Exists(dir)) return;
+
+                Directory.CreateDirectory(dir);
+            }
+            catch (Exception)
+            {
+                Log.Instance.Warn($"Directory could not be created: {dir}");
+            }
+        }
+
         public static string FormatSnapRaidCommandArgs(string command, string additionalCommands, out string appPath)
         {
             // Format according to this: http://snapraid.sourceforge.net/manual.html
@@ -213,13 +237,14 @@ namespace Elucidate
         {
             try
             {
-                return dir.GetFiles().Sum(fi => (ulong) fi.Length) + dir.GetDirectories()
+                return dir.GetFiles()
+                           .Sum(fi => (ulong) fi.Length) + dir.GetDirectories()
                            .Where(d => (d.Attributes & FileAttributes.System) == 0 && (d.Attributes & FileAttributes.Hidden) == 0)
                            .Sum(DirSize);
             }
             catch (UnauthorizedAccessException ex)
             {
-                Log.Instance.Warn(String.Concat("No Access to ", dir.FullName), ex);
+                Log.Instance.Warn(string.Concat("No Access to ", dir.FullName), ex);
             }
             catch (Exception ex)
             {
@@ -272,6 +297,7 @@ namespace Elucidate
             out ulong rootBytesNotCoveredByPath)
         {
             string fullPath = StorageUtil.NormalizePath(Path.GetFullPath(path));
+
             string rootPath = StorageUtil.NormalizePath(StorageUtil.GetPathRoot(path));
 
             // ReSharper disable once UnusedVariable
@@ -280,6 +306,8 @@ namespace Elucidate
             ulong driveUsedBytes = totalBytes - freeBytesAvailable;
             
             rootBytesNotCoveredByPath = 0;
+
+            Log.Instance.Debug($"rootPath {rootPath} freeBytesAvailable {freeBytesAvailable} totalBytes {totalBytes} num3 {num3}");
 
             if (rootPath == fullPath)
             {
@@ -292,7 +320,7 @@ namespace Elucidate
                 Log.Instance.Debug("Need to perform some calculations of Path usage. TotalBytes[{0}]", totalBytes);
 
                 pathUsedBytes = DirSize(new DirectoryInfo(path));
-
+                
                 if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/softlink path or file
                 {
                     rootBytesNotCoveredByPath = driveUsedBytes - pathUsedBytes;
@@ -306,8 +334,11 @@ namespace Elucidate
             
             // ReSharper disable once RedundantAssignment
             char[] chars = new char[62];
+
             chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
+
             byte[] data = new byte[1];
+
             using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
             {
                 crypto.GetNonZeroBytes(data);
@@ -316,6 +347,7 @@ namespace Elucidate
             }
 
             StringBuilder result = new StringBuilder(maxSize);
+
             foreach (byte b in data)
             {
                 result.Append(chars[b % (chars.Length)]);
