@@ -46,13 +46,17 @@ namespace Elucidate.Controls
         public LiveRunLogControl()
         {
             InitializeComponent();
+
             AddThreadingCallbacks();
 
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
 
             IsRunning = false;
+
             timerScantilla.Enabled = false;
+
             comboBoxProcessStatus.Enabled = false;
+
             checkBoxDisplayOutput.Checked = Properties.Settings.Default.IsDisplayOutputEnabled;
             
             ConfigureScintillaControl();
@@ -198,7 +202,7 @@ namespace Elucidate.Controls
             _requested = ProcessPriorityClass.Normal;
 
             ActionWorker.RunWorkerAsync(command.ToString());
-
+            
             toolStripProgressBar1.DisplayText = "Running...";
 
             toolStripProgressBar1.State = ProgressBarState.Normal;
@@ -208,8 +212,9 @@ namespace Elucidate.Controls
             toolStripProgressBar1.Value = 0;
 
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
+
         }
-        
+
         private void actionWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             try
@@ -219,7 +224,9 @@ namespace Elucidate.Controls
                 OnTaskStarted(e);
 
                 BackgroundWorker worker = sender as BackgroundWorker;
+
                 string command = e.Argument as string;
+
                 _lastError = string.Empty;
 
                 if (worker == null)
@@ -263,6 +270,7 @@ namespace Elucidate.Controls
             if (CommandTypeRunning == CommandType.RecoverFix)
             {
                 StringBuilder sbPaths = new StringBuilder();
+
                 do
                 {
                     sbPaths.Append($"-f \"{_batchPaths[_batchPaths.Count - 1]}\" ");
@@ -324,6 +332,7 @@ namespace Elucidate.Controls
                 if (exitCode == 0)
                 {
                     Log.Instance.Info("ExitCode=[{0}]", exitCode);
+                    _lastError = string.Empty;
                 }
                 else
                 {
@@ -359,19 +368,24 @@ namespace Elucidate.Controls
         
         private void actionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            int progressPercentage = e.ProgressPercentage;
+
+            if (progressPercentage == 101) _lastError = e.UserState.ToString();
+
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
             {
                 toolStripProgressBar1.Style = ProgressBarStyle.Continuous;
             }
-            if (e.ProgressPercentage < 101)
+
+            if (progressPercentage < 101)
             {
-                toolStripProgressBar1.Value = e.ProgressPercentage;
+                // even if snapraid is reporting 100%, it may still be running so only100% is only shown in RunWorkerCompleted
+                toolStripProgressBar1.Value = progressPercentage == 100 ? 99 : e.ProgressPercentage;
             }
             else if (e.ProgressPercentage == 101)
             {
                 toolStripProgressBar1.State = ProgressBarState.Error;
                 toolStripProgressBar1.Value = 100;
-                _lastError = e.UserState.ToString();
             }
         }
 
@@ -450,12 +464,16 @@ namespace Elucidate.Controls
                     while (LiveLog.LogQueueCommon.Any())
                     {
                         LiveLog.LogString log = LiveLog.LogQueueCommon.Dequeue();
+
                         if (!checkBoxDisplayOutput.Checked) continue;
+
                         scintilla.AppendText($"{log.Message}{Environment.NewLine}");
                     }
 
                     // scroll to the bottom
+
                     int scintillaTextLength = scintilla.TextLength;
+
                     scintilla.ScrollRange(scintillaTextLength, scintillaTextLength);
                 }
             }
@@ -473,9 +491,13 @@ namespace Elucidate.Controls
                 do
                 {
                     buf = threadObject.CmdProcess.StandardError.ReadLine();
+
                     if (string.IsNullOrEmpty(buf) || buf.StartsWith("Reading data from missing file")) continue; // skip verbose messages from file recovery
+
                     _lastError = buf;
+
                     Log.Instance.Warn(_lastError);
+
                 } while (!string.IsNullOrEmpty(buf));
             }
             catch (Exception ex)
@@ -483,6 +505,7 @@ namespace Elucidate.Controls
                 _lastError = "Thread closing abnormally";
                 ExceptionHandler.ReportException(ex, _lastError);
             }
+
             _mreErrorDone.Set();
         }
 
@@ -494,19 +517,25 @@ namespace Elucidate.Controls
                 do
                 {
                     if (string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardOutput.ReadLine())) continue;
+
                     Log.Instance.Info($"StdOut[{buf}]");
+
                     if (!buf.Contains("%")) continue;
+
                     string[] splits = buf.Split('%');
+
                     if (int.TryParse(splits[0], out int percentProgress))
                     {
                         threadObject.BgdWorker.ReportProgress(percentProgress, buf);
                     }
+
                 } while (!string.IsNullOrEmpty(buf));
             }
             catch (Exception ex)
             {
                 ExceptionHandler.ReportException(ex, "ReadStandardOutput: ");
             }
+
             _mreOutputDone.Set();
         }
 
@@ -522,8 +551,11 @@ namespace Elucidate.Controls
 
             lock (scintilla)
             {
+
                 var startPos = scintilla.GetEndStyled();
+
                 var endPos = e.Position;
+
                 _lexerNlog.Style(scintilla, startPos, endPos);
             }
         }
@@ -546,8 +578,11 @@ namespace Elucidate.Controls
         private void comboBoxProcessStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (sender == null) return;
+
             ComboBox control = (ComboBox)sender;
+
             string strSelected = control.SelectedItem.ToString();
+
             switch (strSelected)
             {
                 case "Stopped":
@@ -561,6 +596,11 @@ namespace Elucidate.Controls
                     Log.Instance.Info("Cancelling the running process...");
                     break;
             }
+        }
+
+        private void LiveRunLogControl_Resize(object sender, EventArgs e)
+        {
+            toolStripProgressBar1.Width = 100;
         }
     }
 }
