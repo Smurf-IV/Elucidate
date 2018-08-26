@@ -129,7 +129,7 @@ namespace Elucidate
                     ParityFile5,
                     ParityFile6
                 };
-                return allParityPaths;
+                return allParityPaths.Where(p => !string.IsNullOrEmpty(p)).ToList();
             }
         }
 
@@ -140,6 +140,16 @@ namespace Elucidate
                 List<string> allDataParityPaths = SnapShotSources.ToList();
                 allDataParityPaths.AddRange(ParityPaths);
                 return allDataParityPaths;
+            }
+        }
+        
+        public List<string> ParityContentPaths
+        {
+            get
+            {
+                List<string> allParityContentPaths = ParityPaths.ToList();
+                allParityContentPaths.AddRange(ContentFiles);
+                return allParityContentPaths;
             }
         }
 
@@ -160,6 +170,17 @@ namespace Elucidate
             {
                 LoadConfigFile(configPath);
             }
+        }
+
+        public bool IsNewSync()
+        {
+            // TODO: if files are missing then we have not run the first sync, so the error message for the content files should be ignored
+            foreach (var path in ParityContentPaths)
+            {
+                if (File.Exists(path)) return false;
+            }
+
+            return true;
         }
 
         public void LoadConfigFile(string configFile)
@@ -203,6 +224,12 @@ namespace Elucidate
             if (string.IsNullOrEmpty(ParityFile1))
             {
                 ConfigErrors.Add("The first parity location must not be empty. Check the value for \"parity\"");
+            }
+
+            // RULE: number of content files must be at least the (number of parity files + 1)
+            if (ContentFiles.Count < ParityPaths.Count + 1)
+            {
+                ConfigErrors.Add($"The number of content files must be at least one greater than the number of parity files. There should be at least {ParityPaths.Count + 1} content files.");
             }
 
             // RULE: check that devices are not repeated
