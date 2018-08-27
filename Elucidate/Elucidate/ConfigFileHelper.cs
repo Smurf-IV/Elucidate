@@ -79,12 +79,16 @@ namespace Elucidate
 
         // ReSharper disable once InconsistentNaming
         public const int CHECKBOX_DISPLAY_OUTPUT_ENABLED = 0;
+        
         // ReSharper disable once InconsistentNaming
         public const int CHECKBOX_USE_VERBOSE_MODE = 1;
+        
         // ReSharper disable once InconsistentNaming
         public const int CHECKBOX_FIND_BY_NAME_IN_SYNC = 2;
+        
         // ReSharper disable once InconsistentNaming
         public const int CHECKBOX_HIDDEN_FILES_EXCLUDED = 3;
+        
         // ReSharper disable once InconsistentNaming
         public const int CHECKBOX_DEBUG_LOGGING_ENABLED = 4;
 
@@ -487,7 +491,7 @@ namespace Elucidate
         {
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
-            // SnapShotsource might be root or folders, so we handle both cases
+            // SnapShotSource might be root or folders, so we handle both cases
             foreach (string snapShotSource in SnapShotSources)
             {
                 pathsOfInterest.Add(new CoveragePath
@@ -530,22 +534,27 @@ namespace Elucidate
 
                 // X-parity
                 fileContents.Append(Section3);
+
                 if (!string.IsNullOrEmpty(ParityFile2))
                 {
                     fileContents.AppendLine($"2-parity {(Directory.Exists(ParityFile2) ? Path.Combine(ParityFile2, "snapraid.2.parity") : ParityFile2)}");
                 }
+
                 if (!string.IsNullOrEmpty(ParityFile3))
                 {
                     fileContents.AppendLine($"3-parity {(Directory.Exists(ParityFile3) ? Path.Combine(ParityFile3, "snapraid.3.parity") : ParityFile3)}");
                 }
+
                 if (!string.IsNullOrEmpty(ParityFile4))
                 {
                     fileContents.AppendLine($"4-parity {(Directory.Exists(ParityFile4) ? Path.Combine(ParityFile4, "snapraid.4.parity") : ParityFile4)}");
                 }
+
                 if (!string.IsNullOrEmpty(ParityFile5))
                 {
                     fileContents.AppendLine($"5-parity {(Directory.Exists(ParityFile5) ? Path.Combine(ParityFile5, "snapraid.5.parity") : ParityFile5)}");
                 }
+
                 if (!string.IsNullOrEmpty(ParityFile6))
                 {
                     fileContents.AppendLine($"6-parity {(Directory.Exists(ParityFile6) ? Path.Combine(ParityFile6, "snapraid.6.parity") : ParityFile6)}");

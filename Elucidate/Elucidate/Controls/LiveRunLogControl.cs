@@ -151,6 +151,7 @@ namespace Elucidate.Controls
             }
 
             CommandTypeRunning = commandToRun;
+
             timerScantilla.Enabled = true;
             
             StringBuilder command = new StringBuilder();
