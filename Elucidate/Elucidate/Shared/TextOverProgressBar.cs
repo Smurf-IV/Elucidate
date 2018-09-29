@@ -3,13 +3,13 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using wyDay.Controls;
+using Elucidate.wyDay.Controls;
 
 // Stuff Resdharper comment here to prevent it trying to remove designer reflection methods
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMember.Global
-namespace Shared
+namespace Elucidate.Shared
 {
     /// <summary>
     /// Color fill taken from http://stackoverflow.com/questions/778678/how-to-change-the-color-of-progressbar-in-c-net-3-5

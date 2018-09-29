@@ -2,8 +2,9 @@
 
 using System;
 using System.Runtime.InteropServices;
+using wyDay.Controls;
 
-namespace wyDay.Controls
+namespace Elucidate.wyDay.Controls
 {
     /// <summary>
     /// The primary coordinator of the Windows 7 taskbar-related activities.

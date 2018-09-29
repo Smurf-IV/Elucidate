@@ -1,6 +1,8 @@
 ﻿#region Copyright (C)
 
 // ---------------------------------------------------------------------------------------------------------------
+//  Forked by BlueBlock on July 28th, 2018
+// ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="LogFileLocations.cs" company="Smurf-IV">
 //
 //  Copyright (C) 2012 Smurf-IV
@@ -28,34 +30,54 @@
 
 using System;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
-using System.Xml;
+using Elucidate.Logging;
+using NLog;
+using NLog.Targets;
 
 namespace Elucidate
 {
     public partial class LogFileLocation : Form
     {
-        private const string configurationNlogVariableNameLogdirValue = @"/configuration/nlog/variable[@name='LogDir'][@value]";
-
         public LogFileLocation()
         {
             InitializeComponent();
 
-            // retrieve appSettings node
             txtNewLocation.Text = txtCurrentLocation.Text = GetLogFileLocation();
+        }
+
+        private static string GetLogFileLocation()
+        {
+            return string.IsNullOrEmpty(Properties.Settings.Default.NLogFileLocation) ? Log.DefaultLogLocation : Properties.Settings.Default.NLogFileLocation;
+        }
+        public static string GetActiveLogFileLocation()
+        {
+            FileTarget target = LogManager.Configuration.FindTargetByName("file") as FileTarget;
+            LogEventInfo logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            string filename = target?.FileName.Render(logEventInfo);
+            return Path.GetDirectoryName(filename);
         }
 
         private void btnDefault_Click(object sender, EventArgs e)
         {
-            txtCurrentLocation.Text = txtNewLocation.Text = @"${specialfolder:folder=CommonApplicationData}/Elucidate/Logs";
-            WriteSetting(txtCurrentLocation.Text);
+            txtNewLocation.Text = Log.DefaultLogLocation;
         }
 
         private void btnCommit_Click(object sender, EventArgs e)
         {
-            WriteSetting(txtNewLocation.Text);
-            txtCurrentLocation.Text = txtNewLocation.Text;
+            try
+            {
+                if (string.IsNullOrEmpty(txtNewLocation.Text))
+                {
+                    txtNewLocation.Text = Log.DefaultLogLocation;
+                }
+                Log.SetLogPath(txtNewLocation.Text);
+                txtCurrentLocation.Text = txtNewLocation.Text;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.ReportException(ex);
+            }
         }
 
         private void btnLaunchBrowser_Click(object sender, EventArgs e)
@@ -65,46 +87,6 @@ namespace Elucidate
                 txtNewLocation.Text = folderBrowserDialog1.SelectedPath;
             }
         }
-
-        public static void WriteSetting(string value)
-        {
-            try
-            {
-                XmlDocument doc = loadConfigDocument();
-                XmlAttribute att = doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"];
-                att.Value = value;
-                doc.Save(getConfigFilePath());
-            }
-            catch
-            {
-                throw;
-            }
-        }
-
-        public static string GetLogFileLocation()
-        {
-            XmlDocument doc = loadConfigDocument();
-            return doc.SelectSingleNode(configurationNlogVariableNameLogdirValue).Attributes["value"].Value;
-        }
-
-        private static XmlDocument loadConfigDocument()
-        {
-            XmlDocument doc = null;
-            try
-            {
-                doc = new XmlDocument();
-                doc.Load(getConfigFilePath());
-                return doc;
-            }
-            catch (FileNotFoundException e)
-            {
-                throw new Exception("No configuration file found.", e);
-            }
-        }
-
-        private static string getConfigFilePath()
-        {
-            return Assembly.GetExecutingAssembly().Location + ".config";
-        }
+        
     }
 }

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Elucidate</RootNamespace>
     <AssemblyName>Elucidate</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -19,6 +19,23 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ShouldCreateLogs>True</ShouldCreateLogs>
+    <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
+    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <AssemblyVersionSettings>
+    </AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>
+    </AssemblyFileVersionSettings>
+    <AssemblyInfoVersionSettings>
+    </AssemblyInfoVersionSettings>
+    <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
+    <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
+    <AssemblyVersion>18.8.27.3</AssemblyVersion>
+    <UpdatePackageVersion>False</UpdatePackageVersion>
+    <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
+    <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -33,18 +50,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <ShouldCreateLogs>True</ShouldCreateLogs>
-    <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersionSettings>YearStamp.MonthStamp.IncrementOnDemand.DayStamp</AssemblyVersionSettings>
-    <AssemblyFileVersionSettings>None.None.None.None</AssemblyFileVersionSettings>
-    <AssemblyInfoVersionSettings>
-    </AssemblyInfoVersionSettings>
-    <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
-    <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>2017.9.602.30</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -111,118 +116,212 @@
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ActiveDirectoryObjectPicker, Version=2.2.128.0, Culture=neutral, PublicKeyToken=515ab092c8839750, processorArchitecture=MSIL">
-      <HintPath>..\packages\Tulpep.ActiveDirectoryObjectPicker.2.2.128\lib\net452\ActiveDirectoryObjectPicker.dll</HintPath>
+    <Reference Include="ActiveDirectoryObjectPicker, Version=2.2.129.0, Culture=neutral, PublicKeyToken=515ab092c8839750, processorArchitecture=MSIL">
+      <HintPath>..\packages\Tulpep.ActiveDirectoryObjectPicker.2.2.129\lib\net452\ActiveDirectoryObjectPicker.dll</HintPath>
     </Reference>
-    <Reference Include="AeroWizard, Version=2.1.10.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
-      <HintPath>..\packages\AeroWizard.2.1.10\lib\net452\AeroWizard.dll</HintPath>
+    <Reference Include="AeroWizard, Version=2.1.11.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
+      <HintPath>..\packages\AeroWizard.2.1.11\lib\net452\AeroWizard.dll</HintPath>
     </Reference>
-    <Reference Include="ComponentFactory.Krypton.Design, Version=4.7.0.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
-      <HintPath>..\packages\KryptonSuite47b.4.7\lib\ComponentFactory.Krypton.Design.dll</HintPath>
+    <Reference Include="ByteSize, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ByteSize.1.3.0\lib\net45\ByteSize.dll</HintPath>
     </Reference>
-    <Reference Include="ComponentFactory.Krypton.Docking, Version=4.7.0.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
-      <HintPath>..\packages\KryptonSuite47b.4.7\lib\ComponentFactory.Krypton.Docking.dll</HintPath>
+    <Reference Include="CommandLineArgumentsParser, Version=3.0.18.0, Culture=neutral, PublicKeyToken=16ad7bf6f4a1666c, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineArgumentsParser.3.0.18\lib\net45\CommandLineArgumentsParser.dll</HintPath>
     </Reference>
-    <Reference Include="ComponentFactory.Krypton.Navigator, Version=4.7.0.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
-      <HintPath>..\packages\KryptonSuite47b.4.7\lib\ComponentFactory.Krypton.Navigator.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
-    <Reference Include="ComponentFactory.Krypton.Ribbon, Version=4.7.0.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
-      <HintPath>..\packages\KryptonSuite47b.4.7\lib\ComponentFactory.Krypton.Ribbon.dll</HintPath>
-    </Reference>
-    <Reference Include="ComponentFactory.Krypton.Toolkit, Version=4.7.0.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
-      <HintPath>..\packages\KryptonSuite47b.4.7\lib\ComponentFactory.Krypton.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="ComponentFactory.Krypton.Workspace, Version=4.7.0.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
-      <HintPath>..\packages\KryptonSuite47b.4.7\lib\ComponentFactory.Krypton.Workspace.dll</HintPath>
+    <Reference Include="ExceptionReporter.NET, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExceptionReporter.4.0.0\lib\net40\ExceptionReporter.NET.dll</HintPath>
     </Reference>
     <Reference Include="GroupControls, Version=1.5.3.0, Culture=neutral, PublicKeyToken=3726d9da21b6ac8f, processorArchitecture=MSIL">
       <HintPath>..\packages\GroupControls.1.5.3\lib\net452\GroupControls.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=11.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.11.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="Handlebars, Version=1.9.5.0, Culture=neutral, PublicKeyToken=22225d0bf33cd661, processorArchitecture=MSIL">
+      <HintPath>..\packages\Handlebars.Net.1.9.5\lib\net452\Handlebars.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=2018.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2018.2.1\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.6.1.0, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
-      <HintPath>..\packages\TaskScheduler.2.6.1\lib\net452\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.8.4.0, Culture=neutral, PublicKeyToken=c416bc1b32d97233, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskScheduler.2.8.4\lib\net452\Microsoft.Win32.TaskScheduler.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Win32.TaskSchedulerEditor, Version=2.6.1.0, Culture=neutral, PublicKeyToken=7be0d908c369d1a5, processorArchitecture=MSIL">
-      <HintPath>..\packages\TaskSchedulerEditor.2.6.1\lib\net452\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
+    <Reference Include="Microsoft.Win32.TaskSchedulerEditor, Version=2.8.4.0, Culture=neutral, PublicKeyToken=7be0d908c369d1a5, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskSchedulerEditor.2.8.4\lib\net452\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.3.0.0\lib\net451\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.4.12\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.4.5.9\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.3.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.3.1\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="ScintillaNET, Version=3.6.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\jacobslusser.ScintillaNET.3.6.3\lib\net40\ScintillaNET.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleMapi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Simple-MAPI.NET.1.1.0\lib\net20\SimpleMapi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="TimeSpan2, Version=2.1.6.0, Culture=neutral, PublicKeyToken=0f30172e1249faac, processorArchitecture=MSIL">
       <HintPath>..\packages\TimeSpan2.2.1.6\lib\net452\TimeSpan2.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdvancedSettingsHelper.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Controls\LiveRunLogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LiveRunLogControl.Designer.cs">
+      <DependentUpon>LiveRunLogControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LogsViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LogsViewerControl.Designer.cs">
+      <DependentUpon>LogsViewerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Recover.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Recover.Designer.cs">
+      <DependentUpon>Recover.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Schedule.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Schedule.Designer.cs">
+      <DependentUpon>Schedule.cs</DependentUpon>
+    </Compile>
     <Compile Include="CalculateBlockSize.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CalculateBlockSize.Designer.cs">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SnapRAIDThread.cs" />
+    <Compile Include="ExceptionHandler.cs" />
+    <Compile Include="HelperClasses\ErrorProviderExtensions.cs" />
+    <Compile Include="HelperClasses\FileUtil.cs" />
+    <Compile Include="HelperClasses\AbortableBackgroundWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HelperClasses\AppUpdate.cs" />
+    <Compile Include="HelperClasses\CommandLineApp.cs" />
+    <Compile Include="Objects\CoveragePath.cs" />
+    <Compile Include="HelperClasses\ISynchronizeInvokeExtensions.cs" />
+    <Compile Include="HelperClasses\LexerScanRaid.cs" />
+    <Compile Include="HelperClasses\LexerNlog.cs" />
+    <Compile Include="HelperClasses\StorageUtil.cs" />
+    <Compile Include="HelperClasses\StringUtil.cs" />
+    <Compile Include="Logging\LiveLog.cs" />
+    <Compile Include="Logging\Log.cs" />
+    <Compile Include="Objects\StorageDevice.cs" />
+    <Compile Include="Shared\BufferedTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Shared\CommandLinkButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Shared\FlickerFreeRichEditTextBox.cs">
+    <Compile Include="Shared\FilteredTaskListView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Shared\MenuButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Shared\MessageBoxExtForm.cs" />
     <Compile Include="Shared\MessageBoxExtForm.Designer.cs" />
+    <Compile Include="Shared\NumericUpDownPowerOfTwo.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Shared\SplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Shared\TextOverProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Shared\WaitCursor.cs" />
-    <Compile Include="Tabs\DriveSpaceDisplay.cs">
+    <Compile Include="Controls\DriveSpaceDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Tabs\DriveSpaceDisplay.Designer.cs">
+    <Compile Include="Controls\DriveSpaceDisplay.Designer.cs">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </Compile>
-    <Compile Include="Recovery Wizard\RecoveryWizard.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Recovery Wizard\RecoveryWizard.Designer.cs">
-      <DependentUpon>RecoveryWizard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Tabs\CapturedLogging.cs">
+    <Compile Include="AppTabs\Recovery.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tabs\Common.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Tabs\MiscTab.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Tabs\MiscTab.Designer.cs">
-      <DependentUpon>MiscTab.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Tabs\Recovery.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Tabs\Scheduling.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Threads\LogThreadClass.cs" />
+    <Compile Include="Threads\RecoverThreadClass.cs" />
     <Compile Include="ToolStripCheckBoxMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Util.cs" />
     <Compile Include="WindowLocation.cs" />
     <Compile Include="ConfigFileHelper.cs" />
-    <Compile Include="Elucidate.cs">
+    <Compile Include="ElucidateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Elucidate.Designer.cs">
-      <DependentUpon>Elucidate.cs</DependentUpon>
+    <Compile Include="ElucidateForm.Designer.cs">
+      <DependentUpon>ElucidateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LogFileLocation.cs">
       <SubType>Form</SubType>
@@ -238,26 +337,36 @@
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="SnapRAIDThreading.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="wyDay.Controls\COMTypes.cs" />
     <Compile Include="wyDay.Controls\Windows7Taskbar.cs" />
     <Compile Include="wyDay.Controls\Windows7ProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <EmbeddedResource Include="Controls\LiveRunLogControl.resx">
+      <DependentUpon>LiveRunLogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\LogsViewerControl.resx">
+      <DependentUpon>LogsViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Recover.resx">
+      <DependentUpon>Recover.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Schedule.resx">
+      <DependentUpon>Schedule.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CalculateBlockSize.resx">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shared\MessageBoxExtForm.resx" />
-    <EmbeddedResource Include="Tabs\DriveSpaceDisplay.resx">
+    <EmbeddedResource Include="Controls\DriveSpaceDisplay.resx">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Elucidate.resx">
-      <DependentUpon>Elucidate.cs</DependentUpon>
+    <EmbeddedResource Include="ElucidateForm.resx">
+      <DependentUpon>ElucidateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogFileLocation.resx">
       <DependentUpon>LogFileLocation.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -269,16 +378,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Recovery Wizard\RecoveryWizard.resx">
-      <DependentUpon>RecoveryWizard.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tabs\MiscTab.resx">
-      <DependentUpon>MiscTab.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\AdvancedSettingsHelper.datasource" />
     <None Include="Properties\Settings.settings">
@@ -293,10 +401,14 @@
     <None Include="wyDay.Controls\Windows 7 Progress Bar, taskbar progress bar, open source C# control, .NET.website" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="snapraid.conf.example" />
+    <None Include="Resources\errorprovidericon.gif" />
+    <Content Include="snapraid.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="wyDay.Controls\License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="ChangeLog.htm" />
     <Content Include="Elucidate.ico" />
     <None Include="Resources\cam_48.png" />
     <None Include="Resources\camera_48.png" />
@@ -327,6 +439,15 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Forms\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MountedFolderSupportLibrary\MountedFolderSupportLibrary.csproj">
+      <Project>{d4900af1-c6ce-45e8-82db-da255351ca62}</Project>
+      <Name>MountedFolderSupportLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

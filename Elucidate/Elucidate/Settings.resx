@@ -120,9 +120,6 @@
   <metadata name="drivesAndDirectoriesMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>232, 16</value>
   </metadata>
-  <metadata name="helpProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>674, 13</value>
-  </metadata>
   <metadata name="imageListUnits.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>558, 16</value>
   </metadata>
@@ -131,7 +128,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACS
-        KQAAAk1TRnQBSQFMAgEBCwEAAWwBAQFsAQEBEgEAARIBAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFI
+        KQAAAk1TRnQBSQFMAgEBCwEAAXQBBQF0AQUBEgEAARIBAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFI
         AwABNgMAAQEBAAEQBQABYAEePAAB9wFeARABQgGMATEBqQE9AeIBVQHiAVUBwgFVAYsBMQGMATEBzgE5
         AbUBVgFaAWsQAAHWAV4B7wFFAYwBPQH3AV4BWgFrAYwBPQGtAT0B1gFaMAABWgFrAdYBWgHWAVoBGAFj
         ATkBZwFaAWscAAHWAVoBcwFOAVIBSgGQAVYBCwFzAQoBcwHgAVkBUAFKAVICSgEpAe8BPQEYAWMIAAEY
@@ -318,7 +315,21 @@
     <value>428, 16</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>57</value>
+    <value>69</value>
+  </metadata>
+  <metadata name="helpProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>674, 13</value>
+  </metadata>
+  <data name="numBlockSizeKB.ToolTip" xml:space="preserve">
+    <value>You could increase this value if you do not have enough RAM memory to run SnapRAID
+As a rule of thumb, with 4GB or more memory use the default 256, with 2GB use 512, and with 1GB use 1024.
+Block Size must be a power of 2 with a minimum value of 256 and a maximum value of 16384(16KB).</value>
+  </data>
+  <metadata name="SnapShotsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>9, 16</value>
+  </metadata>
+  <metadata name="ExcludedFilesPatterns.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -577,15 +588,6 @@
         rEEAAKxBgACsQYAArEH4AKxB+ACsQfgArEE=
 </value>
   </data>
-  <metadata name="SnapShotsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>9, 16</value>
-  </metadata>
-  <metadata name="ExcludedFilesPatterns.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="ExcludedFilesPatterns.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>788, 16</value>
   </metadata>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace Shared
+namespace Elucidate.Shared
 {
    partial class MessageBoxExtForm
    {

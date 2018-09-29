@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace Shared
+namespace Elucidate.Shared
 {
     /// <summary>
     /// Class to implement correctly restore of the previous cursor, Will default to the Cursors.WaitCursor if none specified
@@ -29,12 +29,12 @@ namespace Shared
         {
             if (!applicationWide)
             {
-                throw new ArgumentException("Application wide has to be set to true to use this constructor", "applicationWide");
+                throw new ArgumentException(@"Application wide has to be set to true to use this constructor", nameof(applicationWide));
             }
             SetApplicationWide(true);
         }
 
-        protected void SetApplicationWide(bool value)
+        private void SetApplicationWide(bool value)
         {
             applicationWide = value;
             if (value == Application.UseWaitCursor)
@@ -65,7 +65,7 @@ namespace Shared
         {
             if (null == targetControl)
             {
-                throw new ArgumentNullException("target");
+                throw new ArgumentNullException(nameof(target));
             }
         }
 
@@ -88,7 +88,7 @@ namespace Shared
         {
             if (null == curs)
             {
-                throw new ArgumentNullException("curs");
+                throw new ArgumentNullException(nameof(curs));
             }
 
             this.targetControl = target;
@@ -113,12 +113,10 @@ namespace Shared
 
         private void targetControl_HandleDestroyed(object sender, EventArgs e)
         {
-            if (null != targetControl)
+            if (null == targetControl) return;
+            if (!targetControl.RecreatingHandle)
             {
-                if (!targetControl.RecreatingHandle)
-                {
-                    targetControl = null;
-                }
+                targetControl = null;
             }
         }
 
@@ -130,26 +128,22 @@ namespace Shared
         //Change the Mouse Pointer back to the previous
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposed)
+            if (disposed) return;
+            if (null != targetControl)
             {
-                if (null != targetControl)
-                {
-                    targetControl.HandleDestroyed -= targetControl_HandleDestroyed;
-                    //  TODO: Should only be restored if it indeed still has that value
-                    // if (curs == targetControl.Cursor)
-                    targetControl.Cursor = previousCursor;
-                    targetControl = null;
-                }
-                else if (applicationWide)
-                {
-                    SetApplicationWide(false);
-                }
-                else
-                {
-                    Cursor.Current = previousCursor;
-                }
-                disposed = true;
+                targetControl.HandleDestroyed -= targetControl_HandleDestroyed;
+                targetControl.Cursor = previousCursor;
+                targetControl = null;
             }
+            else if (applicationWide)
+            {
+                SetApplicationWide(false);
+            }
+            else
+            {
+                Cursor.Current = previousCursor;
+            }
+            disposed = true;
         }
 
         [DllImport("user32.dll")]

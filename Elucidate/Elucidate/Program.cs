@@ -1,6 +1,8 @@
 ﻿#region Copyright (C)
 
 // ---------------------------------------------------------------------------------------------------------------
+//  Forked by BlueBlock on July 28th, 2018
+// ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Program.cs" company="Smurf-IV">
 //
 //  Copyright (C) 2011-2012 Smurf-IV
@@ -31,14 +33,12 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using NLog;
+using Elucidate.Logging;
 
 namespace Elucidate
 {
     internal static class Program
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -47,72 +47,91 @@ namespace Elucidate
         {
             try
             {
-                AppDomain.CurrentDomain.UnhandledException += logUnhandledException;
+                AppDomain.CurrentDomain.UnhandledException += LogUnhandledException;
+                //if (FileUtil.IsDirectoryCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)))
+                //{
+                //    FileUtil.SetDirectoryAsCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation));
+                //}
+#if !DEBUG
+                Log.SetLogLevel(Log.LogLevels.Debug, Properties.Settings.Default.DebugLoggingEnabled);
+#else
+                Log.Instance.Debug("------------------------------------------------------------------");
+                Log.Instance.Debug("------------------------------------------------------------------");
+#endif
             }
             catch (Exception ex)
             {
                 try
                 {
-                    Log.Fatal(ex, "Failed to attach unhandled exception handler...");
+                    ExceptionHandler.ReportException(ex, "Failed to attach unhandled exception handler...");
+                    Log.Instance.Error(ex);
                 }
                 catch
                 {
+                    // ignored
                 }
             }
             try
             {
-                Log.Error("=====================================================================");
-                Log.Error("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
+                Log.Instance.Info($"File Re-opened: Ver :{Assembly.GetExecutingAssembly().GetName().Version}");
+
                 CheckAndRunSingleApp();
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Exception has not been caught by the rest of the application!");
-                MessageBox.Show(ex.Message, "Uncaught Exception - Exiting !");
+                ExceptionHandler.ReportException(ex, "Application Exception");
+                Log.Instance.Error(ex);
             }
             finally
             {
-                Log.Error("File Closing");
-                Log.Error("=====================================================================");
+                Log.Instance.Debug("File Closing");
+                Log.Shutdown(); // Flush and close down internal threads and timers
             }
         }
 
         private static void CheckAndRunSingleApp()
         {
-            string MutexName = string.Format("{0} [{1}]", Path.GetFileName(Application.ExecutablePath), Environment.UserName);
-            using (Mutex AppUserMutex = new Mutex(true, MutexName, out bool GrantedOwnership))
+            string mutexName = $"{Path.GetFileName(Application.ExecutablePath)} [{Environment.UserName}]";
+
+            // ReSharper disable once UnusedVariable
+            using (Mutex appUserMutex = new Mutex(true, mutexName, out bool grantedOwnership))
             {
-                if (GrantedOwnership)
+                if (grantedOwnership)
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new Elucidate());
+                    Application.Run(new ElucidateForm());
                 }
                 else
                 {
-                    MessageBox.Show(MutexName + " is already running");
+                    MessageBox.Show($@"{mutexName} is already running");
+                    Log.Instance.Error($@"{mutexName} is already running");
                 }
             }
         }
 
-        private static void logUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private static void LogUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             try
             {
-                Log.Fatal("Unhandled exception.\r\n{0}", e.ExceptionObject);
+                Log.Instance.Fatal("Unhandled exception.\r\n{0}", e.ExceptionObject);
+
                 if (e.ExceptionObject is Exception ex)
                 {
-                    Log.Fatal(ex, "Exception details");
+                    Log.Instance.Fatal(ex, "Exception details");
                 }
                 else
                 {
-                    Log.Fatal("Unexpected exception.");
+                    Log.Instance.Fatal("Unexpected exception.");
                 }
+
+                ExceptionHandler.ReportException((Exception) e.ExceptionObject);
             }
             catch
             {
-                // skipped
+                // ignored
             }
         }
+
     }
 }

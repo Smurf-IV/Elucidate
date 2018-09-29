@@ -1,6 +1,8 @@
 ﻿#region Copyright (C)
 
 // ---------------------------------------------------------------------------------------------------------------
+//  Forked by BlueBlock on July 28th, 2018
+// ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Settings.cs" company="Smurf-IV">
 //
 //  Copyright (C) 2012 Smurf-IV
@@ -36,11 +38,12 @@ namespace Elucidate
 
       public string TootTip { get; private set; }
 
-      public AdvancedSettingsHelper(string displayName, bool CheckState, string tootTip)
+      public AdvancedSettingsHelper(string displayName, bool checkState, string tootTip)
       {
          DisplayName = displayName;
-         this.CheckState = CheckState;
+         this.CheckState = checkState;
          TootTip = tootTip;
       }
+
    }
 }
