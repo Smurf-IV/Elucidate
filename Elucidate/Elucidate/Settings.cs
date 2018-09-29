@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Settings.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2017 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,8 +33,10 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
+
+using ComponentFactory.Krypton.Toolkit;
+
 using NLog;
-using Shared;
 
 namespace Elucidate
 {
@@ -45,7 +47,7 @@ namespace Elucidate
 
         private bool UnsavedChangesMade
         {
-            get { return unsavedChangesMade; }
+            get => unsavedChangesMade;
             set
             {
                 unsavedChangesMade = value;
@@ -401,7 +403,7 @@ namespace Elucidate
             if (!File.Exists(snapRAIDFileLocation.Text))
             {
                 isValid = false;
-                errorProvider1.SetError(snapRAIDFileLocation, "Executeable Not found!");
+                errorProvider1.SetError(snapRAIDFileLocation, "Executable Not found!");
             }
             if (!File.Exists(configFileLocation.Text))
             {
@@ -431,7 +433,7 @@ namespace Elucidate
             {
                 ofd.InitialDirectory = Path.GetFullPath(snapRAIDFileLocation.Text);
                 Log.Info("snapRAIDFileLocation from [{0}]", ofd.InitialDirectory);
-                ofd.Filter = "Snap Raid application|SnapRAID.exe";
+                ofd.Filter = @"Snap Raid application|snapraid.exe";
                 ofd.CheckFileExists = true;
                 ofd.RestoreDirectory = true;
                 if (DialogResult.OK == ofd.ShowDialog())
@@ -453,7 +455,7 @@ namespace Elucidate
             {
                 ofd.InitialDirectory = Path.GetFullPath(configFileLocation.Text);
                 Log.Info("configFileLocation from [{0}]", ofd.InitialDirectory);
-                ofd.Filter = "Snap Raid Config|SnapRAID.config|All Files|*.*";
+                ofd.Filter = @"Snap Raid Config|snapraid.conf|All Files|*.*";
                 ofd.CheckFileExists = true;
                 ofd.RestoreDirectory = true;
                 if (DialogResult.OK == ofd.ShowDialog())
@@ -503,7 +505,7 @@ namespace Elucidate
                 string readResult;
                 if (!string.IsNullOrEmpty(readResult = cfg.Read()))
                 {
-                    MessageBoxExt.Show(this, readResult, "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    KryptonMessageBox.Show(this, readResult, "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 IncludePatterns = cfg.IncludePatterns;
                 numBlockSizeKB.Value = cfg.BlockSizeKB;
@@ -568,7 +570,7 @@ namespace Elucidate
             string writeResult;
             if (!string.IsNullOrEmpty(writeResult = cfg.Write()))
             {
-                MessageBoxExt.Show(this, writeResult, "Config Write Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                KryptonMessageBox.Show(this, writeResult, "Config Write Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -593,7 +595,7 @@ namespace Elucidate
                && (e.CloseReason == CloseReason.UserClosing)
                )
             {
-                if (DialogResult.No == MessageBoxExt.Show(this, "You have made changes that have not been saved.\n\nDo you wish to discard and exit?",
+                if (DialogResult.No == KryptonMessageBox.Show(this, "You have made changes that have not been saved.\n\nDo you wish to discard and exit?",
                                                        "Settings have changed..", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
                     e.Cancel = true;

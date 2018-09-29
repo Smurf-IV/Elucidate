@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+
 using wyDay.Controls;
 
 // Stuff Resdharper comment here to prevent it trying to remove designer reflection methods
@@ -42,7 +43,7 @@ namespace Shared
         [DefaultValue(typeof(string), "ControlText")]
         public string DisplayText
         {
-            get { return Text; }
+            get => Text;
             set
             {
                 if (Text != value)
@@ -60,7 +61,7 @@ namespace Shared
 
         public new ProgressBarState State
         {
-            get { return base.State; }
+            get => base.State;
             set
             {
                 if (base.State != value)
@@ -93,10 +94,7 @@ namespace Shared
         [DefaultValue(ProgressBarStyle.Blocks)]
         public new ProgressBarStyle Style
         {
-            get
-            {
-                return base.Style;
-            }
+            get => base.Style;
             set
             {
                 if (base.Style == value)

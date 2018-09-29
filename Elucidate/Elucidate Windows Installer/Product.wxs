@@ -20,9 +20,9 @@
         <Package Id="*" Keywords='Installer'
                  InstallScope='perMachine'
                  Description="$(var.ProductName)"
-                 Comments="Elucidate" InstallerVersion="500" Compressed="yes"
+                 Comments=" Version: $(var.Version)" InstallerVersion="500" Compressed="yes"
                  AdminImage='no'
-                 Platform='x86'
+                 Platform='x64'
                />
 
         <MajorUpgrade DowngradeErrorMessage="Downgrades are not allowed - Use add/remove from the control panel" />
@@ -36,17 +36,21 @@
         <Property Id="ARPPRODUCTICON" Value="InstallerIcon" />
         <WixVariable Id="WixUILicenseRtf" Value="GPLv2.rtf" />
 
-        <!-- Properties to allow detection of .Net installation -->
-        <PropertyRef Id="NETFRAMEWORK45" />
-        <Condition Message="[ProductName] Requires .NET Framework 4.7 or later to be installed">
-            <![CDATA[Installed OR (NETFRAMEWORK45 AND NETFRAMEWORK45 >= "#460805")]]>
-        </Condition>
+        <Property Id="ARPNOMODIFY" Value="1" />
 
-        <Property Id="WIX_IS_NETFRAMEWORK_47_OR_LATER_INSTALLED" Value="0" />
-        <!-- <PropertyRef Id="WIX_IS_NETFRAMEWORK_47_OR_LATER_INSTALLED" /> 
-      <Condition Message="[ProductName] Requires .NET Framework 4.7 or later to be installed">
-            <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_47_OR_LATER_INSTALLED]]>
-        </Condition>-->
+        <!-- +++++++++++++++++++++++++++ Advertised shortcuts will not produce ICE errors, but will be converted to non-advertised shortcuts when installed -->
+        <Property Id="DISABLEADVTSHORTCUTS" Value="1" />
+
+        <!-- This property enables verbose logging in WiX custom actions. It writes extra entries to the MSI log. -->
+        <Property Id="LOGVERBOSE" Value="1"/>
+
+        <PropertyRef Id="NETFRAMEWORK45" />
+        <PropertyRef Id="WIX_IS_NETFRAMEWORK_472_OR_LATER_INSTALLED"/>
+
+        <!-- Taken from https://github.com/wixtoolset/issues/issues/5575#issuecomment-386223409 -->
+        <Condition Message="[ProductName] Requires .NET Framework 4.7.2 or later to be installed. Please install from the `Pre-Reqs` folder.">
+            <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_472_OR_LATER_INSTALLED]]>
+        </Condition>
 
         <Condition Message="You need to be an administrator to install this product.">
             Privileged
@@ -58,10 +62,7 @@
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder">
                 <Directory Id="INSTALLDIR" Name="Elucidate">
-                    <Directory Id="ClientDIR" Name="Elucidate Client">
-                    </Directory>
-                    <Directory Id="ServiceDIR" Name="Elucidate Service">
-                    </Directory>
+                    <Directory Id="ClientDIR" Name="Elucidate Client"/>
                 </Directory>
             </Directory>
             <Directory Id="ProgramMenuFolder">
@@ -69,59 +70,8 @@
                 <Directory Id="StartupFolder" Name="Startup" />
             </Directory>
 
-            <Directory Id="CommonAppDataFolder" Name="CommonAppData">
-                <Directory Id="ElucidateSvc_Data" Name="ElucidateSvc" >
-                    <Component Id="DataDir" Guid="01234567-7E98-44CE-B049-C477CC0A2B01" KeyPath="yes" />
-                </Directory>
-            </Directory>
-
         </Directory>
 
-        <ComponentGroup Id="Client" Directory="ClientDIR">
-            <Component Id="Client" Guid="5EBF3F29-9CF1-44FE-A94C-CC1B4FE09367" >
-                <File Id="InstallerIcon" Name="Elucidate.ico" Source="$(sys.SOURCEFILEDIR)..\Elucidate\Elucidate.ico" />
-                <File Id="Elucidate.exe" Name="Elucidate.exe" Source="$(var.MgtSource)\Elucidate.exe" KeyPath="yes" />
-            </Component>
-            <Component>
-                <File Source="$(sys.SOURCEFILEDIR)..\Elucidate\ChangeLog.htm" KeyPath="yes" />
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Elucidate.exe.config" KeyPath="yes" />
-            </Component>
-
-            <Component>
-                <File Source="$(var.MgtSource)\ActiveDirectoryObjectPicker.dll" KeyPath="yes" />
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\AeroWizard.dll" KeyPath="yes" />
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\ComponentFactory.Krypton.Toolkit.dll" KeyPath="yes" />
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" />
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskScheduler.dll" KeyPath="yes" />
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskSchedulerEditor.dll" KeyPath="yes" />
-            </Component>
-
-            <Component>
-                <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" />
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\TimeSpan2.dll" KeyPath="yes" />
-            </Component>
-        
-            <Component>
-                <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\wyDay.Controls\License.txt" KeyPath="yes" />
-            </Component>
-        </ComponentGroup>
 
         <DirectoryRef Id="ProgramMenuDir">
             <Component Id="ProgramMenuDir2" Guid="11234567-7E98-44CE-B049-C477CC0A2B01">
@@ -136,24 +86,14 @@
         </DirectoryRef>
 
         <Feature Id="ProductFeature" Title="Elucidate_Setup" Level="1">
-            <ComponentRef Id="DataDir" />
             <ComponentGroupRef Id="Client" />
             <ComponentRef Id='ProgramMenuDir2'/>
         </Feature>
 
 
-        <CustomAction Id="MgtApp" FileKey="Elucidate.exe" ExeCommand="" Return="asyncNoWait" />
-        <util:CloseApplication CloseMessage="yes" Id="CloseElucidate" Target="Elucidate.exe" RebootPrompt="no"/>
-
-        <InstallUISequence>
-            <Custom Action="WixCloseApplications" Before="LaunchConditions" />
-        </InstallUISequence>
-
-        <!-- Now to sequence these Custom Actions in the execute sequence -->
         <InstallExecuteSequence>
-            <Custom Action="WixCloseApplications" Before="LaunchConditions" />
-
-            <Custom Action="MgtApp" After="InstallFinalize">Not Installed</Custom>
+            <!-- This disables removing shortcuts except on uninstall. -->
+            <RemoveShortcuts>Installed AND NOT UPGRADINGPRODUCTCODE</RemoveShortcuts>
         </InstallExecuteSequence>
 
         <!-- Get the install to skip a few steps -->
@@ -169,7 +109,6 @@
             <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
 
             <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
-            <Property Id="ARPNOMODIFY" Value="1" />
 
             <DialogRef Id="BrowseDlg" />
             <DialogRef Id="DiskCostDlg" />

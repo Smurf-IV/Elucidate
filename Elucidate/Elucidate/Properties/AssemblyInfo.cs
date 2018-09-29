@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="AssemblyInfo.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2017 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,17 +25,19 @@
 #endregion
 
 using System.Reflection;
+using System.Resources;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Elucidate")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A SnapRAID GUI")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Smurf-IV")]
 [assembly: AssemblyProduct("Elucidate")]
-[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2017")]
+[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -54,5 +56,17 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("17.09.603.30")]
-[assembly: AssemblyFileVersion("17.09.603.30")]
+[assembly: AssemblyVersion("2018.9.606.29")]
+[assembly: AssemblyFileVersion("18.9.606.29")]
+[assembly: AssemblyInformationalVersion("2018.9.606.29")]
+[assembly: NeutralResourcesLanguage("en-US")]
+// TODO: Add more relevant hints here
+[assembly: Dependency("System", LoadHint.Always)]
+[assembly: Dependency("System.Drawing", LoadHint.Always)]
+[assembly: Dependency("System.Windows.Forms", LoadHint.Always)]
+[assembly: Dependency("System.Windows.Forms.DataVisualization", LoadHint.Always)]
+[assembly: Dependency("System.Xml", LoadHint.Always)]
+[assembly: Dependency("ComponentFactory.Krypton.Toolkit", LoadHint.Always)]
+[assembly: Dependency("ComponentFactory.Krypton.Navigator", LoadHint.Always)]
+[assembly: Dependency("ComponentFactory.Krypton.Workspace", LoadHint.Always)]
+

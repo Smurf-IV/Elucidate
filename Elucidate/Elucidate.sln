@@ -7,36 +7,32 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elucidate", "Elucidate\Eluc
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Elucidate Windows Installer", "Elucidate Windows Installer\Elucidate Windows Installer.wixproj", "{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B062FED2-E4D6-46C2-80BE-2E7279D841A2}"
+	ProjectSection(SolutionItems) = preProject
+		SnapRaid.Conf = SnapRaid.Conf
+		snapraid.exe = snapraid.exe
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Debug|x86.ActiveCfg = Debug|x86
-		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Debug|x86.Build.0 = Debug|x86
 		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Release|x86.ActiveCfg = Release|x86
-		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Release|x86.Build.0 = Release|x86
 		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Debug|x86.ActiveCfg = Debug|x86
-		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Debug|x86.Build.0 = Debug|x86
 		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Release|Any CPU.ActiveCfg = Release|x86
 		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Release|Any CPU.Build.0 = Release|x86
-		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Release|x86.ActiveCfg = Release|x86
-		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_UseGlobalSettings = False
-		BuildVersion_StartDate = 2000/1/1
 		SolutionGuid = {39E6A612-AC12-4D63-BE2A-60EA16940A8A}
+		BuildVersion_StartDate = 2000/1/1
+		BuildVersion_UseGlobalSettings = False
 	EndGlobalSection
 EndGlobal

@@ -30,6 +30,8 @@
     <SuppressPdbOutput>True</SuppressPdbOutput>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CheckFor.Net.wxs" />
+    <Compile Include="Elucidate.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>

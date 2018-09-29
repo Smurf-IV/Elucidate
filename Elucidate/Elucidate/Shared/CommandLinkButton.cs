@@ -58,10 +58,7 @@ namespace Shared
         [DefaultValue(typeof(Font), "Tahoma, 14.25pt")]
         public override Font Font
         {
-            get
-            {
-                return base.Font;
-            }
+            get => base.Font;
             set
             {
                 base.Font = value;
@@ -235,14 +232,8 @@ namespace Shared
         [Description("The amount the text and image move diagonally when pressed")]
         public sbyte ButtonDepress
         {
-            get
-            {
-                return buttonDepress;
-            }
-            set
-            {
-                buttonDepress = value;
-            }
+            get => buttonDepress;
+            set => buttonDepress = value;
         }
 
         [Category("Command Appearance")]
@@ -250,10 +241,7 @@ namespace Shared
         [DefaultValue(null)]
         public new Image Image
         {
-            get
-            {
-                return base.Image;
-            }
+            get => base.Image;
             set
             {
                 //Clean up
@@ -468,7 +456,7 @@ namespace Shared
         [Description("The text to display as the subscript.")]
         public string Subscript
         {
-            get { return subscript; }
+            get => subscript;
             set
             {
                 if (subscript != value)
@@ -489,7 +477,7 @@ namespace Shared
         [Description("The font to use for the subscript.")]
         public Font SubscriptFont
         {
-            get { return subscriptFont; }
+            get => subscriptFont;
             set
             {
                 if (subscriptFont != value)
@@ -510,7 +498,7 @@ namespace Shared
         [Description("Specifies the gap between the headline and subscript text.")]
         public int TextGap
         {
-            get { return textGap; }
+            get => textGap;
             set
             {
                 if (value < 0)
@@ -535,7 +523,7 @@ namespace Shared
         [Description("Specifies the margin at each side of the image.")]
         public float ImageMargin
         {
-            get { return imageMargin; }
+            get => imageMargin;
             set
             {
                 if (value < 0f)
@@ -560,7 +548,7 @@ namespace Shared
         [DefaultValue(typeof(Color), "GradientActiveCaption")]
         public Color HighlightColor
         {
-            get { return highlightColor; }
+            get => highlightColor;
             set
             {
                 if (highlightColor != value)
@@ -580,7 +568,7 @@ namespace Shared
         [Description("The width of the highlight line.")]
         public float HighlightWidth
         {
-            get { return hightlightWidth; }
+            get => hightlightWidth;
             set
             {
                 if (value < 0f)
@@ -604,7 +592,7 @@ namespace Shared
         [Description("Controls how round the corners of the highlight are.")]
         public float Rounding
         {
-            get { return rounding; }
+            get => rounding;
             set
             {
                 if (rounding != value)
@@ -626,7 +614,7 @@ namespace Shared
         [DefaultValue(true)]
         public bool UseHighlighFill
         {
-            get { return useHighlighFill; }
+            get => useHighlighFill;
             set
             {
                 if (useHighlighFill != value)
@@ -647,7 +635,7 @@ namespace Shared
         [Description("Sets the maximum alpha value to use for the graduated normal fill.")]
         public byte HighlightFillAlphaNormal
         {
-            get { return highlightFillAlphaNormal; }
+            get => highlightFillAlphaNormal;
             set
             {
                 if (highlightFillAlphaNormal != value)
@@ -669,7 +657,7 @@ namespace Shared
         [Description("Sets the maximum alpha value to use for the graduated highlight fill.")]
         public byte HighlightFillAlpha
         {
-            get { return highlightFillAlpha; }
+            get => highlightFillAlpha;
             set
             {
                 if (highlightFillAlpha != value)
@@ -690,7 +678,7 @@ namespace Shared
         [Description("Sets the maximum alpha value to use for the graduated highlight fill when the the mouse is over the control.")]
         public byte HighlightFillAlphaMouse
         {
-            get { return highlightFillAlphaMouse; }
+            get => highlightFillAlphaMouse;
             set
             {
                 if (highlightFillAlphaMouse != value)

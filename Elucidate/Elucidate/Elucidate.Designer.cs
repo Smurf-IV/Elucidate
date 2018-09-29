@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
+
 using GUIUtils;
-using Microsoft.Win32.TaskScheduler;
+
 using Shared;
 
 namespace Elucidate
 {
-   sealed partial class Elucidate
+    sealed partial class Elucidate
    {
       /// <summary>
       /// Required designer variable.
@@ -56,7 +57,6 @@ namespace Elucidate
          this.btnEdit = new System.Windows.Forms.Button();
          this.btnNew = new System.Windows.Forms.Button();
          this.btnDelete = new System.Windows.Forms.Button();
-         this.lstHistory = new Microsoft.Win32.TaskScheduler.TaskListView();
          this.webBrowser1 = new System.Windows.Forms.WebBrowser();
          this.btnRemoveOutput = new System.Windows.Forms.Button();
          this.label2 = new System.Windows.Forms.Label();
@@ -316,19 +316,6 @@ namespace Elucidate
          this.toolTip1.SetToolTip(this.btnDelete, "Delete the named Sync task.");
          this.btnDelete.UseVisualStyleBackColor = true;
          this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-         // 
-         // lstHistory
-         // 
-         this.lstHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-         this.lstHistory.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-         this.lstHistory.Location = new System.Drawing.Point(111, 7);
-         this.lstHistory.Name = "lstHistory";
-         this.lstHistory.SelectedIndex = -1;
-         this.lstHistory.Size = new System.Drawing.Size(439, 274);
-         this.lstHistory.TabIndex = 1;
-         this.toolTip1.SetToolTip(this.lstHistory, "Shows the schedules that are in the root of \"Task Scheduler\" only.");
          // 
          // webBrowser1
          // 
@@ -644,7 +631,6 @@ namespace Elucidate
          this.SchedulingPage.Controls.Add(this.btnEdit);
          this.SchedulingPage.Controls.Add(this.btnNew);
          this.SchedulingPage.Controls.Add(this.btnDelete);
-         this.SchedulingPage.Controls.Add(this.lstHistory);
          this.SchedulingPage.Location = new System.Drawing.Point(4, 23);
          this.SchedulingPage.Name = "SchedulingPage";
          this.SchedulingPage.Padding = new System.Windows.Forms.Padding(3);
@@ -760,7 +746,6 @@ namespace Elucidate
       private CommandLinkButton btnSync;
       private TabControl tabControl1;
       private TabPage SchedulingPage;
-      private TaskListView lstHistory;
       private Button btnDelete;
       private Button btnEdit;
       private Button btnNew;

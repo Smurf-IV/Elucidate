@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
+    >
+
+    <?define MgtSource=$(sys.SOURCEFILEDIR)..\Elucidate\bin\Release ?>
+
+    <Fragment>
+
+        <DirectoryRef Id="ClientDIR" />
+
+        <PropertyRef Id="NETFRAMEWORK40FULLINSTALLROOTDIR64" />
+
+        <util:CloseApplication CloseMessage="yes" Id="CloseElucidate" Target="Elucidate.exe" RebootPrompt="no"/>
+
+        <ComponentGroup Id="Client" Directory="ClientDIR">
+            <Component Id="Client" Guid="5EBF3F29-9CF1-44FE-A94C-CC1B4FE09367" >
+                <File Id="InstallerIcon" Name="Elucidate.ico" Source="$(sys.SOURCEFILEDIR)..\Elucidate\Elucidate.ico" />
+                <File Id="Elucidate.exe" Name="Elucidate.exe" Source="$(var.MgtSource)\Elucidate.exe" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Elucidate" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <!-- Event Source creation for 64bit OS with .NET 4 Full -->
+            <Component Id="CreateEventSource64BitFullNet4"
+                       Guid="EED5AB36-9928-49D4-97CC-11B59F906CEC" KeyPath="yes">
+                <Condition><![CDATA[NETFRAMEWORK40FULLINSTALLROOTDIR64 AND VersionNT64]]></Condition>
+                <CreateFolder />
+                <!-- Create an Event Source -->
+                <Util:EventSource
+                    xmlns:Util="http://schemas.microsoft.com/wix/UtilExtension"
+                    Name="Elucidate"
+                    Log="Application"
+                    EventMessageFile="[NETFRAMEWORK40FULLINSTALLROOTDIR64]EventLogMessages.dll" />
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Elucidate.exe.config" KeyPath="yes" />
+            </Component>
+
+            <Component>
+                <File Source="$(var.MgtSource)\Exceptionless.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Exceptionless" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Exceptionless.NLog.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Exceptionless.NLog" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Exceptionless.Windows.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Exceptionless.Windows" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Krypton Navigator.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Navigator" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Krypton Docking.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Docking" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Krypton Ribbon.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Ribbon" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Krypton Toolkit.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Toolkit" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\Krypton Workspace.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Workspace" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.NLog" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\NLog.Windows.Forms.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.NLog.Windows.Forms" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+
+            <!-- Text and help files-->
+            <Component>
+                <File Source="$(sys.SOURCEFILEDIR)..\Elucidate\ChangeLog.htm" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\wyDay.Controls\License.txt" KeyPath="yes" />
+            </Component>
+        </ComponentGroup>
+
+    </Fragment>
+</Wix>

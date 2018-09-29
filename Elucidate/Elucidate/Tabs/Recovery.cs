@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 using Shared;
 
 namespace Elucidate
@@ -83,7 +84,7 @@ namespace Elucidate
 
         private void btnRemoveOutput_Click(object sender, EventArgs e)
         {
-            if (DialogResult.Yes == MessageBoxExt.Show(this, "Are you sure you want to perform this task ?",
+            if (DialogResult.Yes == KryptonMessageBox.Show(this, "Are you sure you want to perform this task ?",
                            "Remove SnapRAID Output files.", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
             {
                 try
@@ -92,7 +93,7 @@ namespace Elucidate
                     string readResult;
                     if (!string.IsNullOrEmpty(readResult = cfg.Read()))
                     {
-                        MessageBoxExt.Show(this, readResult, "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        KryptonMessageBox.Show(this, readResult, "Config Read Error:", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
                     {
@@ -129,7 +130,7 @@ namespace Elucidate
                 catch (Exception ex)
                 {
                     Log.Error(ex, "btnRemoveOutput_Click has thrown: ");
-                    MessageBox.Show(this, ex.Message, "Remove SnapRAID Output files.");
+                    KryptonMessageBox.Show(this, ex.Message, "Remove SnapRAID Output files.");
                 }
             }
         }

@@ -192,10 +192,7 @@ public class ToolStripCheckBoxMenuItem : ToolStripMenuItem
                       ? base.Enabled && ownerMenuItem.Checked
                       : base.Enabled;
         }
-        set
-        {
-            base.Enabled = value;
-        }
+        set => base.Enabled = value;
     }
 
     // When OwnerItem becomes available, if it is a ToolStripMenuItem

@@ -146,7 +146,7 @@ namespace Elucidate
             public string Message;
         };
 
-        static private readonly Queue<LogString> Logs = new Queue<LogString>();
+        private static readonly Queue<LogString> Logs = new Queue<LogString>();
 
         // ReSharper disable UnusedMember.Global
         // This is used by the logging to force all to the output window

@@ -27,10 +27,13 @@
 #endregion Copyright (C)
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
+using Exceptionless;
 using NLog;
 
 namespace Elucidate
@@ -47,42 +50,68 @@ namespace Elucidate
         {
             try
             {
-                AppDomain.CurrentDomain.UnhandledException += logUnhandledException;
+                ExceptionlessClient.Default.Register();
+                // Include the username if available (E.G., Environment.UserName or IIdentity.Name)
+                ExceptionlessClient.Default.Configuration.IncludeUserName = false;
+                // Include the MachineName in MachineInfo.
+                ExceptionlessClient.Default.Configuration.IncludeMachineName = true;
+                // Include Ip Addresses in MachineInfo and RequestInfo.
+                ExceptionlessClient.Default.Configuration.IncludeIpAddress = false;
+                // Include Cookies, please note that DataExclusions are applied to all Cookie keys when enabled.
+                ExceptionlessClient.Default.Configuration.IncludeCookies = false;
+                // Include Form/POST Data, please note that DataExclusions are only applied to Form data keys when enabled.
+                ExceptionlessClient.Default.Configuration.IncludePostData = false;
+                // Include Query String information, please note that DataExclusions are applied to all Query String keys when enabled.
+                ExceptionlessClient.Default.Configuration.IncludeQueryString = false;
+
+                ExceptionlessClient.Default.Configuration.SetVersion(Assembly.GetExecutingAssembly().GetName().Version);
+
+                AppDomain.CurrentDomain.UnhandledException += (sender, e) => LogUnhandledException(e.ExceptionObject);
+
+                Application.ThreadException += (sender, e) =>
+                {
+                    LogUnhandledException(e.Exception);
+                    Environment.Exit(574);  // Force this thread to exit
+                };
             }
             catch (Exception ex)
             {
                 try
                 {
                     Log.Fatal(ex, "Failed to attach unhandled exception handler...");
+                    // https://github.com/exceptionless/Exceptionless.Net/wiki/Sending-Events
+                    ex.ToExceptionless().Submit();
                 }
                 catch
                 {
+                    //
                 }
             }
             try
             {
-                Log.Error("=====================================================================");
+                Log.Info("=====================================================================");
                 Log.Error("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
                 CheckAndRunSingleApp();
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex, "Exception has not been caught by the rest of the application!");
-                MessageBox.Show(ex.Message, "Uncaught Exception - Exiting !");
+                KryptonMessageBox.Show(ex.Message, "Uncaught Exception - Exiting !");
+                ex.ToExceptionless().Submit();
             }
             finally
             {
                 Log.Error("File Closing");
-                Log.Error("=====================================================================");
+                Log.Info("=====================================================================");
             }
         }
 
         private static void CheckAndRunSingleApp()
         {
-            string MutexName = string.Format("{0} [{1}]", Path.GetFileName(Application.ExecutablePath), Environment.UserName);
-            using (Mutex AppUserMutex = new Mutex(true, MutexName, out bool GrantedOwnership))
+            string mutexName = $"{Path.GetFileName(Application.ExecutablePath)} [{Environment.UserName}]";
+            using (Mutex unused = new Mutex(true, mutexName, out bool grantedOwnership))
             {
-                if (GrantedOwnership)
+                if (grantedOwnership)
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
@@ -90,19 +119,36 @@ namespace Elucidate
                 }
                 else
                 {
-                    MessageBox.Show(MutexName + " is already running");
+                    KryptonMessageBox.Show(mutexName + " is already running", mutexName, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
             }
         }
 
-        private static void logUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private static void LogUnhandledException(object exceptionObject)
         {
             try
             {
-                Log.Fatal("Unhandled exception.\r\n{0}", e.ExceptionObject);
-                if (e.ExceptionObject is Exception ex)
+                Log.Fatal("Unhandled exception.\r\n{0}", exceptionObject);
+                string cs = Assembly.GetExecutingAssembly().GetName().Name;
+                try
+                {
+                    if (!EventLog.SourceExists(cs))
+                    {
+                        EventLog.CreateEventSource(cs, @"Application");
+                    }
+                }
+                catch (Exception sex)
+                {
+                    Log.Warn(sex);
+                    cs = @"Application";    // https://stackoverflow.com/questions/25725151/write-to-windows-application-event-log-without-registering-an-event-source
+                }
+                EventLog.WriteEntry(cs, exceptionObject.ToString(), EventLogEntryType.Error);
+                if (exceptionObject is Exception ex)
                 {
                     Log.Fatal(ex, "Exception details");
+                    EventLog.WriteEntry(cs, ex.ToString(), EventLogEntryType.Error);
+                    // https://github.com/exceptionless/Exceptionless.Net/wiki/Sending-Events
+                    ex.ToExceptionless().Submit();
                 }
                 else
                 {
@@ -111,7 +157,7 @@ namespace Elucidate
             }
             catch
             {
-                // skipped
+                // ignored
             }
         }
     }

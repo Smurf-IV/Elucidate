@@ -26,7 +26,7 @@ namespace wyDay.Controls
         }
         public ContainerControl ContainerControl
         {
-            get { return ownerForm; }
+            get => ownerForm;
             set
             {
                 ownerForm = value;
@@ -81,10 +81,7 @@ namespace wyDay.Controls
         [DefaultValue(false)]
         public bool ShowInTaskbar
         {
-            get
-            {
-                return showInTaskbar;
-            }
+            get => showInTaskbar;
             set
             {
                 if (showInTaskbar != value)
@@ -112,10 +109,7 @@ namespace wyDay.Controls
         /// <returns>The position within the range of the progress bar. The default is 0.</returns>
         public new int Value
         {
-            get
-            {
-                return base.Value;
-            }
+            get => base.Value;
             set
             {
                 base.Value = value;
@@ -131,10 +125,7 @@ namespace wyDay.Controls
         /// <returns>One of the ProgressBarStyle values. The default is ProgressBarStyle.Blocks</returns>
         public new ProgressBarStyle Style
         {
-            get
-            {
-                return base.Style;
-            }
+            get => base.Style;
             set
             {
                 base.Style = value;
@@ -154,7 +145,7 @@ namespace wyDay.Controls
         [DefaultValue(ProgressBarState.Normal)]
         public ProgressBarState State
         {
-            get { return m_State; }
+            get => m_State;
             set
             {
                 m_State = value;

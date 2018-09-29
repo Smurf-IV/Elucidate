@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="DriveSpaceDisplay.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2017 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,7 +33,9 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+
 using NLog;
+
 using Shared;
 
 // ReSharper disable UnusedMember.Global
@@ -42,7 +44,7 @@ namespace GUIUtils
 {
     public partial class DriveSpaceDisplay : UserControl
     {
-        static private readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private bool percentage;
         private WaitCursor waiting;
         private string oldTooltip;
@@ -60,8 +62,8 @@ namespace GUIUtils
         [DefaultValue(typeof(bool), "true")]
         public bool ShowYAxisText
         {
-            get { return chart1.ChartAreas[0].AxisX.LabelStyle.Enabled; }
-            set { chart1.ChartAreas[0].AxisX.LabelStyle.Enabled = value; }
+            get => chart1.ChartAreas[0].AxisX.LabelStyle.Enabled;
+            set => chart1.ChartAreas[0].AxisX.LabelStyle.Enabled = value;
         }
 
         /// <summary>
@@ -70,8 +72,8 @@ namespace GUIUtils
         [DefaultValue(typeof(bool), "true")]
         public bool ShowXAxisText
         {
-            get { return chart1.ChartAreas[0].AxisY.LabelStyle.Enabled; }
-            set { chart1.ChartAreas[0].AxisY.LabelStyle.Enabled = value; }
+            get => chart1.ChartAreas[0].AxisY.LabelStyle.Enabled;
+            set => chart1.ChartAreas[0].AxisY.LabelStyle.Enabled = value;
         }
 
         /// <summary>
@@ -80,8 +82,8 @@ namespace GUIUtils
         [DefaultValue(typeof(bool), "true")]
         public bool ShowLegend
         {
-            get { return chart1.Legends[0].Enabled; }
-            set { chart1.Legends[0].Enabled = value; }
+            get => chart1.Legends[0].Enabled;
+            set => chart1.Legends[0].Enabled = value;
         }
 
         #endregion Designer
