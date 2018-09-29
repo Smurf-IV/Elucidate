@@ -12,8 +12,8 @@
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
-    <AssemblyVersion>18.8.27.3</AssemblyVersion>
-    <FileVersion>18.8.27.3</FileVersion>
+    <AssemblyVersion>2018.9.28.29</AssemblyVersion>
+    <FileVersion>18.9.28.29</FileVersion>
   </PropertyGroup>
 
 </Project>
