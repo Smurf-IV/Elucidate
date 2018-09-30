@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+
 using Elucidate.Logging;
 
 namespace Elucidate.Controls
@@ -95,7 +96,10 @@ namespace Elucidate.Controls
             foreach (TreeNode node in nodes)
             {
                 // Add this node.
-                if (node.BackColor != Color.Green) foundNodes.Add(node);
+                if (node.BackColor != Color.Green)
+                {
+                    foundNodes.Add(node);
+                }
 
                 // Check the node's descendants.
                 FindCheckedNodes(foundNodes, node.Nodes);
@@ -108,7 +112,10 @@ namespace Elucidate.Controls
             foreach (TreeNode node in nodes)
             {
                 // Add this node.
-                if (node.BackColor != Color.Green && node.Checked) checkedNodes.Add(node);
+                if (node.BackColor != Color.Green && node.Checked)
+                {
+                    checkedNodes.Add(node);
+                }
 
                 // Check the node's descendants.
                 FindCheckedNodes(checkedNodes, node.Nodes);
@@ -151,7 +158,10 @@ namespace Elucidate.Controls
                         while (LiveLog.LogQueueRecover.Any())
                         {
                             LiveLog.LogString log = LiveLog.LogQueueRecover.Dequeue();
-                            if (!log.Message.Contains("[recoverable ")) continue; // this is not the line you seek
+                            if (!log.Message.Contains("[recoverable "))
+                            {
+                                continue; // this is not the line you seek
+                            }
 
                             // use regex to parse log line and get the FilePath
                             string regexPattern = @"(?<LogEntryTimestamp>\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d.\d\d\d\d).*\[recoverable\s(?<FilePath>.*)\].*";
@@ -160,19 +170,30 @@ namespace Elucidate.Controls
                             {
                                 // nothing to do, the string did not match regex but it contained "[recoverable ", odd
                                 Group logEntryTimestamp = matches.Groups["FilePath"];
-                                if (!logEntryTimestamp.Success) return; // paranoid, just check
+                                if (!logEntryTimestamp.Success)
+                                {
+                                    return; // paranoid, just check
+                                }
+
                                 Log.Instance.Error($"Unable to retrieve the recoverable file path from log entry at '{logEntryTimestamp.Value}'");
                                 return;
                             }
                             Group groupFilePath = matches.Groups["FilePath"];
 
-                            if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value)) return; // nothing to do, path is an empty string
+                            if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value))
+                            {
+                                return; // nothing to do, path is an empty string
+                            }
+
                             string filePath = groupFilePath.Value;
                             treeView1.Invoke(new Action(() => treeView1.Nodes.Add($"/{filePath}", $"/{filePath}")));
                         }
                     }
 
-                    if (liveRunLogControl.ActionWorker.IsBusy || LiveLog.LogQueueRecover.Any()) return; // more items to dequeue
+                    if (liveRunLogControl.ActionWorker.IsBusy || LiveLog.LogQueueRecover.Any())
+                    {
+                        return; // more items to dequeue
+                    }
 
                     SetButtonsEnabledState(true);
                     timerTreeViewFill.Enabled = false;
@@ -195,7 +216,10 @@ namespace Elucidate.Controls
                     while (LiveLog.LogQueueRecover.Any())
                     {
                         LiveLog.LogString log = LiveLog.LogQueueRecover.Dequeue();
-                        if (!log.Message.Contains("[recovered ")) continue; // this is not the line you seek
+                        if (!log.Message.Contains("[recovered "))
+                        {
+                            continue; // this is not the line you seek
+                        }
 
                         // use regex to parse log line and get the FilePath
                         string regexPattern = @"(?<LogEntryTimestamp>\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d.\d\d\d\d).*\[recovered\s(?<FilePath>.*)\].*";
@@ -204,16 +228,28 @@ namespace Elucidate.Controls
                         {
                             // nothing to do, the string did not match regex but it contained "[recoverable ", odd
                             Group logEntryTimestamp = matches.Groups["FilePath"];
-                            if (!logEntryTimestamp.Success) return; // paranoid, just check
+                            if (!logEntryTimestamp.Success)
+                            {
+                                return; // paranoid, just check
+                            }
+
                             Log.Instance.Error($"Unable to retrieve the recovered file path from log entry at '{logEntryTimestamp.Value}'");
                             return;
                         }
                         Group groupFilePath = matches.Groups["FilePath"];
-                        if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value)) return; // nothing to do, path is an empty string
+                        if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value))
+                        {
+                            return; // nothing to do, path is an empty string
+                        }
+
                         string filePath = groupFilePath.Value;
 
                         TreeNode[] node = treeView1.Nodes.Find($"/{filePath}", false);
-                        if (node.Length <= 0) continue;
+                        if (node.Length <= 0)
+                        {
+                            continue;
+                        }
+
                         node[0].Text = $@"{node[0].Name} (RECOVERED)";
                         node[0].BackColor = Color.Green;
                     }
@@ -310,9 +346,13 @@ namespace Elucidate.Controls
                 }
 
                 // recover items
-                foreach (var node in checkedNodes)
+                foreach (TreeNode node in checkedNodes)
                 {
-                    if (node.BackColor == Color.Green) continue;
+                    if (node.BackColor == Color.Green)
+                    {
+                        continue;
+                    }
+
                     _batchPaths.Add(node.FullPath);
                     //paths = new List<string>(paths.OrderBy(p => p.Count(c => c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar)));
                 }

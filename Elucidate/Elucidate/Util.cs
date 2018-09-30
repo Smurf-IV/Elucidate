@@ -7,9 +7,12 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
+
 using Newtonsoft.Json.Linq;
+
 using RestSharp;
 
 namespace Elucidate
@@ -24,13 +27,19 @@ namespace Elucidate
         
         public static void CreateFullDirectoryPath(string path)
         {
-            if (string.IsNullOrEmpty(path)) return;
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
 
             string dir = Path.GetDirectoryName(path);
 
             try
             {
-                if (dir == null || Directory.Exists(dir)) return;
+                if (dir == null || Directory.Exists(dir))
+                {
+                    return;
+                }
 
                 Directory.CreateDirectory(dir);
             }
@@ -70,7 +79,11 @@ namespace Elucidate
         
         public static double RoundUpToDecimalPlace(double numToRound, int decimalPlace)
         {
-            if (decimalPlace < 1) return numToRound; // return original nmber if 0 decimal places requested
+            if (decimalPlace < 1)
+            {
+                return numToRound; // return original nmber if 0 decimal places requested
+            }
+
             string strX = $"1{new String('0', decimalPlace)}";
             int intX = Convert.ToInt32(strX);
             return Math.Ceiling(numToRound * intX) / intX;
@@ -78,7 +91,11 @@ namespace Elucidate
 
         public static void CreateEmptyFile(string filename)
         {
-            if (File.Exists(filename)) return;
+            if (File.Exists(filename))
+            {
+                return;
+            }
+
             File.Create(filename).Dispose();
         }
 
@@ -129,7 +146,10 @@ namespace Elucidate
 
             // Get the process that is already running as per the exe file name.
 
-            if (fileName == null) return false;
+            if (fileName == null)
+            {
+                return false;
+            }
 
             Process[] processName = Process.GetProcessesByName(fileName.Substring(0, fileName.LastIndexOf('.')));
 
@@ -142,16 +162,16 @@ namespace Elucidate
             {
                 string url = "https://api.github.com/repos/amadvance/snapraid/releases/latest";
 
-                var client = new RestClient(url);
-                var request = new RestRequest(Method.GET);
+                RestClient client = new RestClient(url);
+                RestRequest request = new RestRequest(Method.GET);
 
                 // execute the request
 
                 IRestResponse response = client.Execute(request);
 
-                var content = response.Content; // raw content as string
+                string content = response.Content; // raw content as string
 
-                var releases = JArray.Parse($"[{content}]");
+                JArray releases = JArray.Parse($"[{content}]");
 
                 List<JToken> version = (from p in releases select p["tag_name"]).ToList();
 
@@ -188,7 +208,7 @@ namespace Elucidate
         {
             Process process = null;
 
-            var processStartInfo = new ProcessStartInfo {FileName = fileName};
+            ProcessStartInfo processStartInfo = new ProcessStartInfo {FileName = fileName};
 
             if (Environment.OSVersion.Version.Major >= 6) // Windows Vista or higher
             {

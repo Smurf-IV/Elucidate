@@ -4,8 +4,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
+
 using ScintillaNET;
 
 namespace Elucidate.Controls
@@ -89,7 +91,10 @@ namespace Elucidate.Controls
             string selectedIndexValue = null;
             int selectedIndex = -1;
             selectedIndex = listBoxViewLogFiles.SelectedIndex;
-            if (selectedIndex >= 0) selectedIndexValue = listBoxViewLogFiles.SelectedItems[0].ToString();
+            if (selectedIndex >= 0)
+            {
+                selectedIndexValue = listBoxViewLogFiles.SelectedItems[0].ToString();
+            }
 
             switch (selectedDirectoryTitle)
             {
@@ -122,7 +127,10 @@ namespace Elucidate.Controls
 
             listBoxViewLogFiles.Items.Clear();
 
-            if (!Directory.Exists(_logSourcePath)) return;
+            if (!Directory.Exists(_logSourcePath))
+            {
+                return;
+            }
 
             DirectoryInfo logFileDirectoryInfo = new DirectoryInfo(_logSourcePath);
 
@@ -169,8 +177,16 @@ namespace Elucidate.Controls
 
         private void listBoxViewLogFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!Directory.Exists(_logSourcePath)) return;
-            if (listBoxViewLogFiles.SelectedItems.Count == 0) return;
+            if (!Directory.Exists(_logSourcePath))
+            {
+                return;
+            }
+
+            if (listBoxViewLogFiles.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
             string fullPath = $@"{_logSourcePath}\{listBoxViewLogFiles.SelectedItems[0]}";
 
             scintilla.ReadOnly = false;
@@ -201,10 +217,13 @@ namespace Elucidate.Controls
         private void scintilla_TextChanged(object sender, EventArgs e)
         {
             Scintilla control = (sender as Scintilla);
-            if (control == null) return;
+            if (control == null)
+            {
+                return;
+            }
 
             // size the margin for the line numbers
-            var maxLineNumberCharLength = control.Lines.Count.ToString().Length;
+            int maxLineNumberCharLength = control.Lines.Count.ToString().Length;
             const int padding = 2;
             control.Margins[0].Width = control.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
 
@@ -242,8 +261,8 @@ namespace Elucidate.Controls
 
         private void scintilla_StyleNeeded(object sender, StyleNeededEventArgs e)
         {
-            var startPos = scintilla.GetEndStyled();
-            var endPos = e.Position;
+            int startPos = scintilla.GetEndStyled();
+            int endPos = e.Position;
             
             switch (LexerToUse)
             {

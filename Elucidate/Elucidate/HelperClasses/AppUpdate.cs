@@ -89,9 +89,9 @@ namespace Elucidate.HelperClasses
         {
             try
             {
-                var client = new RestClient(repoUrl);
+                RestClient client = new RestClient(repoUrl);
 
-                var request = new RestRequest(Method.GET);
+                RestRequest request = new RestRequest(Method.GET);
 
                 // execute the request
                 IRestResponse response = client.Execute(request);
@@ -108,7 +108,7 @@ namespace Elucidate.HelperClasses
 
                 if (!string.IsNullOrEmpty(version) || !string.IsNullOrEmpty(downloadUrl))
                 {
-                    var info = new VersionInfo
+                    VersionInfo info = new VersionInfo
                     {
                         Version = version,
                         DownloadUrl = downloadUrl,

@@ -22,7 +22,10 @@ namespace Elucidate.HelperClasses
                 ErrorDialog = true
             };
             Process process = Process.Start(startInfo);
-            if (process != null) Log.Instance.Info("Process is running PID[{0}]", process.Id);
+            if (process != null)
+            {
+                Log.Instance.Info("Process is running PID[{0}]", process.Id);
+            }
         }
     }
 }

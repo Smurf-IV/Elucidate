@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using ScintillaNET;
 
 namespace Elucidate.HelperClasses
@@ -26,13 +27,35 @@ namespace Elucidate.HelperClasses
         {
             // Set keywords and put keywords in a HashSet
 
-            if (keywordsError == null) _keywordsErrorHashSet = new HashSet<string>(_defaultKeywordsErrorArray.ToList());
-            if (keywordsWarning == null) _keywordsWarningHashSet = new HashSet<string>(_defaultKeywordsWarningArray.ToList());
-            if (keywordsDebug == null) _keywordsDebugHashSet = new HashSet<string>(_defaultKeywordsDebugArray.ToList());
+            if (keywordsError == null)
+            {
+                _keywordsErrorHashSet = new HashSet<string>(_defaultKeywordsErrorArray.ToList());
+            }
 
-            if (keywordsError != null) _keywordsErrorHashSet = new HashSet<string>(keywordsError.ToList());
-            if (keywordsWarning != null) _keywordsWarningHashSet = new HashSet<string>(keywordsWarning.ToList());
-            if (keywordsDebug != null) _keywordsDebugHashSet = new HashSet<string>(keywordsDebug.ToList());
+            if (keywordsWarning == null)
+            {
+                _keywordsWarningHashSet = new HashSet<string>(_defaultKeywordsWarningArray.ToList());
+            }
+
+            if (keywordsDebug == null)
+            {
+                _keywordsDebugHashSet = new HashSet<string>(_defaultKeywordsDebugArray.ToList());
+            }
+
+            if (keywordsError != null)
+            {
+                _keywordsErrorHashSet = new HashSet<string>(keywordsError.ToList());
+            }
+
+            if (keywordsWarning != null)
+            {
+                _keywordsWarningHashSet = new HashSet<string>(keywordsWarning.ToList());
+            }
+
+            if (keywordsDebug != null)
+            {
+                _keywordsDebugHashSet = new HashSet<string>(keywordsDebug.ToList());
+            }
         }
 
         public void Style(Scintilla scintilla, int startPos, int endPos)
@@ -56,10 +79,10 @@ namespace Elucidate.HelperClasses
 
         private void StyleTerms(Scintilla scintilla, int startPos, string tr, HashSet<string> keywordsHashSet, int styleType)
         {
-            foreach (var word in keywordsHashSet)
+            foreach (string word in keywordsHashSet)
             {
-                var foundIndexes = tr.AllIndexesOf(word, StringComparison.CurrentCulture);
-                foreach (var idx in foundIndexes)
+                IEnumerable<int> foundIndexes = tr.AllIndexesOf(word, StringComparison.CurrentCulture);
+                foreach (int idx in foundIndexes)
                 {
                     scintilla.StartStyling(startPos + idx);
                     scintilla.SetStyling(word.Length, styleType);

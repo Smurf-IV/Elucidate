@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="AssemblyInfo.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2017 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,9 +33,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Elucidate")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("SnapRAID GUI Implementation")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("BlueBlock")]
+[assembly: AssemblyCompany("BlueBlock & Smurf-IV")]
 [assembly: AssemblyProduct("Elucidate")]
 [assembly: AssemblyCopyright("Copyright © BlueBlock 2018 / Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2018")]
 [assembly: AssemblyTrademark("")]
@@ -56,5 +56,5 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2018.9.604.29")]
-[assembly: AssemblyFileVersion("18.9.604.29")]
+[assembly: AssemblyVersion("2018.9.607.30")]
+[assembly: AssemblyFileVersion("18.9.607.30")]

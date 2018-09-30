@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="DriveSpaceDisplay.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2017 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -107,7 +107,10 @@ namespace Elucidate.Controls
                 {
                     _snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
 
-                    if (!_snapRaidConfig.ConfigFileExists) return;
+                    if (!_snapRaidConfig.ConfigFileExists)
+                    {
+                        return;
+                    }
 
                     _snapRaidConfig.Read();
 
@@ -219,7 +222,7 @@ namespace Elucidate.Controls
 
                         Util.ParityPathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
 
-                        var chartDataItem = new ChartDataItem
+                        ChartDataItem chartDataItem = new ChartDataItem
                         {
                             PathType = PathTypeEnum.Parity,
                             Path = pathOfInterest.DirectoryPath,
@@ -239,7 +242,7 @@ namespace Elucidate.Controls
                     {
                         Util.SourcePathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
 
-                        var chartDataItem = new ChartDataItem
+                        ChartDataItem chartDataItem = new ChartDataItem
                         {
                             PathType = PathTypeEnum.Source,
                             Path = pathOfInterest.DirectoryPath,
@@ -268,7 +271,7 @@ namespace Elucidate.Controls
 
             string currentMaxSymbol = string.Empty;
 
-            foreach (var item in _chartDataList)
+            foreach (ChartDataItem item in _chartDataList)
             {
                 string[] symbols =
                 {
@@ -276,7 +279,7 @@ namespace Elucidate.Controls
                     item.PathUsedBytes.LargestWholeNumberSymbol,
                     item.RootBytesNotCoveredByPath.LargestWholeNumberSymbol
                 };
-                foreach (var symbol in symbols)
+                foreach (string symbol in symbols)
                 {
                     if (availableSymbols.IndexOf(symbol) > availableSymbols.IndexOf(currentMaxSymbol))
                     {
@@ -388,17 +391,47 @@ namespace Elucidate.Controls
                 });
             }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile1)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile1), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile1))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile1), PathType = PathTypeEnum.Parity});
+            }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile2)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile2), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile2))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile2), PathType = PathTypeEnum.Parity});
+            }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile3)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile3), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ZParityFile))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                    { FullPath = Path.GetFullPath(_snapRaidConfig.ZParityFile), PathType = PathTypeEnum.Parity });
+            }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile4)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile4), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile3))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile3), PathType = PathTypeEnum.Parity});
+            }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile5)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile5), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile4))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile4), PathType = PathTypeEnum.Parity});
+            }
 
-            if (!string.IsNullOrEmpty(_snapRaidConfig.ParityFile6)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile6), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile5))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile5), PathType = PathTypeEnum.Parity});
+            }
+
+            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile6))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile6), PathType = PathTypeEnum.Parity});
+            }
 
             return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
         }

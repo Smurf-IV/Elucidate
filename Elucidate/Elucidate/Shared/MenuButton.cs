@@ -16,15 +16,23 @@ namespace Elucidate.Shared
         protected override void OnMouseDown(MouseEventArgs mevent)
         {
             base.OnMouseDown(mevent);
-            if (Menu == null || mevent.Button != MouseButtons.Left) return;
-            var menuLocation = ShowMenuUnderCursor ? mevent.Location : new Point(0, Height);
+            if (Menu == null || mevent.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            Point menuLocation = ShowMenuUnderCursor ? mevent.Location : new Point(0, Height);
             Menu.Show(this, menuLocation);
         }
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
             base.OnPaint(pevent);
-            if (Menu == null) return;
+            if (Menu == null)
+            {
+                return;
+            }
+
             int arrowX = ClientRectangle.Width - 14;
             int arrowY = ClientRectangle.Height / 2 - 1;
             Brush brush = Enabled ? SystemBrushes.ControlText : SystemBrushes.ButtonShadow;

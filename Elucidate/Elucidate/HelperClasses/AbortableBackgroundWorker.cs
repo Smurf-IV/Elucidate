@@ -27,7 +27,11 @@ namespace Elucidate.HelperClasses
 
         public void Abort()
         {
-            if (_workerThread == null) return;
+            if (_workerThread == null)
+            {
+                return;
+            }
+
             _workerThread.Abort();
             _workerThread = null;
         }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NLog;
+using NLog.Config;
 using NLog.Targets;
 
 namespace Elucidate.Logging
@@ -105,7 +107,7 @@ namespace Elucidate.Logging
                     return;
             }
 
-            foreach (var rule in LogManager.Configuration.LoggingRules)
+            foreach (LoggingRule rule in LogManager.Configuration.LoggingRules)
             {
                 if (enable)
                 {

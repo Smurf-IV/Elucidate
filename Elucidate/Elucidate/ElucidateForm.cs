@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Form1.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2017 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -214,12 +214,19 @@ namespace Elucidate
                 Title = @"Select name to view contents"
             };
 
-            if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
 
             if (Properties.Settings.Default.UseWindowsSettings)
             {
                 Process word = Process.Start("Wordpad.exe", '"' + openFileDialog.FileName + '"');
-                if (word == null) return;
+                if (word == null)
+                {
+                    return;
+                }
+
                 word.WaitForInputIdle();
                 SendKeys.SendWait("^{END}");
             }
@@ -244,7 +251,7 @@ namespace Elucidate
         private void changeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // ReSharper disable once RedundantAssignment
-            var bookmark = AppUpdate.GetInstalledVersion().Replace(".", "");
+            string bookmark = AppUpdate.GetInstalledVersion().Replace(".", "");
 #if DEBUG
             bookmark = AppUpdate.GetLatestVersionInfo().Version.Replace(".", "");
 #endif
@@ -259,13 +266,13 @@ namespace Elucidate
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Status);
         }
 
-        private void btnDiff_Click(object sender, EventArgs e)
+        private void Diff_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Diff);
         }
 
-        private void btnCheck_Click(object sender, EventArgs e)
+        private void Check_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
             if (Util.IsExecutableRunning(Properties.Settings.Default.SnapRAIDFileLocation))
@@ -277,25 +284,25 @@ namespace Elucidate
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Check);
         }
 
-        private void btnSync_Click(object sender, EventArgs e)
+        private void Sync_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Sync);
         }
 
-        private void btnScrub_Click(object sender, EventArgs e)
+        private void Scrub_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Scrub);
         }
 
-        private void btnFix_Click(object sender, EventArgs e)
+        private void Fix_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Fix);
         }
 
-        private void btnDupFinder_Click(object sender, EventArgs e)
+        private void DupFinder_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Dup);
@@ -308,7 +315,7 @@ namespace Elucidate
             Properties.Settings.Default.Save();
         }
 
-        private void installNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void InstallNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AppUpdate.VersionInfo info = AppUpdate.GetLatestVersionInfo();
 
@@ -326,7 +333,7 @@ namespace Elucidate
             Task.Run(() => AppUpdate.DownloadLatestVersionAsync(info.DownloadUrl));
         }
 
-        private void changeLogOfNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeLogOfNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AppUpdate.VersionInfo info = AppUpdate.GetLatestVersionInfo();
             ProcessStartInfo processStartInfo = new ProcessStartInfo(info.ChangeLogUrl);
@@ -338,13 +345,13 @@ namespace Elucidate
             AppUpdate.InstallNewVersion();
         }
 
-        private void btnForceFullSync_Click(object sender, EventArgs e)
+        private void ForceFullSync_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.ForceFullSync);
         }
 
-        private void openSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OpenSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
@@ -401,7 +408,7 @@ namespace Elucidate
             Text = newTitle;
         }
 
-        private void editSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EditSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
 
@@ -419,7 +426,7 @@ namespace Elucidate
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -429,7 +436,7 @@ namespace Elucidate
             Properties.Settings.Default.Save();
         }
 
-        private void closeSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CloseSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(string.Empty); });
             Properties.Settings.Default.ConfigFileLocation = string.Empty;
@@ -443,48 +450,65 @@ namespace Elucidate
 
             List<string> contentFiles = new List<string>();
 
-            if (!string.IsNullOrEmpty(_srConfig.ParityFile1))
+            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile1))
+            {
                 parityFiles.Add(_srConfig.ParityFile1);
+            }
 
-            if (!string.IsNullOrEmpty(_srConfig.ParityFile2))
+            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile2))
+            {
                 parityFiles.Add(_srConfig.ParityFile2);
+            }
 
-            if (!string.IsNullOrEmpty(_srConfig.ParityFile3))
+            if (!string.IsNullOrWhiteSpace(_srConfig.ZParityFile))
+            {
+                parityFiles.Add(_srConfig.ZParityFile);
+            }
+
+            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile3))
+            {
                 parityFiles.Add(_srConfig.ParityFile3);
+            }
 
-            if (!string.IsNullOrEmpty(_srConfig.ParityFile4))
+            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile4))
+            {
                 parityFiles.Add(_srConfig.ParityFile4);
+            }
 
-            if (!string.IsNullOrEmpty(_srConfig.ParityFile5))
+            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile5))
+            {
                 parityFiles.Add(_srConfig.ParityFile5);
+            }
 
-            if (!string.IsNullOrEmpty(_srConfig.ParityFile6))
+            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile6))
+            {
                 parityFiles.Add(_srConfig.ParityFile6);
+            }
 
-            foreach (var file in _srConfig.ContentFiles)
+            foreach (string file in _srConfig.ContentFiles)
             {
                 contentFiles.Add(file);
             }
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             sb.AppendLine(@"Are you sure you want to remove the files below?");
 
             sb.AppendLine(@"This action cannot be undone.");
 
-            sb.AppendLine("");
+            sb.AppendLine();
 
-            foreach (var file in parityFiles)
+            foreach (string file in parityFiles)
             {
-                sb.AppendLine($"Parity File: {file}");
+                sb.AppendLine($@"Parity File: {file}");
             }
 
-            foreach (var file in contentFiles)
+            foreach (string file in contentFiles)
             {
-                sb.AppendLine($"Content File: {file}");
+                sb.AppendLine($@"Content File: {file}");
             }
             
-            var result = MessageBox.Show(
+            DialogResult result = MessageBox.Show(
                 this, 
                 sb.ToString(), 
                 @"Delete All SnapRAID Files", 
@@ -495,12 +519,12 @@ namespace Elucidate
             {
                 try
                 {
-                    foreach (var file in parityFiles)
+                    foreach (string file in parityFiles)
                     {
                         File.Delete(file);
                     }
 
-                    foreach (var file in contentFiles)
+                    foreach (string file in contentFiles)
                     {
                         File.Delete(file);
                     }

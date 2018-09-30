@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+
 using Elucidate.Shared;
+
 using Microsoft.VisualBasic.Devices;
 
 namespace Elucidate
@@ -73,7 +75,7 @@ namespace Elucidate
         private static void FindAndAddDisplaySizes(string path, ref UInt64 min, ref UInt64 max)
         {
             // ReSharper disable once UnusedVariable
-            Util.SourcePathFreeBytesAvailable(path, out var freeBytesAvailable, out var pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+            Util.SourcePathFreeBytesAvailable(path, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
 
             min += pathUsedBytes;
             max += pathUsedBytes;
@@ -161,7 +163,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                var exx = ex;
+                Exception exx = ex;
             }
             finally
             {

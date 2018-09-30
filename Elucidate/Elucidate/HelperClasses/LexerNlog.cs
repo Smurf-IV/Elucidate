@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using ScintillaNET;
 
 namespace Elucidate.HelperClasses
@@ -35,29 +36,51 @@ namespace Elucidate.HelperClasses
         {
             // Set keywords and put keywords in a HashSet
 
-            if (keywordsError == null) _keywordsErrorHashSet = new HashSet<string>(_defaultKeywordsErrorArray.ToList());
-            if (keywordsWarning == null) _keywordsWarningHashSet = new HashSet<string>(_defaultKeywordsWarningArray.ToList());
-            if (keywordsDebug == null) _keywordsDebugHashSet = new HashSet<string>(_defaultKeywordsDebugArray.ToList());
+            if (keywordsError == null)
+            {
+                _keywordsErrorHashSet = new HashSet<string>(_defaultKeywordsErrorArray.ToList());
+            }
 
-            if (keywordsError != null) _keywordsErrorHashSet = new HashSet<string>(keywordsError.ToList());
-            if (keywordsWarning != null) _keywordsWarningHashSet = new HashSet<string>(keywordsWarning.ToList());
-            if (keywordsDebug != null) _keywordsDebugHashSet = new HashSet<string>(keywordsDebug.ToList());
+            if (keywordsWarning == null)
+            {
+                _keywordsWarningHashSet = new HashSet<string>(_defaultKeywordsWarningArray.ToList());
+            }
+
+            if (keywordsDebug == null)
+            {
+                _keywordsDebugHashSet = new HashSet<string>(_defaultKeywordsDebugArray.ToList());
+            }
+
+            if (keywordsError != null)
+            {
+                _keywordsErrorHashSet = new HashSet<string>(keywordsError.ToList());
+            }
+
+            if (keywordsWarning != null)
+            {
+                _keywordsWarningHashSet = new HashSet<string>(keywordsWarning.ToList());
+            }
+
+            if (keywordsDebug != null)
+            {
+                _keywordsDebugHashSet = new HashSet<string>(keywordsDebug.ToList());
+            }
         }
 
         public void Style(Scintilla scintilla, int startPos, int endPos)
         {
             // Back up to the line start
-            var line = scintilla.LineFromPosition(startPos);
+            int line = scintilla.LineFromPosition(startPos);
             startPos = scintilla.Lines[line].Position;
 
-            var length = 0;
-            var state = STATE_UNKNOWN;
+            int length = 0;
+            int state = STATE_UNKNOWN;
 
             // Start styling
             scintilla.StartStyling(startPos);
             while (startPos < endPos)
             {
-                var c = (char)scintilla.GetCharAt(startPos);
+                char c = (char)scintilla.GetCharAt(startPos);
 
                 REPROCESS:
                 switch (state)
@@ -83,13 +106,19 @@ namespace Elucidate.HelperClasses
                         else
                         {
                             int style = StyleDefault;
-                            var identifier = scintilla.GetTextRange(startPos - length, length);
+                            string identifier = scintilla.GetTextRange(startPos - length, length);
                             if (IsHighlightErrorEnabled && _keywordsErrorHashSet != null && _keywordsErrorHashSet.Contains(identifier))
+                            {
                                 style = StyleError;
+                            }
                             else if (IsHighlightWarningEnabled && _keywordsWarningHashSet != null && _keywordsWarningHashSet.Contains(identifier))
+                            {
                                 style = StyleWarning;
+                            }
                             else if (IsHighlightDebugEnabled && _keywordsDebugHashSet != null && _keywordsDebugHashSet.Contains(identifier))
+                            {
                                 style = StyleDebug;
+                            }
 
                             scintilla.SetStyling(length, style);
 

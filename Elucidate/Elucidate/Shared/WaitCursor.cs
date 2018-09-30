@@ -113,7 +113,11 @@ namespace Elucidate.Shared
 
         private void targetControl_HandleDestroyed(object sender, EventArgs e)
         {
-            if (null == targetControl) return;
+            if (null == targetControl)
+            {
+                return;
+            }
+
             if (!targetControl.RecreatingHandle)
             {
                 targetControl = null;
@@ -128,7 +132,11 @@ namespace Elucidate.Shared
         //Change the Mouse Pointer back to the previous
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed) return;
+            if (disposed)
+            {
+                return;
+            }
+
             if (null != targetControl)
             {
                 targetControl.HandleDestroyed -= targetControl_HandleDestroyed;

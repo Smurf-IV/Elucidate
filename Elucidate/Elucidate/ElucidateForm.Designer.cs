@@ -153,7 +153,7 @@ namespace Elucidate
             this.toolTip1.SetToolTip(this.btnDiff, "Lists all the files modified since the last \"sync\" command that need to recompute" +
         " their redundancy data.");
             this.btnDiff.UseVisualStyleBackColor = true;
-            this.btnDiff.Click += new System.EventHandler(this.btnDiff_Click);
+            this.btnDiff.Click += new System.EventHandler(this.Diff_Click);
             // 
             // btnScrub
             // 
@@ -183,7 +183,7 @@ namespace Elucidate
         "ady marked as bad are always checked.\r\nUse \"Additional Command\" to override the " +
         "default of 100% of 0 days");
             this.btnScrub.UseVisualStyleBackColor = true;
-            this.btnScrub.Click += new System.EventHandler(this.btnScrub_Click);
+            this.btnScrub.Click += new System.EventHandler(this.Scrub_Click);
             // 
             // btnStatus
             // 
@@ -242,7 +242,7 @@ namespace Elucidate
             this.toolTip1.SetToolTip(this.btnFix, "Override with the \"Additional Command\" options, e.g.\r\nRecover all the deleted fil" +
         "es in all drives with \"-m\" \r\n");
             this.btnFix.UseVisualStyleBackColor = true;
-            this.btnFix.Click += new System.EventHandler(this.btnFix_Click);
+            this.btnFix.Click += new System.EventHandler(this.Fix_Click);
             // 
             // btnDupFinder
             // 
@@ -273,7 +273,7 @@ namespace Elucidate
             this.toolTip1.SetToolTip(this.btnDupFinder, "The file data is not read, but only the precomputed hashes are used.\r\nNothing is " +
         "modified\r\n");
             this.btnDupFinder.UseVisualStyleBackColor = true;
-            this.btnDupFinder.Click += new System.EventHandler(this.btnDupFinder_Click);
+            this.btnDupFinder.Click += new System.EventHandler(this.DupFinder_Click);
             // 
             // driveSpace
             // 
@@ -403,7 +403,7 @@ namespace Elucidate
             this.btnSync.Text = "Sync";
             this.btnSync.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSync.UseVisualStyleBackColor = true;
-            this.btnSync.Click += new System.EventHandler(this.btnSync_Click);
+            this.btnSync.Click += new System.EventHandler(this.Sync_Click);
             // 
             // btnCheck
             // 
@@ -431,7 +431,7 @@ namespace Elucidate
             this.btnCheck.Text = "Check";
             this.btnCheck.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCheck.UseVisualStyleBackColor = true;
-            this.btnCheck.Click += new System.EventHandler(this.btnCheck_Click);
+            this.btnCheck.Click += new System.EventHandler(this.Check_Click);
             // 
             // btnForceFullSync
             // 
@@ -460,7 +460,7 @@ namespace Elucidate
             this.btnForceFullSync.Text = "Force Full Sync";
             this.btnForceFullSync.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnForceFullSync.UseVisualStyleBackColor = true;
-            this.btnForceFullSync.Click += new System.EventHandler(this.btnForceFullSync_Click);
+            this.btnForceFullSync.Click += new System.EventHandler(this.ForceFullSync_Click);
             // 
             // tabControl
             // 
@@ -603,14 +603,14 @@ namespace Elucidate
             this.installNewVersionToolStripMenuItem.Name = "installNewVersionToolStripMenuItem";
             this.installNewVersionToolStripMenuItem.Size = new System.Drawing.Size(331, 30);
             this.installNewVersionToolStripMenuItem.Text = "Install New Version";
-            this.installNewVersionToolStripMenuItem.Click += new System.EventHandler(this.installNewVersionToolStripMenuItem_Click);
+            this.installNewVersionToolStripMenuItem.Click += new System.EventHandler(this.InstallNewVersionToolStripMenuItem_Click);
             // 
             // changeLogOfNewVersionToolStripMenuItem
             // 
             this.changeLogOfNewVersionToolStripMenuItem.Name = "changeLogOfNewVersionToolStripMenuItem";
             this.changeLogOfNewVersionToolStripMenuItem.Size = new System.Drawing.Size(331, 30);
             this.changeLogOfNewVersionToolStripMenuItem.Text = "ChangeLog of New Version";
-            this.changeLogOfNewVersionToolStripMenuItem.Click += new System.EventHandler(this.changeLogOfNewVersionToolStripMenuItem_Click);
+            this.changeLogOfNewVersionToolStripMenuItem.Click += new System.EventHandler(this.ChangeLogOfNewVersionToolStripMenuItem_Click);
             // 
             // menuStrip1
             // 
@@ -652,7 +652,7 @@ namespace Elucidate
             this.openSnapRAIDConfigToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(366, 30);
             this.openSnapRAIDConfigToolStripMenuItem.Text = "&Open SnapRAID Config";
-            this.openSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.openSnapRAIDConfigToolStripMenuItem_Click);
+            this.openSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.OpenSnapRAIDConfigToolStripMenuItem_Click);
             // 
             // editSnapRAIDConfigToolStripMenuItem
             // 
@@ -660,14 +660,14 @@ namespace Elucidate
             this.editSnapRAIDConfigToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.editSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(366, 30);
             this.editSnapRAIDConfigToolStripMenuItem.Text = "&Edit SnapRAID Config";
-            this.editSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.editSnapRAIDConfigToolStripMenuItem_Click);
+            this.editSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.EditSnapRAIDConfigToolStripMenuItem_Click);
             // 
             // closeSnapRAIDConfigToolStripMenuItem
             // 
             this.closeSnapRAIDConfigToolStripMenuItem.Name = "closeSnapRAIDConfigToolStripMenuItem";
             this.closeSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(366, 30);
             this.closeSnapRAIDConfigToolStripMenuItem.Text = "Close SnapRAID Config";
-            this.closeSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.closeSnapRAIDConfigToolStripMenuItem_Click);
+            this.closeSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.CloseSnapRAIDConfigToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -680,7 +680,7 @@ namespace Elucidate
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(366, 30);
             this.exitToolStripMenuItem.Text = "E&xit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // MenuItemNewVersionReadyForInstall
             // 

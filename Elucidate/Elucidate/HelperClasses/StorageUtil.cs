@@ -5,6 +5,7 @@ using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
+
 using Elucidate.Logging;
 using Elucidate.Objects;
 
@@ -44,7 +45,11 @@ namespace Elucidate.HelperClasses
 
         public static bool IsPathRoot(string path)
         {
-            if (string.IsNullOrEmpty(path)) return false;
+            if (string.IsNullOrEmpty(path))
+            {
+                return false;
+            }
+
             string root = StorageUtil.GetVolumePathName(path);
             return path == root;
         }
@@ -72,7 +77,10 @@ namespace Elucidate.HelperClasses
             const int MaxVolumeNameLength = 100;
             StringBuilder sb = new StringBuilder(MaxVolumeNameLength);
             if (!GetVolumePathName(path, sb, MaxVolumeNameLength))
+            {
                 Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+            }
+
             string s = sb.ToString();
             return s;
         }
@@ -86,7 +94,10 @@ namespace Elucidate.HelperClasses
                 out ulong totalNumberOfFreeBytes);
 
             if (success)
+            {
                 return totalNumberOfBytes;
+            }
+
             return 0;
         }
 
@@ -116,7 +127,7 @@ namespace Elucidate.HelperClasses
 
             ManagementObjectCollection colDisks = mgmtObjSearcher.Get();
             
-            foreach (var colDisk in colDisks)
+            foreach (ManagementBaseObject colDisk in colDisks)
             {
                 ManagementObject objDisk = (ManagementObject)colDisk;
 
@@ -125,9 +136,9 @@ namespace Elucidate.HelperClasses
                     // ReSharper disable once UnusedVariable
                     bool success = GetDiskFreeSpaceEx(
                         (string)objDisk["DeviceID"], 
-                        out var freeBytesAvailable, 
-                        out var totalNumberOfBytes, 
-                        out var totalNumberOfFreeBytes);
+                        out ulong freeBytesAvailable, 
+                        out ulong totalNumberOfBytes, 
+                        out ulong totalNumberOfFreeBytes);
                     
                     StorageDevice device = new StorageDevice
                     {

@@ -48,9 +48,15 @@ namespace Elucidate.Controls
 
         private void TaskListView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (taskListView.SelectedIndex < 0) return;
+            if (taskListView.SelectedIndex < 0)
+            {
+                return;
+            }
 
-            if (taskListView.Tasks[taskListView.SelectedIndex] == null) return;
+            if (taskListView.Tasks[taskListView.SelectedIndex] == null)
+            {
+                return;
+            }
 
             if (!taskListView.Tasks[taskListView.SelectedIndex].Name.Contains(GetUniqueKeyForThisConfig()))
             {
@@ -308,19 +314,32 @@ namespace Elucidate.Controls
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                if (taskListView.SelectedIndex < 0) return;
+                if (taskListView.SelectedIndex < 0)
+                {
+                    return;
+                }
 
-                if (string.IsNullOrEmpty(TaskNameSelected)) return;
+                if (string.IsNullOrEmpty(TaskNameSelected))
+                {
+                    return;
+                }
 
                 using (TaskService ts = new TaskService())
                 {
-                    if (!ts.RootFolder.SubFolders.Exists(TaskFolder)) return;
+                    if (!ts.RootFolder.SubFolders.Exists(TaskFolder))
+                    {
+                        return;
+                    }
 
                     TaskFolder tf = ts.GetFolder(TaskFolder);
 
                     foreach (Task task in tf.Tasks)
                     {
-                        if (task.Name != TaskNameSelected) continue;
+                        if (task.Name != TaskNameSelected)
+                        {
+                            continue;
+                        }
+
                         if (DialogResult.Yes == MessageBox.Show(
                                 @"Do you want to delete the selected task?",
                                 @"Delete Scheduled Task", MessageBoxButtons.YesNoCancel))
@@ -348,9 +367,15 @@ namespace Elucidate.Controls
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                if (taskListView.SelectedIndex < 0) return;
+                if (taskListView.SelectedIndex < 0)
+                {
+                    return;
+                }
 
-                if (string.IsNullOrEmpty(TaskNameSelected)) return;
+                if (string.IsNullOrEmpty(TaskNameSelected))
+                {
+                    return;
+                }
 
                 using (TaskService ts = new TaskService())
                 {
@@ -360,7 +385,10 @@ namespace Elucidate.Controls
 
                         foreach (Task task in tf.Tasks)
                         {
-                            if (task.Name != TaskNameSelected) continue;
+                            if (task.Name != TaskNameSelected)
+                            {
+                                continue;
+                            }
                             // Edit task and re-register if user clicks Ok
                             TaskEditDialog frm = new TaskEditDialog(task);
                             frm.AvailableTabs |= AvailableTaskTabs.RunTimes;
@@ -389,9 +417,15 @@ namespace Elucidate.Controls
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                if (taskListView.SelectedIndex < 0) return;
+                if (taskListView.SelectedIndex < 0)
+                {
+                    return;
+                }
 
-                if (string.IsNullOrEmpty(TaskNameSelected)) return;
+                if (string.IsNullOrEmpty(TaskNameSelected))
+                {
+                    return;
+                }
 
                 using (TaskService ts = new TaskService())
                 {
@@ -401,7 +435,11 @@ namespace Elucidate.Controls
 
                         foreach (Task task in tf.Tasks)
                         {
-                            if (task.Name != TaskNameSelected) continue;
+                            if (task.Name != TaskNameSelected)
+                            {
+                                continue;
+                            }
+
                             task.Enabled = !task.Enabled;
                             break;
                         }
@@ -426,9 +464,15 @@ namespace Elucidate.Controls
             {
                 Cursor.Current = Cursors.WaitCursor;
 
-                if (taskListView.SelectedIndex < 0) return;
+                if (taskListView.SelectedIndex < 0)
+                {
+                    return;
+                }
 
-                if (string.IsNullOrEmpty(TaskNameSelected)) return;
+                if (string.IsNullOrEmpty(TaskNameSelected))
+                {
+                    return;
+                }
 
                 using (TaskService ts = new TaskService())
                 {
@@ -438,7 +482,11 @@ namespace Elucidate.Controls
 
                         foreach (Task task in tf.Tasks)
                         {
-                            if (task.Name != TaskNameSelected) continue;
+                            if (task.Name != TaskNameSelected)
+                            {
+                                continue;
+                            }
+
                             task.Run();
                             break;
                         }

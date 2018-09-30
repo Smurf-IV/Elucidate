@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
 using Elucidate.wyDay.Controls;
+
 using ScintillaNET;
 
 namespace Elucidate.Controls
@@ -309,11 +311,18 @@ namespace Elucidate.Controls
                 ThreadPool.QueueUserWorkItem(o => ReadStandardOutput(threadObject));
                 ThreadPool.QueueUserWorkItem(o => ReadStandardError(threadObject));
 
-                if (process.HasExited) _mreProcessExit.Set();
+                if (process.HasExited)
+                {
+                    _mreProcessExit.Set();
+                }
 
                 while (!WaitHandle.WaitAll(new WaitHandle[] { _mreErrorDone, _mreOutputDone, _mreProcessExit }, 250))
                 {
-                    if (process.HasExited) continue;
+                    if (process.HasExited)
+                    {
+                        continue;
+                    }
+
                     if (worker.CancellationPending)
                     {
                         Log.Instance.Fatal("Attempting to stop the process..");
@@ -322,7 +331,11 @@ namespace Elucidate.Controls
                     else
                     {
                         ProcessPriorityClass current = process.PriorityClass;
-                        if (current == _requested) continue;
+                        if (current == _requested)
+                        {
+                            continue;
+                        }
+
                         Log.Instance.Fatal("Setting the process priority to[{0}]", _requested);
                         process.PriorityClass = _requested;
                     }
@@ -371,7 +384,10 @@ namespace Elucidate.Controls
         {
             int progressPercentage = e.ProgressPercentage;
 
-            if (progressPercentage == 101) _lastError = e.UserState.ToString();
+            if (progressPercentage == 101)
+            {
+                _lastError = e.UserState.ToString();
+            }
 
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
             {
@@ -443,7 +459,11 @@ namespace Elucidate.Controls
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(_lastError)) return;
+                    if (string.IsNullOrEmpty(_lastError))
+                    {
+                        return;
+                    }
+
                     toolStripProgressBar1.DisplayText = "Error";
                     Log.Instance.Debug($"Last Error: {_lastError}");
                 }
@@ -458,15 +478,24 @@ namespace Elucidate.Controls
                 // Now lock in case the timer is overlapping !
                 lock (this)
                 {
-                    if (!ActionWorker.IsBusy) timerScantilla.Enabled = false;
+                    if (!ActionWorker.IsBusy)
+                    {
+                        timerScantilla.Enabled = false;
+                    }
 
-                    if (!LiveLog.LogQueueCommon.Any()) return;
+                    if (!LiveLog.LogQueueCommon.Any())
+                    {
+                        return;
+                    }
 
                     while (LiveLog.LogQueueCommon.Any())
                     {
                         LiveLog.LogString log = LiveLog.LogQueueCommon.Dequeue();
 
-                        if (!checkBoxDisplayOutput.Checked) continue;
+                        if (!checkBoxDisplayOutput.Checked)
+                        {
+                            continue;
+                        }
 
                         scintilla.AppendText($"{log.Message}{Environment.NewLine}");
                     }
@@ -493,7 +522,10 @@ namespace Elucidate.Controls
                 {
                     buf = threadObject.CmdProcess.StandardError.ReadLine();
 
-                    if (string.IsNullOrEmpty(buf) || buf.StartsWith("Reading data from missing file")) continue; // skip verbose messages from file recovery
+                    if (string.IsNullOrEmpty(buf) || buf.StartsWith("Reading data from missing file"))
+                    {
+                        continue; // skip verbose messages from file recovery
+                    }
 
                     _lastError = buf;
 
@@ -517,11 +549,17 @@ namespace Elucidate.Controls
                 string buf;
                 do
                 {
-                    if (string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardOutput.ReadLine())) continue;
+                    if (string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardOutput.ReadLine()))
+                    {
+                        continue;
+                    }
 
                     Log.Instance.Info($"StdOut[{buf}]");
 
-                    if (!buf.Contains("%")) continue;
+                    if (!buf.Contains("%"))
+                    {
+                        continue;
+                    }
 
                     string[] splits = buf.Split('%');
 
@@ -548,14 +586,17 @@ namespace Elucidate.Controls
 
         private void scintilla_StyleNeeded(object sender, StyleNeededEventArgs e)
         {
-            if (scintilla == null) return;
+            if (scintilla == null)
+            {
+                return;
+            }
 
             lock (scintilla)
             {
 
-                var startPos = scintilla.GetEndStyled();
+                int startPos = scintilla.GetEndStyled();
 
-                var endPos = e.Position;
+                int endPos = e.Position;
 
                 _lexerNlog.Style(scintilla, startPos, endPos);
             }
@@ -563,22 +604,34 @@ namespace Elucidate.Controls
 
         private void checkBoxDisplayOutput_MouseHover(object sender, EventArgs e)
         {
-            if (sender is CheckBox senderControl) senderControl.BackColor = Color.LightSteelBlue;
+            if (sender is CheckBox senderControl)
+            {
+                senderControl.BackColor = Color.LightSteelBlue;
+            }
         }
 
         private void checkBoxDisplayOutput_MouseLeave(object sender, EventArgs e)
         {
-            if (sender is CheckBox senderControl) senderControl.BackColor = Color.Empty;
+            if (sender is CheckBox senderControl)
+            {
+                senderControl.BackColor = Color.Empty;
+            }
         }
 
         private void checkBoxCommandLineOptions_CheckedChanged(object sender, EventArgs e)
         {
-            if (sender is CheckBox senderControl) IsCommandLineOptionsEnabled = senderControl.Checked;
+            if (sender is CheckBox senderControl)
+            {
+                IsCommandLineOptionsEnabled = senderControl.Checked;
+            }
         }
 
         private void comboBoxProcessStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (sender == null) return;
+            if (sender == null)
+            {
+                return;
+            }
 
             ComboBox control = (ComboBox)sender;
 

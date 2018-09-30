@@ -79,7 +79,11 @@ namespace Elucidate
         private void btnRemoveOutput_Click(object sender, EventArgs e)
         {
             if (DialogResult.Yes != MessageBoxExt.Show(this, @"Are you sure you want to perform this task ?",
-                    "Remove SnapRAID Output files.", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) return;
+                    "Remove SnapRAID Output files.", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+            {
+                return;
+            }
+
             try
             {
                 ConfigFileHelper cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
@@ -107,7 +111,10 @@ namespace Elucidate
                     }
                 }
 
-                if (cfg.ContentFiles == null) return;
+                if (cfg.ContentFiles == null)
+                {
+                    return;
+                }
 
                 foreach (string contentFile in cfg.ContentFiles.Where(contentFile => !string.IsNullOrEmpty(contentFile)))
                 {

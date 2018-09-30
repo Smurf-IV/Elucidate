@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Management;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+
 using ScintillaNET;
 
 namespace Elucidate
@@ -18,9 +18,9 @@ namespace Elucidate
             try
             {
                 int bufferSize = 4096;
-                using (var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: bufferSize, useAsync: true))
+                using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: bufferSize, useAsync: true))
                 {
-                    using (var reader = new StreamReader(file))
+                    using (StreamReader reader = new StreamReader(file))
                     {
                         int count;
                         char[] buffer = new char[bufferSize];
@@ -31,7 +31,9 @@ namespace Elucidate
 
                             // Add the data to the document
                             if (!loader.AddData(buffer, count))
+                            {
                                 throw new IOException("The data could not be added to the loader.");
+                            }
                         }
 
                         return loader.ConvertToDocument();
@@ -56,7 +58,11 @@ namespace Elucidate
             try
             {
                 DirectoryInfo directoryInfo = new DirectoryInfo(destinationDir);
-                if ((directoryInfo.Attributes & FileAttributes.Compressed) == FileAttributes.Compressed) return true;
+                if ((directoryInfo.Attributes & FileAttributes.Compressed) == FileAttributes.Compressed)
+                {
+                    return true;
+                }
+
                 string objPath = $"Win32_Directory.Name=\'{directoryInfo.FullName.Replace("\\", @"\\").TrimEnd('\\')}\'";
                 using (ManagementObject dir = new ManagementObject(objPath))
                 {

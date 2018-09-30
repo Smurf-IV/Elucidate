@@ -11,11 +11,15 @@ namespace Elucidate.HelperClasses
             if (message == "")
             {
                 if (ep.GetError(c) != "")
+                {
                     count--;
+                }
             }
             else
             if (ep.GetError(c) == "")
+            {
                 count++;
+            }
 
             ep.SetError(c, message);
         }

@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Settings.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2017 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,10 +36,12 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
+
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
 using Elucidate.Objects;
 using Elucidate.Shared;
+
 using MoreLinq;
 
 namespace Elucidate
@@ -147,8 +149,8 @@ namespace Elucidate
                 Log.Instance.Debug("Start with drives if you have to search the entire computer.");
 
                 // retrieve all storage devices
-                var storageDevices = StorageUtil.GetStorageDevices();
-                foreach (var storageDevice in storageDevices)
+                List<StorageDevice> storageDevices = StorageUtil.GetStorageDevices();
+                foreach (StorageDevice storageDevice in storageDevices)
                 {
                     FillInStorageDeviceDirectoryType(tvwRoot, storageDevice);
                 }
@@ -168,7 +170,10 @@ namespace Elucidate
 
         private void FillInStorageDeviceDirectoryType(TreeNode parentNode, StorageDevice storageDevice)
         {
-            if (storageDevice == null) return;
+            if (storageDevice == null)
+            {
+                return;
+            }
 
             TreeNode thisNode = new TreeNode
             {
@@ -216,7 +221,10 @@ namespace Elucidate
 
         private void driveAndDirTreeView_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Right) return;
+            if (e.Button != MouseButtons.Right)
+            {
+                return;
+            }
 
             Log.Instance.Trace("Select the clicked node");
 
@@ -225,7 +233,10 @@ namespace Elucidate
 
         private void driveAndDirTreeView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
 
             Log.Instance.Trace("Select the clicked node");
 
@@ -256,7 +267,10 @@ namespace Elucidate
 
             string newDevice = StorageUtil.GetPathRoot(newPath);
 
-            if (string.IsNullOrEmpty(newPath)) return;
+            if (string.IsNullOrEmpty(newPath))
+            {
+                return;
+            }
 
             if (!Directory.Exists(newPath))
             {
@@ -271,7 +285,10 @@ namespace Elucidate
 
                 Log.Instance.Trace($"adding new node, so compare, nodeDevice = {nodeDevice}");
 
-                if (newDevice != nodeDevice) continue;
+                if (newDevice != nodeDevice)
+                {
+                    continue;
+                }
 
                 Log.Instance.Warn($"Data source not added. The path is on a device for an existing path. Attempted to add [{newPath}] which is on the same device as the existing path [{node.FullPath}]");
 
@@ -315,13 +332,19 @@ namespace Elucidate
         {
             try
             {
-                if (!(parentNode.Tag is DirectoryInfo root)) return;
+                if (!(parentNode.Tag is DirectoryInfo root))
+                {
+                    return;
+                }
 
                 Log.Instance.Trace("// Find all the subdirectories under this directory.");
 
                 DirectoryInfo[] subDirs = root.GetDirectories().Where(dir => (dir.Attributes & FileAttributes.System) == 0 && (dir.Attributes & FileAttributes.Hidden) == 0).ToArray();
 
-                if (!subDirs.Any()) return;
+                if (!subDirs.Any())
+                {
+                    return;
+                }
 
                 foreach (DirectoryInfo dirInfo in subDirs)
                 {
@@ -363,14 +386,21 @@ namespace Elucidate
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TreeNode tn = driveAndDirTreeView.SelectedNode;
-            if (tn == null) return;
+            if (tn == null)
+            {
+                return;
+            }
+
             driveAndDirTreeView.Nodes.Remove(tn);
             UnsavedChangesMade = true;
         }
 
         private void driveAndDirTreeView_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
             // Get the tree.
             TreeView tree = (TreeView)sender;
 
@@ -441,7 +471,10 @@ namespace Elucidate
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog { Description = @"Browse for directory manually" };
 
-            if (fbd.ShowDialog() != DialogResult.OK) return;
+            if (fbd.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
 
             DirectoryInfo dirInfo = new DirectoryInfo(fbd.SelectedPath);
 
@@ -462,7 +495,10 @@ namespace Elucidate
 
         private void snapShotSourcesTreeView_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Right) return;
+            if (e.Button != MouseButtons.Right)
+            {
+                return;
+            }
 
             Log.Instance.Trace("Select the clicked node");
 
@@ -504,7 +540,10 @@ namespace Elucidate
         {
             errorProvider1.Clear();
 
-            if (_initializing) return true;
+            if (_initializing)
+            {
+                return true;
+            }
 
             bool isValid = true;
 
@@ -555,7 +594,11 @@ namespace Elucidate
                     errMsg = "Data source is inaccessible!";
                 }
 
-                if (string.IsNullOrEmpty(errMsg)) continue;
+                if (string.IsNullOrEmpty(errMsg))
+                {
+                    continue;
+                }
+
                 isValid = false;
                 node.BackColor = Color.Red;
                 errorProvider1.SetIconAlignment(snapShotSourcesTreeView, ErrorIconAlignment.TopLeft);
@@ -713,7 +756,7 @@ namespace Elucidate
         {
             try
             {
-                var paths = (from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList();
+                List<string> paths = (from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList();
 
                 List<CoveragePath> pathsOfInterest = paths.Select(
                     path => new CoveragePath
@@ -837,37 +880,61 @@ namespace Elucidate
 
                         string trim1 = parityLocation1.Text.Trim();
                         cfgToSave.ParityFile1 = trim1;
-                        if (string.IsNullOrEmpty(trim1)) break;
+                        if (string.IsNullOrEmpty(trim1))
+                        {
+                            break;
+                        }
+
                         Util.CreateFullDirectoryPath(trim1);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim1));
 
                         string trim2 = parityLocation2.Text.Trim();
                         cfgToSave.ParityFile2 = trim2;
-                        if (string.IsNullOrEmpty(trim2)) break;
+                        if (string.IsNullOrEmpty(trim2))
+                        {
+                            break;
+                        }
+
                         Util.CreateFullDirectoryPath(trim2);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim2));
 
                         string trim3 = parityLocation3.Text.Trim();
                         cfgToSave.ParityFile3 = trim3;
-                        if (string.IsNullOrEmpty(trim3)) break;
+                        if (string.IsNullOrEmpty(trim3))
+                        {
+                            break;
+                        }
+
                         Util.CreateFullDirectoryPath(trim3);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim3));
 
                         string trim4 = parityLocation4.Text.Trim();
                         cfgToSave.ParityFile4 = trim4;
-                        if (string.IsNullOrEmpty(trim4)) break;
+                        if (string.IsNullOrEmpty(trim4))
+                        {
+                            break;
+                        }
+
                         Util.CreateFullDirectoryPath(trim4);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim4));
 
                         string trim5 = parityLocation5.Text.Trim();
                         cfgToSave.ParityFile5 = trim5;
-                        if (string.IsNullOrEmpty(trim5)) break;
+                        if (string.IsNullOrEmpty(trim5))
+                        {
+                            break;
+                        }
+
                         Util.CreateFullDirectoryPath(trim5);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim5));
 
                         string trim6 = parityLocation6.Text.Trim();
                         cfgToSave.ParityFile6 = trim6;
-                        if (string.IsNullOrEmpty(trim6)) break;
+                        if (string.IsNullOrEmpty(trim6))
+                        {
+                            break;
+                        }
+
                         Util.CreateFullDirectoryPath(trim6);
                         cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim6));
 
@@ -914,12 +981,19 @@ namespace Elucidate
                     string backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMdd}";
 
                     if (File.Exists(backupConfig))
+                    {
                         backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmm}";
+                    }
 
                     if (File.Exists(backupConfig))
+                    {
                         backupConfig = $"{configFileLocation.Text}.{DateTime.Now:yyyyMMddmmss}";
+                    }
 
-                    if (!File.Exists($"{configFileLocation.Text}.temp")) return;
+                    if (!File.Exists($"{configFileLocation.Text}.temp"))
+                    {
+                        return;
+                    }
 
                     File.Copy($"{configFileLocation.Text}.temp", backupConfig);
 
@@ -939,7 +1013,10 @@ namespace Elucidate
         
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!UnsavedChangesMade || (e.CloseReason != CloseReason.UserClosing)) return;
+            if (!UnsavedChangesMade || (e.CloseReason != CloseReason.UserClosing))
+            {
+                return;
+            }
 
             if (DialogResult.No == MessageBoxExt.Show(
                     this, 
@@ -961,7 +1038,10 @@ namespace Elucidate
 
         private void findParity1_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
 
             parityLocation1.Text = folderBrowserDialog1.SelectedPath;
 
@@ -972,7 +1052,10 @@ namespace Elucidate
 
         private void findParity2_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
 
             parityLocation2.Text = folderBrowserDialog1.SelectedPath;
 
@@ -983,7 +1066,10 @@ namespace Elucidate
 
         private void findParity3_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
 
             parityLocation3.Text = folderBrowserDialog1.SelectedPath;
 
@@ -994,7 +1080,10 @@ namespace Elucidate
 
         private void findParity4_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
 
             parityLocation4.Text = folderBrowserDialog1.SelectedPath;
 
@@ -1005,7 +1094,10 @@ namespace Elucidate
 
         private void findParity5_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
 
             parityLocation5.Text = folderBrowserDialog1.SelectedPath;
 
@@ -1016,7 +1108,10 @@ namespace Elucidate
 
         private void findParity6_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK) return;
+            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
 
             parityLocation6.Text = folderBrowserDialog1.SelectedPath;
                 
@@ -1039,7 +1134,10 @@ namespace Elucidate
         {
             _ttIndex = checkedListBox1.IndexFromPoint(checkedListBox1.PointToClient(MousePosition));
 
-            if (_ttIndex <= -1) return;
+            if (_ttIndex <= -1)
+            {
+                return;
+            }
 
             PointToClient(MousePosition);
 
@@ -1076,35 +1174,61 @@ namespace Elucidate
         private void numBlockSizeKB_ValueChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
-            if (numBlockSizeKB.Value < Constants.MinBlockSize) numBlockSizeKB.Value = Constants.MinBlockSize;
-            if (numBlockSizeKB.Value > Constants.MaxBlockSize) numBlockSizeKB.Value = Constants.MaxBlockSize;
+            if (numBlockSizeKB.Value < Constants.MinBlockSize)
+            {
+                numBlockSizeKB.Value = Constants.MinBlockSize;
+            }
+
+            if (numBlockSizeKB.Value > Constants.MaxBlockSize)
+            {
+                numBlockSizeKB.Value = Constants.MaxBlockSize;
+            }
         }
 
         private void numAutoSaveGB_ValueChanged(object sender, EventArgs e)
         {
             UnsavedChangesMade = true;
-            if (numAutoSaveGB.Value < Constants.MinAutoSave) numBlockSizeKB.Value = Constants.MinAutoSave;
-            if (numAutoSaveGB.Value > Constants.MaxAutoSave) numBlockSizeKB.Value = Constants.MaxAutoSave;
+            if (numAutoSaveGB.Value < Constants.MinAutoSave)
+            {
+                numBlockSizeKB.Value = Constants.MinAutoSave;
+            }
+
+            if (numAutoSaveGB.Value > Constants.MaxAutoSave)
+            {
+                numBlockSizeKB.Value = Constants.MaxAutoSave;
+            }
         }
 
         private void parityLocation1_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox)) return;
+            if (!(sender is TextBox textBox))
+            {
+                return;
+            }
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile1) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile1)
+            {
+                return;
+            }
 
             ParityLocationChanged();
         }
 
         private void parityLocation2_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox)) return;
+            if (!(sender is TextBox textBox))
+            {
+                return;
+            }
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile2) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile2)
+            {
+                return;
+            }
 
             ParityLocationChanged();
 
@@ -1120,11 +1244,17 @@ namespace Elucidate
 
         private void parityLocation3_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox)) return;
+            if (!(sender is TextBox textBox))
+            {
+                return;
+            }
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile3) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile3)
+            {
+                return;
+            }
 
             ParityLocationChanged();
 
@@ -1140,11 +1270,17 @@ namespace Elucidate
 
         private void parityLocation4_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox)) return;
+            if (!(sender is TextBox textBox))
+            {
+                return;
+            }
 
             ValidateParityTextBox();
             
-            if (textBox.Text.Trim() == _cfg.ParityFile4) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile4)
+            {
+                return;
+            }
 
             ParityLocationChanged();
 
@@ -1160,11 +1296,17 @@ namespace Elucidate
         
         private void parityLocation5_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox)) return;
+            if (!(sender is TextBox textBox))
+            {
+                return;
+            }
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile5) return; // unchanged
+            if (textBox.Text.Trim() == _cfg.ParityFile5)
+            {
+                return; // unchanged
+            }
 
             ParityLocationChanged();
 
@@ -1180,11 +1322,17 @@ namespace Elucidate
 
         private void parityLocation6_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox)) return;
+            if (!(sender is TextBox textBox))
+            {
+                return;
+            }
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile6) return;
+            if (textBox.Text.Trim() == _cfg.ParityFile6)
+            {
+                return;
+            }
 
             ParityLocationChanged();
 
