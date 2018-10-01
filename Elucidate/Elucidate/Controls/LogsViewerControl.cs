@@ -52,7 +52,6 @@ namespace Elucidate.Controls
         private void LogFileWatcher_OnChanged(object sender, FileSystemEventArgs e)
         {
             // let's keep the file selected by the user as selected after the refresh
-            //UpdateLogFileList();
             listBoxViewLogFiles.BeginInvoke((MethodInvoker)delegate { UpdateLogFileList(); });
         }
 
@@ -104,6 +103,7 @@ namespace Elucidate.Controls
                     warningSearchTerm = _snapraidWarningSearchTerm;
                     LexerToUse = LexerNameEnum.ScanRaid;
                     _logSourcePath = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
+                    if (!Directory.Exists(_logSourcePath)) return;
                     _logFileWatcher.Path = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
                     _logFileWatcher.Filter = "*.log";
                     _logFileWatcher.EnableRaisingEvents = true;
@@ -114,6 +114,7 @@ namespace Elucidate.Controls
                     warningSearchTerm = _elucidateWarningSearchTerm;
                     LexerToUse = LexerNameEnum.NLog;
                     _logSourcePath = LogFileLocation.GetActiveLogFileLocation();
+                    if (!Directory.Exists(_logSourcePath)) return;
                     _logFileWatcher.Path = LogFileLocation.GetActiveLogFileLocation();
                     _logFileWatcher.Filter = "*.log";
                     _logFileWatcher.EnableRaisingEvents = true;
@@ -163,7 +164,7 @@ namespace Elucidate.Controls
                 listBoxViewLogFiles.Items.Add(log.Name);
             }
 
-            // restore user selection, if it stil lexists
+            // restore user selection, if it still exists
             if (selectedIndex >= 0 && !string.IsNullOrEmpty(selectedIndexValue))
             {
                 int indexFound = -1;

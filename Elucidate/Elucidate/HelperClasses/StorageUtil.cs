@@ -123,66 +123,81 @@ namespace Elucidate.HelperClasses
         {
             List<StorageDevice> storageDevices = new List<StorageDevice>();
 
-            ManagementObjectSearcher mgmtObjSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_Volume");
-
-            ManagementObjectCollection colDisks = mgmtObjSearcher.Get();
-            
-            foreach (ManagementBaseObject colDisk in colDisks)
+            using (ManagementObjectSearcher mgmtObjSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_Volume"))
             {
-                ManagementObject objDisk = (ManagementObject)colDisk;
-
-                try
+                using (var managementQuery = mgmtObjSearcher.Get())
                 {
-                    // ReSharper disable once UnusedVariable
-                    bool success = GetDiskFreeSpaceEx(
-                        (string)objDisk["DeviceID"], 
-                        out ulong freeBytesAvailable, 
-                        out ulong totalNumberOfBytes, 
-                        out ulong totalNumberOfFreeBytes);
-                    
-                    StorageDevice device = new StorageDevice
+                    // convert to LINQ to Objects query
+                    var query =
+                        from ManagementObject mo in managementQuery
+                        orderby Convert.ToString(mo["DriveLetter"])
+                        select new
+                        {
+                            Caption = Convert.ToString(mo["Caption"]),
+                            Name = Convert.ToString(mo["Name"]),
+                            DeviceID = Convert.ToString(mo["DeviceID"]),
+                            DriveType = Convert.ToUInt32(mo["DriveType"]),
+                            DriveLetter = Convert.ToString(mo["DriveLetter"]),
+                            FileSystem = Convert.ToString(mo["FileSystem"])
+                        };
+
+                    // grab the fields
+                    foreach (var item in query)
                     {
-                        Caption = (string)objDisk["Caption"],
-                        Name = (string)objDisk["Name"],
-                        DeviceID = (string)objDisk["DeviceID"],
-                        DriveLetter = (string)objDisk["DriveLetter"],
-                        FileSystem = (string)objDisk["FileSystem"],
-                        Capacity = (uint)totalNumberOfBytes,
-                        FreeSpace = (uint)freeBytesAvailable
-                    };
-                    
-                    switch ((uint)objDisk["DriveType"])
-                    {
-                        case (uint)DriveType.Removable:
-                            device.DriveType = DriveType.Removable;
-                            break;
+                        try
+                        {
+                            // ReSharper disable once UnusedVariable
+                            bool success = GetDiskFreeSpaceEx(
+                                item.DeviceID,
+                                out var freeBytesAvailable,
+                                out var totalNumberOfBytes,
+                                out var totalNumberOfFreeBytes);
 
-                        case (uint)DriveType.Fixed:
-                            device.DriveType = DriveType.Fixed;
-                            break;
+                            StorageDevice device = new StorageDevice
+                            {
+                                Caption = item.Caption,
+                                Name = item.Name,
+                                DeviceID = item.DeviceID,
+                                DriveLetter = item.DriveLetter,
+                                FileSystem = item.FileSystem,
+                                Capacity = (uint)totalNumberOfBytes,
+                                FreeSpace = (uint)freeBytesAvailable
+                            };
 
-                        case (uint)DriveType.Network:
-                            device.DriveType = DriveType.Network;
-                            break;
+                            switch (item.DriveType)
+                            {
+                                case (uint)DriveType.Removable:
+                                    device.DriveType = DriveType.Removable;
+                                    break;
 
-                        case (uint)DriveType.CDRom:
-                            device.DriveType = DriveType.CDRom;
-                            break;
+                                case (uint)DriveType.Fixed:
+                                    device.DriveType = DriveType.Fixed;
+                                    break;
 
-                        default:
-                            device.DriveType = DriveType.Unknown;
-                            break;
+                                case (uint)DriveType.Network:
+                                    device.DriveType = DriveType.Network;
+                                    break;
+
+                                case (uint)DriveType.CDRom:
+                                    device.DriveType = DriveType.CDRom;
+                                    break;
+
+                                default:
+                                    device.DriveType = DriveType.Unknown;
+                                    break;
+                            }
+
+                            if (!string.IsNullOrEmpty(device.Caption) && (!device.Caption.StartsWith(@"\\?\") || isIncludeNonMountedStorage))
+                            {
+                                storageDevices.Add(device);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Instance.Warn("A storage device failed to enumerate.");
+                            Log.Instance.Warn(ex);
+                        }
                     }
-
-                    if (!string.IsNullOrEmpty(device.Caption) && (!device.Caption.StartsWith(@"\\?\") || isIncludeNonMountedStorage))
-                    {
-                        storageDevices.Add(device);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Instance.Warn("A storage device failed to enumerate.");
-                    Log.Instance.Warn(ex);
                 }
             }
 
