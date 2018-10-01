@@ -42,7 +42,7 @@ namespace Elucidate
 {
     public class ConfigFileHelper
     {
-        public bool IsValid => !ConfigErrors.Any();
+        public bool IsValid => (ConfigFileExists && !ConfigErrors.Any());
 
         public bool IsErrors => ConfigErrors.Any();
 
@@ -310,11 +310,20 @@ namespace Elucidate
 
         internal static bool IsRulePassDevicesMustNotRepeat(List<string> paths, string current)
         {
-            if (paths == null || string.IsNullOrEmpty(current)) return true;
+            try
+            {
+                if (paths == null || string.IsNullOrEmpty(current)) return true;
 
-            var count = paths.Where(s => !string.IsNullOrEmpty(s)).Count(temp => StorageUtil.GetPathRoot(temp).Equals(StorageUtil.GetPathRoot(current)));
+                var count = paths.Where(s => !string.IsNullOrEmpty(s)).Count(temp => StorageUtil.GetPathRoot(temp).Equals(StorageUtil.GetPathRoot(current)));
 
-            return count <= 1;
+                return count <= 1;
+            }
+            catch
+            {
+                // ignored
+            }
+
+            return true;
         }
 
         public static bool IsRulePassPreviousCannotBeEmpty(string previous, string current)
