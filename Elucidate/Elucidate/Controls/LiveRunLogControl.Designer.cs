@@ -164,8 +164,8 @@ namespace Elucidate.Controls
             // 
             // txtAddCommands
             // 
+            this.txtAddCommands.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAddCommands.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtAddCommands.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtAddCommands.Location = new System.Drawing.Point(347, 3);
             this.txtAddCommands.Margin = new System.Windows.Forms.Padding(2);
             this.txtAddCommands.MaxLength = 128;
@@ -178,7 +178,7 @@ namespace Elucidate.Controls
             // 
             this.tableLayoutPanelAdditionalCommands.AutoSize = true;
             this.tableLayoutPanelAdditionalCommands.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanelAdditionalCommands.BackColor = System.Drawing.SystemColors.Control;
+            this.tableLayoutPanelAdditionalCommands.BackColor = System.Drawing.SystemColors.Window;
             this.tableLayoutPanelAdditionalCommands.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanelAdditionalCommands.ColumnCount = 2;
             this.tableLayoutPanelAdditionalCommands.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
