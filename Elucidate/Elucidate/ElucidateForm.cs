@@ -32,12 +32,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using CommandLine;
 using ComponentFactory.Krypton.Toolkit;
-
+using Elucidate.CmdLine;
 using Elucidate.Controls;
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
@@ -103,7 +104,7 @@ namespace Elucidate
             }
 
             EnableIfValid(_srConfig.IsValid);
-            
+
             // display any warnings from the config validation
             if (_srConfig.IsWarnings)
             {
@@ -113,6 +114,73 @@ namespace Elucidate
                     "Configuration File Warnings",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
+            }
+            else
+            {
+                IEnumerable<string> args = Environment.GetCommandLineArgs().Skip(1);
+                if (args.Any())
+                {
+                    liveRunLogControl1.timerScantilla.Enabled = true; // got to display "helpful" information.
+
+                    // https://github.com/commandlineparser/commandline
+                    ParserResult<AllOptions> optsResult = Parser.Default.ParseArguments<AllOptions>(args);
+                    optsResult.WithParsed<AllOptions>(DisplayStdOptions);
+                    optsResult.WithNotParsed(DisplayErrors);
+                    ParserResult<object> parserResult = Parser.Default.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(args);
+                    parserResult.WithNotParsed(DisplayErrors);
+                    // Order is important as commands "Can" be chained"
+                    // See http://www.snapraid.it/manual scrubbing for an indication of order
+                    parserResult.WithParsed<DiffVerb>(verb => Diff_Click(this, EventArgs.Empty));
+                    parserResult.WithParsed<CheckVerb>(verb => Check_Click(this, EventArgs.Empty));
+                    parserResult.WithParsed<SyncVerb>(verb => Sync_Click(this, EventArgs.Empty));
+                    parserResult.WithParsed<ScrubVerb>(verb => Scrub_Click(this, EventArgs.Empty));
+                    parserResult.WithParsed<DupVerb>(verb => DupFinder_Click(this, EventArgs.Empty));
+                    parserResult.WithParsed<StatusVerb>(verb => btnStatus_Click(this, EventArgs.Empty));
+                    parserResult.WithParsed<FixVerb>(verb => Fix_Click(this, EventArgs.Empty));
+                    // Verbs not done as they do not have buttons yet
+                    // list
+                    // smart
+                    // up
+                    // down
+                    // pool
+                    // devices
+                    // touch
+                    // rehash
+                }
+            }
+        }
+
+        private void DisplayStdOptions(AllOptions sv)
+        {
+            string commandLineRead = string.Join(" ", Environment.GetCommandLineArgs());
+            Log.Instance.Error("CommandLine Read: [{0}]", commandLineRead);
+            string commandLine = CommandLine.Parser.Default.FormatCommandLine(sv);
+            if (!string.IsNullOrWhiteSpace(commandLine))
+            {
+                Log.Instance.Info("CommandLine options Interpreted: [{0}]", commandLine);
+                liveRunLogControl1.txtAddCommands.Text = commandLine;
+                liveRunLogControl1.checkBoxCommandLineOptions.Checked = true;
+                if (sv.Verbose)
+                {
+                    liveRunLogControl1.checkBoxDisplayOutput.Checked = true;
+                }
+            }
+        }
+
+        private void DisplayErrors(IEnumerable<Error> errs)
+        {
+            foreach (Error err in errs)
+            {
+                Log.Instance.Error(err.Tag);
+            }
+
+            StringWriter writer = new StringWriter();
+            {
+                // Force the output of the help for each verb
+                Parser parser = new Parser(with => with.HelpWriter = writer);
+                parser.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(new string[] {@"--help" });
+
+                Log.Instance.Info(writer.ToString());
             }
         }
 
@@ -383,9 +451,9 @@ namespace Elucidate
             else
             {
                 MessageBoxExt.Show(
-                    this, 
-                    $"The config file is not valid.{Environment.NewLine} - {string.Join(" - ", _srConfig.ConfigErrors)}", 
-                    "Config File Error", 
+                    this,
+                    $"The config file is not valid.{Environment.NewLine} - {string.Join(" - ", _srConfig.ConfigErrors)}",
+                    "Config File Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -510,11 +578,11 @@ namespace Elucidate
             {
                 sb.AppendLine($@"Content File: {file}");
             }
-            
+
             DialogResult result = MessageBox.Show(
-                this, 
-                sb.ToString(), 
-                @"Delete All SnapRAID Files", 
+                this,
+                sb.ToString(),
+                @"Delete All SnapRAID Files",
                 MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Warning);
 

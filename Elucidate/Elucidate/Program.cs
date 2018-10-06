@@ -64,7 +64,6 @@ namespace Elucidate
                 try
                 {
                     ExceptionHandler.ReportException(ex, "Failed to attach unhandled exception handler...");
-                    Log.Instance.Error(ex);
                 }
                 catch
                 {
@@ -80,11 +79,10 @@ namespace Elucidate
             catch (Exception ex)
             {
                 ExceptionHandler.ReportException(ex, "Application Exception");
-                Log.Instance.Error(ex);
             }
             finally
             {
-                Log.Instance.Debug("File Closing");
+                Log.Instance.Info("File Closing");
                 Log.Shutdown(); // Flush and close down internal threads and timers
             }
         }
