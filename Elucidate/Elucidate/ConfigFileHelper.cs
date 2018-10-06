@@ -323,9 +323,12 @@ namespace Elucidate
         {
             try
             {
-                if (paths == null || string.IsNullOrEmpty(current)) return true;
+                if (paths == null || string.IsNullOrEmpty(current))
+                {
+                    return true;
+                }
 
-                var count = paths.Where(s => !string.IsNullOrEmpty(s)).Count(temp => StorageUtil.GetPathRoot(temp).Equals(StorageUtil.GetPathRoot(current)));
+                int count = paths.Where(s => !string.IsNullOrEmpty(s)).Count(temp => StorageUtil.GetPathRoot(temp).Equals(StorageUtil.GetPathRoot(current)));
 
                 return count <= 1;
             }
@@ -333,9 +336,6 @@ namespace Elucidate
             {
                 // ignored
             }
-
-            return true;
-        }
 
             return true;
         }
@@ -549,7 +549,11 @@ namespace Elucidate
                 });
             }
 
-            if (!string.IsNullOrWhiteSpace(ParityFile1)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile1), PathType = PathTypeEnum.Parity }); }
+            if (!string.IsNullOrWhiteSpace(ParityFile1))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                    {FullPath = Path.GetFullPath(ParityFile1), PathType = PathTypeEnum.Parity});
+            }
 
             if (!string.IsNullOrWhiteSpace(ParityFile2)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile2), PathType = PathTypeEnum.Parity }); }
             

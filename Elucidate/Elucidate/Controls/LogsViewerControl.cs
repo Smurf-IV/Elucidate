@@ -103,7 +103,11 @@ namespace Elucidate.Controls
                     warningSearchTerm = _snapraidWarningSearchTerm;
                     LexerToUse = LexerNameEnum.ScanRaid;
                     _logSourcePath = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
-                    if (!Directory.Exists(_logSourcePath)) return;
+                    if (!Directory.Exists(_logSourcePath))
+                    {
+                        return;
+                    }
+
                     _logFileWatcher.Path = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
                     _logFileWatcher.Filter = "*.log";
                     _logFileWatcher.EnableRaisingEvents = true;
@@ -114,7 +118,11 @@ namespace Elucidate.Controls
                     warningSearchTerm = _elucidateWarningSearchTerm;
                     LexerToUse = LexerNameEnum.NLog;
                     _logSourcePath = LogFileLocation.GetActiveLogFileLocation();
-                    if (!Directory.Exists(_logSourcePath)) return;
+                    if (!Directory.Exists(_logSourcePath))
+                    {
+                        return;
+                    }
+
                     _logFileWatcher.Path = LogFileLocation.GetActiveLogFileLocation();
                     _logFileWatcher.Filter = "*.log";
                     _logFileWatcher.EnableRaisingEvents = true;

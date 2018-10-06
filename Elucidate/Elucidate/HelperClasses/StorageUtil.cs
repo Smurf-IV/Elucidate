@@ -125,7 +125,7 @@ namespace Elucidate.HelperClasses
 
             using (ManagementObjectSearcher mgmtObjSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_Volume"))
             {
-                using (var managementQuery = mgmtObjSearcher.Get())
+                using (ManagementObjectCollection managementQuery = mgmtObjSearcher.Get())
                 {
                     // convert to LINQ to Objects query
                     var query =
@@ -149,9 +149,9 @@ namespace Elucidate.HelperClasses
                             // ReSharper disable once UnusedVariable
                             bool success = GetDiskFreeSpaceEx(
                                 item.DeviceID,
-                                out var freeBytesAvailable,
-                                out var totalNumberOfBytes,
-                                out var totalNumberOfFreeBytes);
+                                out ulong freeBytesAvailable,
+                                out ulong totalNumberOfBytes,
+                                out ulong totalNumberOfFreeBytes);
 
                             StorageDevice device = new StorageDevice
                             {
