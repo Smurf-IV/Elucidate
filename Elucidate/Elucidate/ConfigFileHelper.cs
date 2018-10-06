@@ -337,6 +337,9 @@ namespace Elucidate
             return true;
         }
 
+            return true;
+        }
+
         public static bool IsRulePassPreviousCannotBeEmpty(string previous, string current)
         {
             // handle special case of first parity textbox; previous of null means we are at the first textbox which also cannot be empty

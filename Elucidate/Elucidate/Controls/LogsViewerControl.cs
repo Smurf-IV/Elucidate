@@ -128,11 +128,6 @@ namespace Elucidate.Controls
 
             listBoxViewLogFiles.Items.Clear();
 
-            if (!Directory.Exists(_logSourcePath))
-            {
-                return;
-            }
-
             DirectoryInfo logFileDirectoryInfo = new DirectoryInfo(_logSourcePath);
 
             List<FileInfo> allLogs = logFileDirectoryInfo.GetFiles("*.log").OrderByDescending(a => a.Name).ToList();
