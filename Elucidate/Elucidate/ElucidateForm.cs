@@ -35,6 +35,9 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using ComponentFactory.Krypton.Toolkit;
+
 using Elucidate.Controls;
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
@@ -42,7 +45,7 @@ using Elucidate.Shared;
 
 namespace Elucidate
 {
-    public sealed partial class ElucidateForm : Form
+    public sealed partial class ElucidateForm : KryptonForm
     {
         private readonly ConfigFileHelper _srConfig = new ConfigFileHelper();
 

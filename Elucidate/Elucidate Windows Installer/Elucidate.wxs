@@ -18,7 +18,7 @@
             <Component Id="Client" Guid="5EBF3F29-9CF1-44FE-A94C-CC1B4FE09367" >
                 <File Id="InstallerIcon" Name="Elucidate.ico" Source="$(sys.SOURCEFILEDIR)..\Elucidate\Elucidate.ico" />
                 <File Id="Elucidate.exe" Name="Elucidate.exe" Source="$(var.MgtSource)\Elucidate.exe" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Elucidate" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.Elucidate" Platform="64bit" Priority="1" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <!-- Event Source creation for 64bit OS with .NET 4 Full -->
@@ -38,32 +38,44 @@
             </Component>
 
             <Component>
-                <File Source="$(var.MgtSource)\ActiveDirectoryObjectPicker.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\AeroWizard.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\ByteSize.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\DotNetZip.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\ExceptionReporter.NET.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
-            </Component>
-
-            <!--<Component>
-                <File Source="$(var.MgtSource)\Krypton Navigator.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Navigator" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                <File Source="$(var.MgtSource)\ActiveDirectoryObjectPicker.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.ActiveDirectoryObjectPicker" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
+                <File Source="$(var.MgtSource)\AeroWizard.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.AeroWizard" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\ByteSize.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.ByteSize" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\DotNetZip.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.DotNetZip" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\ExceptionReporter.NET.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.ExceptionReporter" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.GroupControls" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+
+            <!--<Component>
                 <File Source="$(var.MgtSource)\Krypton Docking.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.Docking" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>-->
+            <Component>
+                <File Source="$(var.MgtSource)\Krypton Navigator.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Navigator" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
@@ -76,22 +88,30 @@
                     <netfx:NativeImage Id="ngen.Toolkit" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
-            <Component>
+            <!--<Component>
                 <File Source="$(var.MgtSource)\Krypton Workspace.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.Workspace" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>-->
             <Component>
-                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskScheduler.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskScheduler.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Microsoft.Win32.TaskScheduler" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskSchedulerEditor.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskSchedulerEditor.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Microsoft.Win32.TaskSchedulerEditor" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\MoreLinq.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\MoreLinq.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.MoreLinq" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\Newtonsoft.Json.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\Newtonsoft.Json.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.Newtonsoft.Json" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" >
@@ -99,26 +119,36 @@
                 </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\RestSharp.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\RestSharp.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.RestSharp" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\ScintillaNET.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\ScintillaNET.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.ScintillaNET" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\SimpleMapi.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\SimpleMapi.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.SimpleMapi" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\System.ValueTuple.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\System.ValueTuple.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.ValueTuple" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\TimeSpan2.dll" KeyPath="yes" ProcessorArchitecture="x64"/>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\snapraid.ps1" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\TimeSpan2.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.TimeSpan2" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
             </Component>
 
 
             <!-- Text and help files-->
+            <Component>
+                <File Source="$(var.MgtSource)\snapraid.ps1" KeyPath="yes" ProcessorArchitecture="x64"/>
+            </Component>
             <Component>
                 <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
             </Component>

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
+
+using ComponentFactory.Krypton.Toolkit;
 
 using Elucidate.Shared;
 
@@ -9,7 +10,7 @@ using Microsoft.VisualBasic.Devices;
 
 namespace Elucidate
 {
-    public partial class CalculateBlockSize : Form
+    public partial class CalculateBlockSize : KryptonForm
     {
         public CalculateBlockSize()
         {

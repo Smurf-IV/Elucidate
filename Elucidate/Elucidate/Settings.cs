@@ -37,6 +37,8 @@ using System.Linq;
 using System.Media;
 using System.Windows.Forms;
 
+using ComponentFactory.Krypton.Toolkit;
+
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
 using Elucidate.Objects;
@@ -46,7 +48,7 @@ using MoreLinq;
 
 namespace Elucidate
 {
-    public partial class Settings : Form
+    public partial class Settings : KryptonForm
     {
         public static event EventHandler ConfigSaved;
 

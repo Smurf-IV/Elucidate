@@ -31,13 +31,17 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+
+using ComponentFactory.Krypton.Toolkit;
+
 using Elucidate.Logging;
+
 using NLog;
 using NLog.Targets;
 
 namespace Elucidate
 {
-    public partial class LogFileLocation : Form
+    public partial class LogFileLocation : KryptonForm
     {
         public LogFileLocation()
         {
