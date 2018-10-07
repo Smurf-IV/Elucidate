@@ -4,7 +4,7 @@
 // ReSharper disable UnusedMember.Global
 namespace Elucidate.CmdLine
 {
-    [Verb("fix", HelpText = "Sync")]
+    [Verb("fix", HelpText = "Will default to using \"-e\", fix errors set by the scrub command.")]
     internal class FixVerb : StdOptions
     {
         [Option('f', "filter", // PATTERN] 

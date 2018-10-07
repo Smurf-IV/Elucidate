@@ -53,6 +53,11 @@
                 </File>
             </Component>
             <Component>
+                <File Source="$(var.MgtSource)\CommandLine.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.CommandLine" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
                 <File Source="$(var.MgtSource)\DotNetZip.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.DotNetZip" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
@@ -131,6 +136,11 @@
             <Component>
                 <File Source="$(var.MgtSource)\SimpleMapi.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.SimpleMapi" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Reflection.TypeExtensions.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Reflection.TypeExtensions" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>

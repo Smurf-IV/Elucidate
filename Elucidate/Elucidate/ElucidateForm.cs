@@ -130,13 +130,13 @@ namespace Elucidate
                     parserResult.WithNotParsed(DisplayErrors);
                     // Order is important as commands "Can" be chained"
                     // See http://www.snapraid.it/manual scrubbing for an indication of order
-                    parserResult.WithParsed<DiffVerb>(verb => Diff_Click(this, EventArgs.Empty));
-                    parserResult.WithParsed<CheckVerb>(verb => Check_Click(this, EventArgs.Empty));
-                    parserResult.WithParsed<SyncVerb>(verb => Sync_Click(this, EventArgs.Empty));
-                    parserResult.WithParsed<ScrubVerb>(verb => Scrub_Click(this, EventArgs.Empty));
-                    parserResult.WithParsed<DupVerb>(verb => DupFinder_Click(this, EventArgs.Empty));
-                    parserResult.WithParsed<StatusVerb>(verb => btnStatus_Click(this, EventArgs.Empty));
-                    parserResult.WithParsed<FixVerb>(verb => Fix_Click(this, EventArgs.Empty));
+                    parserResult.WithParsed<DiffVerb>(verb => DisplayAndCall( verb, Diff_Click));
+                    parserResult.WithParsed<CheckVerb>(verb => DisplayAndCall(verb, Check_Click));
+                    parserResult.WithParsed<SyncVerb>(verb => DisplayAndCall(verb, Sync_Click));
+                    parserResult.WithParsed<ScrubVerb>(verb => DisplayAndCall(verb, Scrub_Click));
+                    parserResult.WithParsed<DupVerb>(verb => DisplayAndCall(verb, DupFinder_Click));
+                    parserResult.WithParsed<StatusVerb>(verb => DisplayAndCall(verb, btnStatus_Click));
+                    parserResult.WithParsed<FixVerb>(verb => DisplayAndCall(verb, Fix_Click));
                     // Verbs not done as they do not have buttons yet
                     // list
                     // smart
@@ -150,7 +150,13 @@ namespace Elucidate
             }
         }
 
-        private void DisplayStdOptions(AllOptions sv)
+        private void DisplayAndCall<T>(T verb, EventHandler<EventArgs> clickCall)
+        {
+            DisplayStdOptions(verb);
+            clickCall(this, EventArgs.Empty);
+        }
+
+        private void DisplayStdOptions<TO>(TO sv)
         {
             string commandLineRead = string.Join(" ", Environment.GetCommandLineArgs());
             Log.Instance.Error("CommandLine Read: [{0}]", commandLineRead);
@@ -160,7 +166,7 @@ namespace Elucidate
                 Log.Instance.Info("CommandLine options Interpreted: [{0}]", commandLine);
                 liveRunLogControl1.txtAddCommands.Text = commandLine;
                 liveRunLogControl1.checkBoxCommandLineOptions.Checked = true;
-                if (sv.Verbose)
+                if ((sv as StdOptions).Verbose)
                 {
                     liveRunLogControl1.checkBoxDisplayOutput.Checked = true;
                 }

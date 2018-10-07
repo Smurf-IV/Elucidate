@@ -4,7 +4,9 @@
 
 namespace Elucidate.CmdLine
 {
-    [Verb("scrub", HelpText = "Sync")]
+    [Verb("scrub", HelpText = "Defaults to 100% (-p100) of all of blocks (older than 0 days = -o0).\r\nBlocks alre" +
+                              "ady marked as bad are always checked.\r\nUse \"Additional Command\" to override the " +
+                              "default of 100% of 0 days")]
     internal class ScrubVerb : StdOptions
     {
         [Option('p', "plan", // PERC|bad|new|full,

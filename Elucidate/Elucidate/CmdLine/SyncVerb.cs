@@ -4,7 +4,7 @@
 
 namespace Elucidate.CmdLine
 {
-    [Verb("sync", HelpText = "Sync")]
+    [Verb("sync", HelpText = "Synchronise with any changes that may have occurred since the last run.")]
     internal class SyncVerb : StdOptions
     {
         [Option('h', "pre-hash",

@@ -4,7 +4,7 @@
 
 namespace Elucidate.CmdLine
 {
-    [Verb("status", HelpText = "Sync")]
+    [Verb("status", HelpText = "A summary of the state of the disk array, upto the last sync time.")]
     internal class StatusVerb : StdOptions
     {
     }

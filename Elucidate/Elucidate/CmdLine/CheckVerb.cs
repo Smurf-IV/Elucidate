@@ -4,7 +4,7 @@
 // ReSharper disable UnusedMember.Global
 namespace Elucidate.CmdLine
 {
-    [Verb("check", HelpText = "Sync")]
+    [Verb("check", HelpText = "Check the snapshot to confirm it's integrity. (use -a for hash only)")]
     internal class CheckVerb : StdOptions
     {
         [Option('f', "filter", // PATTERN] 
