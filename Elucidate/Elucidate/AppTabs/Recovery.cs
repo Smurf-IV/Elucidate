@@ -1,11 +1,9 @@
 ﻿#region Copyright (C)
 
 // ---------------------------------------------------------------------------------------------------------------
-//  Forked by BlueBlock on July 28th, 2018
-// ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Recovery.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2015 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2015-2018 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,10 +27,12 @@
 #endregion Copyright (C)
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+
+using ComponentFactory.Krypton.Toolkit;
+
 using Elucidate.Shared;
 
 namespace Elucidate
@@ -128,7 +128,7 @@ namespace Elucidate
             catch (Exception ex)
             {
                 ExceptionHandler.ReportException(ex, "btnRemoveOutput_Click has thrown: ");
-                MessageBox.Show(this, ex.Message, @"Remove SnapRAID Output files.");
+                KryptonMessageBox.Show(this, ex.Message, @"Remove SnapRAID Output files.");
             }
         }
 

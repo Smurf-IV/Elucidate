@@ -155,6 +155,9 @@
     <Reference Include="AeroWizard, Version=2.1.11.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
       <HintPath>..\packages\AeroWizard.2.1.11\lib\net452\AeroWizard.dll</HintPath>
     </Reference>
+    <Reference Include="AlphaFS, Version=2.2.0.0, Culture=neutral, PublicKeyToken=4d31a58f7d7ad5c9, processorArchitecture=MSIL">
+      <HintPath>..\packages\AlphaFS.2.2.6\lib\net452\AlphaFS.dll</HintPath>
+    </Reference>
     <Reference Include="ByteSize, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ByteSize.1.3.0\lib\net45\ByteSize.dll</HintPath>
     </Reference>
@@ -172,6 +175,9 @@
     </Reference>
     <Reference Include="Handlebars, Version=1.9.5.0, Culture=neutral, PublicKeyToken=22225d0bf33cd661, processorArchitecture=MSIL">
       <HintPath>..\packages\Handlebars.Net.1.9.5\lib\net452\Handlebars.dll</HintPath>
+    </Reference>
+    <Reference Include="JCS.ToggleSwitch">
+      <HintPath>..\ToggleSwitch\JCS.ToggleSwitch.dll</HintPath>
     </Reference>
     <Reference Include="Krypton Navigator, Version=5.471.590.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL">
       <HintPath>..\packages\KryptonToolkitSuite5471.5.471.700\lib\net471\Krypton Navigator.dll</HintPath>
@@ -271,7 +277,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdvancedSettingsHelper.cs" />
+    <Compile Include="HelperClasses\AdvancedSettingsHelper.cs" />
     <Compile Include="CmdLine\CheckVerb.cs" />
     <Compile Include="CmdLine\DiffVerb.cs" />
     <Compile Include="CmdLine\DupVerb.cs" />
@@ -280,7 +286,7 @@
     <Compile Include="CmdLine\StatusVerb.cs" />
     <Compile Include="CmdLine\StdOptions.cs" />
     <Compile Include="CmdLine\SyncVerb.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="Objects\Constants.cs" />
     <Compile Include="Controls\LiveRunLogControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -305,14 +311,14 @@
     <Compile Include="Controls\Schedule.Designer.cs">
       <DependentUpon>Schedule.cs</DependentUpon>
     </Compile>
-    <Compile Include="CalculateBlockSize.cs">
+    <Compile Include="Forms\CalculateBlockSize.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CalculateBlockSize.Designer.cs">
+    <Compile Include="Forms\CalculateBlockSize.Designer.cs">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\SnapRAIDThread.cs" />
-    <Compile Include="ExceptionHandler.cs" />
+    <Compile Include="HelperClasses\ExceptionHandler.cs" />
     <Compile Include="HelperClasses\ErrorProviderExtensions.cs" />
     <Compile Include="HelperClasses\FileUtil.cs" />
     <Compile Include="HelperClasses\AbortableBackgroundWorker.cs">
@@ -363,30 +369,30 @@
     </Compile>
     <Compile Include="Threads\LogThreadClass.cs" />
     <Compile Include="Threads\RecoverThreadClass.cs" />
-    <Compile Include="ToolStripCheckBoxMenuItem.cs">
+    <Compile Include="Controls\ToolStripCheckBoxMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Util.cs" />
-    <Compile Include="WindowLocation.cs" />
-    <Compile Include="ConfigFileHelper.cs" />
-    <Compile Include="ElucidateForm.cs">
+    <Compile Include="HelperClasses\Util.cs" />
+    <Compile Include="HelperClasses\WindowLocation.cs" />
+    <Compile Include="HelperClasses\ConfigFileHelper.cs" />
+    <Compile Include="Forms\ElucidateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ElucidateForm.Designer.cs">
+    <Compile Include="Forms\ElucidateForm.Designer.cs">
       <DependentUpon>ElucidateForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LogFileLocation.cs">
+    <Compile Include="Forms\LogFileLocation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LogFileLocation.Designer.cs">
+    <Compile Include="Forms\LogFileLocation.Designer.cs">
       <DependentUpon>LogFileLocation.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs">
+    <Compile Include="Forms\Settings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Settings.Designer.cs">
+    <Compile Include="Forms\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="wyDay.Controls\COMTypes.cs" />
@@ -406,17 +412,17 @@
     <EmbeddedResource Include="Controls\Schedule.resx">
       <DependentUpon>Schedule.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CalculateBlockSize.resx">
+    <EmbeddedResource Include="Forms\CalculateBlockSize.resx">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shared\MessageBoxExtForm.resx" />
     <EmbeddedResource Include="Controls\DriveSpaceDisplay.resx">
       <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ElucidateForm.resx">
+    <EmbeddedResource Include="Forms\ElucidateForm.resx">
       <DependentUpon>ElucidateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LogFileLocation.resx">
+    <EmbeddedResource Include="Forms\LogFileLocation.resx">
       <DependentUpon>LogFileLocation.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -430,7 +436,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Settings.resx">
+    <EmbeddedResource Include="Forms\Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
@@ -492,9 +498,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>

@@ -27,15 +27,19 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+
+using Alphaleonis.Win32.Filesystem;
+
 using ByteSizeLib;
+
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
 using Elucidate.Objects;
+
 using MoreLinq;
 
 namespace Elucidate.Controls
@@ -157,13 +161,11 @@ namespace Elucidate.Controls
 
             ClearExpectedList();
 
-            List<CoveragePath> pathsOfInterest = e.Argument as List<CoveragePath>;
-
-            BackgroundWorker worker = sender as BackgroundWorker;
-
-            if (pathsOfInterest == null || !pathsOfInterest.Any() || worker == null)
+            if (!(e.Argument is List<CoveragePath> pathsOfInterest) 
+                || !pathsOfInterest.Any() 
+                || !(sender is BackgroundWorker worker))
             {
-                Log.Instance.Error("Worker, or auguments are null, exiting.");
+                Log.Instance.Error("Worker, or arguments are null, exiting.");
                 return;
             }
 

@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elucidate", "Elucidate\Eluc
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Elucidate Windows Installer", "Elucidate Windows Installer\Elucidate Windows Installer.wixproj", "{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToggleSwitch", "ToggleSwitch", "{04486FAE-E7AE-44FD-B3B5-10BA42A57E02}"
+	ProjectSection(SolutionItems) = preProject
+		ToggleSwitch\CodeProject.website = ToggleSwitch\CodeProject.website
+		ToggleSwitch\JCS.ToggleSwitch.dll = ToggleSwitch\JCS.ToggleSwitch.dll
+		ToggleSwitch\JCS.ToggleSwitch.pdb = ToggleSwitch\JCS.ToggleSwitch.pdb
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,8 +50,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {39E6A612-AC12-4D63-BE2A-60EA16940A8A}
-		BuildVersion_StartDate = 2000/1/1
 		BuildVersion_UseGlobalSettings = False
+		BuildVersion_StartDate = 2000/1/1
+		SolutionGuid = {39E6A612-AC12-4D63-BE2A-60EA16940A8A}
 	EndGlobalSection
 EndGlobal

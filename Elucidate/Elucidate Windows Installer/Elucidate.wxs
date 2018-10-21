@@ -48,6 +48,11 @@
                 </File>
             </Component>
             <Component>
+                <File Source="$(var.MgtSource)\AlphaFS.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.AlphaFS" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
                 <File Source="$(var.MgtSource)\ByteSize.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.ByteSize" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
@@ -70,6 +75,11 @@
             <Component>
                 <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.GroupControls" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\JCS.ToggleSwitch.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.JCS.ToggleSwitch" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
 
@@ -157,7 +167,7 @@
 
             <!-- Text and help files-->
             <Component>
-                <File Source="$(var.MgtSource)\snapraid.ps1" KeyPath="yes" ProcessorArchitecture="x64"/>
+                <File Source="$(var.MgtSource)\snapraid.ps1" KeyPath="yes"/>
             </Component>
             <Component>
                 <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />

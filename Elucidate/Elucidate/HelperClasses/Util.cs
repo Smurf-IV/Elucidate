@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+
+using Alphaleonis.Win32.Filesystem;
+
+using ComponentFactory.Krypton.Toolkit;
 
 using Elucidate.HelperClasses;
 using Elucidate.Logging;
@@ -230,7 +233,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                KryptonMessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -259,7 +262,7 @@ namespace Elucidate
             {
                 return dir.GetFiles()
                            .Sum(fi => (ulong) fi.Length) + dir.GetDirectories()
-                           .Where(d => (d.Attributes & FileAttributes.System) == 0 && (d.Attributes & FileAttributes.Hidden) == 0)
+                           .Where(d => (d.Attributes & System.IO.FileAttributes.System) == 0 && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
                            .Sum(DirSize);
             }
             catch (UnauthorizedAccessException ex)

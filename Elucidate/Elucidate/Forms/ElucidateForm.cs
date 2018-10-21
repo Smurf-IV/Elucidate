@@ -1,9 +1,7 @@
 ﻿#region Copyright (C)
 
 // ---------------------------------------------------------------------------------------------------------------
-//  Forked by BlueBlock on July 28th, 2018
-// ---------------------------------------------------------------------------------------------------------------
-//  <copyright file="Form1.cs" company="Smurf-IV">
+//  <copyright file="ElucidateForm.cs" company="Smurf-IV">
 //
 //  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
 //
@@ -36,8 +34,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using CommandLine;
+
 using ComponentFactory.Krypton.Toolkit;
+
 using Elucidate.CmdLine;
 using Elucidate.Controls;
 using Elucidate.HelperClasses;
@@ -86,8 +87,7 @@ namespace Elucidate
             {
                 Properties.Settings.Default.ConfigFileIsValid = false;
             }
-
-            VersionIndicator.Text = AppUpdate.GetInstalledVersion();
+            TextExtra = AppUpdate.GetInstalledVersion();
 
             // check for new version and notify if available
             if (AppUpdate.IsNewVersionAvailable())
@@ -130,7 +130,7 @@ namespace Elucidate
                     parserResult.WithNotParsed(DisplayErrors);
                     // Order is important as commands "Can" be chained"
                     // See http://www.snapraid.it/manual scrubbing for an indication of order
-                    parserResult.WithParsed<DiffVerb>(verb => DisplayAndCall( verb, Diff_Click));
+                    parserResult.WithParsed<DiffVerb>(verb => DisplayAndCall(verb, Diff_Click));
                     parserResult.WithParsed<CheckVerb>(verb => DisplayAndCall(verb, Check_Click));
                     parserResult.WithParsed<SyncVerb>(verb => DisplayAndCall(verb, Sync_Click));
                     parserResult.WithParsed<ScrubVerb>(verb => DisplayAndCall(verb, Scrub_Click));
@@ -184,7 +184,7 @@ namespace Elucidate
             {
                 // Force the output of the help for each verb
                 Parser parser = new Parser(with => with.HelpWriter = writer);
-                parser.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(new string[] {@"--help" });
+                parser.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(new string[] { @"--help" });
 
                 Log.Instance.Info(writer.ToString());
             }
@@ -219,7 +219,6 @@ namespace Elucidate
 
         private void SetCommonButtonsEnabledState(bool enabled)
         {
-            editSnapRAIDConfigToolStripMenuItem.Enabled = enabled;
             btnDiff.Enabled = enabled;
             btnSync.Enabled = enabled;
             btnCheck.Enabled = enabled;
@@ -355,7 +354,7 @@ namespace Elucidate
             if (Util.IsExecutableRunning(Properties.Settings.Default.SnapRAIDFileLocation))
             {
                 SetCommonButtonsEnabledState(true);
-                MessageBox.Show(@"A SnapRAID process is already running");
+                KryptonMessageBox.Show(this, @"A SnapRAID process is already running");
                 return;
             }
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Check);
@@ -448,26 +447,21 @@ namespace Elucidate
 
             Properties.Settings.Default.ConfigFileIsValid = _srConfig.IsValid;
 
+            Properties.Settings.Default.ConfigFileLocation = configFile;
+            editSnapRAIDConfigToolStripMenuItem.Enabled = !string.IsNullOrWhiteSpace(configFile);
+
             if (_srConfig.IsValid)
             {
-                Properties.Settings.Default.ConfigFileLocation = configFile;
-
                 BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(configFile); });
             }
             else
             {
                 MessageBoxExt.Show(
                     this,
-                    $"The config file is not valid.{Environment.NewLine} - {string.Join(" - ", _srConfig.ConfigErrors)}",
+                    $"The config file is not valid.{Environment.NewLine} - {string.Join($@"{Environment.NewLine} - ", _srConfig.ConfigErrors)}",
                     "Config File Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-
-#if !DEBUG
-                Properties.Settings.Default.ConfigFileLocation = string.Empty;
-#endif
-
-                return;
             }
 
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
@@ -489,16 +483,11 @@ namespace Elucidate
         {
             if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
 
-            Settings settingsForm = new Settings();
-
-            if (!Properties.Settings.Default.ConfigFileIsValid)
+            using (Settings settingsForm = new Settings() )
             {
-                Properties.Settings.Default.ConfigFileLocation = "";
+                settingsForm.FormClosed += RefreshDriveDisplayAfterConfigSaved;
+                settingsForm.ShowDialog(this);
             }
-
-            settingsForm.FormClosed += RefreshDriveDisplayAfterConfigSaved;
-
-            settingsForm.ShowDialog(this);
 
             EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
         }
@@ -585,7 +574,7 @@ namespace Elucidate
                 sb.AppendLine($@"Content File: {file}");
             }
 
-            DialogResult result = MessageBox.Show(
+            DialogResult result = KryptonMessageBox.Show(
                 this,
                 sb.ToString(),
                 @"Delete All SnapRAID Files",

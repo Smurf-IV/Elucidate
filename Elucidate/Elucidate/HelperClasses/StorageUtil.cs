@@ -1,10 +1,37 @@
-﻿using System;
+﻿#region Copyright (C)
+// ---------------------------------------------------------------------------------------------------------------
+//  <copyright file="StorageUtil.cs" company="Smurf-IV">
+// 
+//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+// 
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 2 of the License, or
+//   any later version.
+// 
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
+// 
+//  You should have received a copy of the GNU General Public License
+//  along with this program. If not, see http://www.gnu.org/licenses/.
+//  </copyright>
+//  <summary>
+//  Url: https://github.com/Smurf-IV/Elucidate
+//  Email: https://github.com/Smurf-IV
+//  </summary>
+// --------------------------------------------------------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
+
+using Alphaleonis.Win32.Filesystem;
 
 using Elucidate.Logging;
 using Elucidate.Objects;
@@ -74,7 +101,8 @@ namespace Elucidate.HelperClasses
 
         public static string GetVolumePathName(string path)
         {
-            const int MaxVolumeNameLength = 100;
+            return Volume.GetVolumePathName(path);
+            /*const int MaxVolumeNameLength = 100;
             StringBuilder sb = new StringBuilder(MaxVolumeNameLength);
             if (!GetVolumePathName(path, sb, MaxVolumeNameLength))
             {
@@ -83,6 +111,7 @@ namespace Elucidate.HelperClasses
 
             string s = sb.ToString();
             return s;
+            */
         }
         
         public static ulong GetDriveSize(string path)
@@ -107,8 +136,15 @@ namespace Elucidate.HelperClasses
 
             foreach (string path in paths.Where(p => !string.IsNullOrEmpty(p)))
             {
-                string pathRoot = StorageUtil.GetPathRoot(path);
-                deviceSizes.Add(StorageUtil.GetDriveSize(pathRoot));
+                try
+                {
+                    string pathRoot = StorageUtil.GetPathRoot(path);
+                    deviceSizes.Add(StorageUtil.GetDriveSize(pathRoot));
+                }
+                catch (Exception ex)
+                {
+                    Log.Instance.Warn(ex.Message);
+                }
             }
 
             return deviceSizes;
@@ -166,24 +202,24 @@ namespace Elucidate.HelperClasses
 
                             switch (item.DriveType)
                             {
-                                case (uint)DriveType.Removable:
-                                    device.DriveType = DriveType.Removable;
+                                case (uint)System.IO.DriveType.Removable:
+                                    device.DriveType = System.IO.DriveType.Removable;
                                     break;
 
-                                case (uint)DriveType.Fixed:
-                                    device.DriveType = DriveType.Fixed;
+                                case (uint)System.IO.DriveType.Fixed:
+                                    device.DriveType = System.IO.DriveType.Fixed;
                                     break;
 
-                                case (uint)DriveType.Network:
-                                    device.DriveType = DriveType.Network;
+                                case (uint)System.IO.DriveType.Network:
+                                    device.DriveType = System.IO.DriveType.Network;
                                     break;
 
-                                case (uint)DriveType.CDRom:
-                                    device.DriveType = DriveType.CDRom;
+                                case (uint)System.IO.DriveType.CDRom:
+                                    device.DriveType = System.IO.DriveType.CDRom;
                                     break;
 
                                 default:
-                                    device.DriveType = DriveType.Unknown;
+                                    device.DriveType = System.IO.DriveType.Unknown;
                                     break;
                             }
 

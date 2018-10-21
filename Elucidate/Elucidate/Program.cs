@@ -1,11 +1,9 @@
 ﻿#region Copyright (C)
 
 // ---------------------------------------------------------------------------------------------------------------
-//  Forked by BlueBlock on July 28th, 2018
-// ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Program.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2011-2012 Smurf-IV
+//  Copyright (C) 2011-2018 Smurf-IV
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +31,9 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+
+using ComponentFactory.Krypton.Toolkit;
+
 using Elucidate.Logging;
 
 namespace Elucidate
@@ -102,7 +103,7 @@ namespace Elucidate
                 }
                 else
                 {
-                    MessageBox.Show($@"{mutexName} is already running");
+                    KryptonMessageBox.Show( $@"{mutexName} is already running");
                     Log.Instance.Error($@"{mutexName} is already running");
                 }
             }

@@ -49,8 +49,8 @@ namespace Elucidate.Controls
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 5;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 103F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 138F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 128F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -60,22 +60,23 @@ namespace Elucidate.Controls
             this.tableLayoutPanel1.Controls.Add(this.checkBoxDisplayOutput, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.comboBoxProcessStatus, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 265);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 277);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(858, 51);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(858, 39);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // toolStripStatusLabel1
             // 
+            this.toolStripStatusLabel1.AutoSize = true;
             this.toolStripStatusLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripStatusLabel1.Location = new System.Drawing.Point(0, 0);
             this.toolStripStatusLabel1.Margin = new System.Windows.Forms.Padding(0);
+            this.toolStripStatusLabel1.MinimumSize = new System.Drawing.Size(170, 30);
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(103, 51);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(173, 39);
             this.toolStripStatusLabel1.TabIndex = 7;
             this.toolStripStatusLabel1.Text = "2000-01-01 00:00:00Z";
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -87,24 +88,24 @@ namespace Elucidate.Controls
             this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
-            this.toolStripProgressBar1.Location = new System.Drawing.Point(465, 0);
+            this.toolStripProgressBar1.Location = new System.Drawing.Point(621, 0);
             this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.ShowInTaskbar = true;
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(393, 51);
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(237, 39);
             this.toolStripProgressBar1.Step = 3;
             this.toolStripProgressBar1.TabIndex = 5;
             this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // runWithoutCaptureMenuItem
             // 
+            this.runWithoutCaptureMenuItem.AutoSize = true;
             this.runWithoutCaptureMenuItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.runWithoutCaptureMenuItem.Location = new System.Drawing.Point(339, 4);
-            this.runWithoutCaptureMenuItem.Margin = new System.Windows.Forms.Padding(4);
-            this.runWithoutCaptureMenuItem.MaximumSize = new System.Drawing.Size(122, 43);
+            this.runWithoutCaptureMenuItem.Location = new System.Drawing.Point(446, 0);
+            this.runWithoutCaptureMenuItem.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.runWithoutCaptureMenuItem.MinimumSize = new System.Drawing.Size(122, 43);
             this.runWithoutCaptureMenuItem.Name = "runWithoutCaptureMenuItem";
-            this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(122, 43);
+            this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(171, 43);
             this.runWithoutCaptureMenuItem.TabIndex = 4;
             this.runWithoutCaptureMenuItem.Text = "Run without capture";
             this.runWithoutCaptureMenuItem.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -113,15 +114,15 @@ namespace Elucidate.Controls
             // 
             // checkBoxDisplayOutput
             // 
+            this.checkBoxDisplayOutput.AutoSize = true;
             this.checkBoxDisplayOutput.Checked = true;
             this.checkBoxDisplayOutput.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDisplayOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBoxDisplayOutput.Location = new System.Drawing.Point(245, 4);
-            this.checkBoxDisplayOutput.Margin = new System.Windows.Forms.Padding(4);
-            this.checkBoxDisplayOutput.MaximumSize = new System.Drawing.Size(86, 43);
+            this.checkBoxDisplayOutput.Location = new System.Drawing.Point(305, 0);
+            this.checkBoxDisplayOutput.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.checkBoxDisplayOutput.MinimumSize = new System.Drawing.Size(86, 43);
             this.checkBoxDisplayOutput.Name = "checkBoxDisplayOutput";
-            this.checkBoxDisplayOutput.Size = new System.Drawing.Size(86, 43);
+            this.checkBoxDisplayOutput.Size = new System.Drawing.Size(133, 43);
             this.checkBoxDisplayOutput.TabIndex = 6;
             this.checkBoxDisplayOutput.Text = "Display Output";
             this.checkBoxDisplayOutput.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -139,10 +140,10 @@ namespace Elucidate.Controls
             "Stopped",
             "Running",
             "Abort"});
-            this.comboBoxProcessStatus.Location = new System.Drawing.Point(107, 10);
-            this.comboBoxProcessStatus.Margin = new System.Windows.Forms.Padding(4, 10, 4, 4);
+            this.comboBoxProcessStatus.Location = new System.Drawing.Point(177, 6);
+            this.comboBoxProcessStatus.Margin = new System.Windows.Forms.Padding(4, 6, 4, 4);
             this.comboBoxProcessStatus.Name = "comboBoxProcessStatus";
-            this.comboBoxProcessStatus.Size = new System.Drawing.Size(130, 27);
+            this.comboBoxProcessStatus.Size = new System.Drawing.Size(120, 27);
             this.comboBoxProcessStatus.TabIndex = 3;
             this.comboBoxProcessStatus.SelectedIndexChanged += new System.EventHandler(this.comboBoxProcessStatus_SelectedIndexChanged);
             // 
@@ -158,7 +159,7 @@ namespace Elucidate.Controls
             this.scintilla.Margin = new System.Windows.Forms.Padding(4);
             this.scintilla.Name = "scintilla";
             this.scintilla.ScrollWidth = 50;
-            this.scintilla.Size = new System.Drawing.Size(858, 232);
+            this.scintilla.Size = new System.Drawing.Size(858, 244);
             this.scintilla.TabIndex = 3;
             this.scintilla.StyleNeeded += new System.EventHandler<ScintillaNET.StyleNeededEventArgs>(this.scintilla_StyleNeeded);
             // 
@@ -186,7 +187,7 @@ namespace Elucidate.Controls
             this.tableLayoutPanelAdditionalCommands.Controls.Add(this.txtAddCommands, 1, 0);
             this.tableLayoutPanelAdditionalCommands.Controls.Add(this.checkBoxCommandLineOptions, 0, 0);
             this.tableLayoutPanelAdditionalCommands.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanelAdditionalCommands.Location = new System.Drawing.Point(0, 232);
+            this.tableLayoutPanelAdditionalCommands.Location = new System.Drawing.Point(0, 244);
             this.tableLayoutPanelAdditionalCommands.Margin = new System.Windows.Forms.Padding(18);
             this.tableLayoutPanelAdditionalCommands.MinimumSize = new System.Drawing.Size(75, 15);
             this.tableLayoutPanelAdditionalCommands.Name = "tableLayoutPanelAdditionalCommands";
@@ -221,6 +222,7 @@ namespace Elucidate.Controls
             this.Load += new System.EventHandler(this.LiveRunLogControl_Load);
             this.Resize += new System.EventHandler(this.LiveRunLogControl_Resize);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanelAdditionalCommands.ResumeLayout(false);
             this.tableLayoutPanelAdditionalCommands.PerformLayout();
             this.ResumeLayout(false);

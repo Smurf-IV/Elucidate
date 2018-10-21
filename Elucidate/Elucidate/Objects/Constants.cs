@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace Elucidate
+﻿namespace Elucidate
 {
     public static class Constants
     {

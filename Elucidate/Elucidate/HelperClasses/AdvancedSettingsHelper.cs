@@ -1,19 +1,20 @@
 ﻿#region Copyright (C)
+
 // ---------------------------------------------------------------------------------------------------------------
-//  <copyright file="RecoverThreadClass.cs" company="Smurf-IV">
-// 
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
-// 
+//  <copyright file="AdvancedSettingsHelper.cs" company="Smurf-IV">
+//
+//  Copyright (C) 2012-2018 Smurf-IV
+//
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation, either version 2 of the License, or
 //   any later version.
-// 
+//
 //  This program is distributed in the hope that it will be useful,
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //  GNU General Public License for more details.
-// 
+//
 //  You should have received a copy of the GNU General Public License
 //  along with this program. If not, see http://www.gnu.org/licenses/.
 //  </copyright>
@@ -22,31 +23,25 @@
 //  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
-using System;
+#endregion Copyright (C)
 
-namespace Elucidate.Threads
+namespace Elucidate
 {
-    public class RecoverThreadClass : IDisposable
-    {
-        public delegate void AddNodeHandler(string name);
-        public event AddNodeHandler OnAddNodeEvt;
+   internal class AdvancedSettingsHelper
+   {
+      public string DisplayName { get; private set; }
 
-        public void AddNode(string name)
-        {
-            TriggerEvent(name);
-        }
+      public bool CheckState { get; set; }
 
-        private void TriggerEvent(string name)
-        {
-            OnAddNodeEvt?.Invoke(name);
-        }
+      public string TootTip { get; private set; }
 
-        #region Dispose
-        public void Dispose() => GC.SuppressFinalize(this);
-        ~RecoverThreadClass() => Dispose();
-        #endregion
+      public AdvancedSettingsHelper(string displayName, bool checkState, string tootTip)
+      {
+         DisplayName = displayName;
+         this.CheckState = checkState;
+         TootTip = tootTip;
+      }
 
-    }
+   }
 }

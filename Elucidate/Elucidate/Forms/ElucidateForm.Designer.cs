@@ -64,7 +64,6 @@ namespace Elucidate
             this.logViewToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.changeLogLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.VersionIndicator = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemChangelog = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemNewVersionAvailable = new System.Windows.Forms.ToolStripMenuItem();
             this.installNewVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -156,6 +155,7 @@ namespace Elucidate
             // 
             this.btnScrub.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnScrub.ButtonDepress = ((sbyte)(2));
+            this.btnScrub.Enabled = false;
             this.btnScrub.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnScrub.HighlightColor = System.Drawing.SystemColors.Highlight;
             this.btnScrub.HighlightFillAlpha = ((byte)(200));
@@ -526,15 +526,17 @@ namespace Elucidate
             // 
             // logViewToolStripMenuItem1
             // 
+            this.logViewToolStripMenuItem1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logViewToolStripMenuItem1.Name = "logViewToolStripMenuItem1";
-            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(152, 24);
+            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.logViewToolStripMenuItem1.Text = "&View...";
             this.logViewToolStripMenuItem1.Click += new System.EventHandler(this.logViewToolStripMenuItem_Click);
             // 
             // changeLogLocationToolStripMenuItem
             // 
+            this.changeLogLocationToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeLogLocationToolStripMenuItem.Name = "changeLogLocationToolStripMenuItem";
-            this.changeLogLocationToolStripMenuItem.Size = new System.Drawing.Size(152, 24);
+            this.changeLogLocationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.changeLogLocationToolStripMenuItem.Text = "&Location...";
             this.changeLogLocationToolStripMenuItem.Click += new System.EventHandler(this.changeLogLocationToolStripMenuItem_Click);
             // 
@@ -548,18 +550,6 @@ namespace Elucidate
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.ToolTipText = "Goto the Help page.";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
-            // 
-            // VersionIndicator
-            // 
-            this.VersionIndicator.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.VersionIndicator.Enabled = false;
-            this.VersionIndicator.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.VersionIndicator.Name = "VersionIndicator";
-            this.VersionIndicator.ShowShortcutKeys = false;
-            this.VersionIndicator.Size = new System.Drawing.Size(137, 23);
-            this.VersionIndicator.Text = "VersionIndicator";
-            this.VersionIndicator.ToolTipText = "The build number of this application.";
-            this.VersionIndicator.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // MenuItemChangelog
             // 
@@ -586,15 +576,17 @@ namespace Elucidate
             // 
             // installNewVersionToolStripMenuItem
             // 
+            this.installNewVersionToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.installNewVersionToolStripMenuItem.Name = "installNewVersionToolStripMenuItem";
-            this.installNewVersionToolStripMenuItem.Size = new System.Drawing.Size(270, 24);
+            this.installNewVersionToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
             this.installNewVersionToolStripMenuItem.Text = "Install New Version";
             this.installNewVersionToolStripMenuItem.Click += new System.EventHandler(this.InstallNewVersionToolStripMenuItem_Click);
             // 
             // changeLogOfNewVersionToolStripMenuItem
             // 
+            this.changeLogOfNewVersionToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeLogOfNewVersionToolStripMenuItem.Name = "changeLogOfNewVersionToolStripMenuItem";
-            this.changeLogOfNewVersionToolStripMenuItem.Size = new System.Drawing.Size(270, 24);
+            this.changeLogOfNewVersionToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
             this.changeLogOfNewVersionToolStripMenuItem.Text = "ChangeLog of New Version";
             this.changeLogOfNewVersionToolStripMenuItem.Click += new System.EventHandler(this.ChangeLogOfNewVersionToolStripMenuItem_Click);
             // 
@@ -606,7 +598,6 @@ namespace Elucidate
             this.fileToolStripMenuItem,
             this.logViewToolStripMenuItem,
             this.helpToolStripMenuItem,
-            this.VersionIndicator,
             this.MenuItemChangelog,
             this.MenuItemNewVersionAvailable,
             this.MenuItemNewVersionReadyForInstall,
@@ -634,38 +625,42 @@ namespace Elucidate
             // 
             // openSnapRAIDConfigToolStripMenuItem
             // 
+            this.openSnapRAIDConfigToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.openSnapRAIDConfigToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openSnapRAIDConfigToolStripMenuItem.Name = "openSnapRAIDConfigToolStripMenuItem";
             this.openSnapRAIDConfigToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(303, 24);
+            this.openSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.openSnapRAIDConfigToolStripMenuItem.Text = "&Open SnapRAID Config";
             this.openSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.OpenSnapRAIDConfigToolStripMenuItem_Click);
             // 
             // editSnapRAIDConfigToolStripMenuItem
             // 
+            this.editSnapRAIDConfigToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editSnapRAIDConfigToolStripMenuItem.Name = "editSnapRAIDConfigToolStripMenuItem";
             this.editSnapRAIDConfigToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.editSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(303, 24);
+            this.editSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.editSnapRAIDConfigToolStripMenuItem.Text = "&Edit SnapRAID Config";
             this.editSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.EditSnapRAIDConfigToolStripMenuItem_Click);
             // 
             // closeSnapRAIDConfigToolStripMenuItem
             // 
+            this.closeSnapRAIDConfigToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.closeSnapRAIDConfigToolStripMenuItem.Name = "closeSnapRAIDConfigToolStripMenuItem";
-            this.closeSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(303, 24);
+            this.closeSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.closeSnapRAIDConfigToolStripMenuItem.Text = "Close SnapRAID Config";
             this.closeSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.CloseSnapRAIDConfigToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(300, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(274, 6);
             // 
             // exitToolStripMenuItem
             // 
+            this.exitToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(303, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -691,9 +686,9 @@ namespace Elucidate
             // 
             // deleteAllSnapRAIDRaidFilesToolStripMenuItem
             // 
-            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Name = "deleteAllSnapRAIDRaidFilesToolStripMenuItem";
-            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(254, 24);
+            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Text = "Delete all SnapRAID files";
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.ToolTipText = "This will delete all parity and content files defined in the current configuratio" +
     "n file.";
@@ -716,6 +711,7 @@ namespace Elucidate
             this.Name = "ElucidateForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Elucidate";
+            this.UseDropShadow = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ElucidateForm_FormClosing);
             this.Load += new System.EventHandler(this.ElucidateForm_Load);
             this.Shown += new System.EventHandler(this.ElucidateForm_Shown);
@@ -770,7 +766,6 @@ namespace Elucidate
         private ToolStripMenuItem logViewToolStripMenuItem1;
         private ToolStripMenuItem changeLogLocationToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
-        private ToolStripMenuItem VersionIndicator;
         private ToolStripMenuItem MenuItemChangelog;
         private ToolStripMenuItem MenuItemNewVersionAvailable;
         private ToolStripMenuItem installNewVersionToolStripMenuItem;
