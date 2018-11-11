@@ -14,6 +14,46 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToggleSwitch", "ToggleSwitc
 		ToggleSwitch\JCS.ToggleSwitch.pdb = ToggleSwitch\JCS.ToggleSwitch.pdb
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4387A76F-EC87-446D-A4A7-E7D96F8DD9A3}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4CD46F4E-0D02-48A2-81D2-0CC3CC529C04}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\Documentation.md = ..\docs\Documentation.md
+		..\docs\Settings.md = ..\docs\Settings.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{95AFED29-C452-4F6F-9FB1-6E6E072EA4F4}"
+	ProjectSection(SolutionItems) = preProject
+		..\Images\Documentation_Layout With Scheduling.png = ..\Images\Documentation_Layout With Scheduling.png
+		..\Images\Documentation_Real Time Log.png = ..\Images\Documentation_Real Time Log.png
+		..\Images\Documentation_Speed of 1.7 x64.png = ..\Images\Documentation_Speed of 1.7 x64.png
+		..\Images\Home_CoverageTab_2.png = ..\Images\Home_CoverageTab_2.png
+		..\Images\Home_Layout With Scheduling.png = ..\Images\Home_Layout With Scheduling.png
+		..\Images\Pictures_CoverageTab_2.png = ..\Images\Pictures_CoverageTab_2.png
+		..\Images\Pictures_CoverageTab_thumb.png = ..\Images\Pictures_CoverageTab_thumb.png
+		..\Images\Pictures_Fragmentation.png = ..\Images\Pictures_Fragmentation.png
+		..\Images\Pictures_Mono Version.png = ..\Images\Pictures_Mono Version.png
+		..\Images\Pictures_Space In Path.png = ..\Images\Pictures_Space In Path.png
+		..\Images\Pictures_Speed of 1.7 x64.png = ..\Images\Pictures_Speed of 1.7 x64.png
+		..\Images\schedule_view.png = ..\Images\schedule_view.png
+		..\Images\Settings_ErrorProviders.png = ..\Images\Settings_ErrorProviders.png
+		..\Images\Settings_ExcludedPatterns.png = ..\Images\Settings_ExcludedPatterns.png
+		..\Images\Settings_ParityFileLocs.png = ..\Images\Settings_ParityFileLocs.png
+		..\Images\Settings_ResetToLast.png = ..\Images\Settings_ResetToLast.png
+		..\Images\Settings_SaveSettings.png = ..\Images\Settings_SaveSettings.png
+		..\Images\Settings_Settings Title.png = ..\Images\Settings_Settings Title.png
+		..\Images\Settings_Settings.png = ..\Images\Settings_Settings.png
+		..\Images\Settings_Snap Sources.png = ..\Images\Settings_Snap Sources.png
+		..\Images\Settings_SnapRaid Config.png = ..\Images\Settings_SnapRaid Config.png
+		..\Images\Settings_SnapRaid Exe.png = ..\Images\Settings_SnapRaid Exe.png
+		..\Images\Settings_Sources.png = ..\Images\Settings_Sources.png
+		..\Images\Settings_UseVerbose.png = ..\Images\Settings_UseVerbose.png
+		..\Images\starting_view.png = ..\Images\starting_view.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +88,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4CD46F4E-0D02-48A2-81D2-0CC3CC529C04} = {4387A76F-EC87-446D-A4A7-E7D96F8DD9A3}
+		{95AFED29-C452-4F6F-9FB1-6E6E072EA4F4} = {4387A76F-EC87-446D-A4A7-E7D96F8DD9A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		BuildVersion_UseGlobalSettings = False
