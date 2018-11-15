@@ -28,7 +28,7 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
 **A**: The larger goal is to create a feature-complete GUI with additional management features designed to aid a user in maintaining a functioning SnapRAID environment. Sometimes, ‘point and clicks’ are easier for a novice to get going with. SnapRAID's technical documentation and deep configurability can make adopting it off-putting to those looking to try it out!
 
 **Q**: I'm still uncertain, is there more ?<br/>
-**A**: Yes, Have a look at the [documentation](./docs/documentation.md) for pictures etc.
+**A**: Yes, Have a look at the [documentation](./docs/Documentation.md) for pictures etc.
 
 **Q**: So what are the "Larger Goals" ?<br/>
 **A**: See the __Roadmap__ below for a complete breakdown.
