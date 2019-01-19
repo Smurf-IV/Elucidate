@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Recover.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,11 +32,14 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Elucidate.Logging;
+using NLog;
 
 namespace Elucidate.Controls
 {
     public partial class Recover : UserControl
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public event EventHandler TaskStarted;
 
         private void OnTaskStarted(EventArgs e)
@@ -53,7 +56,7 @@ namespace Elucidate.Controls
             handler?.Invoke(this, e);
         }
 
-        private readonly List<string> _batchPaths = new List<string>();
+        private readonly List<string> batchPaths = new List<string>();
 
         public Recover()
         {
@@ -201,7 +204,7 @@ namespace Elucidate.Controls
                                     return; // paranoid, just check
                                 }
 
-                                Log.Instance.Error($"Unable to retrieve the recoverable file path from log entry at '{logEntryTimestamp.Value}'");
+                                Log.Error($@"Unable to retrieve the recoverable file path from log entry at '{logEntryTimestamp.Value}'");
                                 return;
                             }
                             Group groupFilePath = matches.Groups["FilePath"];
@@ -259,7 +262,7 @@ namespace Elucidate.Controls
                                 return; // paranoid, just check
                             }
 
-                            Log.Instance.Error($"Unable to retrieve the recovered file path from log entry at '{logEntryTimestamp.Value}'");
+                            Log.Error($@"Unable to retrieve the recovered file path from log entry at '{logEntryTimestamp.Value}'");
                             return;
                         }
                         Group groupFilePath = matches.Groups["FilePath"];
@@ -348,7 +351,6 @@ namespace Elucidate.Controls
             {
                 SetButtonsEnabledState(false);
                 // run only if app is not already running an operation
-                // replace mlog method with ours
                 treeView1.Nodes.Clear();
                 timerTreeViewFill.Enabled = true;
                 liveRunLogControl.StartSnapRaidProcess(LiveRunLogControl.CommandType.RecoverCheck);
@@ -379,7 +381,7 @@ namespace Elucidate.Controls
                         continue;
                     }
 
-                    _batchPaths.Add(node.FullPath);
+                    batchPaths.Add(node.FullPath);
                     //paths = new List<string>(paths.OrderBy(p => p.Count(c => c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar)));
                 }
 
@@ -387,9 +389,9 @@ namespace Elucidate.Controls
 
                 timerTreeViewRecover.Enabled = true;
 
-                if (!liveRunLogControl.ActionWorker.IsBusy && _batchPaths.Any())
+                if (!liveRunLogControl.ActionWorker.IsBusy && batchPaths.Any())
                 {
-                    liveRunLogControl.StartSnapRaidProcess(LiveRunLogControl.CommandType.RecoverFix, _batchPaths);
+                    liveRunLogControl.StartSnapRaidProcess(LiveRunLogControl.CommandType.RecoverFix, batchPaths);
                 }
             }
         }

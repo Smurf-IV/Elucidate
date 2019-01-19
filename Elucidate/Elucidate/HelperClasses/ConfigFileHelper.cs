@@ -1,19 +1,46 @@
-﻿using System;
+﻿#region Copyright (C)
+//  <copyright file="ConfigFileHelper.cs" company="Smurf-IV">
+//
+//  Copyright (C) 2015-2019 Smurf-IV & BlueBlock
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 2 of the License, or
+//   any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program. If not, see http://www.gnu.org/licenses/.
+//  </copyright>
+//  <summary>
+//  Url: https://github.com/Smurf-IV/Elucidate
+//  Email: https://github.com/Smurf-IV
+//  </summary>
+#endregion Copyright (C)
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
 using Elucidate.HelperClasses;
-using Elucidate.Logging;
 using Elucidate.Objects;
 
-using MoreLinq.Extensions;
+using Exceptionless;
+
+using NLog;
 
 namespace Elucidate
 {
     public class ConfigFileHelper
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public bool IsValid => (ConfigFileExists && !ConfigErrors.Any());
 
         public bool IsErrors => ConfigErrors.Any();
@@ -28,26 +55,26 @@ namespace Elucidate
 
         public bool ConfigFileExists => File.Exists(ConfigPath);
 
-        private readonly string[] _validConfigNames =
+        private readonly string[] validConfigNames =
         {
-            "parity",
-            "2-parity",
-            "q-parity",
-            "3-parity",
-            "z-parity",
-            "4-parity",
-            "5-parity",
-            "6-parity",
-            "content",
-            "disk",
-            "nohidden",
-            "exclude",
-            "block_size",
-            "hashsize",
-            "autosave",
-            "pool",
-            "share",
-            "smartctl"
+            @"parity",
+            @"2-parity",
+            @"q-parity",
+            @"3-parity",
+            @"z-parity",
+            @"4-parity",
+            @"5-parity",
+            @"6-parity",
+            @"content",
+            @"disk",
+            @"nohidden",
+            @"exclude",
+            @"block_size",
+            @"hashsize",
+            @"autosave",
+            @"pool",
+            @"share",
+            @"smartctl"
         };
 
         // ReSharper disable once InconsistentNaming
@@ -168,7 +195,7 @@ namespace Elucidate
 
         public void LoadConfigFile(string configFile)
         {
-            Log.Instance.Trace($"Loading config file {configFile}");
+            Log.Trace(@"Loading config file {0}", configFile);
 
             ConfigErrors.Clear();
 
@@ -190,12 +217,12 @@ namespace Elucidate
         {
             if (string.IsNullOrEmpty(ConfigPath))
             {
-                ConfigErrors.Add("Config validation failed. There is no config file set.");
-                Log.Instance.Error("Config validation failed. There is no config file set.");
+                ConfigErrors.Add(@"Config validation failed. There is no config file set.");
+                Log.Error(@"Config validation failed. There is no config file set.");
                 return;
             }
 
-            Log.Instance.Debug($"validating config file {ConfigPath}");
+            Log.Debug("validating config file {0}", ConfigPath);
 
             // RULE: at least one data source must be specified
             if (!SnapShotSources.Any())
@@ -255,11 +282,11 @@ namespace Elucidate
 
             if (!IsValid)
             {
-                Log.Instance.Error("The configuration file is not valid. See errors below:");
+                Log.Error(@"The configuration file is not valid. See errors below:");
 
                 foreach (string error in ConfigErrors)
                 {
-                    Log.Instance.Error($" - {error}");
+                    Log.Error(@" - {0}", error);
                 }
             }
         }
@@ -279,7 +306,7 @@ namespace Elucidate
                     }
                     catch (Exception ex)
                     {
-                        Log.Instance.Warn($"Path could not be checked: {ex.Message}");
+                        Log.Warn(ex, @"Path could not be checked: ");
                     }
 
                     if (roots.Contains(root))
@@ -292,7 +319,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Instance.Error($"Path could not be checked: {ex.Message}");
+                Log.Error(ex, @"Path could not be checked:");
                 return false;
             }
             return true;
@@ -342,7 +369,7 @@ namespace Elucidate
         /// <returns>an empty string if no exception occurs</returns>
         public bool Read()
         {
-            Log.Instance.Trace("ConfigFileHelper.Read() ...");
+            Log.Trace(@"ConfigFileHelper.Read() ...");
 
             try
             {
@@ -384,7 +411,7 @@ namespace Elucidate
                 {
                     string lineStart = line.Trim();
 
-                    if (string.IsNullOrWhiteSpace(lineStart) || lineStart.StartsWith("#"))
+                    if (string.IsNullOrWhiteSpace(lineStart) || lineStart.StartsWith(@"#"))
                     {
                         continue;
                     }
@@ -397,7 +424,7 @@ namespace Elucidate
                     string configItemValue = (configItem.Length > 1) ? configItem[1] : string.Empty;
 
                     // ignore the line if it is not an a recognized setting
-                    if (!_validConfigNames.Contains(configItemName))
+                    if (!validConfigNames.Contains(configItemName))
                     {
                         continue;
                     }
@@ -409,7 +436,7 @@ namespace Elucidate
                             break;
 
                         case @"q-parity":
-                            Log.Instance.Warn("'q-parity' entry in config file will be changed to '2-parity' when config is saved");
+                            Log.Warn(@"'q-parity' entry in config file will be changed to '2-parity' when config is saved");
                             ParityFile2 = configItemValue;
                             break;
 
@@ -509,7 +536,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Instance.Error(ex);
+                Log.Error(ex);
                 return false;
             }
         }
@@ -545,7 +572,7 @@ namespace Elucidate
 
             if (!string.IsNullOrWhiteSpace(ParityFile6)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile6), PathType = PathTypeEnum.Parity }); }
 
-            return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
+            return pathsOfInterest.OrderBy(s => s.FullPath).GroupBy(d => d.Drive).Select(d => d.First()).ToList();
         }
 
         /// <summary>
@@ -562,72 +589,72 @@ namespace Elucidate
 
                 // parity
                 fileContents.Append(Section2);
-                fileContents.AppendLine($"parity {(Directory.Exists(ParityFile1) ? Path.Combine(ParityFile1, "snapraid.1.parity") : ParityFile1)}");
+                fileContents.AppendLine($"parity {(Directory.Exists(ParityFile1) ? Path.Combine(ParityFile1, @"snapraid.1.parity") : ParityFile1)}");
 
                 // X-parity
                 fileContents.Append(Section3);
 
                 if (!string.IsNullOrEmpty(ParityFile2))
                 {
-                    fileContents.AppendLine($"2-parity {(Directory.Exists(ParityFile2) ? Path.Combine(ParityFile2, "snapraid.2.parity") : ParityFile2)}");
+                    fileContents.AppendLine($"2-parity {(Directory.Exists(ParityFile2) ? Path.Combine(ParityFile2, @"snapraid.2.parity") : ParityFile2)}");
                 }
 
                 if (!string.IsNullOrEmpty(ZParityFile))
                 {
-                    fileContents.AppendLine($"z-parity {(Directory.Exists(ZParityFile) ? Path.Combine(ZParityFile, "snapraid.Z.parity") : ZParityFile)}");
+                    fileContents.AppendLine($"z-parity {(Directory.Exists(ZParityFile) ? Path.Combine(ZParityFile, @"snapraid.Z.parity") : ZParityFile)}");
                 }
 
                 if (!string.IsNullOrEmpty(ParityFile3))
                 {
-                    fileContents.AppendLine($"3-parity {(Directory.Exists(ParityFile3) ? Path.Combine(ParityFile3, "snapraid.3.parity") : ParityFile3)}");
+                    fileContents.AppendLine($"3-parity {(Directory.Exists(ParityFile3) ? Path.Combine(ParityFile3, @"snapraid.3.parity") : ParityFile3)}");
                 }
 
                 if (!string.IsNullOrEmpty(ParityFile4))
                 {
-                    fileContents.AppendLine($"4-parity {(Directory.Exists(ParityFile4) ? Path.Combine(ParityFile4, "snapraid.4.parity") : ParityFile4)}");
+                    fileContents.AppendLine($"4-parity {(Directory.Exists(ParityFile4) ? Path.Combine(ParityFile4, @"snapraid.4.parity") : ParityFile4)}");
                 }
 
                 if (!string.IsNullOrEmpty(ParityFile5))
                 {
-                    fileContents.AppendLine($"5-parity {(Directory.Exists(ParityFile5) ? Path.Combine(ParityFile5, "snapraid.5.parity") : ParityFile5)}");
+                    fileContents.AppendLine($"5-parity {(Directory.Exists(ParityFile5) ? Path.Combine(ParityFile5, @"snapraid.5.parity") : ParityFile5)}");
                 }
 
                 if (!string.IsNullOrEmpty(ParityFile6))
                 {
-                    fileContents.AppendLine($"6-parity {(Directory.Exists(ParityFile6) ? Path.Combine(ParityFile6, "snapraid.6.parity") : ParityFile6)}");
+                    fileContents.AppendLine($"6-parity {(Directory.Exists(ParityFile6) ? Path.Combine(ParityFile6, @"snapraid.6.parity") : ParityFile6)}");
                 }
 
                 // content
                 fileContents.Append(Section4);
-                ContentFiles.ForEach(item => fileContents.AppendLine($"content {(Directory.Exists(item) ? Path.Combine(item, "snapraid.content") : item)}"));
+                ContentFiles.ForEach(item => fileContents.AppendLine($"content {(Directory.Exists(item) ? Path.Combine(item, @"snapraid.content") : item)}"));
 
                 // data sources
                 fileContents.Append(Section5);
                 List<string> strSnapShotSources = new List<string>();
-                strSnapShotSources.AddRange(SnapShotSources.Select((t, index) => string.Concat("disk d", index + 1, ' ', t)));
+                strSnapShotSources.AddRange(SnapShotSources.Select((t, index) => string.Concat(@"disk d", index + 1, ' ', t)));
                 strSnapShotSources.ForEach(item => fileContents.AppendLine(item));
 
                 // exclude hidden files
                 fileContents.Append(Section6);
-                fileContents.AppendLine(Nohidden ? "nohidden" : "#nohidden");
+                fileContents.AppendLine(Nohidden ? @"nohidden" : @"#nohidden");
 
                 // exclude files and directories
                 fileContents.Append(Section7);
                 if (ExcludePatterns.Any())
                 {
-                    ExcludePatterns.ForEach(item => fileContents.AppendLine("exclude " + item));
+                    ExcludePatterns.ForEach(item => fileContents.AppendLine(@"exclude " + item));
                 }
 
                 // include files and directories
                 if (IncludePatterns.Any())
                 {
-                    IncludePatterns.ForEach(item => fileContents.AppendLine("include " + item));
+                    IncludePatterns.ForEach(item => fileContents.AppendLine(@"include " + item));
                 }
 
                 // blocksize
                 fileContents.Append(Section8);
                 BlockSizeKB = BlockSizeKB >= Constants.MinBlockSize && BlockSizeKB <= Constants.MaxBlockSize ? BlockSizeKB : Constants.DefaultBlockSize;
-                fileContents.AppendLine($"block_size {BlockSizeKB}");
+                fileContents.Append("block_size ").Append(BlockSizeKB).AppendLine();
 
                 // hashsize
                 fileContents.Append(Section9);
@@ -636,7 +663,7 @@ namespace Elucidate
                 fileContents.Append(Section10);
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 AutoSaveGB = AutoSaveGB >= Constants.MinAutoSave && AutoSaveGB <= Constants.MaxAutoSave ? AutoSaveGB : Constants.DefaultAutoSave;
-                fileContents.AppendLine("autosave " + AutoSaveGB);
+                fileContents.Append(@"autosave ").Append(AutoSaveGB).AppendLine();
 
                 // pool
                 fileContents.Append(Section11);
@@ -649,7 +676,9 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Fatal(ex);
+                // https://github.com/exceptionless/Exceptionless.Net/wiki/Sending-Events
+                ex.ToExceptionless().Submit();
                 return ex.Message;
             }
             return string.Empty;
@@ -660,7 +689,7 @@ namespace Elucidate
             get
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("# Example configuration for snapraid for Windows");
+                sb.AppendLine(@"# Example configuration for SnapRaid for Windows");
                 return sb;
             }
         }
@@ -670,10 +699,10 @@ namespace Elucidate
             get
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("# Defines the file to use as parity storage");
-                sb.AppendLine("# It must NOT be in a data disk");
-                sb.AppendLine("# Format: \"parity FILE [,FILE] ...\"");
-                //sb.AppendLine("parity E:\\snapraid.parity");
+                sb.AppendLine(@"# Defines the file to use as parity storage");
+                sb.AppendLine(@"# It must NOT be in a data disk");
+                sb.AppendLine(@"# Format: ""parity FILE [,FILE] ...""");
+                //sb.AppendLine("parity E:\\SnapRaid.parity");
                 return sb;
             }
         }
@@ -684,13 +713,13 @@ namespace Elucidate
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                sb.AppendLine("# Defines the files to use as additional parity storage.");
-                sb.AppendLine("# If specified, they enable the multiple failures protection");
-                sb.AppendLine("# from two to six level of parity.");
-                sb.AppendLine("# To enable, uncomment one parity file for each level of extra");
-                sb.AppendLine("# protection required. Start from 2-parity, and follow in order.");
-                sb.AppendLine("# It must NOT be in a data disk");
-                sb.AppendLine("# Format: \"X-parity FILE [,FILE] ...\"");
+                sb.AppendLine(@"# Defines the files to use as additional parity storage.");
+                sb.AppendLine(@"# If specified, they enable the multiple failures protection");
+                sb.AppendLine(@"# from two to six level of parity.");
+                sb.AppendLine(@"# To enable, uncomment one parity file for each level of extra");
+                sb.AppendLine(@"# protection required. Start from 2-parity, and follow in order.");
+                sb.AppendLine(@"# It must NOT be in a data disk");
+                sb.AppendLine(@"# Format: ""X-parity FILE [,FILE] ...""");
                 return sb;
             }
         }
@@ -701,12 +730,12 @@ namespace Elucidate
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                sb.AppendLine("# Defines the files to use as content list");
-                sb.AppendLine("# You can use multiple specification to store more copies");
-                sb.AppendLine("# You must have least one copy for each parity file plus one. Some more don't hurt");
-                sb.AppendLine("# They can be in the disks used for data, parity or boot,");
-                sb.AppendLine("# but each file must be in a different disk");
-                sb.AppendLine("# Format: \"content FILE\"");
+                sb.AppendLine(@"# Defines the files to use as content list");
+                sb.AppendLine(@"# You can use multiple specification to store more copies");
+                sb.AppendLine(@"# You must have least one copy for each parity file plus one. Some more don't hurt");
+                sb.AppendLine(@"# They can be in the disks used for data, parity or boot,");
+                sb.AppendLine(@"# but each file must be in a different disk");
+                sb.AppendLine(@"# Format: ""content FILE""");
                 return sb;
             }
         }
@@ -717,11 +746,11 @@ namespace Elucidate
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                sb.AppendLine("# Defines the data disks to use");
-                sb.AppendLine("# The name and mount point association is relevant for parity, do not change it");
-                sb.AppendLine("# WARNING: Adding here your boot C:\\ disk is NOT a good idea!");
-                sb.AppendLine("# SnapRAID is better suited for files that rarely changes!");
-                sb.AppendLine("# Format: \"data DISK_NAME DISK_MOUNT_POINT\"");
+                sb.AppendLine(@"# Defines the data disks to use");
+                sb.AppendLine(@"# The name and mount point association is relevant for parity, do not change it");
+                sb.AppendLine(@"# WARNING: Adding here your boot C:\\ disk is NOT a good idea!");
+                sb.AppendLine(@"# SnapRAID is better suited for files that rarely changes!");
+                sb.AppendLine(@"# Format: ""data DISK_NAME DISK_MOUNT_POINT""");
                 return sb;
             }
         }
@@ -732,7 +761,7 @@ namespace Elucidate
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                sb.AppendLine("# Excludes hidden files and directories (uncomment to enable).");
+                sb.AppendLine(@"# Excludes hidden files and directories (uncomment to enable).");
                 return sb;
             }
         }
@@ -743,12 +772,12 @@ namespace Elucidate
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                sb.AppendLine("# Defines files and directories to exclude");
-                sb.AppendLine("# Remember that all the paths are relative at the mount points");
-                sb.AppendLine("# Format: \"exclude FILE\"");
-                sb.AppendLine("# Format: \"exclude DIR\\\"");
-                sb.AppendLine("# Format: \"exclude \\PATH\\FILE\"");
-                sb.AppendLine("# Format: \"exclude \\PATH\\DIR\\\"");
+                sb.AppendLine(@"# Defines files and directories to exclude");
+                sb.AppendLine(@"# Remember that all the paths are relative at the mount points");
+                sb.AppendLine(@"# Format: ""exclude FILE""");
+                sb.AppendLine(@"# Format: ""exclude DIR\""");
+                sb.AppendLine(@"# Format: ""exclude \PATH\FILE""");
+                sb.AppendLine(@"# Format: ""exclude \PATH\DIR\""");
                 return sb;
             }
         }
@@ -759,10 +788,10 @@ namespace Elucidate
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                sb.AppendLine("# Defines the block size in kibi bytes (1024 bytes) (uncomment to enable).");
-                sb.AppendLine("# WARNING: Changing this value is for experts only!");
-                sb.AppendLine("# Default value is 256 -> 256 kibi bytes -> 262144 bytes");
-                sb.AppendLine("# Format: \"blocksize SIZE_IN_KiB\"");
+                sb.AppendLine(@"# Defines the block size in kibi bytes (1024 bytes) (uncomment to enable).");
+                sb.AppendLine(@"# WARNING: Changing this value is for experts only!");
+                sb.AppendLine(@"# Default value is 256 -> 256 kibi bytes -> 262144 bytes");
+                sb.AppendLine(@"# Format: ""blocksize SIZE_IN_KiB""");
                 return sb;
             }
         }
@@ -773,11 +802,11 @@ namespace Elucidate
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                sb.AppendLine("# Defines the hash size in bytes (uncomment to enable).");
-                sb.AppendLine("# WARNING: Changing this value is for experts only!");
-                sb.AppendLine("# Default value is 16 -> 128 bits");
-                sb.AppendLine("# Format: \"hashsize SIZE_IN_BYTES\"");
-                sb.AppendLine("#hashsize 16");
+                sb.AppendLine(@"# Defines the hash size in bytes (uncomment to enable).");
+                sb.AppendLine(@"# WARNING: Changing this value is for experts only!");
+                sb.AppendLine(@"# Default value is 16 -> 128 bits");
+                sb.AppendLine(@"# Format: ""hashsize SIZE_IN_BYTES""");
+                sb.AppendLine(@"#hashsize 16");
                 return sb;
             }
         }
@@ -788,13 +817,13 @@ namespace Elucidate
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                sb.AppendLine("# Automatically save the state when syncing after the specified amount");
-                sb.AppendLine("# of GB processed (uncomment to enable).");
-                sb.AppendLine("# This option is useful to avoid to restart from scratch long 'sync'");
-                sb.AppendLine("# commands interrupted by a machine crash.");
-                sb.AppendLine("# It also improves the recovering if a disk break during a 'sync'.");
-                sb.AppendLine("# Default value is 0, meaning disabled.");
-                sb.AppendLine("# Format: \"autosave SIZE_IN_GB\"");
+                sb.AppendLine(@"# Automatically save the state when syncing after the specified amount");
+                sb.AppendLine(@"# of GB processed (uncomment to enable).");
+                sb.AppendLine(@"# This option is useful to avoid to restart from scratch long 'sync'");
+                sb.AppendLine(@"# commands interrupted by a machine crash.");
+                sb.AppendLine(@"# It also improves the recovering if a disk break during a 'sync'.");
+                sb.AppendLine(@"# Default value is 0, meaning disabled.");
+                sb.AppendLine(@"# Format: ""autosave SIZE_IN_GB""");
                 return sb;
             }
         }
@@ -805,34 +834,34 @@ namespace Elucidate
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine();
-                sb.AppendLine("# Defines the pooling directory where the virtual view of the disk");
-                sb.AppendLine("# array is created using the \"pool\" command (uncomment to enable).");
-                sb.AppendLine("# The files are not really copied here, but just linked using");
-                sb.AppendLine("# symbolic links.");
-                sb.AppendLine("# This directory must be outside the array.");
-                sb.AppendLine("# Format: \"pool DIR\"");
-                sb.AppendLine("#pool C:\\pool");
-                sb.AppendLine("# Defines the Windows UNC path required to access disks from the pooling");
-                sb.AppendLine("# directory when shared in the network.");
-                sb.AppendLine("# If present (uncomment to enable), the symbolic links created in the");
-                sb.AppendLine("# pool virtual view, instead of using local paths, are created using the");
-                sb.AppendLine("# specified UNC path, adding the disk names and file path.");
-                sb.AppendLine("# This allows to share the pool directory in the network.");
-                sb.AppendLine("# See the manual page for more details.");
-                sb.AppendLine("#");
-                sb.AppendLine("# Format: \"share UNC_DIR\"");
-                sb.AppendLine("#share \\\\server");
-                sb.AppendLine("# Defines a custom smartctl command to obtain the SMART attributes");
-                sb.AppendLine("# for each disk. This may be required for RAID controllers and for");
-                sb.AppendLine("# some USB disk that cannot be autodetected.");
-                sb.AppendLine("# In the specified options, the \"%s\" string is replaced by the device name.");
-                sb.AppendLine("# Refers at the smartmontools documentation about the possible options:");
-                sb.AppendLine("# RAID -> https://www.smartmontools.org/wiki/Supported_RAID-Controllers");
-                sb.AppendLine("# USB -> https://www.smartmontools.org/wiki/Supported_USB-Devices");
-                sb.AppendLine("#smartctl d1 -d sat %s");
-                sb.AppendLine("#smartctl d2 -d usbjmicron %s");
-                sb.AppendLine("#smartctl parity -d areca,1/1 /dev/arcmsr0");
-                sb.AppendLine("#smartctl 2-parity -d areca,2/1 /dev/arcmsr0");
+                sb.AppendLine(@"# Defines the pooling directory where the virtual view of the disk");
+                sb.AppendLine(@"# array is created using the ""pool"" command (uncomment to enable).");
+                sb.AppendLine(@"# The files are not really copied here, but just linked using");
+                sb.AppendLine(@"# symbolic links.");
+                sb.AppendLine(@"# This directory must be outside the array.");
+                sb.AppendLine(@"# Format: ""pool DIR""");
+                sb.AppendLine(@"#pool C:\\pool");
+                sb.AppendLine(@"# Defines the Windows UNC path required to access disks from the pooling");
+                sb.AppendLine(@"# directory when shared in the network.");
+                sb.AppendLine(@"# If present (uncomment to enable), the symbolic links created in the");
+                sb.AppendLine(@"# pool virtual view, instead of using local paths, are created using the");
+                sb.AppendLine(@"# specified UNC path, adding the disk names and file path.");
+                sb.AppendLine(@"# This allows to share the pool directory in the network.");
+                sb.AppendLine(@"# See the manual page for more details.");
+                sb.AppendLine(@"#");
+                sb.AppendLine(@"# Format: ""share UNC_DIR""");
+                sb.AppendLine(@"#share \\\\server");
+                sb.AppendLine(@"# Defines a custom smartctl command to obtain the SMART attributes");
+                sb.AppendLine(@"# for each disk. This may be required for RAID controllers and for");
+                sb.AppendLine(@"# some USB disk that cannot be autodetected.");
+                sb.AppendLine(@"# In the specified options, the ""%s"" string is replaced by the device name.");
+                sb.AppendLine(@"# Refers at the smartmontools documentation about the possible options:");
+                sb.AppendLine(@"# RAID -> https://www.smartmontools.org/wiki/Supported_RAID-Controllers");
+                sb.AppendLine(@"# USB -> https://www.smartmontools.org/wiki/Supported_USB-Devices");
+                sb.AppendLine(@"#smartctl d1 -d sat %s");
+                sb.AppendLine(@"#smartctl d2 -d usbjmicron %s");
+                sb.AppendLine(@"#smartctl parity -d areca,1/1 /dev/arcmsr0");
+                sb.AppendLine(@"#smartctl 2-parity -d areca,2/1 /dev/arcmsr0");
                 return sb;
             }
         }

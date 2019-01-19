@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="DriveSpaceDisplay.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,19 +37,23 @@ using Alphaleonis.Win32.Filesystem;
 using ByteSizeLib;
 
 using Elucidate.HelperClasses;
-using Elucidate.Logging;
 using Elucidate.Objects;
 
-using MoreLinq;
+using Exceptionless;
+
+using NLog;
+
 
 namespace Elucidate.Controls
 {
     public partial class DriveSpaceDisplay : UserControl
     {
-        private ConfigFileHelper _snapRaidConfig;
-        private readonly List<ChartDataItem> _chartDataList = new List<ChartDataItem>();
-        private bool _percentage;
-        private string _oldTooltip;
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+        private ConfigFileHelper snapRaidConfig;
+        private readonly List<ChartDataItem> chartDataList = new List<ChartDataItem>();
+        private bool percentage;
+        private string oldTooltip;
         
         private class ChartDataItem
         {
@@ -109,14 +113,14 @@ namespace Elucidate.Controls
             {
                 if (pathsOfInterest == null)
                 {
-                    _snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                    snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
 
-                    if (!_snapRaidConfig.ConfigFileExists)
+                    if (!snapRaidConfig.ConfigFileExists)
                     {
                         return;
                     }
 
-                    _snapRaidConfig.Read();
+                    snapRaidConfig.Read();
 
                     pathsOfInterest = GetPathsOfInterest();
                 }
@@ -125,7 +129,9 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Error(ex);
+                // https://github.com/exceptionless/Exceptionless.Net/wiki/Sending-Events
+                ex.ToExceptionless().Submit();
             }
         }
 
@@ -140,7 +146,7 @@ namespace Elucidate.Controls
                 pathsOfInterest = GetPathsOfInterest();
             }
 
-            _oldTooltip = toolTip1.GetToolTip(this);
+            oldTooltip = toolTip1.GetToolTip(this);
 
             toolTip1.SetToolTip(this, "Calculating...");
 
@@ -165,7 +171,7 @@ namespace Elucidate.Controls
                 || !pathsOfInterest.Any() 
                 || !(sender is BackgroundWorker worker))
             {
-                Log.Instance.Error("Worker, or arguments are null, exiting.");
+                Log.Error("Worker, or arguments are null, exiting.");
                 return;
             }
 
@@ -178,7 +184,7 @@ namespace Elucidate.Controls
 
                 if (!Directory.Exists(coveragePath.DirectoryPath) && !File.Exists(coveragePath.FullPath))
                 {
-                    Log.Instance.Warn($"Directory path does not exist: {coveragePath.FullPath}");
+                    Log.Warn($"Directory path does not exist: {coveragePath.FullPath}");
                     continue;
                 }
 
@@ -191,12 +197,12 @@ namespace Elucidate.Controls
         private void FillExpectedLayoutWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             UseWaitCursor = false;
-            toolTip1.SetToolTip(this, _oldTooltip);
+            toolTip1.SetToolTip(this, oldTooltip);
         }
 
         private void ClearExpectedListMethodInvoker()
         {
-            _chartDataList.Clear();
+            chartDataList.Clear();
 
             foreach (Series series in chart1.Series)
             {
@@ -222,7 +228,7 @@ namespace Elucidate.Controls
                     {
                         // parity is always a single file
 
-                        Util.ParityPathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+                        Util.ParityPathFreeBytesAvailable(pathOfInterest.FullPath, out ulong freeBytesAvailable, out ulong _, out ulong rootBytesNotCoveredByPath);
 
                         ChartDataItem chartDataItem = new ChartDataItem
                         {
@@ -234,7 +240,7 @@ namespace Elucidate.Controls
                             RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
                         };
 
-                        _chartDataList.Add(chartDataItem);
+                        chartDataList.Add(chartDataItem);
                         break;
                     }
                 case PathTypeEnum.Source when !Directory.Exists(pathOfInterest.FullPath):
@@ -254,16 +260,14 @@ namespace Elucidate.Controls
                             RootBytesNotCoveredByPath = ByteSize.FromBytes(rootBytesNotCoveredByPath)
                         };
 
-                        _chartDataList.Add(chartDataItem);
+                        chartDataList.Add(chartDataItem);
                         break;
                     }
 
                 default:
-                    Log.Instance.Error($"PathType is not supported for the graph.");
+                    Log.Error(@"PathType is not supported for the graph.");
                     break;
             }
-
-            Util.Dump(_chartDataList);
         }
 
         // ReSharper disable once UnusedMember.Local
@@ -273,7 +277,7 @@ namespace Elucidate.Controls
 
             string currentMaxSymbol = string.Empty;
 
-            foreach (ChartDataItem item in _chartDataList)
+            foreach (ChartDataItem item in chartDataList)
             {
                 string[] symbols =
                 {
@@ -290,7 +294,7 @@ namespace Elucidate.Controls
                 }
             }
 
-            Log.Instance.Debug($"GetLargestWholenumberSymbolOfChartData is {currentMaxSymbol}");
+            Log.Debug($@"GetLargestWholenumberSymbolOfChartData is {currentMaxSymbol}");
 
             return currentMaxSymbol;
         }
@@ -304,7 +308,7 @@ namespace Elucidate.Controls
         {
             string largestWholeNumberSymbolOfChartData = "GB";
 
-            foreach (ChartDataItem item in _chartDataList)
+            foreach (ChartDataItem item in chartDataList)
             {
                 double[] points =
                 {
@@ -324,7 +328,7 @@ namespace Elucidate.Controls
                 chart1.Series[2].Points.AddXY(itemPathDisplay, points[2]);
                 chart1.Series[3].Points.AddXY(itemPathDisplay, points[3]);
 
-                Log.Instance.Info($"Storage info: pathType[{item.PathType}], path[{item.Path}], parityUsedBytes[{points[0]}], rootBytesNotCoveredByPath[{points[1]}], pathUsedBytes[{points[2]}], freeBytesAvailable[{points[3]}]");
+                Log.Info($@"Storage info: pathType[{item.PathType}], path[{item.Path}], parityUsedBytes[{points[0]}], rootBytesNotCoveredByPath[{points[1]}], pathUsedBytes[{points[2]}], freeBytesAvailable[{points[3]}]");
             }
 
             // set formatting:
@@ -342,7 +346,7 @@ namespace Elucidate.Controls
                         }
                         else
                         {
-                            dp.Label = $"#VALY\n{largestWholeNumberSymbolOfChartData}";
+                            dp.Label = $"#VAL\n{largestWholeNumberSymbolOfChartData}";
                         }
                     }
                 }
@@ -351,9 +355,9 @@ namespace Elucidate.Controls
 
         private void chart1_Click(object sender, EventArgs e)
         {
-            _percentage = !_percentage;
+            percentage = !percentage;
 
-            SeriesChartType chartType = _percentage ? SeriesChartType.StackedBar100 : SeriesChartType.StackedBar;
+            SeriesChartType chartType = percentage ? SeriesChartType.StackedBar100 : SeriesChartType.StackedBar;
 
             foreach (Series series in chart1.Series)
             {
@@ -365,9 +369,9 @@ namespace Elucidate.Controls
         {
             try
             {
-                _snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
 
-                _snapRaidConfig.Read();
+                snapRaidConfig.Read();
 
                 List<CoveragePath> pathsOfInterest = GetPathsOfInterest();
 
@@ -384,7 +388,7 @@ namespace Elucidate.Controls
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
             // SnapShotSource might be root or folders, so we handle both cases
-            foreach (string snapShotSource in _snapRaidConfig.SnapShotSources)
+            foreach (string snapShotSource in snapRaidConfig.SnapShotSources)
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
@@ -393,49 +397,49 @@ namespace Elucidate.Controls
                 });
             }
 
-            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile1))
+            if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile1))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile1), PathType = PathTypeEnum.Parity});
+                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile1), PathType = PathTypeEnum.Parity});
             }
 
-            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile2))
+            if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile2))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile2), PathType = PathTypeEnum.Parity});
+                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile2), PathType = PathTypeEnum.Parity});
             }
 
-            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ZParityFile))
+            if (!string.IsNullOrWhiteSpace(snapRaidConfig.ZParityFile))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    { FullPath = Path.GetFullPath(_snapRaidConfig.ZParityFile), PathType = PathTypeEnum.Parity });
+                    { FullPath = Path.GetFullPath(snapRaidConfig.ZParityFile), PathType = PathTypeEnum.Parity });
             }
 
-            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile3))
+            if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile3))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile3), PathType = PathTypeEnum.Parity});
+                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile3), PathType = PathTypeEnum.Parity});
             }
 
-            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile4))
+            if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile4))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile4), PathType = PathTypeEnum.Parity});
+                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile4), PathType = PathTypeEnum.Parity});
             }
 
-            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile5))
+            if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile5))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile5), PathType = PathTypeEnum.Parity});
+                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile5), PathType = PathTypeEnum.Parity});
             }
 
-            if (!string.IsNullOrWhiteSpace(_snapRaidConfig.ParityFile6))
+            if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile6))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(_snapRaidConfig.ParityFile6), PathType = PathTypeEnum.Parity});
+                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile6), PathType = PathTypeEnum.Parity});
             }
 
-            return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
+            return pathsOfInterest.OrderBy(s => s.FullPath).GroupBy(d => d.Drive).Select(d => d.First()).ToList();
         }
     }
 }

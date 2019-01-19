@@ -6,7 +6,7 @@ namespace Elucidate.Objects
     public class StorageDevice
     {
         public string Caption { get; set; }
-        public string DeviceID { get; set; }
+        public string DeviceId { get; set; }
         public DriveType DriveType { get; set; }
         public string DriveLetter { get; set; }
         public string Name { get; set; }

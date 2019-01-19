@@ -9,11 +9,11 @@ namespace Elucidate.HelperClasses
     /// </summary>
     public class AbortableBackgroundWorker : BackgroundWorker
     {
-        private Thread _workerThread;
+        private Thread workerThread;
 
         protected override void OnDoWork(DoWorkEventArgs e)
         {
-            _workerThread = Thread.CurrentThread;
+            workerThread = Thread.CurrentThread;
             try
             {
                 base.OnDoWork(e);
@@ -27,13 +27,13 @@ namespace Elucidate.HelperClasses
 
         public void Abort()
         {
-            if (_workerThread == null)
+            if (workerThread == null)
             {
                 return;
             }
 
-            _workerThread.Abort();
-            _workerThread = null;
+            workerThread.Abort();
+            workerThread = null;
         }
     }
 }

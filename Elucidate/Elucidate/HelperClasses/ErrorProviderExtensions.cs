@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ErrorProviderExtensions.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace Elucidate.HelperClasses
 {
     public static class ErrorProviderExtensions
     {
-        private static int count;
+        private static int _count;
 
         public static void SetErrorWithCount(this ErrorProvider ep, Control c, string message)
         {
@@ -38,13 +38,13 @@ namespace Elucidate.HelperClasses
             {
                 if (ep.GetError(c) != "")
                 {
-                    count--;
+                    _count--;
                 }
             }
             else
             if (ep.GetError(c) == "")
             {
-                count++;
+                _count++;
             }
 
             ep.SetError(c, message);
@@ -52,12 +52,12 @@ namespace Elucidate.HelperClasses
 
         public static bool HasErrors(this ErrorProvider ep)
         {
-            return count != 0;
+            return _count != 0;
         }
 
         public static int GetErrorCount(this ErrorProvider ep)
         {
-            return count;
+            return _count;
         }
     }
 }

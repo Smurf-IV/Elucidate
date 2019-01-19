@@ -36,7 +36,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.checkedFilesWithWarn = new System.Windows.Forms.CheckBox();
             this.checkedFilesWithError = new System.Windows.Forms.CheckBox();
-            this.scintilla = new ScintillaNET.Scintilla();
+            this.scintilla = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -162,11 +162,8 @@
             this.scintilla.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scintilla.Location = new System.Drawing.Point(0, 0);
             this.scintilla.Name = "scintilla";
-            this.scintilla.ScrollWidth = 50;
             this.scintilla.Size = new System.Drawing.Size(511, 400);
             this.scintilla.TabIndex = 0;
-            this.scintilla.StyleNeeded += new System.EventHandler<ScintillaNET.StyleNeededEventArgs>(this.scintilla_StyleNeeded);
-            this.scintilla.TextChanged += new System.EventHandler(this.scintilla_TextChanged);
             // 
             // LogsViewerControl
             // 
@@ -200,6 +197,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox checkedFilesWithError;
         private System.Windows.Forms.CheckBox checkedFilesWithWarn;
-        private ScintillaNET.Scintilla scintilla;
+        private System.Windows.Forms.RichTextBox scintilla;
     }
 }

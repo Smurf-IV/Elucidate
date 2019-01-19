@@ -19,20 +19,20 @@ namespace Elucidate.Shared
 
       public static DialogResult Show(IWin32Window owner, string text, string caption)
       {
-         const MessageBoxButtons buttons = MessageBoxButtons.OK;
-         return Show(owner, text, caption, buttons);
+         const MessageBoxButtons BUTTONS = MessageBoxButtons.OK;
+         return Show(owner, text, caption, BUTTONS);
       }
 
       public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons)
       {
-         const MessageBoxIcon icon = MessageBoxIcon.None;
-         return Show(owner, text, caption, buttons, icon);
+         const MessageBoxIcon ICON = MessageBoxIcon.None;
+         return Show(owner, text, caption, buttons, ICON);
       }
 
       public static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
       {
-         const MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1;
-         return Show(owner, text, caption, buttons, icon, defaultButton);
+         const MessageBoxDefaultButton DEFAULT_BUTTON = MessageBoxDefaultButton.Button1;
+         return Show(owner, text, caption, buttons, icon, DEFAULT_BUTTON);
       }
 
       private static DialogResult Show(IWin32Window owner, string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon, MessageBoxDefaultButton defaultButton)

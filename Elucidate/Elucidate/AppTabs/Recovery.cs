@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Recovery.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2015-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2015-2019 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -127,7 +127,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex, "btnRemoveOutput_Click has thrown: ");
+                //ExceptionHandler.ReportException(ex, "btnRemoveOutput_Click has thrown: ");
                 KryptonMessageBox.Show(this, ex.Message, @"Remove SnapRAID Output files.");
             }
         }

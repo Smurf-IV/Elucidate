@@ -31,11 +31,11 @@ namespace Elucidate.Shared
             base.Font = new Font("Tahoma", 14.25f);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             showUnderLine = SystemInformation.MenuAccessKeysUnderlined;
-            ChangeUICues += BtnChangeUICues;
+            ChangeUICues += BtnChangeUiCues;
         }
 
         bool showUnderLine = false;
-        private void BtnChangeUICues(object sender, UICuesEventArgs uiCuesEventArgs)
+        private void BtnChangeUiCues(object sender, UICuesEventArgs uiCuesEventArgs)
         {
             if (uiCuesEventArgs.ChangeKeyboard)
             {

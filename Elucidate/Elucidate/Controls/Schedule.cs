@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Schedule.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV) & BlueBlock
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,9 +33,11 @@ using System.Windows.Forms;
 
 using ComponentFactory.Krypton.Toolkit;
 
-using Elucidate.Logging;
+using Exceptionless;
 
 using Microsoft.Win32.TaskScheduler;
+
+using NLog;
 
 namespace Elucidate.Controls
 {
@@ -43,36 +45,39 @@ namespace Elucidate.Controls
     // http://taskscheduler.codeplex.com/wikipage?title=Examples&referringTitle=Documentation
 
     // The TaskListView behaves strangely, the item
-    // clicked event seems to not aways contain 
+    // clicked event seems to not always contain 
     // the item clicked, so instead we'll go directly
     // to the control and the get the selected item
 
     public partial class Schedule : UserControl
     {
-        private string appExecuteScript = "snapraid.ps1";
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+
+        private string appExecuteScript = @"snapraid.ps1";
         private string TaskNameSelected { get; set; } = string.Empty;
-        private readonly string _uniqueKeyForThisConfig;
-        private readonly ContextMenuStrip _menuStripNew = new ContextMenuStrip();
+        private readonly string uniqueKeyForThisConfig;
+        private readonly ContextMenuStrip menuStripNew = new ContextMenuStrip();
         private enum ScheduledTaskTypeEnum { Sync, Check, Diff }
         private ScheduledTaskTypeEnum ScheduledTaskType { get; set; }
-        private const string MENU_STRIP_NEW_SYNC = "Sync";
-        private const string MENU_STRIP_NEW_CHECK = "Check";
-        private const string MENU_STRIP_NEW_DIFF = "Diff";
-        private const string MENU_STRIP_NEW_SCRUB = "Scrub";
-        private const string TaskFolder = "Elucidate";
-        private const string TaskName = "SnapRAID <TASK_TYPE> - task created by Elucidate";
+        private const string MENU_STRIP_NEW_SYNC = @"Sync";
+        private const string MENU_STRIP_NEW_CHECK = @"Check";
+        private const string MENU_STRIP_NEW_DIFF = @"Diff";
+        private const string MENU_STRIP_NEW_SCRUB = @"Scrub";
+        private const string TASK_FOLDER = @"Elucidate";
+        private const string TASK_NAME = @"SnapRAID <TASK_TYPE> - task created by Elucidate";
 
         public Schedule()
         {
             InitializeComponent();
 
-            _uniqueKeyForThisConfig = GetUniqueKeyForThisConfig();
+            uniqueKeyForThisConfig = GetUniqueKeyForThisConfig();
 
-            _menuStripNew.Items.Add(MENU_STRIP_NEW_SYNC);
-            _menuStripNew.Items.Add(MENU_STRIP_NEW_CHECK);
-            _menuStripNew.Items.Add(MENU_STRIP_NEW_DIFF);
+            menuStripNew.Items.Add(MENU_STRIP_NEW_SYNC);
+            menuStripNew.Items.Add(MENU_STRIP_NEW_CHECK);
+            menuStripNew.Items.Add(MENU_STRIP_NEW_DIFF);
             menuButtonNewScheduleItem.ShowMenuUnderCursor = false;
-            menuButtonNewScheduleItem.Menu = _menuStripNew;
+            menuButtonNewScheduleItem.Menu = menuStripNew;
             menuButtonNewScheduleItem.Menu.ItemClicked += menuStrip_ItemClicked;
             taskListView.TaskSelected += TaskListView_TaskSelected;
             taskListView.MouseDoubleClick += TaskListView_MouseDoubleClick;
@@ -119,7 +124,7 @@ namespace Elucidate.Controls
 
         private void TaskListView_TaskSelected(object sender, TaskListView.TaskSelectedEventArgs e)
         {
-            if (!e.Task.Name.Contains(_uniqueKeyForThisConfig))
+            if (!e.Task.Name.Contains(uniqueKeyForThisConfig))
             {
                 TaskNameSelected = string.Empty;
                 btnDelete.Enabled = false;
@@ -153,8 +158,7 @@ namespace Elucidate.Controls
                         ScheduledTaskType = ScheduledTaskTypeEnum.Diff;
                         break;
                     default:
-                        ExceptionHandler.ReportException(new ArgumentOutOfRangeException($"Menu item '{e.ClickedItem.Text}' does not exist"));
-                        break;
+                        throw new ArgumentOutOfRangeException($@"Menu item '{e.ClickedItem.Text}' does not exist");
                 }
 
                 CreateScheduledTask(ScheduledTaskType);
@@ -163,7 +167,8 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Fatal(ex);
+                ex.ToExceptionless().Submit();
             }
         }
 
@@ -233,7 +238,7 @@ namespace Elucidate.Controls
                 // Create an action which sends an email
                 // td.Actions.Add(new EmailAction("Testing", "dahall@codeplex.com", "user@test.com", "You've got mail.", "mail.myisp.com"));
                 ts.RootFolder.RegisterTaskDefinition(
-                    path: $@"{TaskFolder}\{GetNewTaskName()}",
+                    path: $@"{TASK_FOLDER}\{GetNewTaskName()}",
                     definition: td,
                     createType: TaskCreation.CreateOrUpdate,
                     userId: null,
@@ -253,7 +258,7 @@ namespace Elucidate.Controls
 
         private string GetNewTaskName()
         {
-            string taskName = TaskName.Replace(@"<TASK_TYPE>", ScheduledTaskType.ToString());
+            string taskName = TASK_NAME.Replace(@"<TASK_TYPE>", ScheduledTaskType.ToString());
             return $"{taskName} - Created[{DateTime.Now:yyyy-MM-dd HH-mm-ss}] - {GetUniqueKeyForThisConfig()}";
         }
 
@@ -279,7 +284,7 @@ namespace Elucidate.Controls
             }
             catch
             {
-                Log.Instance.Error("Unable to retrieve tasks from the Windows Task Scheduler");
+                Log.Error(@"Unable to retrieve tasks from the Windows Task Scheduler");
             }
             finally
             {
@@ -304,18 +309,18 @@ namespace Elucidate.Controls
                 {
                     // Display version and server state
                     Version ver = ts.HighestSupportedVersion;
-                    Log.Instance.Debug("Highest version: {0}", ver);
-                    Log.Instance.Debug("Server: {0} ({1})", ts.TargetServer,
+                    Log.Debug(@"Highest version: {0}", ver);
+                    Log.Debug(@"Server: {0} ({1})", ts.TargetServer,
                         ts.Connected ? "Connected" : "Disconnected");
                     // Output all the tasks in the root folder with their triggers and actions
-                    TaskFolder tf = ts.GetFolder(TaskFolder);
-                    Log.Instance.Debug($"{TaskFolder} folder task count ({0}):", tf.Tasks.Count);
+                    TaskFolder tf = ts.GetFolder(TASK_FOLDER);
+                    Log.Debug(@"{0} folder task count ({1}):", TASK_FOLDER, tf.Tasks.Count);
                     taskListView.Tasks = tf.Tasks;
                 }
             }
             catch
             {
-                Log.Instance.Error("Unable to retrieve tasks from the Windows Task Scheduler");
+                Log.Error(@"Unable to retrieve tasks from the Windows Task Scheduler");
             }
             finally
             {
@@ -332,7 +337,8 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Fatal(ex);
+                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -358,12 +364,12 @@ namespace Elucidate.Controls
 
                 using (TaskService ts = new TaskService())
                 {
-                    if (!ts.RootFolder.SubFolders.Exists(TaskFolder))
+                    if (!ts.RootFolder.SubFolders.Exists(TASK_FOLDER))
                     {
                         return;
                     }
 
-                    TaskFolder tf = ts.GetFolder(TaskFolder);
+                    TaskFolder tf = ts.GetFolder(TASK_FOLDER);
 
                     foreach (Task task in tf.Tasks)
                     {
@@ -385,7 +391,8 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Fatal(ex);
+                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -411,9 +418,9 @@ namespace Elucidate.Controls
 
                 using (TaskService ts = new TaskService())
                 {
-                    if (ts.RootFolder.SubFolders.Exists(TaskFolder))
+                    if (ts.RootFolder.SubFolders.Exists(TASK_FOLDER))
                     {
-                        TaskFolder tf = ts.GetFolder(TaskFolder);
+                        TaskFolder tf = ts.GetFolder(TASK_FOLDER);
 
                         foreach (Task task in tf.Tasks)
                         {
@@ -435,7 +442,8 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Fatal(ex);
+                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -461,9 +469,9 @@ namespace Elucidate.Controls
 
                 using (TaskService ts = new TaskService())
                 {
-                    if (ts.RootFolder.SubFolders.Exists(TaskFolder))
+                    if (ts.RootFolder.SubFolders.Exists(TASK_FOLDER))
                     {
-                        TaskFolder tf = ts.GetFolder(TaskFolder);
+                        TaskFolder tf = ts.GetFolder(TASK_FOLDER);
 
                         foreach (Task task in tf.Tasks)
                         {
@@ -482,7 +490,8 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Fatal(ex);
+                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -508,9 +517,9 @@ namespace Elucidate.Controls
 
                 using (TaskService ts = new TaskService())
                 {
-                    if (ts.RootFolder.SubFolders.Exists(TaskFolder))
+                    if (ts.RootFolder.SubFolders.Exists(TASK_FOLDER))
                     {
-                        TaskFolder tf = ts.GetFolder(TaskFolder);
+                        TaskFolder tf = ts.GetFolder(TASK_FOLDER);
 
                         foreach (Task task in tf.Tasks)
                         {
@@ -529,7 +538,8 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Fatal(ex);
+                ex.ToExceptionless().Submit();
             }
             finally
             {

@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="StorageUtil.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,35 +33,15 @@ using System.Text;
 
 using Alphaleonis.Win32.Filesystem;
 
-using Elucidate.Logging;
 using Elucidate.Objects;
+
+using NLog;
 
 namespace Elucidate.HelperClasses
 {
     public static class StorageUtil
     {
-        #region DllImport
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool GetVolumeNameForVolumeMountPoint(
-            string lpszFileName,
-            [Out] StringBuilder lpszVollpszVolumePathNameumeName,
-            int cchBufferLength);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool GetVolumePathName(
-            string lpszVolumeMountPoint,
-            [Out] StringBuilder lpszVolumeName,
-            int cchBufferLength);
-
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
-            out ulong lpFreeBytesAvailable,
-            out ulong lpTotalNumberOfBytes,
-            out ulong lpTotalNumberOfFreeBytes);
-        
-        #endregion
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public static string NormalizePath(string path)
         {
@@ -77,7 +57,7 @@ namespace Elucidate.HelperClasses
                 return false;
             }
 
-            string root = StorageUtil.GetVolumePathName(path);
+            string root = GetVolumePathName(path);
             return path == root;
         }
 
@@ -88,7 +68,7 @@ namespace Elucidate.HelperClasses
         /// <returns>System.String.</returns>
         public static string GetPathRoot(string path)
         {
-            string root = StorageUtil.GetVolumePathName(path);
+            string root = GetVolumePathName(path);
             return Path.GetFullPath(root);
         }
 
@@ -116,11 +96,11 @@ namespace Elucidate.HelperClasses
         
         public static ulong GetDriveSize(string path)
         {
-            bool success = StorageUtil.GetDiskFreeSpaceEx(
+            bool success = GetDiskFreeSpaceEx(
                 path,
-                out ulong freeBytesAvailable,
+                out ulong _,
                 out ulong totalNumberOfBytes,
-                out ulong totalNumberOfFreeBytes);
+                out ulong _);
 
             if (success)
             {
@@ -138,12 +118,12 @@ namespace Elucidate.HelperClasses
             {
                 try
                 {
-                    string pathRoot = StorageUtil.GetPathRoot(path);
-                    deviceSizes.Add(StorageUtil.GetDriveSize(pathRoot));
+                    string pathRoot = GetPathRoot(path);
+                    deviceSizes.Add(GetDriveSize(pathRoot));
                 }
                 catch (Exception ex)
                 {
-                    Log.Instance.Warn(ex.Message);
+                    Log.Warn(ex.Message);
                 }
             }
 
@@ -187,13 +167,13 @@ namespace Elucidate.HelperClasses
                                 item.DeviceID,
                                 out ulong freeBytesAvailable,
                                 out ulong totalNumberOfBytes,
-                                out ulong totalNumberOfFreeBytes);
+                                out ulong _);
 
                             StorageDevice device = new StorageDevice
                             {
                                 Caption = item.Caption,
                                 Name = item.Name,
-                                DeviceID = item.DeviceID,
+                                DeviceId = item.DeviceID,
                                 DriveLetter = item.DriveLetter,
                                 FileSystem = item.FileSystem,
                                 Capacity = (uint)totalNumberOfBytes,
@@ -230,8 +210,7 @@ namespace Elucidate.HelperClasses
                         }
                         catch (Exception ex)
                         {
-                            Log.Instance.Warn("A storage device failed to enumerate.");
-                            Log.Instance.Warn(ex);
+                            Log.Warn(ex,"A storage device failed to enumerate.");
                         }
                     }
                 }
@@ -239,6 +218,29 @@ namespace Elucidate.HelperClasses
 
             return storageDevices;
         }
+
+        #region DllImport
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool GetVolumeNameForVolumeMountPoint(
+            string lpszFileName,
+            [Out] StringBuilder lpszVollpszVolumePathNameumeName,
+            int cchBufferLength);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool GetVolumePathName(
+            string lpszVolumeMountPoint,
+            [Out] StringBuilder lpszVolumeName,
+            int cchBufferLength);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
+            out ulong lpFreeBytesAvailable,
+            out ulong lpTotalNumberOfBytes,
+            out ulong lpTotalNumberOfFreeBytes);
+
+        #endregion
 
     }
 }

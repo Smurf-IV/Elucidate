@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="CalculateBlockSize.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,8 +43,8 @@ namespace Elucidate
             ParityTargets = new List<string>(2);
             InitializeComponent();
             ulong available = new ComputerInfo().TotalPhysicalMemory;
-            const Decimal testValue = 1UL << 30; // Should be 1 GBytes 
-            numericUpDown1.Value = (available / testValue) - 1; // remove some to allow for the OS
+            const Decimal TEST_VALUE = 1UL << 30; // Should be 1 GBytes 
+            numericUpDown1.Value = (available / TEST_VALUE) - 1; // remove some to allow for the OS
         }
 
         private void btnCoverage_Click(object sender, EventArgs e)

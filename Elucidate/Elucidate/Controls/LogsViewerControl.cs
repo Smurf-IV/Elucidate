@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="LogsViewerControl.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2018-2019 BlueBlock & Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,53 +26,51 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-using Elucidate.HelperClasses;
-using Elucidate.Logging;
-
-using ScintillaNET;
+using NLog;
+using NLog.Targets;
 
 namespace Elucidate.Controls
 {
     public partial class LogsViewerControl : UserControl
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public enum LexerNameEnum { ScanRaid, NLog }
 
         public LexerNameEnum LexerToUse { get; set; } = LexerNameEnum.NLog;
 
-        private readonly LexerNlog _lexerNlog = new LexerNlog(
-            keywordsError: new[] { "ERROR", "FATAL" }, 
-            keywordsWarning: new[] { "WARN" }, 
-            keywordsDebug: new[] { "DEBUG", "TRACE" });
+        private readonly FileSystemWatcher logFileWatcher = new FileSystemWatcher();
 
-        private readonly LexerScanRaid _lexerScanRaid = new LexerScanRaid();
+        private string selectedDirectoryTitle;
 
-        private readonly FileSystemWatcher _logFileWatcher = new FileSystemWatcher();
-
-        private string _selectedDirectoryTitle = null;
-
-        private string _snapraidErrorSearchTerm = "error: ";
-        private string _snapraidWarningSearchTerm = "WARNING";
-        private string _elucidateErrorSearchTerm = "] ERROR ";
-        private string _elucidateWarningSearchTerm = "] WARN ";
+        private readonly string snapraidErrorSearchTerm = "error: ";
+        private readonly string snapraidWarningSearchTerm = "WARNING";
+        private readonly string elucidateErrorSearchTerm = "] ERROR ";
+        private readonly string elucidateWarningSearchTerm = "] WARN ";
 
         // log file path is based upon the config file location
-        private string _logSourcePath;
+        private string logSourcePath;
 
         public LogsViewerControl()
         {
             InitializeComponent();
 
-            _logFileWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName;
+            logFileWatcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName;
             //_logFileWatcher.Changed += new FileSystemEventHandler(LogFileWatcher_OnChanged);
-            _logFileWatcher.Created += new FileSystemEventHandler(LogFileWatcher_OnChanged);
-            _logFileWatcher.Deleted += new FileSystemEventHandler(LogFileWatcher_OnChanged);
+            logFileWatcher.Created += LogFileWatcher_OnChanged;
+            logFileWatcher.Deleted += LogFileWatcher_OnChanged;
             //_logFileWatcher.Renamed += new RenamedEventHandler(LogFileWatcher_OnChanged);
-            _logFileWatcher.EnableRaisingEvents = false;
+            logFileWatcher.EnableRaisingEvents = false;
+            FileTarget fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("file");
+            // Need to set timestamp here if filename uses date. 
+            // For example - filename="${basedir}/logs/${shortdate}/trace.log"
+            LogEventInfo logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            string fileName = fileTarget.FileName.Render(logEventInfo);
+            selectedDirectoryTitle = Path.GetDirectoryName(fileName);
         }
 
         private void LogFileWatcher_OnChanged(object sender, FileSystemEventArgs e)
@@ -102,11 +100,11 @@ namespace Elucidate.Controls
         {
             if (selectedDirectoryTitle == null)
             {
-                selectedDirectoryTitle = _selectedDirectoryTitle;
+                selectedDirectoryTitle = this.selectedDirectoryTitle;
             }
             else
             {
-                _selectedDirectoryTitle = selectedDirectoryTitle;
+                this.selectedDirectoryTitle = selectedDirectoryTitle;
             }
 
             string errorSearchTerm;
@@ -114,8 +112,7 @@ namespace Elucidate.Controls
 
             // remember user selection
             string selectedIndexValue = null;
-            int selectedIndex = -1;
-            selectedIndex = listBoxViewLogFiles.SelectedIndex;
+            int selectedIndex = listBoxViewLogFiles.SelectedIndex;
             if (selectedIndex >= 0)
             {
                 selectedIndexValue = listBoxViewLogFiles.SelectedItems[0].ToString();
@@ -125,44 +122,44 @@ namespace Elucidate.Controls
             {
                 case "SnapRAID Scheduled Jobs":
                     // SnapRAID Scheduled Jobs
-                    errorSearchTerm = _snapraidErrorSearchTerm;
-                    warningSearchTerm = _snapraidWarningSearchTerm;
+                    errorSearchTerm = snapraidErrorSearchTerm;
+                    warningSearchTerm = snapraidWarningSearchTerm;
                     LexerToUse = LexerNameEnum.ScanRaid;
-                    _logSourcePath = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
-                    if (!Directory.Exists(_logSourcePath))
+                    logSourcePath = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
+                    if (!Directory.Exists(logSourcePath))
                     {
                         return;
                     }
 
-                    _logFileWatcher.Path = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
-                    _logFileWatcher.Filter = "*.log";
-                    _logFileWatcher.EnableRaisingEvents = true;
+                    logFileWatcher.Path = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
+                    logFileWatcher.Filter = "*.log";
+                    logFileWatcher.EnableRaisingEvents = true;
                     break;
                 case "Elucidate":
                     // Elucidate
-                    errorSearchTerm = _elucidateErrorSearchTerm;
-                    warningSearchTerm = _elucidateWarningSearchTerm;
+                    errorSearchTerm = elucidateErrorSearchTerm;
+                    warningSearchTerm = elucidateWarningSearchTerm;
                     LexerToUse = LexerNameEnum.NLog;
-                    _logSourcePath = LogFileLocation.GetActiveLogFileLocation();
-                    if (!Directory.Exists(_logSourcePath))
+                    logSourcePath = selectedDirectoryTitle;
+                    if (!Directory.Exists(logSourcePath))
                     {
                         return;
                     }
 
-                    _logFileWatcher.Path = LogFileLocation.GetActiveLogFileLocation();
-                    _logFileWatcher.Filter = "*.log";
-                    _logFileWatcher.EnableRaisingEvents = true;
+                    logFileWatcher.Path = selectedDirectoryTitle;
+                    logFileWatcher.Filter = "*.log";
+                    logFileWatcher.EnableRaisingEvents = true;
                     break;
                 default:
-                    _logFileWatcher.EnableRaisingEvents = false;
+                    logFileWatcher.EnableRaisingEvents = false;
                     return;
             }
 
-            Log.Instance.Debug($"_logSourcePath : {_logSourcePath}");
+            Log.Debug($@"logSourcePath : {logSourcePath}");
 
             listBoxViewLogFiles.Items.Clear();
 
-            DirectoryInfo logFileDirectoryInfo = new DirectoryInfo(_logSourcePath);
+            DirectoryInfo logFileDirectoryInfo = new DirectoryInfo(logSourcePath);
 
             List<FileInfo> allLogs = logFileDirectoryInfo.GetFiles("*.log").OrderByDescending(a => a.Name).ToList();
 
@@ -196,8 +193,7 @@ namespace Elucidate.Controls
             // restore user selection, if it still exists
             if (selectedIndex >= 0 && !string.IsNullOrEmpty(selectedIndexValue))
             {
-                int indexFound = -1;
-                indexFound = listBoxViewLogFiles.FindStringExact(selectedIndexValue);
+                int indexFound = listBoxViewLogFiles.FindStringExact(selectedIndexValue);
                 if (indexFound >= 0)
                 {
                     listBoxViewLogFiles.SelectedIndex = indexFound;
@@ -207,7 +203,7 @@ namespace Elucidate.Controls
 
         private void listBoxViewLogFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!Directory.Exists(_logSourcePath))
+            if (!Directory.Exists(logSourcePath))
             {
                 return;
             }
@@ -217,7 +213,7 @@ namespace Elucidate.Controls
                 return;
             }
 
-            string fullPath = $@"{_logSourcePath}\{listBoxViewLogFiles.SelectedItems[0]}";
+            string fullPath = $@"{logSourcePath}\{listBoxViewLogFiles.SelectedItems[0]}";
 
             scintilla.ReadOnly = false;
             scintilla.Text = File.ReadAllText(fullPath);
@@ -244,65 +240,5 @@ namespace Elucidate.Controls
             listBoxViewLogFiles.BeginInvoke((MethodInvoker)delegate { UpdateLogFileList(comboBoxLogType.SelectedItem.ToString()); });
         }
 
-        private void scintilla_TextChanged(object sender, EventArgs e)
-        {
-            Scintilla control = (sender as Scintilla);
-            if (control == null)
-            {
-                return;
-            }
-
-            // size the margin for the line numbers
-            int maxLineNumberCharLength = control.Lines.Count.ToString().Length;
-            const int padding = 2;
-            control.Margins[0].Width = control.TextWidth(Style.LineNumber, new string('9', maxLineNumberCharLength + 1)) + padding;
-
-            control.StyleResetDefault();
-            control.Styles[Style.Default].Font = "Consolas";
-            control.Styles[Style.Default].Size = 10;
-            control.StyleClearAll();
-
-            switch (LexerToUse)
-            {
-                case LexerNameEnum.NLog:
-                    control.Styles[LexerNlog.StyleDefault].ForeColor = Color.Black;
-                    control.Styles[LexerNlog.StyleError].ForeColor = Color.White;
-                    control.Styles[LexerNlog.StyleError].BackColor = Color.Firebrick;
-                    control.Styles[LexerNlog.StyleError].Bold = true;
-                    control.Styles[LexerNlog.StyleWarning].ForeColor = Color.White;
-                    control.Styles[LexerNlog.StyleWarning].BackColor = Color.DarkOrange;
-                    control.Styles[LexerNlog.StyleWarning].Bold = true;
-                    control.Styles[LexerNlog.StyleDebug].ForeColor = Color.Gray;
-                    break;
-                case LexerNameEnum.ScanRaid:
-                    control.Styles[LexerScanRaid.StyleDefault].ForeColor = Color.Black;
-                    control.Styles[LexerScanRaid.StyleError].ForeColor = Color.White;
-                    control.Styles[LexerScanRaid.StyleError].BackColor = Color.Firebrick;
-                    control.Styles[LexerScanRaid.StyleError].Bold = true;
-                    control.Styles[LexerScanRaid.StyleWarning].ForeColor = Color.White;
-                    control.Styles[LexerScanRaid.StyleWarning].BackColor = Color.DarkOrange;
-                    control.Styles[LexerScanRaid.StyleWarning].Bold = true;
-                    control.Styles[LexerScanRaid.StyleDebug].ForeColor = Color.Gray;
-                    break;
-            }
-            
-            control.Lexer = Lexer.Container;
-        }
-
-        private void scintilla_StyleNeeded(object sender, StyleNeededEventArgs e)
-        {
-            int startPos = scintilla.GetEndStyled();
-            int endPos = e.Position;
-            
-            switch (LexerToUse)
-            {
-                case LexerNameEnum.NLog:
-                    _lexerNlog.Style(scintilla, startPos, endPos);
-                    break;
-                case LexerNameEnum.ScanRaid:
-                    _lexerScanRaid.Style(scintilla, startPos, endPos);
-                    break;
-            }
-        }
     }
 }

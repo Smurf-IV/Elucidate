@@ -1,4 +1,32 @@
-﻿using System;
+﻿#region Copyright (C)
+
+// ---------------------------------------------------------------------------------------------------------------
+//  <copyright file="CoveragePath.cs" company="Smurf-IV">
+//
+//  Copyright (C) 2018-2019 Smurf-IV & BlueBlock
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 2 of the License, or
+//   any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program. If not, see http://www.gnu.org/licenses/.
+//  </copyright>
+//  <summary>
+//  Url: https://github.com/Smurf-IV/Elucidate
+//  Email: https://github.com/Smurf-IV
+//  </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+#endregion Copyright (C)
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -12,22 +40,16 @@ using Alphaleonis.Win32.Filesystem;
 using ComponentFactory.Krypton.Toolkit;
 
 using Elucidate.HelperClasses;
-using Elucidate.Logging;
+using Exceptionless;
+using NLog;
 
-using Newtonsoft.Json.Linq;
-
-using RestSharp;
 
 namespace Elucidate
 {
     public static class Util
     {
-        internal static void Dump(object o)
-        {
-            //string json = JsonConvert.SerializeObject(o, Formatting.Indented);
-            //Log.Instance.Debug(json);
-        }
-        
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public static void CreateFullDirectoryPath(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -48,7 +70,7 @@ namespace Elucidate
             }
             catch (Exception)
             {
-                Log.Instance.Warn($"Directory could not be created: {dir}");
+                Log.Warn($"Directory could not be created: {dir}");
             }
         }
 
@@ -84,22 +106,12 @@ namespace Elucidate
         {
             if (decimalPlace < 1)
             {
-                return numToRound; // return original nmber if 0 decimal places requested
+                return numToRound; // return original number if 0 decimal places requested
             }
 
             string strX = $"1{new String('0', decimalPlace)}";
             int intX = Convert.ToInt32(strX);
             return Math.Ceiling(numToRound * intX) / intX;
-        }
-
-        public static void CreateEmptyFile(string filename)
-        {
-            if (File.Exists(filename))
-            {
-                return;
-            }
-
-            File.Create(filename).Dispose();
         }
 
         public static string ComputeSha1Hash(string rawData)
@@ -112,29 +124,9 @@ namespace Elucidate
 
                 // Convert byte array to a string   
                 StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
+                foreach (byte bt in bytes)
                 {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-
-                return builder.ToString();
-            }
-        }
-
-        public static string ComputeSha256Hash(string rawData)
-        {
-            // Create a SHA256   
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
+                    builder.Append(bt.ToString("x2"));
                 }
 
                 return builder.ToString();
@@ -157,53 +149,6 @@ namespace Elucidate
             Process[] processName = Process.GetProcessesByName(fileName.Substring(0, fileName.LastIndexOf('.')));
 
             return processName.Length > 0;
-        }
-
-        public static string SnapRaidLatestVersion()
-        {
-            try
-            {
-                string url = "https://api.github.com/repos/amadvance/snapraid/releases/latest";
-
-                RestClient client = new RestClient(url);
-                RestRequest request = new RestRequest(Method.GET);
-
-                // execute the request
-
-                IRestResponse response = client.Execute(request);
-
-                string content = response.Content; // raw content as string
-
-                JArray releases = JArray.Parse($"[{content}]");
-
-                List<JToken> version = (from p in releases select p["tag_name"]).ToList();
-
-                if (version.Count > 0 && version.FirstOrDefault() != null)
-                {
-                    return version.FirstOrDefault()?.ToString();
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-
-            return null;
-        }
-
-        public static string SnapRaidLocalVersion()
-        {
-            try
-            {
-
-                return null;
-            }
-            catch
-            {
-                // ignored
-            }
-
-            return null;
         }
 
         // ReSharper disable once UnusedMember.Local
@@ -267,11 +212,12 @@ namespace Elucidate
             }
             catch (UnauthorizedAccessException ex)
             {
-                Log.Instance.Warn(string.Concat("No Access to ", dir.FullName), ex);
+                Log.Warn(string.Concat("No Access to ", dir.FullName), ex);
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Error(ex);
+                ex.ToExceptionless().Submit();
             }
 
             return 0;
@@ -306,7 +252,8 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Instance.Error($"ParityPathFreeBytesAvailable failed for path {path} Exception Message: {ex.Message}");
+                Log.Error(ex);
+                ex.ToExceptionless().Submit();
                 freeBytesAvailable = 0;
                 pathUsedBytes = 0;
                 rootBytesNotCoveredByPath = 0;
@@ -330,53 +277,25 @@ namespace Elucidate
             
             rootBytesNotCoveredByPath = 0;
 
-            Log.Instance.Debug($"rootPath {rootPath} freeBytesAvailable {freeBytesAvailable} totalBytes {totalBytes} num3 {num3}");
+            Log.Debug($"rootPath {rootPath} freeBytesAvailable {freeBytesAvailable} totalBytes {totalBytes} num3 {num3}");
 
             if (rootPath == fullPath)
             {
-                Log.Instance.Trace("Nothing more to do, so get values for the series");
+                Log.Trace("Nothing more to do, so get values for the series");
 
                 pathUsedBytes = driveUsedBytes;
             }
             else
             {
-                Log.Instance.Debug("Need to perform some calculations of Path usage. TotalBytes[{0}]", totalBytes);
+                Log.Debug("Need to perform some calculations of Path usage. TotalBytes[{0}]", totalBytes);
 
                 pathUsedBytes = DirSize(new DirectoryInfo(path));
                 
-                if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/softlink path or file
+                if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/ softlink path or file
                 {
                     rootBytesNotCoveredByPath = driveUsedBytes - pathUsedBytes;
                 }
             }
-        }
-
-        public static string GetUniqueKey(int maxSize)
-        {
-            // https://stackoverflow.com/questions/1344221/how-can-i-generate-random-alphanumeric-strings-in-c
-            
-            // ReSharper disable once RedundantAssignment
-            char[] chars = new char[62];
-
-            chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".ToCharArray();
-
-            byte[] data = new byte[1];
-
-            using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
-            {
-                crypto.GetNonZeroBytes(data);
-                data = new byte[maxSize];
-                crypto.GetNonZeroBytes(data);
-            }
-
-            StringBuilder result = new StringBuilder(maxSize);
-
-            foreach (byte b in data)
-            {
-                result.Append(chars[b % (chars.Length)]);
-            }
-
-            return result.ToString();
         }
 
     }

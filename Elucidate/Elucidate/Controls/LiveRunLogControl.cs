@@ -8,16 +8,19 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-using Elucidate.HelperClasses;
 using Elucidate.Logging;
 using Elucidate.wyDay.Controls;
 
-using ScintillaNET;
+using Exceptionless;
+
+using NLog;
 
 namespace Elucidate.Controls
 {
     public partial class LiveRunLogControl : UserControl
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public bool HighlightErrorEnabled { get; set; } = true;
         public bool HighlightWarningEnabled { get; set; } = true;
         public bool HighlightDebugEnabled { get; set; } = true;
@@ -27,20 +30,15 @@ namespace Elucidate.Controls
 
         private bool IsCommandLineOptionsEnabled { get; set; }
 
-        private readonly LexerNlog _lexerNlog = new LexerNlog(
-            keywordsError: new[] { "ERROR", "FATAL" },
-            keywordsWarning: new[] { "WARN" },
-            keywordsDebug: new[] { "DEBUG", "TRACE" });
-
         /// <summary>
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
         /// </summary>
-        private readonly ManualResetEvent _mreProcessExit = new ManualResetEvent(false);
-        private readonly ManualResetEvent _mreOutputDone = new ManualResetEvent(false);
-        private readonly ManualResetEvent _mreErrorDone = new ManualResetEvent(false);
-        private ProcessPriorityClass _requested = ProcessPriorityClass.Normal;
-        private string _lastError;
-        private List<string> _batchPaths;
+        private readonly ManualResetEvent mreProcessExit = new ManualResetEvent(false);
+        private readonly ManualResetEvent mreOutputDone = new ManualResetEvent(false);
+        private readonly ManualResetEvent mreErrorDone = new ManualResetEvent(false);
+        private ProcessPriorityClass requested = ProcessPriorityClass.Normal;
+        private string lastError;
+        private List<string> batchPaths;
 
         public bool IsRunning { get; set; }
         private CommandType CommandTypeRunning { get; set; }
@@ -60,27 +58,6 @@ namespace Elucidate.Controls
             comboBoxProcessStatus.Enabled = false;
 
             checkBoxDisplayOutput.Checked = Properties.Settings.Default.IsDisplayOutputEnabled;
-            
-            ConfigureScintillaControl();
-        }
-
-        private void ConfigureScintillaControl()
-        {
-            scintilla.StyleResetDefault();
-            scintilla.Styles[Style.Default].Font = "Consolas";
-            scintilla.Styles[Style.Default].Size = 10;
-            scintilla.StyleClearAll();
-
-            scintilla.Styles[LexerNlog.StyleDefault].ForeColor = Color.Black;
-            scintilla.Styles[LexerNlog.StyleError].ForeColor = Color.White;
-            scintilla.Styles[LexerNlog.StyleError].BackColor = Color.Firebrick;
-            scintilla.Styles[LexerNlog.StyleError].Bold = true;
-            scintilla.Styles[LexerNlog.StyleWarning].ForeColor = Color.White;
-            scintilla.Styles[LexerNlog.StyleWarning].BackColor = Color.DarkOrange;
-            scintilla.Styles[LexerNlog.StyleWarning].Bold = true;
-            scintilla.Styles[LexerNlog.StyleDebug].ForeColor = Color.Gray;
-
-            scintilla.Lexer = Lexer.Container;
         }
 
         public event EventHandler TaskStarted;
@@ -148,7 +125,7 @@ namespace Elucidate.Controls
         {
             if (IsRunning)
             {
-                Log.Instance.Debug("Command button clicked but a command is still running.");
+                Log.Debug("Command button clicked but a command is still running.");
                 return;
             }
 
@@ -194,7 +171,7 @@ namespace Elucidate.Controls
                     break;
                 case CommandType.RecoverFix:
                     command.Append(@"fix ");
-                    if (paths != null) { _batchPaths = paths; }
+                    if (paths != null) { batchPaths = paths; }
                     break;
             }
 
@@ -202,7 +179,7 @@ namespace Elucidate.Controls
 
             comboBoxProcessStatus.Text = @"Running";
 
-            _requested = ProcessPriorityClass.Normal;
+            requested = ProcessPriorityClass.Normal;
 
             ActionWorker.RunWorkerAsync(command.ToString());
             
@@ -230,25 +207,25 @@ namespace Elucidate.Controls
 
                 string command = e.Argument as string;
 
-                _lastError = string.Empty;
+                lastError = string.Empty;
 
                 if (worker == null)
                 {
-                    Log.Instance.Error("Passed in worker is null");
+                    Log.Error("Passed in worker is null");
                     e.Cancel = true;
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(command))
                 {
-                    Log.Instance.Error("Passed in command is null");
+                    Log.Error("Passed in command is null");
                     e.Cancel = true;
                     return;
                 }
 
-                _mreProcessExit.Reset();
-                _mreOutputDone.Reset();
-                _mreErrorDone.Reset();
+                mreProcessExit.Reset();
+                mreOutputDone.Reset();
+                mreErrorDone.Reset();
 
                 string args = Util.FormatSnapRaidCommandArgs(
                     command: command,
@@ -259,15 +236,16 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                _lastError = "Thread closing abnormally";
-                ExceptionHandler.ReportException(ex, _lastError);
+                lastError = "Thread closing abnormally";
+                Log.Fatal(ex, @"Failed to attach unhandled exception handler...");
+                ex.ToExceptionless().Submit();
                 throw;
             }
         }
 
         private void RunSnapRaid(DoWorkEventArgs e, string args, string appPath, BackgroundWorker worker)
         {
-            Log.Instance.Info("#########################################");
+            Log.Info("#########################################");
 
             // RecoveryFix
             if (CommandTypeRunning == CommandType.RecoverFix)
@@ -276,9 +254,9 @@ namespace Elucidate.Controls
 
                 do
                 {
-                    sbPaths.Append($"-f \"{_batchPaths[_batchPaths.Count - 1]}\" ");
-                    _batchPaths.RemoveAt(_batchPaths.Count - 1);
-                } while (sbPaths.Length < MAX_COMMAND_ARG_LENGTH && _batchPaths.Any());
+                    sbPaths.Append($"-f \"{batchPaths[batchPaths.Count - 1]}\" ");
+                    batchPaths.RemoveAt(batchPaths.Count - 1);
+                } while (sbPaths.Length < MAX_COMMAND_ARG_LENGTH && batchPaths.Any());
 
                 args += sbPaths.ToString();
             }
@@ -299,8 +277,8 @@ namespace Elucidate.Controls
                 EnableRaisingEvents = true
             })
             {
-                Log.Instance.Info("Using: {0}", process.StartInfo.FileName);
-                Log.Instance.Info("with: {0}", process.StartInfo.Arguments);
+                Log.Info("Using: {0}", process.StartInfo.FileName);
+                Log.Info("with: {0}", process.StartInfo.Arguments);
 
                 process.Exited += Exited;
 
@@ -313,10 +291,10 @@ namespace Elucidate.Controls
 
                 if (process.HasExited)
                 {
-                    _mreProcessExit.Set();
+                    mreProcessExit.Set();
                 }
 
-                while (!WaitHandle.WaitAll(new WaitHandle[] { _mreErrorDone, _mreOutputDone, _mreProcessExit }, 250))
+                while (!WaitHandle.WaitAll(new WaitHandle[] { mreErrorDone, mreOutputDone, mreProcessExit }, 250))
                 {
                     if (process.HasExited)
                     {
@@ -325,19 +303,19 @@ namespace Elucidate.Controls
 
                     if (worker.CancellationPending)
                     {
-                        Log.Instance.Fatal("Attempting to stop the process..");
+                        Log.Fatal("Attempting to stop the process..");
                         process.Kill();
                     }
                     else
                     {
                         ProcessPriorityClass current = process.PriorityClass;
-                        if (current == _requested)
+                        if (current == requested)
                         {
                             continue;
                         }
 
-                        Log.Instance.Fatal("Setting the process priority to[{0}]", _requested);
-                        process.PriorityClass = _requested;
+                        Log.Fatal("Setting the process priority to[{0}]", requested);
+                        process.PriorityClass = requested;
                     }
                 }
 
@@ -345,12 +323,12 @@ namespace Elucidate.Controls
 
                 if (exitCode == 0)
                 {
-                    Log.Instance.Info("ExitCode=[{0}]", exitCode);
-                    _lastError = string.Empty;
+                    Log.Info("ExitCode=[{0}]", exitCode);
+                    lastError = string.Empty;
                 }
                 else
                 {
-                    Log.Instance.Error("ExitCode=[{0}]", exitCode);
+                    Log.Error("ExitCode=[{0}]", exitCode);
                 }
 
                 process.Close();
@@ -370,7 +348,7 @@ namespace Elucidate.Controls
                     worker.ReportProgress(101, "Error");
                     break;
                 default:
-                    Log.Instance.Debug($"Unhandled ExitCode of {exitCode}");
+                    Log.Debug($"Unhandled ExitCode of {exitCode}");
                     break;
             }
 
@@ -386,7 +364,7 @@ namespace Elucidate.Controls
 
             if (progressPercentage == 101)
             {
-                _lastError = e.UserState.ToString();
+                lastError = e.UserState.ToString();
             }
 
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
@@ -396,7 +374,7 @@ namespace Elucidate.Controls
 
             if (progressPercentage < 101)
             {
-                // even if snapraid is reporting 100%, it may still be running so only100% is only shown in RunWorkerCompleted
+                // even if SnapRaid is reporting 100%, it may still be running so only100% is only shown in RunWorkerCompleted
                 toolStripProgressBar1.Value = progressPercentage == 100 ? 99 : e.ProgressPercentage;
             }
             else if (e.ProgressPercentage == 101)
@@ -411,7 +389,7 @@ namespace Elucidate.Controls
             IsRunning = false;
             
             // continue running additional times if there is more work to be done
-            if (CommandTypeRunning == CommandType.RecoverFix && _batchPaths.Any())
+            if (CommandTypeRunning == CommandType.RecoverFix && batchPaths.Any())
             {
                 StartSnapRaidProcess(CommandType.RecoverFix);
                 return;
@@ -431,14 +409,14 @@ namespace Elucidate.Controls
             {
                 toolStripProgressBar1.State = ProgressBarState.Pause;
                 toolStripProgressBar1.DisplayText = "Cancelled";
-                Log.Instance.Error("The thread has been cancelled");
+                Log.Error("The thread has been cancelled");
                 comboBoxProcessStatus.Text = @"Abort";
             }
             else if (e.Error != null)
             {
                 toolStripProgressBar1.State = ProgressBarState.Error;
                 toolStripProgressBar1.DisplayText = "Error";
-                Log.Instance.Error(e.Error, "Thread threw: ");
+                Log.Error(e.Error, "Thread threw: ");
                 comboBoxProcessStatus.Text = @"Abort";
             }
             else
@@ -459,13 +437,13 @@ namespace Elucidate.Controls
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(_lastError))
+                    if (string.IsNullOrEmpty(lastError))
                     {
                         return;
                     }
 
                     toolStripProgressBar1.DisplayText = "Error";
-                    Log.Instance.Debug($"Last Error: {_lastError}");
+                    Log.Debug($"Last Error: {lastError}");
                 }
             }
 
@@ -500,11 +478,8 @@ namespace Elucidate.Controls
                         scintilla.AppendText($"{log.Message}{Environment.NewLine}");
                     }
 
-                    // scroll to the bottom
+                    // TODO: scroll to the bottom
 
-                    int scintillaTextLength = scintilla.TextLength;
-
-                    scintilla.ScrollRange(scintillaTextLength, scintillaTextLength);
                 }
             }
             catch
@@ -527,19 +502,19 @@ namespace Elucidate.Controls
                         continue; // skip verbose messages from file recovery
                     }
 
-                    _lastError = buf;
+                    lastError = buf;
 
-                    Log.Instance.Warn(_lastError);
+                    Log.Warn(lastError);
 
                 } while (!string.IsNullOrEmpty(buf));
             }
             catch (Exception ex)
             {
-                _lastError = "Thread closing abnormally";
-                ExceptionHandler.ReportException(ex, _lastError);
+                Log.Fatal(ex, lastError);
+                ex.ToExceptionless().Submit();
             }
 
-            _mreErrorDone.Set();
+            mreErrorDone.Set();
         }
 
         private void ReadStandardOutput(ThreadObject threadObject)
@@ -554,7 +529,7 @@ namespace Elucidate.Controls
                         continue;
                     }
 
-                    Log.Instance.Info($"StdOut[{buf}]");
+                    Log.Info($"StdOut[{buf}]");
 
                     if (!buf.Contains("%"))
                     {
@@ -572,34 +547,17 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex, "ReadStandardOutput: ");
+                Log.Fatal(ex, @"ReadStandardOutput: ");
+                ex.ToExceptionless().Submit();
             }
 
-            _mreOutputDone.Set();
+            mreOutputDone.Set();
         }
 
         private void Exited(object o, EventArgs e)
         {
-            Log.Instance.Debug("Process has exited");
-            _mreProcessExit.Set();
-        }
-
-        private void scintilla_StyleNeeded(object sender, StyleNeededEventArgs e)
-        {
-            if (scintilla == null)
-            {
-                return;
-            }
-
-            lock (scintilla)
-            {
-
-                int startPos = scintilla.GetEndStyled();
-
-                int endPos = e.Position;
-
-                _lexerNlog.Style(scintilla, startPos, endPos);
-            }
+            Log.Debug("Process has exited");
+            mreProcessExit.Set();
         }
 
         private void checkBoxDisplayOutput_MouseHover(object sender, EventArgs e)
@@ -647,7 +605,7 @@ namespace Elucidate.Controls
                     break;
                 case "Abort":
                     ActionWorker.CancelAsync();
-                    Log.Instance.Info("Cancelling the running process...");
+                    Log.Info("Cancelling the running process...");
                     break;
             }
         }

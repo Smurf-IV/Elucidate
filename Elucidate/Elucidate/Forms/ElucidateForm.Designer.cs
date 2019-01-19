@@ -62,12 +62,7 @@ namespace Elucidate
             this.recover1 = new Elucidate.Controls.Recover();
             this.logViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logViewToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeLogLocationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemChangelog = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemNewVersionAvailable = new System.Windows.Forms.ToolStripMenuItem();
-            this.installNewVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeLogOfNewVersionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openSnapRAIDConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -75,7 +70,6 @@ namespace Elucidate
             this.closeSnapRAIDConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemNewVersionReadyForInstall = new System.Windows.Forms.ToolStripMenuItem();
             this.dangerZoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
@@ -183,7 +177,7 @@ namespace Elucidate
             // 
             // btnStatus
             // 
-            this.btnStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStatus.ButtonDepress = ((sbyte)(2));
             this.btnStatus.Enabled = false;
@@ -211,7 +205,7 @@ namespace Elucidate
             // 
             // btnFix
             // 
-            this.btnFix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnFix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFix.ButtonDepress = ((sbyte)(2));
             this.btnFix.Enabled = false;
@@ -240,7 +234,7 @@ namespace Elucidate
             // 
             // btnDupFinder
             // 
-            this.btnDupFinder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnDupFinder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDupFinder.ButtonDepress = ((sbyte)(2));
             this.btnDupFinder.Enabled = false;
@@ -368,7 +362,7 @@ namespace Elucidate
             // 
             // btnSync
             // 
-            this.btnSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSync.ButtonDepress = ((sbyte)(2));
             this.btnSync.Enabled = false;
@@ -396,7 +390,7 @@ namespace Elucidate
             // 
             // btnCheck
             // 
-            this.btnCheck.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnCheck.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCheck.ButtonDepress = ((sbyte)(2));
             this.btnCheck.Enabled = false;
@@ -423,7 +417,7 @@ namespace Elucidate
             // 
             // btnForceFullSync
             // 
-            this.btnForceFullSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.btnForceFullSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnForceFullSync.ButtonDepress = ((sbyte)(2));
             this.btnForceFullSync.Enabled = false;
@@ -515,8 +509,7 @@ namespace Elucidate
             // logViewToolStripMenuItem
             // 
             this.logViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.logViewToolStripMenuItem1,
-            this.changeLogLocationToolStripMenuItem});
+            this.logViewToolStripMenuItem1});
             this.logViewToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logViewToolStripMenuItem.Name = "logViewToolStripMenuItem";
             this.logViewToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.L)));
@@ -532,14 +525,6 @@ namespace Elucidate
             this.logViewToolStripMenuItem1.Text = "&View...";
             this.logViewToolStripMenuItem1.Click += new System.EventHandler(this.logViewToolStripMenuItem_Click);
             // 
-            // changeLogLocationToolStripMenuItem
-            // 
-            this.changeLogLocationToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeLogLocationToolStripMenuItem.Name = "changeLogLocationToolStripMenuItem";
-            this.changeLogLocationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.changeLogLocationToolStripMenuItem.Text = "&Location...";
-            this.changeLogLocationToolStripMenuItem.Click += new System.EventHandler(this.changeLogLocationToolStripMenuItem_Click);
-            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -551,45 +536,6 @@ namespace Elucidate
             this.helpToolStripMenuItem.ToolTipText = "Goto the Help page.";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
-            // MenuItemChangelog
-            // 
-            this.MenuItemChangelog.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.MenuItemChangelog.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuItemChangelog.Name = "MenuItemChangelog";
-            this.MenuItemChangelog.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.MenuItemChangelog.Size = new System.Drawing.Size(100, 23);
-            this.MenuItemChangelog.Text = "C&hangeLog";
-            this.MenuItemChangelog.Click += new System.EventHandler(this.changeToolStripMenuItem_Click);
-            // 
-            // MenuItemNewVersionAvailable
-            // 
-            this.MenuItemNewVersionAvailable.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.MenuItemNewVersionAvailable.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.installNewVersionToolStripMenuItem,
-            this.changeLogOfNewVersionToolStripMenuItem});
-            this.MenuItemNewVersionAvailable.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuItemNewVersionAvailable.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.MenuItemNewVersionAvailable.Name = "MenuItemNewVersionAvailable";
-            this.MenuItemNewVersionAvailable.Size = new System.Drawing.Size(197, 23);
-            this.MenuItemNewVersionAvailable.Text = "New Version Is Available";
-            this.MenuItemNewVersionAvailable.Visible = false;
-            // 
-            // installNewVersionToolStripMenuItem
-            // 
-            this.installNewVersionToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.installNewVersionToolStripMenuItem.Name = "installNewVersionToolStripMenuItem";
-            this.installNewVersionToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.installNewVersionToolStripMenuItem.Text = "Install New Version";
-            this.installNewVersionToolStripMenuItem.Click += new System.EventHandler(this.InstallNewVersionToolStripMenuItem_Click);
-            // 
-            // changeLogOfNewVersionToolStripMenuItem
-            // 
-            this.changeLogOfNewVersionToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeLogOfNewVersionToolStripMenuItem.Name = "changeLogOfNewVersionToolStripMenuItem";
-            this.changeLogOfNewVersionToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.changeLogOfNewVersionToolStripMenuItem.Text = "ChangeLog of New Version";
-            this.changeLogOfNewVersionToolStripMenuItem.Click += new System.EventHandler(this.ChangeLogOfNewVersionToolStripMenuItem_Click);
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -598,9 +544,6 @@ namespace Elucidate
             this.fileToolStripMenuItem,
             this.logViewToolStripMenuItem,
             this.helpToolStripMenuItem,
-            this.MenuItemChangelog,
-            this.MenuItemNewVersionAvailable,
-            this.MenuItemNewVersionReadyForInstall,
             this.dangerZoneToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -663,17 +606,6 @@ namespace Elucidate
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
-            // 
-            // MenuItemNewVersionReadyForInstall
-            // 
-            this.MenuItemNewVersionReadyForInstall.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.MenuItemNewVersionReadyForInstall.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuItemNewVersionReadyForInstall.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.MenuItemNewVersionReadyForInstall.Name = "MenuItemNewVersionReadyForInstall";
-            this.MenuItemNewVersionReadyForInstall.Size = new System.Drawing.Size(234, 23);
-            this.MenuItemNewVersionReadyForInstall.Text = "New Version Ready For Install";
-            this.MenuItemNewVersionReadyForInstall.Visible = false;
-            this.MenuItemNewVersionReadyForInstall.Click += new System.EventHandler(this.MenuItemNewVersionReadyForInstall_Click);
             // 
             // dangerZoneToolStripMenuItem
             // 
@@ -764,14 +696,8 @@ namespace Elucidate
         private Recover recover1;
         private ToolStripMenuItem logViewToolStripMenuItem;
         private ToolStripMenuItem logViewToolStripMenuItem1;
-        private ToolStripMenuItem changeLogLocationToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
-        private ToolStripMenuItem MenuItemChangelog;
-        private ToolStripMenuItem MenuItemNewVersionAvailable;
-        private ToolStripMenuItem installNewVersionToolStripMenuItem;
-        private ToolStripMenuItem changeLogOfNewVersionToolStripMenuItem;
         private MenuStrip menuStrip1;
-        private ToolStripMenuItem MenuItemNewVersionReadyForInstall;
         private CommandLinkButton btnForceFullSync;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem openSnapRAIDConfigToolStripMenuItem;

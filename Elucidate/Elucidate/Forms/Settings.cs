@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Settings.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV) & BlueBlock
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -38,16 +38,17 @@ using System.Windows.Forms;
 using ComponentFactory.Krypton.Toolkit;
 
 using Elucidate.HelperClasses;
-using Elucidate.Logging;
 using Elucidate.Objects;
 using Elucidate.Shared;
-
-using MoreLinq;
+using Exceptionless;
+using NLog;
 
 namespace Elucidate
 {
     public partial class Settings : KryptonForm
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public static event EventHandler ConfigSaved;
 
         // ReSharper disable once UnusedMember.Local
@@ -57,25 +58,25 @@ namespace Elucidate
             handler?.Invoke(null, e);
         }
 
-        private bool _unsavedChangesMade;
+        private bool unsavedChangesMade;
 
-        private ConfigFileHelper _cfg = new ConfigFileHelper();
+        private ConfigFileHelper cfg = new ConfigFileHelper();
 
-        private bool _initializing = true;
+        private bool initializing = true;
 
         private bool UnsavedChangesMade
         {
-            get => _unsavedChangesMade;
+            get => unsavedChangesMade;
             set
             {
-                _unsavedChangesMade = value;
+                unsavedChangesMade = value;
                 errorProvider1.SetError(btnSave, value ? "Changes have been made" : string.Empty);
             }
         }
 
-        private readonly BindingList<AdvancedSettingsHelper> _advSettingsList = new BindingList<AdvancedSettingsHelper>();
+        private readonly BindingList<AdvancedSettingsHelper> advSettingsList = new BindingList<AdvancedSettingsHelper>();
 
-        private int _ttIndex;
+        private int ttIndex;
 
         public Settings()
         {
@@ -90,17 +91,17 @@ namespace Elucidate
             IncludePatterns = new List<string>();
 
             // Add some items to the data source.
-            _advSettingsList.Add(new AdvancedSettingsHelper("Display Output", Properties.Settings.Default.IsDisplayOutputEnabled, "Command output is displayed when enabled."));
-            _advSettingsList.Add(new AdvancedSettingsHelper("Verbose Output", Properties.Settings.Default.UseVerboseMode, "Displays more information while processing."));
-            _advSettingsList.Add(new AdvancedSettingsHelper("Find-By-Name in Sync", Properties.Settings.Default.FindByNameInSync, "Allow to sync using only the file path and not the inode (i.e. source drive / directory),but the files themselves are the same (path/filename, size, ctime), and you do not want to waste time resyncing the files.\nThis option is also used after you have lost a drive, restored the files to a new drive, and you want to do a fast sync.\n\"Forced dangerous operation\" of synching a rewritten disk."));
-            _advSettingsList.Add(new AdvancedSettingsHelper("Hidden files excluded", Properties.Settings.Default.HiddenFilesExcluded, "Option to exclude \"hidden\" files and directories.\nIn Windows files with the HIDDEN attributes, in Unix files starting with \'.\'."));
-            _advSettingsList.Add(new AdvancedSettingsHelper("Debug Log Output", Properties.Settings.Default.DebugLoggingEnabled, "Option to include debug log output for troubleshooting Elucidate."));
+            advSettingsList.Add(new AdvancedSettingsHelper("Display Output", Properties.Settings.Default.IsDisplayOutputEnabled, "Command output is displayed when enabled."));
+            advSettingsList.Add(new AdvancedSettingsHelper("Verbose Output", Properties.Settings.Default.UseVerboseMode, "Displays more information while processing."));
+            advSettingsList.Add(new AdvancedSettingsHelper("Find-By-Name in Sync", Properties.Settings.Default.FindByNameInSync, "Allow to sync using only the file path and not the inode (i.e. source drive / directory),but the files themselves are the same (path/filename, size, ctime), and you do not want to waste time resyncing the files.\nThis option is also used after you have lost a drive, restored the files to a new drive, and you want to do a fast sync.\n\"Forced dangerous operation\" of synching a rewritten disk."));
+            advSettingsList.Add(new AdvancedSettingsHelper("Hidden files excluded", Properties.Settings.Default.HiddenFilesExcluded, "Option to exclude \"hidden\" files and directories.\nIn Windows files with the HIDDEN attributes, in Unix files starting with \'.\'."));
+            advSettingsList.Add(new AdvancedSettingsHelper("Debug Log Output", Properties.Settings.Default.DebugLoggingEnabled, "Option to include debug log output for troubleshooting Elucidate."));
 
             // Binding 'trick'.
-            checkedListBox1.DataSource = _advSettingsList;
+            checkedListBox1.DataSource = advSettingsList;
             checkedListBox1.DisplayMember = "DisplayName";
             int offset = 0;
-            foreach (AdvancedSettingsHelper helper in _advSettingsList)
+            foreach (AdvancedSettingsHelper helper in advSettingsList)
             {
                 checkedListBox1.SetItemCheckState(offset++, helper.CheckState ? CheckState.Checked : CheckState.Unchecked);
             }
@@ -122,7 +123,7 @@ namespace Elucidate
 
             UnsavedChangesMade = false;
 
-            _initializing = false;
+            initializing = false;
 
             Properties.Settings.Default.ConfigFileIsValid = ValidateFormData();
 
@@ -139,13 +140,13 @@ namespace Elucidate
                 UseWaitCursor = true;
                 driveAndDirTreeView.Nodes.Clear();
 
-                Log.Instance.Debug("Create the root node.");
+                Log.Debug("Create the root node.");
                 TreeNode tvwRoot = new TreeNode { Text = Environment.MachineName, ImageIndex = 0 };
                 tvwRoot.SelectedImageIndex = tvwRoot.ImageIndex;
                 driveAndDirTreeView.Nodes.Add(tvwRoot);
-                Log.Instance.Debug("Now we need to add any children to the root node.");
+                Log.Debug("Now we need to add any children to the root node.");
 
-                Log.Instance.Debug("Start with drives if you have to search the entire computer.");
+                Log.Debug("Start with drives if you have to search the entire computer.");
 
                 // retrieve all storage devices
                 List<StorageDevice> storageDevices = StorageUtil.GetStorageDevices();
@@ -158,7 +159,8 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex, "StartTree Threw: ");
+                Log.Fatal(ex, @"StartTree Threw:");
+                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -208,7 +210,7 @@ namespace Elucidate
 
             if (!new DriveInfo(storageDevice.Caption).IsReady)
             {
-                Log.Instance.Info($"The drive {storageDevice.Caption} could not be read.");
+                Log.Info(@"The drive {0} could not be read.", storageDevice.Caption);
             }
             else
             {
@@ -225,7 +227,7 @@ namespace Elucidate
                 return;
             }
 
-            Log.Instance.Trace("Select the clicked node");
+            Log.Trace("Select the clicked node");
 
             driveAndDirTreeView.SelectedNode = driveAndDirTreeView.GetNodeAt(e.X, e.Y);
         }
@@ -237,7 +239,7 @@ namespace Elucidate
                 return;
             }
 
-            Log.Instance.Trace("Select the clicked node");
+            Log.Trace("Select the clicked node");
 
             TreeNode selected = driveAndDirTreeView.GetNodeAt(e.X, e.Y);
 
@@ -253,7 +255,7 @@ namespace Elucidate
         {
             DirectoryInfo shNode = selected.Tag as DirectoryInfo;
 
-            Log.Instance.Trace("Now we need to add any children to the root node.");
+            Log.Trace("Now we need to add any children to the root node.");
 
             string newPath = shNode != null ? shNode.FullName : selected.FullPath;
 
@@ -273,7 +275,7 @@ namespace Elucidate
 
             if (!Directory.Exists(newPath))
             {
-                Log.Instance.Warn($"Data source not added. Path does not exist. Attempted to add [{newPath}]");
+                Log.Warn($"Data source not added. Path does not exist. Attempted to add [{newPath}]");
                 return;
             }
 
@@ -282,14 +284,14 @@ namespace Elucidate
             {
                 string nodeDevice = StorageUtil.GetPathRoot(node.FullPath);
 
-                Log.Instance.Trace($"adding new node, so compare, nodeDevice = {nodeDevice}");
+                Log.Trace($"adding new node, so compare, nodeDevice = {nodeDevice}");
 
                 if (newDevice != nodeDevice)
                 {
                     continue;
                 }
 
-                Log.Instance.Warn($"Data source not added. The path is on a device for an existing path. Attempted to add [{newPath}] which is on the same device as the existing path [{node.FullPath}]");
+                Log.Warn($"Data source not added. The path is on a device for an existing path. Attempted to add [{newPath}] which is on the same device as the existing path [{node.FullPath}]");
 
                 MessageBoxExt.Show(this, $"The path is on a device for an existing path.\n\nExisting device path:\n{node.FullPath}", "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
@@ -312,7 +314,7 @@ namespace Elucidate
         {
             try
             {
-                Log.Instance.Trace("Remove the placeholder node.");
+                Log.Trace("Remove the placeholder node.");
 
                 if (e.Node.Tag is DirectoryInfo)
                 {
@@ -323,7 +325,8 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Fatal(ex);
+                ex.ToExceptionless().Submit();
             }
         }
 
@@ -336,7 +339,7 @@ namespace Elucidate
                     return;
                 }
 
-                Log.Instance.Trace("// Find all the subdirectories under this directory.");
+                Log.Trace("// Find all the subdirectories under this directory.");
 
                 DirectoryInfo[] subDirs = root.GetDirectories().Where(dir => (dir.Attributes & FileAttributes.System) == 0 && (dir.Attributes & FileAttributes.Hidden) == 0).ToArray();
 
@@ -357,7 +360,7 @@ namespace Elucidate
                         Tag = dirInfo
                     };
 
-                    Log.Instance.Trace("If this is a folder item and has children then add a place holder node.");
+                    Log.Trace("If this is a folder item and has children then add a place holder node.");
 
                     try
                     {
@@ -370,7 +373,7 @@ namespace Elucidate
                     }
                     catch (UnauthorizedAccessException uaex)
                     {
-                        Log.Instance.Info(String.Concat("No Access to subdirs in ", tvwChild.Text), uaex);
+                        Log.Info(String.Concat("No Access to subdirs in ", tvwChild.Text), uaex);
                     }
 
                     parentNode.Nodes.Add(tvwChild);
@@ -378,7 +381,8 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex);
+                Log.Fatal(ex);
+                ex.ToExceptionless().Submit();
             }
         }
 
@@ -499,7 +503,7 @@ namespace Elucidate
                 return;
             }
 
-            Log.Instance.Trace("Select the clicked node");
+            Log.Trace("Select the clicked node");
 
             snapShotSourcesTreeView.SelectedNode = snapShotSourcesTreeView.GetNodeAt(e.X, e.Y);
         }
@@ -510,7 +514,7 @@ namespace Elucidate
         {
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
-            // SnapShotsource might be root or folders, so we handle both cases
+            // Snap Shotsource might be root or folders, so we handle both cases
             foreach (TreeNode snapShotSource in snapShotSourcesTreeView.Nodes)
             {
                 pathsOfInterest.Add(new CoveragePath
@@ -532,14 +536,14 @@ namespace Elucidate
 
             if (!string.IsNullOrEmpty(parityLocation6.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation6.Text), PathType = PathTypeEnum.Parity }); }
 
-            return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(d => d.Drive).ToList();
+            return pathsOfInterest.OrderBy(s => s.FullPath).GroupBy(d => d.Drive).Select(d => d.First()).ToList();
         }
 
         private bool ValidateFormData()
         {
             errorProvider1.Clear();
 
-            if (_initializing)
+            if (initializing)
             {
                 return true;
             }
@@ -615,7 +619,7 @@ namespace Elucidate
             {
                 ofd.InitialDirectory = Path.GetFullPath(snapRAIDFileLocation.Text);
 
-                Log.Instance.Info("snapRAIDFileLocation from [{0}]", ofd.InitialDirectory);
+                Log.Info(@"snapRAIDFileLocation from [{0}]", ofd.InitialDirectory);
 
                 ofd.Filter = @"Snap Raid application|SnapRAID.exe";
 
@@ -644,7 +648,7 @@ namespace Elucidate
             {
                 ofd.InitialDirectory = Path.GetFullPath(configFileLocation.Text);
 
-                Log.Instance.Trace("configFileLocation from [{0}]", ofd.InitialDirectory);
+                Log.Trace(@"configFileLocation from [{0}]", ofd.InitialDirectory);
 
                 ofd.Filter = @"Snap Raid Config|*.conf*|All Files|*.*";
 
@@ -681,7 +685,7 @@ namespace Elucidate
 
                 snapShotSourcesTreeView.Nodes.Clear();
 
-                _cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
 
                 if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
                 {
@@ -706,50 +710,50 @@ namespace Elucidate
                 }
                 else
                 {
-                    if (!_cfg.Read())
+                    if (!cfg.Read())
                     {
                         MessageBoxExt.Show(
-                            this, 
-                            "Failed to read the config file.", 
-                            "Config Read Error:", 
-                            MessageBoxButtons.OK, 
+                            this,
+                            "Failed to read the config file.",
+                            "Config Read Error:",
+                            MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
                         return;
                     }
 
-                    IncludePatterns = _cfg.IncludePatterns;
+                    IncludePatterns = cfg.IncludePatterns;
 
-                    numBlockSizeKB.Value = _cfg.BlockSizeKB;
+                    numBlockSizeKB.Value = cfg.BlockSizeKB;
 
-                    _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState = _cfg.Nohidden;
+                    advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState = cfg.Nohidden;
 
-                    numAutoSaveGB.Value = _cfg.AutoSaveGB;
+                    numAutoSaveGB.Value = cfg.AutoSaveGB;
 
-                    foreach (string excludePattern in _cfg.ExcludePatterns.Where(excludePattern => !string.IsNullOrWhiteSpace(excludePattern)))
+                    foreach (string excludePattern in cfg.ExcludePatterns.Where(excludePattern => !string.IsNullOrWhiteSpace(excludePattern)))
                     {
                         exludedFilesView.Rows.Add(excludePattern);
                     }
 
-                    foreach (string source in _cfg.SnapShotSources.Where(source => !string.IsNullOrWhiteSpace(source)))
+                    foreach (string source in cfg.SnapShotSources.Where(source => !string.IsNullOrWhiteSpace(source)))
                     {
                         snapShotSourcesTreeView.Nodes.Add(new TreeNode(source, 7, 7));
                     }
 
-                    parityLocation1.Text = _cfg.ParityFile1;
-                    parityLocation2.Text = _cfg.ParityFile2;
-                    if (!string.IsNullOrWhiteSpace(_cfg.ZParityFile))
+                    parityLocation1.Text = cfg.ParityFile1;
+                    parityLocation2.Text = cfg.ParityFile2;
+                    if (!string.IsNullOrWhiteSpace(cfg.ZParityFile))
                     {
                         labelParity3.Checked = true;
-                        parityLocation3.Text = _cfg.ZParityFile;
+                        parityLocation3.Text = cfg.ZParityFile;
                     }
                     else
                     {
-                        parityLocation3.Text = _cfg.ParityFile3;
+                        parityLocation3.Text = cfg.ParityFile3;
                     }
 
-                    parityLocation4.Text = _cfg.ParityFile4;
-                    parityLocation5.Text = _cfg.ParityFile5;
-                    parityLocation6.Text = _cfg.ParityFile6;
+                    parityLocation4.Text = cfg.ParityFile4;
+                    parityLocation5.Text = cfg.ParityFile5;
+                    parityLocation6.Text = cfg.ParityFile6;
 
                     labelParity3_CheckedChanged(this, EventArgs.Empty); // force disabling fields
                 }
@@ -831,9 +835,7 @@ namespace Elucidate
                     });
                 }
 
-                Util.Dump(pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(s => s.Drive).ToList());
-
-                return pathsOfInterest.OrderBy(s => s.FullPath).DistinctBy(s => s.Drive).ToList();
+                return pathsOfInterest.OrderBy(s => s.FullPath).GroupBy(s => s.Drive).Select(s => s.First()).ToList();
             }
             catch
             {
@@ -850,10 +852,10 @@ namespace Elucidate
                 if (errorProvider1.GetErrorCount() > 0)
                 {
                     MessageBoxExt.Show(
-                        this, 
-                        @"Configuration errors still exist.", 
-                        "Unable to save configuration", 
-                        MessageBoxButtons.OK, 
+                        this,
+                        @"Configuration errors still exist.",
+                        "Unable to save configuration",
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation);
                     return;
                 }
@@ -862,7 +864,7 @@ namespace Elucidate
                 {
                     IncludePatterns = IncludePatterns,
                     BlockSizeKB = (uint)numBlockSizeKB.Value,
-                    Nohidden = _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState,
+                    Nohidden = advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState,
                     AutoSaveGB = (uint)numAutoSaveGB.Value
                 };
 
@@ -974,9 +976,9 @@ namespace Elucidate
                 if (!string.IsNullOrEmpty(writeResult = cfgToSave.Write()))
                 {
                     MessageBoxExt.Show(
-                        this, 
-                        writeResult, 
-                        "Config Write Error:", 
+                        this,
+                        writeResult,
+                        "Config Write Error:",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
@@ -986,14 +988,12 @@ namespace Elucidate
                     Properties.Settings.Default.ConfigFileIsValid = ValidateFormData();
                     Properties.Settings.Default.SnapRAIDFileLocation = snapRAIDFileLocation.Text;
                     Properties.Settings.Default.ConfigFileLocation = configFileLocation.Text;
-                    Properties.Settings.Default.IsDisplayOutputEnabled = _advSettingsList[ConfigFileHelper.CHECKBOX_DISPLAY_OUTPUT_ENABLED].CheckState;
-                    Properties.Settings.Default.UseVerboseMode = _advSettingsList[ConfigFileHelper.CHECKBOX_USE_VERBOSE_MODE].CheckState;
-                    Properties.Settings.Default.FindByNameInSync = _advSettingsList[ConfigFileHelper.CHECKBOX_FIND_BY_NAME_IN_SYNC].CheckState;
-                    Properties.Settings.Default.HiddenFilesExcluded = _advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState;
+                    Properties.Settings.Default.IsDisplayOutputEnabled = advSettingsList[ConfigFileHelper.CHECKBOX_DISPLAY_OUTPUT_ENABLED].CheckState;
+                    Properties.Settings.Default.UseVerboseMode = advSettingsList[ConfigFileHelper.CHECKBOX_USE_VERBOSE_MODE].CheckState;
+                    Properties.Settings.Default.FindByNameInSync = advSettingsList[ConfigFileHelper.CHECKBOX_FIND_BY_NAME_IN_SYNC].CheckState;
+                    Properties.Settings.Default.HiddenFilesExcluded = advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState;
 
-                    Properties.Settings.Default.DebugLoggingEnabled = _advSettingsList[ConfigFileHelper.CHECKBOX_DEBUG_LOGGING_ENABLED].CheckState;
-
-                    Log.SetLogLevel(Log.LogLevels.Debug, Properties.Settings.Default.DebugLoggingEnabled);
+                    Properties.Settings.Default.DebugLoggingEnabled = advSettingsList[ConfigFileHelper.CHECKBOX_DEBUG_LOGGING_ENABLED].CheckState;
 
                     Properties.Settings.Default.Save();
 
@@ -1028,11 +1028,11 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                ExceptionHandler.ReportException(ex, "Failed to save the config file.");
-                Log.Instance.Error("Failed to save the config file.");
+                Log.Fatal(ex, @"Failed to save the config file.");
+                ex.ToExceptionless().Submit();
             }
         }
-        
+
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!UnsavedChangesMade || (e.CloseReason != CloseReason.UserClosing))
@@ -1041,10 +1041,10 @@ namespace Elucidate
             }
 
             if (DialogResult.No == MessageBoxExt.Show(
-                    this, 
+                    this,
                     "You have made changes that have not been saved.\n\nDo you wish to discard and exit?",
-                    "Settings have changed..", 
-                    MessageBoxButtons.YesNo, 
+                    "Settings have changed..",
+                    MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question)
                 )
             {
@@ -1055,7 +1055,7 @@ namespace Elucidate
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             UnsavedChangesMade = true;
-            _advSettingsList[e.Index].CheckState = (e.NewValue == CheckState.Checked);
+            advSettingsList[e.Index].CheckState = (e.NewValue == CheckState.Checked);
         }
 
         private void findParity1_Click(object sender, EventArgs e)
@@ -1106,7 +1106,7 @@ namespace Elucidate
         {
             //Make ttIndex a global integer variable to store index of item currently showing tooltip.
             //Check if current location is different from item having tooltip, if so call method
-            if (_ttIndex != checkedListBox1.IndexFromPoint(e.Location))
+            if (ttIndex != checkedListBox1.IndexFromPoint(e.Location))
             {
                 ShowToolTip();
             }
@@ -1114,18 +1114,18 @@ namespace Elucidate
 
         private void ShowToolTip()
         {
-            _ttIndex = checkedListBox1.IndexFromPoint(checkedListBox1.PointToClient(MousePosition));
+            ttIndex = checkedListBox1.IndexFromPoint(checkedListBox1.PointToClient(MousePosition));
 
-            if (_ttIndex <= -1)
+            if (ttIndex <= -1)
             {
                 return;
             }
 
             PointToClient(MousePosition);
 
-            toolTip1.ToolTipTitle = _advSettingsList[_ttIndex].DisplayName;
+            toolTip1.ToolTipTitle = advSettingsList[ttIndex].DisplayName;
 
-            toolTip1.SetToolTip(checkedListBox1, _advSettingsList[_ttIndex].TootTip);
+            toolTip1.SetToolTip(checkedListBox1, advSettingsList[ttIndex].TootTip);
         }
 
         private void btnGetRecommended_Click(object sender, EventArgs e)
@@ -1190,7 +1190,7 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile1)
+            if (textBox.Text.Trim() == cfg.ParityFile1)
             {
                 return;
             }
@@ -1207,7 +1207,7 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile2)
+            if (textBox.Text.Trim() == cfg.ParityFile2)
             {
                 return;
             }
@@ -1233,7 +1233,7 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == (labelParity3.Checked ? _cfg.ZParityFile : _cfg.ParityFile3))
+            if (textBox.Text.Trim() == (labelParity3.Checked ? cfg.ZParityFile : cfg.ParityFile3))
             {
                 return;
             }
@@ -1259,8 +1259,8 @@ namespace Elucidate
             }
 
             ValidateParityTextBox();
-            
-            if (textBox.Text.Trim() == _cfg.ParityFile4)
+
+            if (textBox.Text.Trim() == cfg.ParityFile4)
             {
                 return;
             }
@@ -1276,7 +1276,7 @@ namespace Elucidate
             toolTip1.SetToolTip(findParity4, tooltip);
             toolTip1.SetToolTip(labelParity4, tooltip);
         }
-        
+
         private void parityLocation5_Leave(object sender, EventArgs e)
         {
             if (!(sender is TextBox textBox))
@@ -1286,7 +1286,7 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile5)
+            if (textBox.Text.Trim() == cfg.ParityFile5)
             {
                 return; // unchanged
             }
@@ -1312,7 +1312,7 @@ namespace Elucidate
 
             ValidateParityTextBox();
 
-            if (textBox.Text.Trim() == _cfg.ParityFile6)
+            if (textBox.Text.Trim() == cfg.ParityFile6)
             {
                 return;
             }
@@ -1328,7 +1328,7 @@ namespace Elucidate
             toolTip1.SetToolTip(findParity6, tooltip);
             toolTip1.SetToolTip(labelParity6, tooltip);
         }
-        
+
         private void ValidateParityTextBox()
         {
             // TODO: Must validate when multiple location per parity are used.

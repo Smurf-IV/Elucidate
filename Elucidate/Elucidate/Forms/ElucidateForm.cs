@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ElucidateForm.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using CommandLine;
@@ -41,15 +41,17 @@ using ComponentFactory.Krypton.Toolkit;
 
 using Elucidate.CmdLine;
 using Elucidate.Controls;
-using Elucidate.HelperClasses;
-using Elucidate.Logging;
 using Elucidate.Shared;
+
+using NLog;
 
 namespace Elucidate
 {
     public sealed partial class ElucidateForm : KryptonForm
     {
-        private readonly ConfigFileHelper _srConfig = new ConfigFileHelper();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+        private readonly ConfigFileHelper srConfig = new ConfigFileHelper();
 
         public ElucidateForm()
         {
@@ -66,8 +68,6 @@ namespace Elucidate
             liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
             recover1.TaskStarted += Recover1_TaskStarted;
             recover1.TaskCompleted += Recover1_TaskCompleted;
-            AppUpdate.NewVersionAvailable += VersionCheck_NewVersionAvailable;
-            AppUpdate.NewVersionInstallReady += VersionCheck_NewVersonInstallReady;
             Settings.ConfigSaved += Settings_ConfigUpdated;
         }
 
@@ -87,13 +87,7 @@ namespace Elucidate
             {
                 Properties.Settings.Default.ConfigFileIsValid = false;
             }
-            TextExtra = AppUpdate.GetInstalledVersion();
-
-            // check for new version and notify if available
-            if (AppUpdate.IsNewVersionAvailable())
-            {
-                MenuItemNewVersionAvailable.Visible = true;
-            }
+            TextExtra = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         private void ElucidateForm_Shown(object sender, EventArgs e)
@@ -103,21 +97,21 @@ namespace Elucidate
                 LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
             }
 
-            EnableIfValid(_srConfig.IsValid);
+            EnableIfValid(srConfig.IsValid);
 
             // display any warnings from the config validation
-            if (_srConfig.IsWarnings)
+            if (srConfig.IsWarnings)
             {
                 MessageBoxExt.Show(
                     this,
-                    $"There are warnings for the configuration file:{Environment.NewLine} - {string.Join(" - ", _srConfig.ConfigWarnings)}",
+                    $"There are warnings for the configuration file:{Environment.NewLine} - {string.Join(" - ", srConfig.ConfigWarnings)}",
                     "Configuration File Warnings",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
             }
             else
             {
-                IEnumerable<string> args = Environment.GetCommandLineArgs().Skip(1);
+                string[] args = Environment.GetCommandLineArgs().Skip(1).ToArray();
                 if (args.Any())
                 {
                     liveRunLogControl1.timerScantilla.Enabled = true; // got to display "helpful" information.
@@ -159,11 +153,11 @@ namespace Elucidate
         private void DisplayStdOptions<TO>(TO sv)
         {
             string commandLineRead = string.Join(" ", Environment.GetCommandLineArgs());
-            Log.Instance.Error("CommandLine Read: [{0}]", commandLineRead);
+            Log.Error(@"CommandLine Read: [{0}]", commandLineRead);
             string commandLine = CommandLine.Parser.Default.FormatCommandLine(sv);
             if (!string.IsNullOrWhiteSpace(commandLine))
             {
-                Log.Instance.Info("CommandLine options Interpreted: [{0}]", commandLine);
+                Log.Info(@"CommandLine options Interpreted: [{0}]", commandLine);
                 liveRunLogControl1.txtAddCommands.Text = commandLine;
                 liveRunLogControl1.checkBoxCommandLineOptions.Checked = true;
                 if ((sv as StdOptions).Verbose)
@@ -177,32 +171,17 @@ namespace Elucidate
         {
             foreach (Error err in errs)
             {
-                Log.Instance.Error(err.Tag);
+                Log.Error(err.Tag);
             }
 
             StringWriter writer = new StringWriter();
             {
                 // Force the output of the help for each verb
                 Parser parser = new Parser(with => with.HelpWriter = writer);
-                parser.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(new string[] { @"--help" });
+                parser.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(new[] { @"--help" });
 
-                Log.Instance.Info(writer.ToString());
+                Log.Info(writer.ToString());
             }
-        }
-
-        private void VersionCheck_NewVersionAvailable(object sender, EventArgs e)
-        {
-            MenuItemNewVersionReadyForInstall.Enabled = false;
-            MenuItemNewVersionReadyForInstall.Visible = false;
-        }
-
-        private void VersionCheck_NewVersonInstallReady(object sender, EventArgs e)
-        {
-            MenuItemNewVersionAvailable.Enabled = false;
-            MenuItemNewVersionAvailable.Visible = false;
-            MenuItemNewVersionReadyForInstall.Enabled = true;
-            MenuItemNewVersionReadyForInstall.Visible = true;
-            AppUpdate.InstallNewVersion();
         }
 
         private void Recover1_TaskStarted(object sender, EventArgs e)
@@ -313,27 +292,10 @@ namespace Elucidate
             }
         }
 
-        private void changeLogLocationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
-            new LogFileLocation().ShowDialog(this);
-        }
-
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(@"https://github.com/BlueBlock/Elucidate/wiki/Documentation");
         }
-
-        private void changeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // ReSharper disable once RedundantAssignment
-            string bookmark = AppUpdate.GetInstalledVersion().Replace(".", "");
-#if DEBUG
-            bookmark = AppUpdate.GetLatestVersionInfo().Version.Replace(".", "");
-#endif
-            Process.Start($"https://github.com/BlueBlock/Elucidate/wiki/ChangeLog#{bookmark}");
-        }
-
         #endregion Menu Handlers
 
         private void btnStatus_Click(object sender, EventArgs e)
@@ -391,36 +353,6 @@ namespace Elucidate
             Properties.Settings.Default.Save();
         }
 
-        private void InstallNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AppUpdate.VersionInfo info = AppUpdate.GetLatestVersionInfo();
-
-            if (info?.DownloadUrl == null)
-            {
-                MessageBoxExt.Show(
-                    this,
-                    @"A problem was encountered trying to download the new version. Please try again later.",
-                    @"New Version Download Failed",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
-            }
-
-            Task.Run(() => AppUpdate.DownloadLatestVersionAsync(info.DownloadUrl));
-        }
-
-        private void ChangeLogOfNewVersionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AppUpdate.VersionInfo info = AppUpdate.GetLatestVersionInfo();
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(info.ChangeLogUrl);
-            Process.Start(processStartInfo);
-        }
-
-        private void MenuItemNewVersionReadyForInstall_Click(object sender, EventArgs e)
-        {
-            AppUpdate.InstallNewVersion();
-        }
-
         private void ForceFullSync_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
@@ -443,14 +375,14 @@ namespace Elucidate
 
         private void LoadConfigFile(string configFile)
         {
-            _srConfig.LoadConfigFile(configFile);
+            srConfig.LoadConfigFile(configFile);
 
-            Properties.Settings.Default.ConfigFileIsValid = _srConfig.IsValid;
+            Properties.Settings.Default.ConfigFileIsValid = srConfig.IsValid;
 
             Properties.Settings.Default.ConfigFileLocation = configFile;
             editSnapRAIDConfigToolStripMenuItem.Enabled = !string.IsNullOrWhiteSpace(configFile);
 
-            if (_srConfig.IsValid)
+            if (srConfig.IsValid)
             {
                 BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(configFile); });
             }
@@ -458,7 +390,7 @@ namespace Elucidate
             {
                 MessageBoxExt.Show(
                     this,
-                    $"The config file is not valid.{Environment.NewLine} - {string.Join($@"{Environment.NewLine} - ", _srConfig.ConfigErrors)}",
+                    $"The config file is not valid.{Environment.NewLine} - {string.Join($@"{Environment.NewLine} - ", srConfig.ConfigErrors)}",
                     "Config File Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -516,42 +448,42 @@ namespace Elucidate
 
             List<string> contentFiles = new List<string>();
 
-            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile1))
+            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile1))
             {
-                parityFiles.Add(_srConfig.ParityFile1);
+                parityFiles.Add(srConfig.ParityFile1);
             }
 
-            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile2))
+            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile2))
             {
-                parityFiles.Add(_srConfig.ParityFile2);
+                parityFiles.Add(srConfig.ParityFile2);
             }
 
-            if (!string.IsNullOrWhiteSpace(_srConfig.ZParityFile))
+            if (!string.IsNullOrWhiteSpace(srConfig.ZParityFile))
             {
-                parityFiles.Add(_srConfig.ZParityFile);
+                parityFiles.Add(srConfig.ZParityFile);
             }
 
-            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile3))
+            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile3))
             {
-                parityFiles.Add(_srConfig.ParityFile3);
+                parityFiles.Add(srConfig.ParityFile3);
             }
 
-            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile4))
+            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile4))
             {
-                parityFiles.Add(_srConfig.ParityFile4);
+                parityFiles.Add(srConfig.ParityFile4);
             }
 
-            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile5))
+            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile5))
             {
-                parityFiles.Add(_srConfig.ParityFile5);
+                parityFiles.Add(srConfig.ParityFile5);
             }
 
-            if (!string.IsNullOrWhiteSpace(_srConfig.ParityFile6))
+            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile6))
             {
-                parityFiles.Add(_srConfig.ParityFile6);
+                parityFiles.Add(srConfig.ParityFile6);
             }
 
-            foreach (string file in _srConfig.ContentFiles)
+            foreach (string file in srConfig.ContentFiles)
             {
                 contentFiles.Add(file);
             }
@@ -599,7 +531,7 @@ namespace Elucidate
                 }
                 catch (Exception ex)
                 {
-                    Log.Instance.Error(ex);
+                    Log.Error(ex);
                 }
             }
         }

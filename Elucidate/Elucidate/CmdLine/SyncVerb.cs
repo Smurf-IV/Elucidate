@@ -66,7 +66,7 @@ namespace Elucidate.CmdLine
                        "This allows to detect when your disks are mounted in the wrong mount points. It's anyway allowed to have " +
                        "a single UUID change with single parity, and more with multiple parity, because it's the normal case of " +
                        "replacing disks after a recovery. This option can be used only with \"sync\", \"check\" or \"fix\".")]
-        public bool ForceUUID { get; set; }
+        public bool ForceUuid { get; set; }
 
         [Option('N', "force-nocopy",
             HelpText = "In \"sync\", \"check\" and \"fix\", disables the copy detection heuristic.Without this option SnapRAID assumes " +

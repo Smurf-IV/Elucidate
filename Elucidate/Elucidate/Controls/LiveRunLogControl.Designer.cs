@@ -38,7 +38,7 @@ namespace Elucidate.Controls
             this.checkBoxDisplayOutput = new System.Windows.Forms.CheckBox();
             this.comboBoxProcessStatus = new System.Windows.Forms.ComboBox();
             this.timerScantilla = new System.Windows.Forms.Timer(this.components);
-            this.scintilla = new ScintillaNET.Scintilla();
+            this.scintilla = new RichTextBox();
             this.txtAddCommands = new System.Windows.Forms.TextBox();
             this.tableLayoutPanelAdditionalCommands = new System.Windows.Forms.TableLayoutPanel();
             this.checkBoxCommandLineOptions = new System.Windows.Forms.CheckBox();
@@ -158,10 +158,8 @@ namespace Elucidate.Controls
             this.scintilla.Location = new System.Drawing.Point(0, 0);
             this.scintilla.Margin = new System.Windows.Forms.Padding(4);
             this.scintilla.Name = "scintilla";
-            this.scintilla.ScrollWidth = 50;
             this.scintilla.Size = new System.Drawing.Size(858, 244);
             this.scintilla.TabIndex = 3;
-            this.scintilla.StyleNeeded += new System.EventHandler<ScintillaNET.StyleNeededEventArgs>(this.scintilla_StyleNeeded);
             // 
             // txtAddCommands
             // 
@@ -236,7 +234,7 @@ namespace Elucidate.Controls
         private System.Windows.Forms.ComboBox comboBoxProcessStatus;
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private System.Windows.Forms.CheckBox runWithoutCaptureMenuItem;
-        private ScintillaNET.Scintilla scintilla;
+        private RichTextBox scintilla;
         internal Timer timerScantilla;
         private Label toolStripStatusLabel1;
         private TableLayoutPanel tableLayoutPanelAdditionalCommands;
