@@ -158,9 +158,6 @@ namespace Elucidate.Controls
             this.liveRunLogControl.AutoSize = true;
             this.liveRunLogControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.liveRunLogControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.liveRunLogControl.HighlightDebugEnabled = false;
-            this.liveRunLogControl.HighlightErrorEnabled = false;
-            this.liveRunLogControl.HighlightWarningEnabled = false;
             this.liveRunLogControl.IsRunning = false;
             this.liveRunLogControl.Location = new System.Drawing.Point(0, 0);
             this.liveRunLogControl.Margin = new System.Windows.Forms.Padding(4);

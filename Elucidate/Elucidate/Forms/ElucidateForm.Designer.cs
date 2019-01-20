@@ -327,9 +327,6 @@ namespace Elucidate
             // 
             this.liveRunLogControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.liveRunLogControl1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.liveRunLogControl1.HighlightDebugEnabled = true;
-            this.liveRunLogControl1.HighlightErrorEnabled = true;
-            this.liveRunLogControl1.HighlightWarningEnabled = true;
             this.liveRunLogControl1.IsRunning = false;
             this.liveRunLogControl1.Location = new System.Drawing.Point(0, 0);
             this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);

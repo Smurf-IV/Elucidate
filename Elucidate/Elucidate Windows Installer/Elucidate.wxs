@@ -78,6 +78,11 @@
                 </File>
             </Component>
             <Component>
+                <File Source="$(var.MgtSource)\FastColoredTextBox.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.FastColoredTextBox" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
                 <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.GroupControls" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
@@ -129,16 +134,6 @@
                 </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\NLog.Windows.Forms.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.NLog.Windows.Forms" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\System.Reflection.TypeExtensions.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Reflection.TypeExtensions" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
                 <File Source="$(var.MgtSource)\TimeSpan2.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.TimeSpan2" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
@@ -151,6 +146,9 @@
             </Component>
             <Component>
                 <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
+            </Component>
+            <Component>
+                <File Source="$(sys.SOURCEFILEDIR)LGPLv3.0.rtf" KeyPath="yes" />    <!--Used for the FastColouredTextBox-->
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\wyDay.Controls\License.txt" KeyPath="yes" />

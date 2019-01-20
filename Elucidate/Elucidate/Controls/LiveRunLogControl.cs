@@ -33,7 +33,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 using Elucidate.wyDay.Controls;
-
+using FastColoredTextBoxNS;
 using NLog;
 
 namespace Elucidate.Controls
@@ -42,10 +42,6 @@ namespace Elucidate.Controls
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public bool HighlightErrorEnabled { get; set; } = true;
-        public bool HighlightWarningEnabled { get; set; } = true;
-        public bool HighlightDebugEnabled { get; set; } = true;
-        
         // ReSharper disable once InconsistentNaming
         private const int MAX_COMMAND_ARG_LENGTH = 7000;
 
@@ -588,6 +584,96 @@ namespace Elucidate.Controls
         private void LiveRunLogControl_Resize(object sender, EventArgs e)
         {
             toolStripProgressBar1.Width = 100;
+        }
+
+        private class LogString
+        {
+            public string LevelUppercase;
+            public string Message;
+        };
+
+        private static readonly Queue<LogString> Logs = new Queue<LogString>();
+
+        // ReSharper disable UnusedMember.Global
+        // This is used by the logging to force all to the output window
+        public static void LogMethod(string levelUppercase, string message)
+        {
+            Logs.Enqueue(new LogString
+            {
+                LevelUppercase = levelUppercase,
+                Message = message + Environment.NewLine
+            });
+        }
+
+        private static readonly TextStyle traceStyle = new TextStyle(Brushes.DarkGray, null, FontStyle.Italic);
+        private static readonly TextStyle debugStyle = new TextStyle(Brushes.Gray, null, FontStyle.Regular);
+        private static readonly TextStyle infoStyle = new TextStyle(Brushes.Black, null, FontStyle.Regular);
+        private static readonly TextStyle warningStyle = new TextStyle(Brushes.Orange, null, FontStyle.Underline);
+        private static readonly TextStyle errorStyle = new TextStyle(Brushes.Red, null, FontStyle.Bold | FontStyle.Italic);
+        private static readonly TextStyle fatalStyle = new TextStyle(Brushes.White, Brushes.Red, FontStyle.Bold);
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!Logs.Any())
+                {
+                    return;
+                }
+                // Now lock in case the timer is overlapping !
+                lock (this)
+                {
+                    //some stuffs for best performance
+                    rtbLiveLog.BeginUpdate();
+                    if (rtbLiveLog.Lines.Count > Properties.Settings.Default.MaxNumberOfRealTimeLines)
+                    {
+                        rtbLiveLog.Clear();
+                    }
+                    //add text with predefined style
+                    //rtbLiveLog.TextSource.CurrentTB = rtbLiveLog;
+                    //read out of the file until the EOF
+                    while (Logs.Any())
+                    {
+                        LogString log = Logs.Dequeue();
+                        Style style = null;
+                        switch (log.LevelUppercase)
+                        {
+                            case "FATAL":
+                                style = fatalStyle;
+                                break;
+
+                            case "ERROR":
+                                style = errorStyle;
+                                break;
+
+                            case "WARN":
+                                style = warningStyle;
+                                break;
+
+                            case "INFO":
+                                style = infoStyle;
+                                break;
+
+                            case "DEBUG":
+                                style = debugStyle;
+                                break;
+
+                            case "TRACE":
+                                style = traceStyle;
+                                break;
+
+                            default:
+                                // Leave it as is
+                                break;
+                        }
+
+                        rtbLiveLog.AppendText(log.Message, style);
+                    }
+                    rtbLiveLog.GoEnd();//scroll to end of the text
+                    rtbLiveLog.EndUpdate();
+                }
+            }
+            catch { }
         }
     }
 }

@@ -44,7 +44,6 @@ using Elucidate.Controls;
 using Elucidate.Shared;
 
 using NLog;
-using NLog.Windows.Forms;
 
 namespace Elucidate
 {
@@ -57,7 +56,7 @@ namespace Elucidate
         public ElucidateForm()
         {
             InitializeComponent();
-            RichTextBoxTarget.ReInitializeAllTextboxes(this);
+            //RichTextBoxTarget.ReInitializeAllTextboxes(this);
 
             if (Properties.Settings.Default.UpdateRequired)
             {
