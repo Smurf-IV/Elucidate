@@ -217,7 +217,6 @@ namespace Elucidate
             catch (Exception ex)
             {
                 Log.Error(ex);
-                ex.ToExceptionless().Submit();
             }
 
             return 0;
@@ -253,7 +252,6 @@ namespace Elucidate
             catch (Exception ex)
             {
                 Log.Error(ex);
-                ex.ToExceptionless().Submit();
                 freeBytesAvailable = 0;
                 pathUsedBytes = 0;
                 rootBytesNotCoveredByPath = 0;

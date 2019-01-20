@@ -44,6 +44,7 @@ using Elucidate.Controls;
 using Elucidate.Shared;
 
 using NLog;
+using NLog.Windows.Forms;
 
 namespace Elucidate
 {
@@ -56,9 +57,11 @@ namespace Elucidate
         public ElucidateForm()
         {
             InitializeComponent();
+            RichTextBoxTarget.ReInitializeAllTextboxes(this);
 
             if (Properties.Settings.Default.UpdateRequired)
             {
+                // Thanks go to http://cs.rthand.com/blogs/blog_with_righthand/archive/2005/12/09/246.aspx
                 Properties.Settings.Default.Upgrade();
                 Properties.Settings.Default.UpdateRequired = false;
                 Properties.Settings.Default.Save();
@@ -68,39 +71,19 @@ namespace Elucidate
             liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
             recover1.TaskStarted += Recover1_TaskStarted;
             recover1.TaskCompleted += Recover1_TaskCompleted;
-            Settings.ConfigSaved += Settings_ConfigUpdated;
-        }
-
-        private void Settings_ConfigUpdated(object sender, EventArgs e)
-        {
-            if (File.Exists(Properties.Settings.Default.ConfigFileLocation))
-            {
-                LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
-            }
-
-            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
         }
 
         private void ElucidateForm_Load(object sender, EventArgs e)
         {
-            if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
-            {
-                Properties.Settings.Default.ConfigFileIsValid = false;
-            }
             TextExtra = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         private void ElucidateForm_Shown(object sender, EventArgs e)
         {
-            if (File.Exists(Properties.Settings.Default.ConfigFileLocation))
-            {
-                LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
-            }
-
-            EnableIfValid(srConfig.IsValid);
+            LoadConfigFile();
 
             // display any warnings from the config validation
-            if (srConfig.IsWarnings)
+            if (srConfig.HasWarnings)
             {
                 MessageBoxExt.Show(
                     this,
@@ -114,8 +97,6 @@ namespace Elucidate
                 string[] args = Environment.GetCommandLineArgs().Skip(1).ToArray();
                 if (args.Any())
                 {
-                    liveRunLogControl1.timerScantilla.Enabled = true; // got to display "helpful" information.
-
                     // https://github.com/commandlineparser/commandline
                     ParserResult<AllOptions> optsResult = Parser.Default.ParseArguments<AllOptions>(args);
                     optsResult.WithParsed<AllOptions>(DisplayStdOptions);
@@ -154,7 +135,7 @@ namespace Elucidate
         {
             string commandLineRead = string.Join(" ", Environment.GetCommandLineArgs());
             Log.Error(@"CommandLine Read: [{0}]", commandLineRead);
-            string commandLine = CommandLine.Parser.Default.FormatCommandLine(sv);
+            string commandLine = Parser.Default.FormatCommandLine(sv);
             if (!string.IsNullOrWhiteSpace(commandLine))
             {
                 Log.Info(@"CommandLine options Interpreted: [{0}]", commandLine);
@@ -229,24 +210,6 @@ namespace Elucidate
         {
             e.Cancel = true;
         }
-
-        // ReSharper disable once InconsistentNaming
-        private const int CS_DROPSHADOW = 0x20000;
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ClassStyle |= CS_DROPSHADOW;
-                return cp;
-            }
-        }
-
-        private void EnableIfValid(bool enabled)
-        {
-            SetCommonButtonsEnabledState(enabled);
-        }
-
         #region Main Menu Toolbar Handlers
 
         private void RefreshDriveDisplayAfterConfigSaved(object sender, FormClosedEventArgs formClosedEventArgs)
@@ -294,7 +257,7 @@ namespace Elucidate
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(@"https://github.com/BlueBlock/Elucidate/wiki/Documentation");
+            Process.Start(@"https://github.com/Smurf-IV/Elucidate/blob/master/docs/Documentation.md");
         }
         #endregion Menu Handlers
 
@@ -359,44 +322,31 @@ namespace Elucidate
             liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.ForceFullSync);
         }
 
-        private void OpenSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LoadConfigFile(bool launchEditSnapRAID = true)
         {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog
-            {
-                Filter = @"Config Files|*.conf*|All files (*.*)|*.*",
-                Title = @"Select a Config File"
-            };
-
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                LoadConfigFile(openFileDialog1.FileName);
-            }
-        }
-
-        private void LoadConfigFile(string configFile)
-        {
-            srConfig.LoadConfigFile(configFile);
+            srConfig.LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
 
             Properties.Settings.Default.ConfigFileIsValid = srConfig.IsValid;
 
-            Properties.Settings.Default.ConfigFileLocation = configFile;
-            editSnapRAIDConfigToolStripMenuItem.Enabled = !string.IsNullOrWhiteSpace(configFile);
+            SetCommonButtonsEnabledState(srConfig.IsValid);
 
             if (srConfig.IsValid)
             {
-                BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(configFile); });
+                BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(Properties.Settings.Default.ConfigFileLocation); });
             }
             else
             {
-                MessageBoxExt.Show(
-                    this,
-                    $"The config file is not valid.{Environment.NewLine} - {string.Join($@"{Environment.NewLine} - ", srConfig.ConfigErrors)}",
-                    "Config File Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                srConfig.ConfigErrors.Add(@"Please Edit the Settings and ensure no errors when saving!");
+                Log.Fatal("The config file is not valid.[{0}]\n{1}", Properties.Settings.Default.ConfigFileLocation,
+                    string.Join($@"{Environment.NewLine} - ", srConfig.ConfigErrors));
+                if (launchEditSnapRAID)
+                {
+                    BeginInvoke((MethodInvoker)delegate
+                   {
+                       EditSnapRAIDConfigToolStripMenuItem_Click(this, EventArgs.Empty);
+                   });
+                }
             }
-
-            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
         }
 
         private void SetElucidateFormTitle(string filePath)
@@ -415,31 +365,18 @@ namespace Elucidate
         {
             if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
 
-            using (Settings settingsForm = new Settings() )
+            using (Settings settingsForm = new Settings())
             {
                 settingsForm.FormClosed += RefreshDriveDisplayAfterConfigSaved;
                 settingsForm.ShowDialog(this);
             }
 
-            EnableIfValid(Properties.Settings.Default.ConfigFileIsValid);
-        }
-
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
+            LoadConfigFile(false);
         }
 
         private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Properties.Settings.Default.Save();
-        }
-
-        private void CloseSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(string.Empty); });
-            Properties.Settings.Default.ConfigFileLocation = string.Empty;
-            Properties.Settings.Default.ConfigFileIsValid = false;
-            EnableIfValid(false);
         }
 
         private void deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click(object sender, EventArgs e)

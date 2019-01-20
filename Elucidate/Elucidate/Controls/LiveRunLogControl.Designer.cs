@@ -30,15 +30,13 @@ namespace Elucidate.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.Label();
             this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.runWithoutCaptureMenuItem = new System.Windows.Forms.CheckBox();
             this.checkBoxDisplayOutput = new System.Windows.Forms.CheckBox();
             this.comboBoxProcessStatus = new System.Windows.Forms.ComboBox();
-            this.timerScantilla = new System.Windows.Forms.Timer(this.components);
-            this.scintilla = new RichTextBox();
+            this.rtbLiveLog = new System.Windows.Forms.RichTextBox();
             this.txtAddCommands = new System.Windows.Forms.TextBox();
             this.tableLayoutPanelAdditionalCommands = new System.Windows.Forms.TableLayoutPanel();
             this.checkBoxCommandLineOptions = new System.Windows.Forms.CheckBox();
@@ -147,19 +145,16 @@ namespace Elucidate.Controls
             this.comboBoxProcessStatus.TabIndex = 3;
             this.comboBoxProcessStatus.SelectedIndexChanged += new System.EventHandler(this.comboBoxProcessStatus_SelectedIndexChanged);
             // 
-            // timerScantilla
+            // rtbLiveLog
             // 
-            this.timerScantilla.Interval = 750;
-            this.timerScantilla.Tick += new System.EventHandler(this.timerScantillaTimer_Tick);
-            // 
-            // scintilla
-            // 
-            this.scintilla.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scintilla.Location = new System.Drawing.Point(0, 0);
-            this.scintilla.Margin = new System.Windows.Forms.Padding(4);
-            this.scintilla.Name = "scintilla";
-            this.scintilla.Size = new System.Drawing.Size(858, 244);
-            this.scintilla.TabIndex = 3;
+            this.rtbLiveLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbLiveLog.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbLiveLog.Location = new System.Drawing.Point(0, 0);
+            this.rtbLiveLog.Margin = new System.Windows.Forms.Padding(4);
+            this.rtbLiveLog.Name = "rtbLiveLog";
+            this.rtbLiveLog.Size = new System.Drawing.Size(858, 244);
+            this.rtbLiveLog.TabIndex = 3;
+            this.rtbLiveLog.Text = "";
             // 
             // txtAddCommands
             // 
@@ -210,7 +205,7 @@ namespace Elucidate.Controls
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.scintilla);
+            this.Controls.Add(this.rtbLiveLog);
             this.Controls.Add(this.tableLayoutPanelAdditionalCommands);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -234,8 +229,7 @@ namespace Elucidate.Controls
         private System.Windows.Forms.ComboBox comboBoxProcessStatus;
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private System.Windows.Forms.CheckBox runWithoutCaptureMenuItem;
-        private RichTextBox scintilla;
-        internal Timer timerScantilla;
+        private RichTextBox rtbLiveLog;
         private Label toolStripStatusLabel1;
         private TableLayoutPanel tableLayoutPanelAdditionalCommands;
         internal TextBox txtAddCommands;

@@ -129,6 +129,11 @@
                 </File>
             </Component>
             <Component>
+                <File Source="$(var.MgtSource)\NLog.Windows.Forms.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.NLog.Windows.Forms" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
                 <File Source="$(var.MgtSource)\System.Reflection.TypeExtensions.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.System.Reflection.TypeExtensions" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>

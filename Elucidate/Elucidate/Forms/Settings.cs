@@ -40,7 +40,7 @@ using ComponentFactory.Krypton.Toolkit;
 using Elucidate.HelperClasses;
 using Elucidate.Objects;
 using Elucidate.Shared;
-using Exceptionless;
+
 using NLog;
 
 namespace Elucidate
@@ -48,15 +48,6 @@ namespace Elucidate
     public partial class Settings : KryptonForm
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
-        public static event EventHandler ConfigSaved;
-
-        // ReSharper disable once UnusedMember.Local
-        private static void OnConfigSaved(EventArgs e)
-        {
-            EventHandler handler = ConfigSaved;
-            handler?.Invoke(null, e);
-        }
 
         private bool unsavedChangesMade;
 
@@ -160,7 +151,6 @@ namespace Elucidate
             catch (Exception ex)
             {
                 Log.Fatal(ex, @"StartTree Threw:");
-                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -210,7 +200,7 @@ namespace Elucidate
 
             if (!new DriveInfo(storageDevice.Caption).IsReady)
             {
-                Log.Info(@"The drive {0} could not be read.", storageDevice.Caption);
+                Log.Info(@"The drive {1}:{0} could not be read.", storageDevice.Caption, storageDevice.DriveType);
             }
             else
             {
@@ -326,7 +316,6 @@ namespace Elucidate
             catch (Exception ex)
             {
                 Log.Fatal(ex);
-                ex.ToExceptionless().Submit();
             }
         }
 
@@ -382,7 +371,6 @@ namespace Elucidate
             catch (Exception ex)
             {
                 Log.Fatal(ex);
-                ex.ToExceptionless().Submit();
             }
         }
 
@@ -514,7 +502,7 @@ namespace Elucidate
         {
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
-            // Snap Shotsource might be root or folders, so we handle both cases
+            // Snap-Shot source might be root or folders, so we handle both cases
             foreach (TreeNode snapShotSource in snapShotSourcesTreeView.Nodes)
             {
                 pathsOfInterest.Add(new CoveragePath
@@ -687,7 +675,7 @@ namespace Elucidate
 
                 cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
 
-                if (!File.Exists(Properties.Settings.Default.ConfigFileLocation))
+                if (!cfg.ConfigFileExists)
                 {
                     if (Properties.Settings.Default.UseWindowsSettings)
                     {
@@ -734,7 +722,7 @@ namespace Elucidate
                         exludedFilesView.Rows.Add(excludePattern);
                     }
 
-                    foreach (string source in cfg.SnapShotSources.Where(source => !string.IsNullOrWhiteSpace(source)))
+                    foreach (string source in cfg.DataParityPaths.Where(source => !string.IsNullOrWhiteSpace(source)))
                     {
                         snapShotSourcesTreeView.Nodes.Add(new TreeNode(source, 7, 7));
                     }
@@ -762,9 +750,10 @@ namespace Elucidate
 
                 driveSpace.StartProcessing(GetPathsOfInterestFromForm());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                KryptonMessageBox.Show(this, @"Failed to read config file.", @"Config File");
+                Log.Error(ex, @"Failed to read config file.");
+                KryptonMessageBox.Show(this, ex.Message, @"Failed to read config file.");
             }
         }
 
@@ -860,17 +849,13 @@ namespace Elucidate
                     return;
                 }
 
-                ConfigFileHelper cfgToSave = new ConfigFileHelper(configFileLocation.Text)
+                ConfigFileHelper cfgToSave = new ConfigFileHelper()
                 {
                     IncludePatterns = IncludePatterns,
                     BlockSizeKB = (uint)numBlockSizeKB.Value,
                     Nohidden = advSettingsList[ConfigFileHelper.CHECKBOX_HIDDEN_FILES_EXCLUDED].CheckState,
                     AutoSaveGB = (uint)numAutoSaveGB.Value
                 };
-
-                cfgToSave.ExcludePatterns.Clear();
-                cfgToSave.SnapShotSources.Clear();
-                cfgToSave.ContentFiles.Clear();
 
                 foreach (DataGridViewRow row in exludedFilesView.Rows)
                 {
@@ -884,7 +869,21 @@ namespace Elucidate
                 foreach (string text in snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text)
                     .Where(text => !string.IsNullOrWhiteSpace(text)))
                 {
-                    cfgToSave.SnapShotSources.Add(text);
+                    string name = string.Empty;
+                    foreach (ConfigFileHelper.SnapShotSource shotSource in cfg.SnapShotSources)
+                    {
+                        if (shotSource.DirSource == text)
+                        {
+                            name = shotSource.Name;
+                            break;
+                        }
+                    }
+
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        name = StorageUtil.GetVolumeGuidPath(text);
+                    }
+                    cfgToSave.SnapShotSources.Add(new ConfigFileHelper.SnapShotSource{Name =  name, DirSource = text});
                     cfgToSave.ContentFiles.Add(text);
                 }
 
@@ -973,7 +972,7 @@ namespace Elucidate
 
                 string writeResult;
 
-                if (!string.IsNullOrEmpty(writeResult = cfgToSave.Write()))
+                if (!string.IsNullOrEmpty(writeResult = cfgToSave.Write(configFileLocation.Text)))
                 {
                     MessageBoxExt.Show(
                         this,
@@ -1021,15 +1020,12 @@ namespace Elucidate
 
                     File.Delete($"{configFileLocation.Text}.temp");
 
-                    driveSpace.RefreshGraph(GetPathsOfInterest());
-
-                    OnConfigSaved(e);
+                    //driveSpace.RefreshGraph(GetPathsOfInterest());
                 }
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex, @"Failed to save the config file.");
-                ex.ToExceptionless().Submit();
             }
         }
 

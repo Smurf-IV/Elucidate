@@ -69,7 +69,7 @@
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFiles64Folder">
                 <Directory Id="INSTALLDIR" Name="Elucidate">
-                    <Directory Id="ClientDIR" Name="Elucidate Client"/>
+                    <Directory Id="ClientDIR" Name="Elucidate GUI"/>
                 </Directory>
             </Directory>
             <Directory Id="ProgramMenuFolder">
@@ -83,7 +83,7 @@
                 <Shortcut Id="Elucidate_Shortcut" Name="Elucidate" Description="Elucidate Management Application" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
                 <Shortcut Id="Elucidate_Start" Name="Elucidate MGT" Directory="StartupFolder" Description="Elucidate Management Application" Target="[ClientDIR]Elucidate.exe" WorkingDirectory="ClientDIR" Icon="InstallerIcon" IconIndex="0" />
                 <util:InternetShortcut Type="url" Id="Home" Name="Elucidate Forum" Target="[ARPHELPLINK]" />
-                <util:InternetShortcut Type="link" Id="Change" Name="Change Log" Target="[ClientDIR]ChangeLog.htm"/>
+                <util:InternetShortcut Type="url" Id="Change" Name="Change Log" Target="https://github.com/Smurf-IV/Elucidate/commits/"/>
                 <util:InternetShortcut Type="url" Id="SnapRAID" Name="SnapRAID Forum" Target="https://sourceforge.net/projects/snapraid/forums/forum/1677233" />
                 <RemoveFolder Id="ProgramMenuDir" On="uninstall"/>
                 <RegistryValue Root="HKCU" Key="Software\Microsoft\Elucidate" Name="installed" Type="integer" Value="1" KeyPath="yes"/>

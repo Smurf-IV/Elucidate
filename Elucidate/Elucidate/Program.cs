@@ -76,8 +76,6 @@ namespace Elucidate
                 try
                 {
                     Log.Fatal(ex, @"Failed to attach unhandled exception handler...");
-                    // https://github.com/exceptionless/Exceptionless.Net/wiki/Sending-Events
-                    ex.ToExceptionless().Submit();
                 }
                 catch
                 {
@@ -87,14 +85,13 @@ namespace Elucidate
             try
             {
                 Log.Info("=====================================================================");
-                Log.Error("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
+                Log.Info("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
                 CheckAndRunSingleApp();
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex, "Exception has not been caught by the rest of the application!");
                 KryptonMessageBox.Show(ex.Message, "Uncaught Exception - Exiting !");
-                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -147,8 +144,6 @@ namespace Elucidate
                 {
                     Log.Fatal(ex, "Exception details");
                     EventLog.WriteEntry(cs, ex.ToString(), EventLogEntryType.Error);
-                    // https://github.com/exceptionless/Exceptionless.Net/wiki/Sending-Events
-                    ex.ToExceptionless().Submit();
                 }
                 else
                 {

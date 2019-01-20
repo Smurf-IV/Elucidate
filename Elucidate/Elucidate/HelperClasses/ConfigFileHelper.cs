@@ -31,8 +31,6 @@ using System.Text;
 using Elucidate.HelperClasses;
 using Elucidate.Objects;
 
-using Exceptionless;
-
 using NLog;
 
 namespace Elucidate
@@ -43,11 +41,11 @@ namespace Elucidate
 
         public bool IsValid => (ConfigFileExists && !ConfigErrors.Any());
 
-        public bool IsErrors => ConfigErrors.Any();
+        public bool HasErrors => ConfigErrors.Any();
 
-        public bool IsWarnings => ConfigWarnings.Any();
+        public bool HasWarnings => ConfigWarnings.Any();
 
-        public string ConfigPath { get; set; }
+        private string ConfigPath { get; set; }
 
         public List<string> ConfigErrors { get; set; }
 
@@ -106,11 +104,18 @@ namespace Elucidate
 
         public string ParityFile6 { get; set; }
 
-        public List<string> ContentFiles { get; private set; }
+        public List<string> ContentFiles { get; }
 
-        public List<string> SnapShotSources { get; private set; }
+        // it is critical for the order to be preserved, d1, d2, d3 etc so we treat the data sources carefully to preserve the order
+        public List<SnapShotSource> SnapShotSources { get; }
 
-        public List<string> ExcludePatterns { get; private set; }
+        public class SnapShotSource
+        {
+            public string Name;
+            public string DirSource;
+        }
+
+        public List<string> ExcludePatterns { get; }
 
         public List<string> IncludePatterns { get; set; }
 
@@ -122,7 +127,7 @@ namespace Elucidate
 
         public bool Nohidden { get; set; }
 
-        public List<string> ParityPaths
+        private List<string> ParityPaths
         {
             get
             {
@@ -144,13 +149,16 @@ namespace Elucidate
         {
             get
             {
-                List<string> allDataParityPaths = SnapShotSources.ToList();
-                allDataParityPaths.AddRange(ParityPaths);
+                List<string> allDataParityPaths = new List<string>(SnapShotSources.Count);
+                foreach (SnapShotSource shotSource in SnapShotSources)
+                {
+                    allDataParityPaths.Add(shotSource.DirSource);
+                }
                 return allDataParityPaths;
             }
         }
 
-        public List<string> ParityContentPaths
+        private List<string> ParityContentPaths
         {
             get
             {
@@ -170,7 +178,7 @@ namespace Elucidate
             ConfigErrors = new List<string>();
             ConfigWarnings = new List<string>();
             ContentFiles = new List<string>();
-            SnapShotSources = new List<string>();
+            SnapShotSources = new List<SnapShotSource>();
             ExcludePatterns = new List<string>();
             IncludePatterns = new List<string>();
             if (!string.IsNullOrEmpty(configPath))
@@ -249,7 +257,7 @@ namespace Elucidate
             }
 
             // RULE: data paths must be accessible
-            foreach (string path in SnapShotSources)
+            foreach (string path in DataParityPaths)
             {
                 // test if path exists
                 if (Directory.Exists(path))
@@ -261,8 +269,8 @@ namespace Elucidate
             }
 
             // RULE: parity devices should be greater or equal to data devices
-            ulong largestDataDevice = StorageUtil.GetDriveSizes(SnapShotSources).Max();
-            ulong smallestParityDevice = StorageUtil.GetDriveSizes(ParityPaths).Min();
+            ulong largestDataDevice = StorageUtil.GetDriveSizes(DataParityPaths).Max();
+            ulong smallestParityDevice = StorageUtil.GetDriveSizes(DataParityPaths).Min();
             if (largestDataDevice > smallestParityDevice)
             {
                 ConfigWarnings.Add("One or more data devices are larger than the smallest parity device. All parity devices should be equal or greater in size than all data devices.");
@@ -271,7 +279,7 @@ namespace Elucidate
             // RULE: blocksize valid value
             if (BlockSizeKB < 1 || BlockSizeKB > 16384)
             {
-                ConfigErrors.Add($"The blocksize value is invalid and must be between 1 and 16384");
+                ConfigErrors.Add(@"The blocksize value is invalid and must be between 1 and 16384");
             }
 
             // RULE: autosave valid value
@@ -380,9 +388,6 @@ namespace Elucidate
 
                 bool isConfigRead = true;
 
-                // it is critical for the order to be preserved, d1, d2, d3 etc so we treat the data sources carefully to preserve the order
-                Dictionary<string, string> dataSources = new Dictionary<string, string>();
-
                 ParityFile1 = string.Empty;
                 ParityFile2 = string.Empty;
                 ZParityFile = string.Empty;
@@ -420,14 +425,18 @@ namespace Elucidate
 
                     // split the line by the first space encountered
                     string[] configItem = lineStart.Split(new[] { ' ' }, 2);
+                    Log.Trace(@"configItem [{0}]", string.Join(" ", configItem));
                     string configItemName = configItem[0] ?? string.Empty;
+                    Log.Trace(@"configItemName [{0}]", configItemName);
                     string configItemValue = (configItem.Length > 1) ? configItem[1] : string.Empty;
+                    Log.Trace(@"configItemValue [{0}]", configItemValue);
 
                     // ignore the line if it is not an a recognized setting
                     if (!validConfigNames.Contains(configItemName))
                     {
                         continue;
                     }
+                    Log.Trace(@"configItemName found in validConfigNames");
 
                     switch (configItemName)
                     {
@@ -478,6 +487,7 @@ namespace Elucidate
                             break;
 
                         case @"disk":
+                        {
                             // get the data name, d1,d2,d3 etc
                             string diskName = configItemValue.Split(' ')[0];
 
@@ -486,11 +496,12 @@ namespace Elucidate
 
                             string diskPath = configItemValue.Substring(diskSplitIndex + 1);
 
+                            // special handling of data sources since order preservation is extremely important
                             if (!string.IsNullOrEmpty(diskName) && !string.IsNullOrEmpty(diskPath))
                             {
-                                dataSources.Add(diskName, diskPath);
+                                SnapShotSources.Add(new SnapShotSource{ Name = diskName, DirSource = diskPath});
                             }
-
+                        }
                             break;
 
                         case @"exclude":
@@ -524,14 +535,6 @@ namespace Elucidate
                     }
                 }
 
-                // special handling of data sources since order preservation is extremely important
-                IOrderedEnumerable<KeyValuePair<string, string>> dataSourcesOrdered = dataSources.OrderBy(a => a.Key);
-
-                foreach (KeyValuePair<string, string> item in dataSourcesOrdered)
-                {
-                    SnapShotSources.Add(item.Value);
-                }
-
                 return isConfigRead;
             }
             catch (Exception ex)
@@ -546,7 +549,7 @@ namespace Elucidate
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
             // SnapShotSource might be root or folders, so we handle both cases
-            foreach (string snapShotSource in SnapShotSources)
+            foreach (string snapShotSource in DataParityPaths)
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
@@ -579,7 +582,7 @@ namespace Elucidate
         /// Writes the config file
         /// </summary>
         /// <returns>an empty string if no exception occurs</returns>
-        public string Write()
+        public string Write(string trgtFileName)
         {
             try
             {
@@ -630,9 +633,10 @@ namespace Elucidate
 
                 // data sources
                 fileContents.Append(Section5);
-                List<string> strSnapShotSources = new List<string>();
-                strSnapShotSources.AddRange(SnapShotSources.Select((t, index) => string.Concat(@"disk d", index + 1, ' ', t)));
-                strSnapShotSources.ForEach(item => fileContents.AppendLine(item));
+                foreach (SnapShotSource shotSource in SnapShotSources)
+                {
+                    fileContents.Append(@"disk ").Append(shotSource.Name).Append(@" ").AppendLine(shotSource.DirSource);
+                }
 
                 // exclude hidden files
                 fileContents.Append(Section6);
@@ -642,13 +646,13 @@ namespace Elucidate
                 fileContents.Append(Section7);
                 if (ExcludePatterns.Any())
                 {
-                    ExcludePatterns.ForEach(item => fileContents.AppendLine(@"exclude " + item));
+                    ExcludePatterns.ForEach(item => fileContents.Append(@"exclude ").AppendLine(item));
                 }
 
                 // include files and directories
                 if (IncludePatterns.Any())
                 {
-                    IncludePatterns.ForEach(item => fileContents.AppendLine(@"include " + item));
+                    IncludePatterns.ForEach(item => fileContents.Append(@"include ").AppendLine(item));
                 }
 
                 // blocksize
@@ -672,19 +676,17 @@ namespace Elucidate
 
                 // smartctl
 
-                File.WriteAllText(ConfigPath, fileContents.ToString());
+                File.WriteAllText(trgtFileName, fileContents.ToString());
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex);
-                // https://github.com/exceptionless/Exceptionless.Net/wiki/Sending-Events
-                ex.ToExceptionless().Submit();
                 return ex.Message;
             }
             return string.Empty;
         }
 
-        private StringBuilder Section1
+        private static StringBuilder Section1
         {
             get
             {
@@ -694,7 +696,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section2
+        private static StringBuilder Section2
         {
             get
             {
@@ -707,7 +709,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section3
+        private static StringBuilder Section3
         {
             get
             {
@@ -724,7 +726,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section4
+        private static StringBuilder Section4
         {
             get
             {
@@ -740,7 +742,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section5
+        private static StringBuilder Section5
         {
             get
             {
@@ -755,7 +757,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section6
+        private static StringBuilder Section6
         {
             get
             {
@@ -766,7 +768,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section7
+        private static StringBuilder Section7
         {
             get
             {
@@ -782,7 +784,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section8
+        private static StringBuilder Section8
         {
             get
             {
@@ -796,7 +798,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section9
+        private static StringBuilder Section9
         {
             get
             {
@@ -811,7 +813,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section10
+        private static StringBuilder Section10
         {
             get
             {
@@ -828,7 +830,7 @@ namespace Elucidate
             }
         }
 
-        private StringBuilder Section11
+        private static StringBuilder Section11
         {
             get
             {

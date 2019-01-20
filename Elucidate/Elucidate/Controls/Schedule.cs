@@ -30,14 +30,11 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-
 using ComponentFactory.Krypton.Toolkit;
-
 using Exceptionless;
-
 using Microsoft.Win32.TaskScheduler;
-
 using NLog;
+using NLog.Targets;
 
 namespace Elucidate.Controls
 {
@@ -168,7 +165,6 @@ namespace Elucidate.Controls
             catch (Exception ex)
             {
                 Log.Fatal(ex);
-                ex.ToExceptionless().Submit();
             }
         }
 
@@ -180,22 +176,22 @@ namespace Elucidate.Controls
             switch (scheduledTaskType)
             {
                 case ScheduledTaskTypeEnum.Sync:
-                    taskCommand = "sync";
-                    taskDescription = $"This task was created by Elucidate. " +
-                                  $"| It performs the SnapRAID Sync command. " +
-                                  $"| SnapRAID config file: {Properties.Settings.Default.ConfigFileLocation}";
+                    taskCommand = @"sync";
+                    taskDescription = @"This task was created by Elucidate. " +
+                                  @"| It performs the SnapRAID Sync command. " +
+                                  $@"| SnapRAID config file: {Properties.Settings.Default.ConfigFileLocation}";
                     break;
                 case ScheduledTaskTypeEnum.Check:
-                    taskCommand = "check";
-                    taskDescription = $"This task was created by Elucidate. " +
-                                  $"| It performs the SnapRAID Check command. " +
-                                  $"| SnapRAID config file: {Properties.Settings.Default.ConfigFileLocation}";
+                    taskCommand = @"check";
+                    taskDescription = @"This task was created by Elucidate. " +
+                                  @"| It performs the SnapRAID Check command. " +
+                                  $@"| SnapRAID config file: {Properties.Settings.Default.ConfigFileLocation}";
                     break;
                 case ScheduledTaskTypeEnum.Diff:
-                    taskCommand = "diff";
-                    taskDescription = $"This task was created by Elucidate. " +
-                                  $"| It performs the SnapRAID Diff command. " +
-                                  $"| SnapRAID config file: {Properties.Settings.Default.ConfigFileLocation}";
+                    taskCommand = @"diff";
+                    taskDescription = @"This task was created by Elucidate. " +
+                                  @"| It performs the SnapRAID Diff command. " +
+                                  $@"| SnapRAID config file: {Properties.Settings.Default.ConfigFileLocation}";
                     break;
                 default:
                     return;
@@ -249,10 +245,14 @@ namespace Elucidate.Controls
 
         private static string AddLoggingToArgsForSchedule(string args, ScheduledTaskTypeEnum scheduledTaskType)
         {
-            string appDir = Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation);
-            string logDir = Properties.Settings.Default.LogFileDirectory;
+            FileTarget fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("file");
+            // Need to set timestamp here if filename uses date. 
+            // For example - filename="${basedir}/logs/${shortdate}/trace.log"
+            LogEventInfo logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            string fileName = fileTarget.FileName.Render(logEventInfo);
+            string logDir = Path.GetDirectoryName(fileName);
             string logFilename = $"<DATETIME> {scheduledTaskType.ToString().ToLower()}.log"; // the powershell script will replace <DATETIME>
-            string newArgs = $@"--log ""{appDir}\{logDir}\{logFilename}"" {args}";
+            string newArgs = $@"--log ""{logDir}\{logFilename}"" {args}";
             return newArgs;
         }
 
@@ -338,7 +338,6 @@ namespace Elucidate.Controls
             catch (Exception ex)
             {
                 Log.Fatal(ex);
-                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -392,7 +391,6 @@ namespace Elucidate.Controls
             catch (Exception ex)
             {
                 Log.Fatal(ex);
-                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -443,7 +441,6 @@ namespace Elucidate.Controls
             catch (Exception ex)
             {
                 Log.Fatal(ex);
-                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -491,7 +488,6 @@ namespace Elucidate.Controls
             catch (Exception ex)
             {
                 Log.Fatal(ex);
-                ex.ToExceptionless().Submit();
             }
             finally
             {
@@ -539,7 +535,6 @@ namespace Elucidate.Controls
             catch (Exception ex)
             {
                 Log.Fatal(ex);
-                ex.ToExceptionless().Submit();
             }
             finally
             {

@@ -12,7 +12,7 @@ namespace Elucidate.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -104,18 +104,6 @@ namespace Elucidate.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool FindByNameInSync {
-            get {
-                return ((bool)(this["FindByNameInSync"]));
-            }
-            set {
-                this["FindByNameInSync"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool HiddenFilesExcluded {
             get {
                 return ((bool)(this["HiddenFilesExcluded"]));
@@ -134,18 +122,6 @@ namespace Elucidate.Properties {
             }
             set {
                 this["WindowLocation"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool UpdateRequired {
-            get {
-                return ((bool)(this["UpdateRequired"]));
-            }
-            set {
-                this["UpdateRequired"] = value;
             }
         }
         
@@ -175,42 +151,6 @@ namespace Elucidate.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DebugLoggingEnabled {
-            get {
-                return ((bool)(this["DebugLoggingEnabled"]));
-            }
-            set {
-                this["DebugLoggingEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("logs")]
-        public string LogFileDirectory {
-            get {
-                return ((string)(this["LogFileDirectory"]));
-            }
-            set {
-                this["LogFileDirectory"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string NLogFileLocation {
-            get {
-                return ((string)(this["NLogFileLocation"]));
-            }
-            set {
-                this["NLogFileLocation"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IsDisplayOutputEnabled {
             get {
@@ -218,6 +158,42 @@ namespace Elucidate.Properties {
             }
             set {
                 this["IsDisplayOutputEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpdateRequired {
+            get {
+                return ((bool)(this["UpdateRequired"]));
+            }
+            set {
+                this["UpdateRequired"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool FindByNameInSync {
+            get {
+                return ((bool)(this["FindByNameInSync"]));
+            }
+            set {
+                this["FindByNameInSync"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DebugLoggingEnabled {
+            get {
+                return ((bool)(this["DebugLoggingEnabled"]));
+            }
+            set {
+                this["DebugLoggingEnabled"] = value;
             }
         }
     }

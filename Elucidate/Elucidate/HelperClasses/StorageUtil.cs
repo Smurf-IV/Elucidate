@@ -72,7 +72,7 @@ namespace Elucidate.HelperClasses
             return Path.GetFullPath(root);
         }
 
-        static string GetVolumeGuidPath(string mountPoint)
+        public static string GetVolumeGuidPath(string mountPoint)
         {
             StringBuilder sb = new StringBuilder(50);
             GetVolumeNameForVolumeMountPoint(mountPoint, sb, 50);

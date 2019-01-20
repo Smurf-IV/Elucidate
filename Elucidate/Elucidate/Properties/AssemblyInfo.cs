@@ -27,6 +27,8 @@
 #endregion
 
 using System.Reflection;
+using System.Resources;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -35,7 +37,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Elucidate")]
 [assembly: AssemblyDescription("SnapRAID GUI Implementation")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("BlueBlock & Smurf-IV")]
+[assembly: AssemblyCompany("Smurf-IV & BlueBlock")]
 [assembly: AssemblyProduct("Elucidate")]
 [assembly: AssemblyCopyright("Copyright © BlueBlock 2018 / Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2019")]
 [assembly: AssemblyTrademark("")]
@@ -56,5 +58,23 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2019.1.677.19")]
-[assembly: AssemblyFileVersion("19.1.677.19")]
+[assembly: AssemblyVersion("2019.1.721.20")]
+[assembly: AssemblyFileVersion("19.1.721.20")]
+[assembly: NeutralResourcesLanguage("en-US")]
+// TODO: Add more relevant hints here
+[assembly: Dependency("System", LoadHint.Always)]
+[assembly: Dependency("System.Drawing", LoadHint.Always)]
+[assembly: Dependency("using System.Diagnostics", LoadHint.Always)]
+[assembly: Dependency("using System.IO", LoadHint.Always)]
+[assembly: Dependency("System.Threading", LoadHint.Always)]
+[assembly: Dependency("System.Windows.Forms", LoadHint.Always)]
+[assembly: Dependency("System.Windows.Forms.DataVisualization", LoadHint.Always)]
+[assembly: Dependency("System.Xml", LoadHint.Always)]
+
+[assembly: Dependency("ComponentFactory.Krypton.Toolkit", LoadHint.Always)]
+[assembly: Dependency("ComponentFactory.Krypton.Navigator", LoadHint.Always)]
+[assembly: Dependency("ComponentFactory.Krypton.Workspace", LoadHint.Always)]
+[assembly: Dependency("Exceptionless", LoadHint.Always)]
+[assembly: Dependency("Exceptionless.Nlog", LoadHint.Always)]
+[assembly: Dependency("Exceptionless.Windows", LoadHint.Always)]
+[assembly: Dependency("NLog", LoadHint.Always)]

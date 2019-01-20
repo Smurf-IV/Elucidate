@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="DriveSpaceDisplay.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV) & BlueBlock
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -39,10 +39,7 @@ using ByteSizeLib;
 using Elucidate.HelperClasses;
 using Elucidate.Objects;
 
-using Exceptionless;
-
 using NLog;
-
 
 namespace Elucidate.Controls
 {
@@ -54,7 +51,7 @@ namespace Elucidate.Controls
         private readonly List<ChartDataItem> chartDataList = new List<ChartDataItem>();
         private bool percentage;
         private string oldTooltip;
-        
+
         private class ChartDataItem
         {
             public PathTypeEnum PathType { get; set; }
@@ -130,8 +127,6 @@ namespace Elucidate.Controls
             catch (Exception ex)
             {
                 Log.Error(ex);
-                // https://github.com/exceptionless/Exceptionless.Net/wiki/Sending-Events
-                ex.ToExceptionless().Submit();
             }
         }
 
@@ -157,7 +152,7 @@ namespace Elucidate.Controls
                 Thread.Sleep(50);
                 Application.DoEvents();
             }
-            
+
             FillExpectedLayoutWorker.RunWorkerAsync(pathsOfInterest);
         }
 
@@ -167,11 +162,11 @@ namespace Elucidate.Controls
 
             ClearExpectedList();
 
-            if (!(e.Argument is List<CoveragePath> pathsOfInterest) 
-                || !pathsOfInterest.Any() 
+            if (!(e.Argument is List<CoveragePath> pathsOfInterest)
+                || !pathsOfInterest.Any()
                 || !(sender is BackgroundWorker worker))
             {
-                Log.Error("Worker, or arguments are null, exiting.");
+                Log.Warn("FillExpectedLayoutWorker, or arguments are null, exiting.");
                 return;
             }
 
@@ -193,7 +188,7 @@ namespace Elucidate.Controls
 
             AddDataToDisplay();
         }
-        
+
         private void FillExpectedLayoutWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             UseWaitCursor = false;
@@ -321,7 +316,7 @@ namespace Elucidate.Controls
 
                 string itemPathDisplay = item.PathType == PathTypeEnum.Parity
                     ? StorageUtil.GetPathRoot(item.Path)
-                    : item.Path; 
+                    : item.Path;
 
                 chart1.Series[0].Points.AddXY(itemPathDisplay, points[0]);
                 chart1.Series[1].Points.AddXY(itemPathDisplay, points[1]);
@@ -367,20 +362,7 @@ namespace Elucidate.Controls
 
         private void DriveSpaceDisplay_Load(object sender, EventArgs e)
         {
-            try
-            {
-                snapRaidConfig = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
-
-                snapRaidConfig.Read();
-
-                List<CoveragePath> pathsOfInterest = GetPathsOfInterest();
-
-                StartProcessing(pathsOfInterest);
-            }
-            catch
-            {
-                // ignored
-            }
+            RefreshGraph();
         }
 
         private List<CoveragePath> GetPathsOfInterest()
@@ -388,7 +370,7 @@ namespace Elucidate.Controls
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
             // SnapShotSource might be root or folders, so we handle both cases
-            foreach (string snapShotSource in snapRaidConfig.SnapShotSources)
+            foreach (string snapShotSource in snapRaidConfig.DataParityPaths)
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
@@ -400,43 +382,43 @@ namespace Elucidate.Controls
             if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile1))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile1), PathType = PathTypeEnum.Parity});
+                { FullPath = Path.GetFullPath(snapRaidConfig.ParityFile1), PathType = PathTypeEnum.Parity });
             }
 
             if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile2))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile2), PathType = PathTypeEnum.Parity});
+                { FullPath = Path.GetFullPath(snapRaidConfig.ParityFile2), PathType = PathTypeEnum.Parity });
             }
 
             if (!string.IsNullOrWhiteSpace(snapRaidConfig.ZParityFile))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    { FullPath = Path.GetFullPath(snapRaidConfig.ZParityFile), PathType = PathTypeEnum.Parity });
+                { FullPath = Path.GetFullPath(snapRaidConfig.ZParityFile), PathType = PathTypeEnum.Parity });
             }
 
             if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile3))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile3), PathType = PathTypeEnum.Parity});
+                { FullPath = Path.GetFullPath(snapRaidConfig.ParityFile3), PathType = PathTypeEnum.Parity });
             }
 
             if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile4))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile4), PathType = PathTypeEnum.Parity});
+                { FullPath = Path.GetFullPath(snapRaidConfig.ParityFile4), PathType = PathTypeEnum.Parity });
             }
 
             if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile5))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile5), PathType = PathTypeEnum.Parity});
+                { FullPath = Path.GetFullPath(snapRaidConfig.ParityFile5), PathType = PathTypeEnum.Parity });
             }
 
             if (!string.IsNullOrWhiteSpace(snapRaidConfig.ParityFile6))
             {
                 pathsOfInterest.Add(new CoveragePath
-                    {FullPath = Path.GetFullPath(snapRaidConfig.ParityFile6), PathType = PathTypeEnum.Parity});
+                { FullPath = Path.GetFullPath(snapRaidConfig.ParityFile6), PathType = PathTypeEnum.Parity });
             }
 
             return pathsOfInterest.OrderBy(s => s.FullPath).GroupBy(d => d.Drive).Select(d => d.First()).ToList();

@@ -1,4 +1,28 @@
-﻿using System;
+﻿#region Copyright (C)
+//  <copyright file="ConfigFileHelper.cs" company="Smurf-IV">
+//
+//  Copyright (C) 2018-2019 Smurf-IV & BlueBlock
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 2 of the License, or
+//   any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program. If not, see http://www.gnu.org/licenses/.
+//  </copyright>
+//  <summary>
+//  Url: https://github.com/Smurf-IV/Elucidate
+//  Email: https://github.com/Smurf-IV
+//  </summary>
+#endregion Copyright (C)
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -8,10 +32,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-using Elucidate.Logging;
 using Elucidate.wyDay.Controls;
-
-using Exceptionless;
 
 using NLog;
 
@@ -52,8 +73,6 @@ namespace Elucidate.Controls
             toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
 
             IsRunning = false;
-
-            timerScantilla.Enabled = false;
 
             comboBoxProcessStatus.Enabled = false;
 
@@ -131,8 +150,6 @@ namespace Elucidate.Controls
 
             CommandTypeRunning = commandToRun;
 
-            timerScantilla.Enabled = true;
-            
             StringBuilder command = new StringBuilder();
 
             switch (commandToRun)
@@ -238,7 +255,6 @@ namespace Elucidate.Controls
             {
                 lastError = "Thread closing abnormally";
                 Log.Fatal(ex, @"Failed to attach unhandled exception handler...");
-                ex.ToExceptionless().Submit();
                 throw;
             }
         }
@@ -449,45 +465,6 @@ namespace Elucidate.Controls
 
         }
 
-        private void timerScantillaTimer_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                // Now lock in case the timer is overlapping !
-                lock (this)
-                {
-                    if (!ActionWorker.IsBusy)
-                    {
-                        timerScantilla.Enabled = false;
-                    }
-
-                    if (!LiveLog.LogQueueCommon.Any())
-                    {
-                        return;
-                    }
-
-                    while (LiveLog.LogQueueCommon.Any())
-                    {
-                        LiveLog.LogString log = LiveLog.LogQueueCommon.Dequeue();
-
-                        if (!checkBoxDisplayOutput.Checked)
-                        {
-                            continue;
-                        }
-
-                        scintilla.AppendText($"{log.Message}{Environment.NewLine}");
-                    }
-
-                    // TODO: scroll to the bottom
-
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-
         private void ReadStandardError(ThreadObject threadObject)
         {
             try
@@ -511,7 +488,6 @@ namespace Elucidate.Controls
             catch (Exception ex)
             {
                 Log.Fatal(ex, lastError);
-                ex.ToExceptionless().Submit();
             }
 
             mreErrorDone.Set();
@@ -548,7 +524,6 @@ namespace Elucidate.Controls
             catch (Exception ex)
             {
                 Log.Fatal(ex, @"ReadStandardOutput: ");
-                ex.ToExceptionless().Submit();
             }
 
             mreOutputDone.Set();

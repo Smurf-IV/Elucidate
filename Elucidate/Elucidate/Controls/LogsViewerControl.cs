@@ -65,12 +65,6 @@ namespace Elucidate.Controls
             logFileWatcher.Deleted += LogFileWatcher_OnChanged;
             //_logFileWatcher.Renamed += new RenamedEventHandler(LogFileWatcher_OnChanged);
             logFileWatcher.EnableRaisingEvents = false;
-            FileTarget fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("file");
-            // Need to set timestamp here if filename uses date. 
-            // For example - filename="${basedir}/logs/${shortdate}/trace.log"
-            LogEventInfo logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
-            string fileName = fileTarget.FileName.Render(logEventInfo);
-            selectedDirectoryTitle = Path.GetDirectoryName(fileName);
         }
 
         private void LogFileWatcher_OnChanged(object sender, FileSystemEventArgs e)
@@ -100,7 +94,12 @@ namespace Elucidate.Controls
         {
             if (selectedDirectoryTitle == null)
             {
-                selectedDirectoryTitle = this.selectedDirectoryTitle;
+                FileTarget fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("file");
+                // Need to set timestamp here if filename uses date. 
+                // For example - filename="${basedir}/logs/${shortdate}/trace.log"
+                LogEventInfo logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+                string fileName = fileTarget.FileName.Render(logEventInfo);
+                selectedDirectoryTitle = Path.GetDirectoryName(fileName);
             }
             else
             {
@@ -125,13 +124,13 @@ namespace Elucidate.Controls
                     errorSearchTerm = snapraidErrorSearchTerm;
                     warningSearchTerm = snapraidWarningSearchTerm;
                     LexerToUse = LexerNameEnum.ScanRaid;
-                    logSourcePath = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
+                    logSourcePath = selectedDirectoryTitle;
                     if (!Directory.Exists(logSourcePath))
                     {
                         return;
                     }
 
-                    logFileWatcher.Path = $@"{Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)}\{Properties.Settings.Default.LogFileDirectory}\";
+                    logFileWatcher.Path = selectedDirectoryTitle;
                     logFileWatcher.Filter = "*.log";
                     logFileWatcher.EnableRaisingEvents = true;
                     break;

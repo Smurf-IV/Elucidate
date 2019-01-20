@@ -64,14 +64,9 @@ namespace Elucidate
             this.logViewToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openSnapRAIDConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editSnapRAIDConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeSnapRAIDConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dangerZoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.tabCoveragePage.SuspendLayout();
             this.tabSchedulePage.SuspendLayout();
@@ -93,7 +88,7 @@ namespace Elucidate
             this.statusStrip1.Margin = new System.Windows.Forms.Padding(0);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(3);
-            this.statusStrip1.Size = new System.Drawing.Size(994, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(945, 26);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -135,7 +130,7 @@ namespace Elucidate
             this.btnDiff.Name = "btnDiff";
             this.btnDiff.Rounding = 14F;
             this.btnDiff.Size = new System.Drawing.Size(300, 64);
-            this.btnDiff.Subscript = "    Lists all the files have been modified\r\n    since the last \"sync\" command.";
+            this.btnDiff.Subscript = "Lists all the files have been modified\r\nsince the last \"sync\" command.";
             this.btnDiff.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDiff.TabIndex = 3;
             this.btnDiff.Text = "Differences";
@@ -177,7 +172,7 @@ namespace Elucidate
             // 
             // btnStatus
             // 
-            this.btnStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStatus.ButtonDepress = ((sbyte)(2));
             this.btnStatus.Enabled = false;
@@ -194,7 +189,7 @@ namespace Elucidate
             this.btnStatus.Name = "btnStatus";
             this.btnStatus.Rounding = 14F;
             this.btnStatus.Size = new System.Drawing.Size(300, 64);
-            this.btnStatus.Subscript = "    A summary of the state of the disk\r\n    array, upto the last sync time.";
+            this.btnStatus.Subscript = "A summary of the state of the disk\r\narray, upto the last sync time.";
             this.btnStatus.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStatus.TabIndex = 7;
             this.btnStatus.Text = "Status";
@@ -205,7 +200,7 @@ namespace Elucidate
             // 
             // btnFix
             // 
-            this.btnFix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnFix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnFix.ButtonDepress = ((sbyte)(2));
             this.btnFix.Enabled = false;
@@ -234,7 +229,7 @@ namespace Elucidate
             // 
             // btnDupFinder
             // 
-            this.btnDupFinder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnDupFinder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDupFinder.ButtonDepress = ((sbyte)(2));
             this.btnDupFinder.Enabled = false;
@@ -251,8 +246,8 @@ namespace Elucidate
             this.btnDupFinder.Name = "btnDupFinder";
             this.btnDupFinder.Rounding = 14F;
             this.btnDupFinder.Size = new System.Drawing.Size(300, 64);
-            this.btnDupFinder.Subscript = "Lists all the duplicate files. Two files are\r\nassumed equal if their hashes are m" +
-    "atching. ";
+            this.btnDupFinder.Subscript = "Lists all the duplicate files. Two files are\r\nassumed equal if their hashes match" +
+    ". ";
             this.btnDupFinder.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDupFinder.TabIndex = 10;
             this.btnDupFinder.Text = "Duplicate Finder";
@@ -269,7 +264,7 @@ namespace Elucidate
             this.driveSpace.Location = new System.Drawing.Point(3, 3);
             this.driveSpace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.driveSpace.Name = "driveSpace";
-            this.driveSpace.Size = new System.Drawing.Size(980, 470);
+            this.driveSpace.Size = new System.Drawing.Size(931, 470);
             this.driveSpace.TabIndex = 0;
             this.toolTip1.SetToolTip(this.driveSpace, "Not real time, only updates when shown.");
             // 
@@ -279,7 +274,7 @@ namespace Elucidate
             this.tabCoveragePage.Location = new System.Drawing.Point(4, 28);
             this.tabCoveragePage.Name = "tabCoveragePage";
             this.tabCoveragePage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCoveragePage.Size = new System.Drawing.Size(986, 476);
+            this.tabCoveragePage.Size = new System.Drawing.Size(937, 476);
             this.tabCoveragePage.TabIndex = 4;
             this.tabCoveragePage.Text = "  Coverage  ";
             this.tabCoveragePage.UseVisualStyleBackColor = true;
@@ -290,7 +285,7 @@ namespace Elucidate
             this.tabSchedulePage.Location = new System.Drawing.Point(4, 28);
             this.tabSchedulePage.Name = "tabSchedulePage";
             this.tabSchedulePage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSchedulePage.Size = new System.Drawing.Size(986, 476);
+            this.tabSchedulePage.Size = new System.Drawing.Size(937, 476);
             this.tabSchedulePage.TabIndex = 5;
             this.tabSchedulePage.Text = "Schedule";
             this.tabSchedulePage.UseVisualStyleBackColor = true;
@@ -303,7 +298,7 @@ namespace Elucidate
             this.SchedulePageScheduleControl.Location = new System.Drawing.Point(3, 3);
             this.SchedulePageScheduleControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SchedulePageScheduleControl.Name = "SchedulePageScheduleControl";
-            this.SchedulePageScheduleControl.Size = new System.Drawing.Size(980, 470);
+            this.SchedulePageScheduleControl.Size = new System.Drawing.Size(931, 470);
             this.SchedulePageScheduleControl.TabIndex = 0;
             // 
             // tabCommonOperations
@@ -315,7 +310,7 @@ namespace Elucidate
             this.tabCommonOperations.Location = new System.Drawing.Point(4, 28);
             this.tabCommonOperations.Margin = new System.Windows.Forms.Padding(0);
             this.tabCommonOperations.Name = "tabCommonOperations";
-            this.tabCommonOperations.Size = new System.Drawing.Size(986, 476);
+            this.tabCommonOperations.Size = new System.Drawing.Size(937, 476);
             this.tabCommonOperations.TabIndex = 0;
             this.tabCommonOperations.Text = "  Common SnapRaid  ";
             // 
@@ -325,7 +320,7 @@ namespace Elucidate
             this.logPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logPanel.Location = new System.Drawing.Point(0, 210);
             this.logPanel.Name = "logPanel";
-            this.logPanel.Size = new System.Drawing.Size(984, 264);
+            this.logPanel.Size = new System.Drawing.Size(935, 264);
             this.logPanel.TabIndex = 11;
             // 
             // liveRunLogControl1
@@ -339,7 +334,7 @@ namespace Elucidate
             this.liveRunLogControl1.Location = new System.Drawing.Point(0, 0);
             this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.liveRunLogControl1.Name = "liveRunLogControl1";
-            this.liveRunLogControl1.Size = new System.Drawing.Size(984, 264);
+            this.liveRunLogControl1.Size = new System.Drawing.Size(935, 264);
             this.liveRunLogControl1.TabIndex = 0;
             // 
             // commandPanel
@@ -357,12 +352,12 @@ namespace Elucidate
             this.commandPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.commandPanel.Location = new System.Drawing.Point(0, 0);
             this.commandPanel.Name = "commandPanel";
-            this.commandPanel.Size = new System.Drawing.Size(984, 210);
+            this.commandPanel.Size = new System.Drawing.Size(935, 210);
             this.commandPanel.TabIndex = 9;
             // 
             // btnSync
             // 
-            this.btnSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSync.ButtonDepress = ((sbyte)(2));
             this.btnSync.Enabled = false;
@@ -390,7 +385,7 @@ namespace Elucidate
             // 
             // btnCheck
             // 
-            this.btnCheck.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnCheck.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCheck.ButtonDepress = ((sbyte)(2));
             this.btnCheck.Enabled = false;
@@ -417,7 +412,7 @@ namespace Elucidate
             // 
             // btnForceFullSync
             // 
-            this.btnForceFullSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.btnForceFullSync.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnForceFullSync.ButtonDepress = ((sbyte)(2));
             this.btnForceFullSync.Enabled = false;
@@ -458,7 +453,7 @@ namespace Elucidate
             this.tabControl.Name = "tabControl";
             this.tabControl.Padding = new System.Drawing.Point(0, 0);
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(994, 508);
+            this.tabControl.Size = new System.Drawing.Size(945, 508);
             this.tabControl.TabIndex = 4;
             this.tabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl_Selected);
             this.tabControl.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Deselecting);
@@ -470,7 +465,7 @@ namespace Elucidate
             this.tabLogs.Location = new System.Drawing.Point(4, 28);
             this.tabLogs.Name = "tabLogs";
             this.tabLogs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLogs.Size = new System.Drawing.Size(986, 476);
+            this.tabLogs.Size = new System.Drawing.Size(937, 476);
             this.tabLogs.TabIndex = 6;
             this.tabLogs.Text = "Logs";
             // 
@@ -483,7 +478,7 @@ namespace Elucidate
             this.logsViewerControl.Location = new System.Drawing.Point(3, 3);
             this.logsViewerControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.logsViewerControl.Name = "logsViewerControl";
-            this.logsViewerControl.Size = new System.Drawing.Size(980, 470);
+            this.logsViewerControl.Size = new System.Drawing.Size(931, 470);
             this.logsViewerControl.TabIndex = 0;
             // 
             // tabRecoverFiles
@@ -492,7 +487,7 @@ namespace Elucidate
             this.tabRecoverFiles.Location = new System.Drawing.Point(4, 28);
             this.tabRecoverFiles.Name = "tabRecoverFiles";
             this.tabRecoverFiles.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRecoverFiles.Size = new System.Drawing.Size(986, 476);
+            this.tabRecoverFiles.Size = new System.Drawing.Size(937, 476);
             this.tabRecoverFiles.TabIndex = 7;
             this.tabRecoverFiles.Text = "Recover Files";
             this.tabRecoverFiles.UseVisualStyleBackColor = true;
@@ -503,13 +498,14 @@ namespace Elucidate
             this.recover1.Location = new System.Drawing.Point(3, 3);
             this.recover1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.recover1.Name = "recover1";
-            this.recover1.Size = new System.Drawing.Size(980, 470);
+            this.recover1.Size = new System.Drawing.Size(931, 470);
             this.recover1.TabIndex = 0;
             // 
             // logViewToolStripMenuItem
             // 
             this.logViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.logViewToolStripMenuItem1});
+            this.logViewToolStripMenuItem.Enabled = false;
             this.logViewToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logViewToolStripMenuItem.Name = "logViewToolStripMenuItem";
             this.logViewToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.L)));
@@ -548,69 +544,15 @@ namespace Elucidate
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(994, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(945, 27);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openSnapRAIDConfigToolStripMenuItem,
-            this.editSnapRAIDConfigToolStripMenuItem,
-            this.closeSnapRAIDConfigToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F)));
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(45, 23);
-            this.fileToolStripMenuItem.Text = "&File";
-            // 
-            // openSnapRAIDConfigToolStripMenuItem
-            // 
-            this.openSnapRAIDConfigToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openSnapRAIDConfigToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.openSnapRAIDConfigToolStripMenuItem.Name = "openSnapRAIDConfigToolStripMenuItem";
-            this.openSnapRAIDConfigToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.openSnapRAIDConfigToolStripMenuItem.Text = "&Open SnapRAID Config";
-            this.openSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.OpenSnapRAIDConfigToolStripMenuItem_Click);
-            // 
-            // editSnapRAIDConfigToolStripMenuItem
-            // 
-            this.editSnapRAIDConfigToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editSnapRAIDConfigToolStripMenuItem.Name = "editSnapRAIDConfigToolStripMenuItem";
-            this.editSnapRAIDConfigToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this.editSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.editSnapRAIDConfigToolStripMenuItem.Text = "&Edit SnapRAID Config";
-            this.editSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.EditSnapRAIDConfigToolStripMenuItem_Click);
-            // 
-            // closeSnapRAIDConfigToolStripMenuItem
-            // 
-            this.closeSnapRAIDConfigToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.closeSnapRAIDConfigToolStripMenuItem.Name = "closeSnapRAIDConfigToolStripMenuItem";
-            this.closeSnapRAIDConfigToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.closeSnapRAIDConfigToolStripMenuItem.Text = "Close SnapRAID Config";
-            this.closeSnapRAIDConfigToolStripMenuItem.Click += new System.EventHandler(this.CloseSnapRAIDConfigToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(274, 6);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(277, 22);
-            this.exitToolStripMenuItem.Text = "E&xit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // dangerZoneToolStripMenuItem
             // 
             this.dangerZoneToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem});
+            this.dangerZoneToolStripMenuItem.Enabled = false;
             this.dangerZoneToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dangerZoneToolStripMenuItem.Name = "dangerZoneToolStripMenuItem";
             this.dangerZoneToolStripMenuItem.Size = new System.Drawing.Size(112, 23);
@@ -620,17 +562,26 @@ namespace Elucidate
             // 
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Name = "deleteAllSnapRAIDRaidFilesToolStripMenuItem";
-            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
+            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Text = "Delete all SnapRAID files";
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.ToolTipText = "This will delete all parity and content files defined in the current configuratio" +
     "n file.";
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Click += new System.EventHandler(this.deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click);
             // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(77, 23);
+            this.fileToolStripMenuItem.Text = "&Settings";
+            this.fileToolStripMenuItem.Click += new System.EventHandler(this.EditSnapRAIDConfigToolStripMenuItem_Click);
+            // 
             // ElucidateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(994, 561);
+            this.ClientSize = new System.Drawing.Size(945, 561);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -699,14 +650,9 @@ namespace Elucidate
         private ToolStripMenuItem helpToolStripMenuItem;
         private MenuStrip menuStrip1;
         private CommandLinkButton btnForceFullSync;
-        private ToolStripMenuItem fileToolStripMenuItem;
-        private ToolStripMenuItem openSnapRAIDConfigToolStripMenuItem;
-        private ToolStripMenuItem editSnapRAIDConfigToolStripMenuItem;
-        private ToolStripMenuItem exitToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator1;
-        private ToolStripMenuItem closeSnapRAIDConfigToolStripMenuItem;
         private ToolStripMenuItem dangerZoneToolStripMenuItem;
         private ToolStripMenuItem deleteAllSnapRAIDRaidFilesToolStripMenuItem;
+        private ToolStripMenuItem fileToolStripMenuItem;
     }
 }
 
