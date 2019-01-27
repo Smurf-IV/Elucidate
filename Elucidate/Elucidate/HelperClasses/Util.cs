@@ -222,42 +222,6 @@ namespace Elucidate
             return 0;
         }
 
-        public static void ParityPathFreeBytesAvailable(string path, 
-            out ulong freeBytesAvailable, 
-            out ulong pathUsedBytes,
-            out ulong rootBytesNotCoveredByPath)
-        {
-            try
-            {
-                // get stats for parity location since it might be a folder
-
-                string rootPath = StorageUtil.NormalizePath(StorageUtil.GetPathRoot(path));
-
-                // ReSharper disable once UnusedVariable
-                GetDiskFreeSpaceExW(rootPath, out freeBytesAvailable, out ulong totalBytes, out ulong num3);
-
-                ulong driveUsedBytes = totalBytes - freeBytesAvailable;
-
-                pathUsedBytes = File.Exists(path) ? (ulong) new FileInfo(path).Length : 0;
-
-                if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/softlink path or file
-                {
-                    rootBytesNotCoveredByPath = driveUsedBytes - pathUsedBytes;
-                }
-                else
-                {
-                    rootBytesNotCoveredByPath = driveUsedBytes;
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex);
-                freeBytesAvailable = 0;
-                pathUsedBytes = 0;
-                rootBytesNotCoveredByPath = 0;
-            }
-        }
-
         public static void SourcePathFreeBytesAvailable(
             string path, 
             out ulong freeBytesAvailable, 

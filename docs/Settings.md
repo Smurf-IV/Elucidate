@@ -1,4 +1,4 @@
->![](Settings_Settings.png)
+![](../images/Settings_Settings.png)
 ## Index
 * [Elucidate user settings](#elucidate-user-settings)
 	* [SnapRAID Application location](#snapraid-application-location)
@@ -21,11 +21,11 @@ The settings that are stored are on a per user basis, so the settings can be mad
 _Each area of the window does have tool-tips as a brief reminder of their function._
 
 #### SnapRAID Application location
-![](Settings_SnapRaid Exe.png) 
+![](../images/Settings_SnapRaid Exe.png) 
 This is required by the GUI application in order to be able to drive it with the commands that you require. It needs to be visible to this current user of this GUI. The Error icon will exist if this application cannot be found.
 
 #### SnapRAID config file location
-![](Settings_SnapRaid Config.png)
+![](../images/Settings_SnapRaid Config.png)
 This is required by the SnapRAID application in order to be able to drive it with the commands that you require. It needs to be visible to this current user of this GUI. The Error icon will exist if this application cannot be found.
 
 #### "Use verbose"
@@ -57,7 +57,7 @@ This area shows the currently protected locations. Do not change the order of th
 SnapRAID has 2 types of snapshot protection, These are _similar_ to Raid 5 and Raid 6, in that 5 protects a single source being removed / corrupted, and Raid 6 protects against 2. These location need to be on different media, and need to be on a disk that can accept large files (i.e. not FAT). The space available @ these locations needs to greater than the largest are that needs to be protected.
 
 #### Filter Exclusions
-<![](../images/Settings_ExcludedPatterns.png) 
+![](../images/Settings_ExcludedPatterns.png) 
 * SnapRAID currently (1.4 onwards) 
 	* Ignores in sync System and Hidden files in Windows
 	* Files without read permission are ignored in sync.

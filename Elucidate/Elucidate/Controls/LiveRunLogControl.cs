@@ -33,7 +33,9 @@ using System.Threading;
 using System.Windows.Forms;
 
 using Elucidate.wyDay.Controls;
+
 using FastColoredTextBoxNS;
+
 using NLog;
 
 namespace Elucidate.Controls

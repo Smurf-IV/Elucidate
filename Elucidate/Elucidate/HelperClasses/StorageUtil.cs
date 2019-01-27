@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
@@ -110,15 +111,15 @@ namespace Elucidate.HelperClasses
             return 0;
         }
 
-        public static List<ulong> GetDriveSizes(List<string> paths)
+        public static List<ulong> GetDriveSizes(ReadOnlyCollection<ConfigFileHelper.SnapShotSource> sources)
         {
             List<ulong> deviceSizes = new List<ulong>();
 
-            foreach (string path in paths.Where(p => !string.IsNullOrEmpty(p)))
+            foreach (ConfigFileHelper.SnapShotSource source in sources)
             {
                 try
                 {
-                    string pathRoot = GetPathRoot(path);
+                    string pathRoot = GetPathRoot(source.DirSource);
                     deviceSizes.Add(GetDriveSize(pathRoot));
                 }
                 catch (Exception ex)
@@ -224,18 +225,18 @@ namespace Elucidate.HelperClasses
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern bool GetVolumeNameForVolumeMountPoint(
             string lpszFileName,
-            [Out] StringBuilder lpszVollpszVolumePathNameumeName,
+            [Out] StringBuilder lpszVollpszVolumePathName,
             int cchBufferLength);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool GetVolumePathName(
+        private static extern bool GetVolumePathName(
             string lpszVolumeMountPoint,
             [Out] StringBuilder lpszVolumeName,
             int cchBufferLength);
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
+        private static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
             out ulong lpFreeBytesAvailable,
             out ulong lpTotalNumberOfBytes,
             out ulong lpTotalNumberOfFreeBytes);

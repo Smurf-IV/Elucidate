@@ -58,23 +58,27 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2019.1.740.20")]
-[assembly: AssemblyFileVersion("19.1.740.20")]
+[assembly: AssemblyVersion("2019.1.773.27")]
+[assembly: AssemblyFileVersion("19.1.773.27")]
 [assembly: NeutralResourcesLanguage("en-US")]
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]
+[assembly: Dependency("System.Collections.Generic", LoadHint.Always)]
+[assembly: Dependency("System.Diagnostics", LoadHint.Always)]
 [assembly: Dependency("System.Drawing", LoadHint.Always)]
-[assembly: Dependency("using System.Diagnostics", LoadHint.Always)]
-[assembly: Dependency("using System.IO", LoadHint.Always)]
+[assembly: Dependency("System.IO", LoadHint.Always)]
+[assembly: Dependency("System.Linq", LoadHint.Always)]
+[assembly: Dependency("System.Text", LoadHint.Always)]
 [assembly: Dependency("System.Threading", LoadHint.Always)]
 [assembly: Dependency("System.Windows.Forms", LoadHint.Always)]
-[assembly: Dependency("System.Windows.Forms.DataVisualization", LoadHint.Always)]
 [assembly: Dependency("System.Xml", LoadHint.Always)]
 
+[assembly: Dependency("Alphaleonis.Win32.Filesystem", LoadHint.Always)]
+[assembly: Dependency("CommandLine", LoadHint.Always)]
 [assembly: Dependency("ComponentFactory.Krypton.Toolkit", LoadHint.Always)]
 [assembly: Dependency("ComponentFactory.Krypton.Navigator", LoadHint.Always)]
-[assembly: Dependency("ComponentFactory.Krypton.Workspace", LoadHint.Always)]
 [assembly: Dependency("Exceptionless", LoadHint.Always)]
 [assembly: Dependency("Exceptionless.Nlog", LoadHint.Always)]
 [assembly: Dependency("Exceptionless.Windows", LoadHint.Always)]
+[assembly: Dependency("FastColoredTextBoxNS", LoadHint.Always)]
 [assembly: Dependency("NLog", LoadHint.Always)]

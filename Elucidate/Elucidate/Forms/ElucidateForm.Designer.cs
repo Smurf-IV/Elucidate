@@ -44,7 +44,6 @@ namespace Elucidate
             this.btnStatus = new Elucidate.Shared.CommandLinkButton();
             this.btnFix = new Elucidate.Shared.CommandLinkButton();
             this.btnDupFinder = new Elucidate.Shared.CommandLinkButton();
-            this.driveSpace = new Elucidate.Controls.DriveSpaceDisplay();
             this.tabCoveragePage = new System.Windows.Forms.TabPage();
             this.tabSchedulePage = new System.Windows.Forms.TabPage();
             this.SchedulePageScheduleControl = new Elucidate.Controls.Schedule();
@@ -64,9 +63,10 @@ namespace Elucidate
             this.logViewToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dangerZoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.driveSpaceDisplay = new Elucidate.Controls.ProtectedDrivesDisplay();
             this.statusStrip1.SuspendLayout();
             this.tabCoveragePage.SuspendLayout();
             this.tabSchedulePage.SuspendLayout();
@@ -257,20 +257,9 @@ namespace Elucidate
             this.btnDupFinder.UseVisualStyleBackColor = true;
             this.btnDupFinder.Click += new System.EventHandler(this.DupFinder_Click);
             // 
-            // driveSpace
-            // 
-            this.driveSpace.Cursor = System.Windows.Forms.Cursors.Default;
-            this.driveSpace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.driveSpace.Location = new System.Drawing.Point(3, 3);
-            this.driveSpace.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.driveSpace.Name = "driveSpace";
-            this.driveSpace.Size = new System.Drawing.Size(931, 470);
-            this.driveSpace.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.driveSpace, "Not real time, only updates when shown.");
-            // 
             // tabCoveragePage
             // 
-            this.tabCoveragePage.Controls.Add(this.driveSpace);
+            this.tabCoveragePage.Controls.Add(this.driveSpaceDisplay);
             this.tabCoveragePage.Location = new System.Drawing.Point(4, 28);
             this.tabCoveragePage.Name = "tabCoveragePage";
             this.tabCoveragePage.Padding = new System.Windows.Forms.Padding(3);
@@ -514,7 +503,7 @@ namespace Elucidate
             // 
             this.logViewToolStripMenuItem1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logViewToolStripMenuItem1.Name = "logViewToolStripMenuItem1";
-            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.logViewToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
             this.logViewToolStripMenuItem1.Text = "&View...";
             this.logViewToolStripMenuItem1.Click += new System.EventHandler(this.logViewToolStripMenuItem_Click);
             // 
@@ -545,6 +534,15 @@ namespace Elucidate
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(77, 23);
+            this.fileToolStripMenuItem.Text = "&Settings";
+            this.fileToolStripMenuItem.Click += new System.EventHandler(this.EditSnapRAIDConfigToolStripMenuItem_Click);
+            // 
             // dangerZoneToolStripMenuItem
             // 
             this.dangerZoneToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -565,14 +563,14 @@ namespace Elucidate
     "n file.";
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Click += new System.EventHandler(this.deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click);
             // 
-            // fileToolStripMenuItem
+            // driveSpaceDisplay
             // 
-            this.fileToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(77, 23);
-            this.fileToolStripMenuItem.Text = "&Settings";
-            this.fileToolStripMenuItem.Click += new System.EventHandler(this.EditSnapRAIDConfigToolStripMenuItem_Click);
+            this.driveSpaceDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.driveSpaceDisplay.Location = new System.Drawing.Point(3, 3);
+            this.driveSpaceDisplay.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.driveSpaceDisplay.Name = "driveSpaceDisplay";
+            this.driveSpaceDisplay.Size = new System.Drawing.Size(931, 470);
+            this.driveSpaceDisplay.TabIndex = 0;
             // 
             // ElucidateForm
             // 
@@ -636,7 +634,6 @@ namespace Elucidate
         private TabPage tabSchedulePage;
         private Controls.Schedule SchedulePageScheduleControl;
         private TabPage tabCoveragePage;
-        private DriveSpaceDisplay driveSpace;
         private TabPage tabLogs;
         private Controls.LogsViewerControl logsViewerControl;
         private Controls.LiveRunLogControl liveRunLogControl1;
@@ -650,6 +647,7 @@ namespace Elucidate
         private ToolStripMenuItem dangerZoneToolStripMenuItem;
         private ToolStripMenuItem deleteAllSnapRAIDRaidFilesToolStripMenuItem;
         private ToolStripMenuItem fileToolStripMenuItem;
+        private ProtectedDrivesDisplay driveSpaceDisplay;
     }
 }
 

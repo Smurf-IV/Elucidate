@@ -58,6 +58,8 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
   - [x] New Commands
   - [x] Log view(s) diagnostics
   - [ ] Mailer with status reports
+  - [ ] Document Test steps
+  - [ ] Add to Documentation / Update Images
 
 - [ ] Phase IV (Recovery and new SnapRAID Commands ?) 
   - [ ] Extended Help with recovery â€“ interactive guides etc.. 
@@ -74,7 +76,7 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
 
 ![Starting View](Images/starting_view.png)
 
-![Schedule View](Images/schedule_view.png)
+![Settings Form](Images/Settings_Form.png)
 
 
 ## Can you Help ? 

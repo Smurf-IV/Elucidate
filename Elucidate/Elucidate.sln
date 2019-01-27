@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToggleSwitch", "ToggleSwitc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4387A76F-EC87-446D-A4A7-E7D96F8DD9A3}"
 	ProjectSection(SolutionItems) = preProject
+		..\license.md = ..\license.md
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
@@ -23,17 +24,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{4CD46F4E-0
 	ProjectSection(SolutionItems) = preProject
 		..\docs\Documentation.md = ..\docs\Documentation.md
 		..\docs\Settings.md = ..\docs\Settings.md
+		..\docs\Testing.md = ..\docs\Testing.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{95AFED29-C452-4F6F-9FB1-6E6E072EA4F4}"
 	ProjectSection(SolutionItems) = preProject
+		..\Images\Coverage_Tab.PNG = ..\Images\Coverage_Tab.PNG
 		..\Images\Documentation_Layout With Scheduling.png = ..\Images\Documentation_Layout With Scheduling.png
 		..\Images\Documentation_Real Time Log.png = ..\Images\Documentation_Real Time Log.png
 		..\Images\Documentation_Speed of 1.7 x64.png = ..\Images\Documentation_Speed of 1.7 x64.png
-		..\Images\Home_CoverageTab_2.png = ..\Images\Home_CoverageTab_2.png
 		..\Images\Home_Layout With Scheduling.png = ..\Images\Home_Layout With Scheduling.png
-		..\Images\Pictures_CoverageTab_2.png = ..\Images\Pictures_CoverageTab_2.png
-		..\Images\Pictures_CoverageTab_thumb.png = ..\Images\Pictures_CoverageTab_thumb.png
 		..\Images\Pictures_Fragmentation.png = ..\Images\Pictures_Fragmentation.png
 		..\Images\Pictures_Mono Version.png = ..\Images\Pictures_Mono Version.png
 		..\Images\Pictures_Space In Path.png = ..\Images\Pictures_Space In Path.png
@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{95AFED
 		..\Images\schedule_view.png = ..\Images\schedule_view.png
 		..\Images\Settings_ErrorProviders.png = ..\Images\Settings_ErrorProviders.png
 		..\Images\Settings_ExcludedPatterns.png = ..\Images\Settings_ExcludedPatterns.png
+		..\Images\Settings_Form.PNG = ..\Images\Settings_Form.PNG
 		..\Images\Settings_ParityFileLocs.png = ..\Images\Settings_ParityFileLocs.png
 		..\Images\Settings_ResetToLast.png = ..\Images\Settings_ResetToLast.png
 		..\Images\Settings_SaveSettings.png = ..\Images\Settings_SaveSettings.png

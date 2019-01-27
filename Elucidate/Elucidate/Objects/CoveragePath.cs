@@ -28,8 +28,6 @@
 
 using System.IO;
 
-using Elucidate.HelperClasses;
-
 namespace Elucidate.Objects
 {
     public enum PathTypeEnum { Source, Content, Parity }
@@ -38,9 +36,9 @@ namespace Elucidate.Objects
     {
         public string FullPath { get; set; }
 
-        public PathTypeEnum PathType { get; set; }
+        public string Name { get; set; }
 
-        public string Drive => StorageUtil.GetPathRoot(FullPath);
+        public PathTypeEnum PathType { get; set; }
 
         public string DirectoryPath
         {

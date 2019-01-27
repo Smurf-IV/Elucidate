@@ -37,11 +37,9 @@ namespace Elucidate
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
             this.DRUnit_NewNode = new System.Windows.Forms.ToolStripMenuItem();
-            this.driveAndDirTreeView = new Elucidate.Shared.BufferedTreeView();
             this.drivesAndDirectoriesMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.refreshStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.advancedSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListUnits = new System.Windows.Forms.ImageList(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.findParity6 = new System.Windows.Forms.Button();
@@ -64,10 +62,10 @@ namespace Elucidate
             this.findParity1 = new System.Windows.Forms.Button();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.snapShotSourcesTreeView = new Elucidate.Shared.BufferedTreeView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.driveSpace = new Elucidate.Controls.DriveSpaceDisplay();
+            this.snapShotSources = new Elucidate.Controls.ProtectedDrivesDisplay();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.driveAndDirTreeView = new Elucidate.Shared.BufferedTreeView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnGetRecommended = new System.Windows.Forms.Button();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
@@ -116,43 +114,21 @@ namespace Elucidate
             this.DRUnit_NewNode.Text = "&New Node";
             this.DRUnit_NewNode.Click += new System.EventHandler(this.DRUnit_NewNode_MenuItem_Click);
             // 
-            // driveAndDirTreeView
-            // 
-            this.driveAndDirTreeView.ContextMenuStrip = this.drivesAndDirectoriesMenu;
-            this.driveAndDirTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.helpProvider1.SetHelpKeyword(this.driveAndDirTreeView, "PossibleProtection");
-            this.helpProvider1.SetHelpNavigator(this.driveAndDirTreeView, System.Windows.Forms.HelpNavigator.Topic);
-            this.driveAndDirTreeView.ImageIndex = 0;
-            this.driveAndDirTreeView.ImageList = this.imageListUnits;
-            this.driveAndDirTreeView.LabelEdit = true;
-            this.driveAndDirTreeView.Location = new System.Drawing.Point(0, 0);
-            this.driveAndDirTreeView.Name = "driveAndDirTreeView";
-            this.driveAndDirTreeView.SelectedImageIndex = 0;
-            this.helpProvider1.SetShowHelp(this.driveAndDirTreeView, true);
-            this.driveAndDirTreeView.Size = new System.Drawing.Size(320, 468);
-            this.driveAndDirTreeView.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.driveAndDirTreeView, "Possible sources to be used for snap shot.");
-            this.driveAndDirTreeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.driveAndDirTreeView_BeforeExpand);
-            this.driveAndDirTreeView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseDoubleClick);
-            this.driveAndDirTreeView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseDown);
-            this.driveAndDirTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseUp);
-            // 
             // drivesAndDirectoriesMenu
             // 
-            this.drivesAndDirectoriesMenu.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.drivesAndDirectoriesMenu.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.drivesAndDirectoriesMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.drivesAndDirectoriesMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.refreshStripMenuItem,
-            this.toolStripMenuItem1,
-            this.advancedSettingsToolStripMenuItem});
+            this.toolStripMenuItem1});
             this.drivesAndDirectoriesMenu.Name = "unitsMenu";
-            this.drivesAndDirectoriesMenu.Size = new System.Drawing.Size(198, 70);
+            this.drivesAndDirectoriesMenu.Size = new System.Drawing.Size(191, 70);
             // 
             // refreshStripMenuItem
             // 
             this.refreshStripMenuItem.Name = "refreshStripMenuItem";
             this.refreshStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshStripMenuItem.Size = new System.Drawing.Size(197, 22);
+            this.refreshStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.refreshStripMenuItem.Text = "&Refresh";
             this.refreshStripMenuItem.Click += new System.EventHandler(this.refreshStripMenuItem_Click);
             // 
@@ -160,14 +136,9 @@ namespace Elucidate
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.Insert;
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(197, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(190, 22);
             this.toolStripMenuItem1.Text = "&Add To Snap shot";
-            // 
-            // advancedSettingsToolStripMenuItem
-            // 
-            this.advancedSettingsToolStripMenuItem.Name = "advancedSettingsToolStripMenuItem";
-            this.advancedSettingsToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
-            this.advancedSettingsToolStripMenuItem.Text = "Advanced &Settings...";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // imageListUnits
             // 
@@ -475,37 +446,9 @@ namespace Elucidate
             this.SnapShotsMenu.Name = "unitsMenu";
             this.SnapShotsMenu.Size = new System.Drawing.Size(156, 48);
             // 
-            // snapShotSourcesTreeView
-            // 
-            this.snapShotSourcesTreeView.AllowDrop = true;
-            this.snapShotSourcesTreeView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.snapShotSourcesTreeView.ContextMenuStrip = this.SnapShotsMenu;
-            this.snapShotSourcesTreeView.Dock = System.Windows.Forms.DockStyle.Left;
-            this.snapShotSourcesTreeView.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.helpProvider1.SetHelpKeyword(this.snapShotSourcesTreeView, "SnapShotSources");
-            this.helpProvider1.SetHelpNavigator(this.snapShotSourcesTreeView, System.Windows.Forms.HelpNavigator.Topic);
-            this.snapShotSourcesTreeView.ImageIndex = 0;
-            this.snapShotSourcesTreeView.ImageList = this.imageListUnits;
-            this.snapShotSourcesTreeView.Location = new System.Drawing.Point(3, 18);
-            this.snapShotSourcesTreeView.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.snapShotSourcesTreeView.Name = "snapShotSourcesTreeView";
-            this.snapShotSourcesTreeView.SelectedImageIndex = 0;
-            this.helpProvider1.SetShowHelp(this.snapShotSourcesTreeView, true);
-            this.snapShotSourcesTreeView.ShowLines = false;
-            this.snapShotSourcesTreeView.ShowPlusMinus = false;
-            this.snapShotSourcesTreeView.ShowRootLines = false;
-            this.snapShotSourcesTreeView.Size = new System.Drawing.Size(228, 322);
-            this.snapShotSourcesTreeView.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.snapShotSourcesTreeView, "The order is relevant for parity, do not change it!");
-            this.snapShotSourcesTreeView.DragDrop += new System.Windows.Forms.DragEventHandler(this.snapShotSourcesTreeView_DragDrop);
-            this.snapShotSourcesTreeView.DragOver += new System.Windows.Forms.DragEventHandler(this.snapShotSourcesTreeView_DragOver);
-            this.snapShotSourcesTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.snapShotSourcesTreeView_KeyUp);
-            this.snapShotSourcesTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.snapShotSourcesTreeView_MouseUp);
-            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.driveSpace);
-            this.groupBox1.Controls.Add(this.snapShotSourcesTreeView);
+            this.groupBox1.Controls.Add(this.snapShotSources);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 9F);
             this.groupBox1.ForeColor = System.Drawing.SystemColors.WindowText;
@@ -516,16 +459,16 @@ namespace Elucidate
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "S&nap Shot Sources";
             // 
-            // driveSpace
+            // snapShotSources
             // 
-            this.driveSpace.Cursor = System.Windows.Forms.Cursors.Default;
-            this.driveSpace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.driveSpace.Location = new System.Drawing.Point(231, 18);
-            this.driveSpace.Margin = new System.Windows.Forms.Padding(0);
-            this.driveSpace.Name = "driveSpace";
-            this.driveSpace.Size = new System.Drawing.Size(370, 322);
-            this.driveSpace.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.driveSpace, "Shows the space in GBytes");
+            this.snapShotSources.AllowDrop = true;
+            this.snapShotSources.ContextMenuStrip = this.SnapShotsMenu;
+            this.snapShotSources.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.snapShotSources.Location = new System.Drawing.Point(3, 18);
+            this.snapShotSources.Name = "snapShotSources";
+            this.snapShotSources.Size = new System.Drawing.Size(598, 322);
+            this.snapShotSources.TabIndex = 0;
+            this.snapShotSources.KeyUp += new System.Windows.Forms.KeyEventHandler(this.snapShotSourcesTreeView_KeyUp);
             // 
             // splitContainer1
             // 
@@ -547,6 +490,27 @@ namespace Elucidate
             this.splitContainer1.SplitterDistance = 320;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 4;
+            // 
+            // driveAndDirTreeView
+            // 
+            this.driveAndDirTreeView.ContextMenuStrip = this.drivesAndDirectoriesMenu;
+            this.driveAndDirTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.helpProvider1.SetHelpKeyword(this.driveAndDirTreeView, "PossibleProtection");
+            this.helpProvider1.SetHelpNavigator(this.driveAndDirTreeView, System.Windows.Forms.HelpNavigator.Topic);
+            this.driveAndDirTreeView.ImageIndex = 0;
+            this.driveAndDirTreeView.ImageList = this.imageListUnits;
+            this.driveAndDirTreeView.LabelEdit = true;
+            this.driveAndDirTreeView.Location = new System.Drawing.Point(0, 0);
+            this.driveAndDirTreeView.Name = "driveAndDirTreeView";
+            this.driveAndDirTreeView.SelectedImageIndex = 0;
+            this.helpProvider1.SetShowHelp(this.driveAndDirTreeView, true);
+            this.driveAndDirTreeView.Size = new System.Drawing.Size(320, 468);
+            this.driveAndDirTreeView.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.driveAndDirTreeView, "Possible sources to be used for snap shot.");
+            this.driveAndDirTreeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.driveAndDirTreeView_BeforeExpand);
+            this.driveAndDirTreeView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseDoubleClick);
+            this.driveAndDirTreeView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseDown);
+            this.driveAndDirTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseUp);
             // 
             // groupBox3
             // 
@@ -908,13 +872,11 @@ namespace Elucidate
       private ContextMenuStrip drivesAndDirectoriesMenu;
       private ToolStripMenuItem refreshStripMenuItem;
       private ToolStripMenuItem toolStripMenuItem1;
-      private ToolStripMenuItem advancedSettingsToolStripMenuItem;
       private ImageList imageListUnits;
       private ToolTip toolTip1;
       private GroupBox groupBox2;
       private ToolStripMenuItem removeToolStripMenuItem;
       private ContextMenuStrip SnapShotsMenu;
-      private BufferedTreeView snapShotSourcesTreeView;
       private GroupBox groupBox1;
       private SplitContainer splitContainer1;
       private TableLayoutPanel tableLayoutPanel1;
@@ -943,7 +905,6 @@ namespace Elucidate
       private Label label4;
       private NumericUpDown numAutoSaveGB;
       private Label label6;
-      private DriveSpaceDisplay driveSpace;
       private Button btnGetRecommended;
         private Label labelParity2;
         private Label labelParity6;
@@ -958,6 +919,7 @@ namespace Elucidate
         private Button findParity6;
         private Button findParity5;
         private Button findParity4;
+        private ProtectedDrivesDisplay snapShotSources;
 
         private List<string> IncludePatterns { get; set; }
 

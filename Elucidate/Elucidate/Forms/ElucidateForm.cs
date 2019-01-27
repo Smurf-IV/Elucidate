@@ -201,7 +201,7 @@ namespace Elucidate
         {
             if (tabControl.SelectedTab.Name == "tabCoveragePage")
             {
-                driveSpace.RefreshGraph();
+                
             }
         }
 
@@ -210,11 +210,6 @@ namespace Elucidate
             e.Cancel = true;
         }
         #region Main Menu Toolbar Handlers
-
-        private void RefreshDriveDisplayAfterConfigSaved(object sender, FormClosedEventArgs formClosedEventArgs)
-        {
-            driveSpace.RefreshGraph();
-        }
 
         private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -332,6 +327,7 @@ namespace Elucidate
             if (srConfig.IsValid)
             {
                 BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(Properties.Settings.Default.ConfigFileLocation); });
+                driveSpaceDisplay.RefreshGrid(srConfig, false);
             }
             else
             {
@@ -366,7 +362,6 @@ namespace Elucidate
 
             using (Settings settingsForm = new Settings())
             {
-                settingsForm.FormClosed += RefreshDriveDisplayAfterConfigSaved;
                 settingsForm.ShowDialog(this);
             }
 
@@ -375,6 +370,7 @@ namespace Elucidate
 
         private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            driveSpaceDisplay.FormClosing();
             Properties.Settings.Default.Save();
         }
 

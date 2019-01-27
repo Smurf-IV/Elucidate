@@ -30,9 +30,11 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+
 using ComponentFactory.Krypton.Toolkit;
-using Exceptionless;
+
 using Microsoft.Win32.TaskScheduler;
+
 using NLog;
 using NLog.Targets;
 

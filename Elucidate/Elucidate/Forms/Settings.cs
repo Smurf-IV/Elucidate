@@ -29,7 +29,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -72,6 +71,9 @@ namespace Elucidate
         public Settings()
         {
             InitializeComponent();
+
+            snapShotSources.driveGrid.DragDrop += snapShotSourcesTreeView_DragDrop;
+            snapShotSources.driveGrid.DragOver += snapShotSourcesTreeView_DragOver;
 
             ResizeRedraw = true;
             SetStyle(ControlStyles.UserPaint, true);
@@ -270,34 +272,50 @@ namespace Elucidate
             }
 
             // check if device is already added by an existing entry; a device cannot be entered more than once
-            foreach (TreeNode node in snapShotSourcesTreeView.Nodes)
+            foreach (DataGridViewRow row in snapShotSources.driveGrid.Rows)
             {
-                string nodeDevice = StorageUtil.GetPathRoot(node.FullPath);
-
-                Log.Trace($"adding new node, so compare, nodeDevice = {nodeDevice}");
-
-                if (newDevice != nodeDevice)
+                if (row.Tag is CoveragePath coveragePath)
                 {
-                    continue;
+
+                    string nodeDevice = StorageUtil.GetPathRoot(coveragePath.FullPath);
+
+                    Log.Trace($"adding new node, so compare, nodeDevice = {nodeDevice}");
+
+                    if (newDevice != nodeDevice)
+                    {
+                        continue;
+                    }
+
+                    Log.Warn(
+                        $"Data source not added. The path is on a device for an existing path. Attempted to add [{newPath}] which is on the same device as the existing path [{coveragePath.FullPath}]");
+
+                    MessageBoxExt.Show(this,
+                        $"The path is on a device for an existing path.\n\nExisting device path:\n{coveragePath.FullPath}",
+                        "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                    return;
                 }
-
-                Log.Warn($"Data source not added. The path is on a device for an existing path. Attempted to add [{newPath}] which is on the same device as the existing path [{node.FullPath}]");
-
-                MessageBoxExt.Show(this, $"The path is on a device for an existing path.\n\nExisting device path:\n{node.FullPath}", "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
-                return;
             }
 
-            snapShotSourcesTreeView.Nodes.Add(new TreeNode(newPath, selected.ImageIndex, selected.ImageIndex));
+            snapShotSources.AddCoverage(new CoveragePath
+                {FullPath = newPath, PathType = PathTypeEnum.Source });
+            //snapShotSourcesTreeView.Nodes.Add(new TreeNode(newPath, selected.ImageIndex, selected.ImageIndex));
 
             UnsavedChangesMade = true;
-
-            driveSpace.StartProcessing(GetPathsOfInterestFromForm());
         }
 
         private void refreshStripMenuItem_Click(object sender, EventArgs e)
         {
             StartTree();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            TreeNode selected = driveAndDirTreeView.SelectedNode;
+            if (selected != null)
+            {
+                PerformSnapShotSourceAddNode(selected);
+            }
         }
 
         private void driveAndDirTreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -429,13 +447,13 @@ namespace Elucidate
 
         private void PerformSnapShotSourceDeleteNode()
         {
-            TreeNode selected = snapShotSourcesTreeView.SelectedNode;
-            if (selected != null)
+            DataGridViewRow selected = snapShotSources.driveGrid.SelectedRows[0];
+            if ((selected != null)
+                && (selected.Index < snapShotSources.driveGrid.RowCount)
+                )
             {
-                snapShotSourcesTreeView.SelectedNode = null;
-                snapShotSourcesTreeView.Nodes.Remove(selected);
+                snapShotSources.driveGrid.Rows.RemoveAt(selected.Index);
                 UnsavedChangesMade = true;
-                driveSpace.StartProcessing(GetPathsOfInterestFromForm());
             }
             else
             {
@@ -484,32 +502,19 @@ namespace Elucidate
             PerformSnapShotSourceAddNode(tvwChild);
         }
 
-        private void snapShotSourcesTreeView_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Right)
-            {
-                return;
-            }
-
-            Log.Trace("Select the clicked node");
-
-            snapShotSourcesTreeView.SelectedNode = snapShotSourcesTreeView.GetNodeAt(e.X, e.Y);
-        }
-
         #endregion snapShotSourcesTreeView
 
-        private List<CoveragePath> GetPathsOfInterest()
+        public List<CoveragePath> GetPathsOfInterest()
         {
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
             // Snap-Shot source might be root or folders, so we handle both cases
-            foreach (TreeNode snapShotSource in snapShotSourcesTreeView.Nodes)
+            foreach (DataGridViewRow row in snapShotSources.driveGrid.Rows)
             {
-                pathsOfInterest.Add(new CoveragePath
+                if (row.Tag is CoveragePath coveragePath)
                 {
-                    FullPath = Path.GetDirectoryName(snapShotSource.FullPath) ?? Path.GetFullPath(snapShotSource.FullPath),
-                    PathType = PathTypeEnum.Source
-                });
+                    pathsOfInterest.Add(coveragePath);
+                }
             }
 
             if (!string.IsNullOrEmpty(parityLocation1.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation1.Text), PathType = PathTypeEnum.Parity }); }
@@ -524,7 +529,7 @@ namespace Elucidate
 
             if (!string.IsNullOrEmpty(parityLocation6.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation6.Text), PathType = PathTypeEnum.Parity }); }
 
-            return pathsOfInterest.OrderBy(s => s.FullPath).GroupBy(d => d.Drive).Select(d => d.First()).ToList();
+            return pathsOfInterest;
         }
 
         private bool ValidateFormData()
@@ -555,47 +560,44 @@ namespace Elucidate
                 isValid = false;
                 errorProvider1.SetError(configFileLocation, "Config File directory does not exist!");
             }
-            if (snapShotSourcesTreeView.Nodes.Count == 0)
+            if (snapShotSources.driveGrid.Rows.Count == 0)
             {
                 isValid = false;
-                errorProvider1.SetIconAlignment(snapShotSourcesTreeView, ErrorIconAlignment.TopLeft);
-                errorProvider1.SetIconPadding(snapShotSourcesTreeView, -20);
-                errorProvider1.SetError(snapShotSourcesTreeView, "No protected regions set!");
+                errorProvider1.SetIconAlignment(snapShotSources, ErrorIconAlignment.TopLeft);
+                errorProvider1.SetIconPadding(snapShotSources, -20);
+                errorProvider1.SetError(snapShotSources, "No protected regions set!");
             }
 
             List<string> deviceList = new List<string>();
 
-            foreach (TreeNode node in snapShotSourcesTreeView.Nodes)
+            foreach (DataGridViewRow row in snapShotSources.driveGrid.Rows)
             {
-                node.BackColor = Color.Empty;
-
-                string errMsg = string.Empty;
-
-                // test if device already exists in list; SnapRAID only permits one device entry per device
-                if (deviceList.Contains(StorageUtil.GetPathRoot(node.FullPath)))
+                if (row.Tag is CoveragePath coveragePath)
                 {
-                    errMsg = $"{node.Index} A device may only appear once in the data source list!";
+                    string errMsg = string.Empty;
+
+                    // test if device already exists in list; SnapRAID only permits one device entry per device
+                    if (deviceList.Contains(StorageUtil.GetPathRoot(coveragePath.FullPath)))
+                    {
+                        errMsg = $"{coveragePath.FullPath} A device may only appear once in the data source list!";
+                    }
+
+                    deviceList.Add(StorageUtil.GetPathRoot(coveragePath.FullPath));
+
+                    // test if path exists
+                    if (!Directory.Exists(coveragePath.FullPath))
+                    {
+                        errMsg = "Data source is inaccessible!";
+                    }
+
+                    if (string.IsNullOrEmpty(errMsg))
+                    {
+                        continue;
+                    }
+
+                    isValid = false;
+                    row.ErrorText = errMsg;
                 }
-
-                deviceList.Add(StorageUtil.GetPathRoot(node.FullPath));
-
-                // test if path exists
-                if (!Directory.Exists(node.FullPath))
-                {
-                    errMsg = "Data source is inaccessible!";
-                }
-
-                if (string.IsNullOrEmpty(errMsg))
-                {
-                    continue;
-                }
-
-                isValid = false;
-                node.BackColor = Color.Red;
-                errorProvider1.SetIconAlignment(snapShotSourcesTreeView, ErrorIconAlignment.TopLeft);
-                errorProvider1.SetIconPadding(snapShotSourcesTreeView, -20);
-                errorProvider1.SetIconAlignment(snapShotSourcesTreeView, ErrorIconAlignment.TopLeft);
-                errorProvider1.SetError(snapShotSourcesTreeView, errMsg);
             }
 
             return isValid;
@@ -671,7 +673,6 @@ namespace Elucidate
             {
                 exludedFilesView.Rows.Clear();
 
-                snapShotSourcesTreeView.Nodes.Clear();
 
                 cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
 
@@ -709,6 +710,8 @@ namespace Elucidate
                         return;
                     }
 
+                    snapShotSources.RefreshGrid(cfg, true);
+
                     IncludePatterns = cfg.IncludePatterns;
 
                     numBlockSizeKB.Value = cfg.BlockSizeKB;
@@ -720,11 +723,6 @@ namespace Elucidate
                     foreach (string excludePattern in cfg.ExcludePatterns.Where(excludePattern => !string.IsNullOrWhiteSpace(excludePattern)))
                     {
                         exludedFilesView.Rows.Add(excludePattern);
-                    }
-
-                    foreach (string source in cfg.DataParityPaths.Where(source => !string.IsNullOrWhiteSpace(source)))
-                    {
-                        snapShotSourcesTreeView.Nodes.Add(new TreeNode(source, 7, 7));
                     }
 
                     parityLocation1.Text = cfg.ParityFile1;
@@ -748,90 +746,12 @@ namespace Elucidate
 
                 UnsavedChangesMade = false;
 
-                driveSpace.StartProcessing(GetPathsOfInterestFromForm());
             }
             catch (Exception ex)
             {
                 Log.Error(ex, @"Failed to read config file.");
                 KryptonMessageBox.Show(this, ex.Message, @"Failed to read config file.");
             }
-        }
-
-        private List<CoveragePath> GetPathsOfInterestFromForm()
-        {
-            try
-            {
-                List<string> paths = (from TreeNode node in snapShotSourcesTreeView.Nodes select node.Text).ToList();
-
-                List<CoveragePath> pathsOfInterest = paths.Select(
-                    path => new CoveragePath
-                    {
-                        FullPath = path,
-                        PathType = PathTypeEnum.Source
-                    }).ToList();
-
-                if (!string.IsNullOrEmpty(parityLocation1.Text))
-                {
-                    pathsOfInterest.Add(new CoveragePath
-                    {
-                        FullPath = Path.GetFullPath(parityLocation1.Text),
-                        PathType = PathTypeEnum.Parity
-                    });
-                }
-
-                if (!string.IsNullOrEmpty(parityLocation2.Text))
-                {
-                    pathsOfInterest.Add(new CoveragePath
-                    {
-                        FullPath = Path.GetFullPath(parityLocation2.Text),
-                        PathType = PathTypeEnum.Parity
-                    });
-                }
-
-                if (!string.IsNullOrEmpty(parityLocation3.Text))
-                {
-                    pathsOfInterest.Add(new CoveragePath
-                    {
-                        FullPath = Path.GetFullPath(parityLocation3.Text),
-                        PathType = PathTypeEnum.Parity
-                    });
-                }
-
-                if (!string.IsNullOrEmpty(parityLocation4.Text))
-                {
-                    pathsOfInterest.Add(new CoveragePath
-                    {
-                        FullPath = Path.GetFullPath(parityLocation4.Text),
-                        PathType = PathTypeEnum.Parity
-                    });
-                }
-
-                if (!string.IsNullOrEmpty(parityLocation5.Text))
-                {
-                    pathsOfInterest.Add(new CoveragePath
-                    {
-                        FullPath = Path.GetFullPath(parityLocation5.Text),
-                        PathType = PathTypeEnum.Parity
-                    });
-                }
-
-                if (!string.IsNullOrEmpty(parityLocation6.Text))
-                {
-                    pathsOfInterest.Add(new CoveragePath
-                    {
-                        FullPath = Path.GetFullPath(parityLocation6.Text),
-                        PathType = PathTypeEnum.Parity
-                    });
-                }
-
-                return pathsOfInterest.OrderBy(s => s.FullPath).GroupBy(s => s.Drive).Select(s => s.First()).ToList();
-            }
-            catch
-            {
-                // ignored
-            }
-
-            return null;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -866,25 +786,14 @@ namespace Elucidate
                     }
                 }
 
-                foreach (string text in snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text)
-                    .Where(text => !string.IsNullOrWhiteSpace(text)))
+                foreach (DataGridViewRow row in snapShotSources.driveGrid.Rows)
                 {
-                    string name = string.Empty;
-                    foreach (ConfigFileHelper.SnapShotSource shotSource in cfg.SnapShotSources)
+                    if (row.Tag is CoveragePath coveragePath)
                     {
-                        if (shotSource.DirSource == text)
-                        {
-                            name = shotSource.Name;
-                            break;
-                        }
+                        cfgToSave.SnapShotSources.Add(new ConfigFileHelper.SnapShotSource
+                            {Name = coveragePath.Name, DirSource = coveragePath.FullPath});
+                        cfgToSave.ContentFiles.Add(coveragePath.FullPath);
                     }
-
-                    if (string.IsNullOrWhiteSpace(name))
-                    {
-                        name = StorageUtil.GetVolumeGuidPath(text);
-                    }
-                    cfgToSave.SnapShotSources.Add(new ConfigFileHelper.SnapShotSource{Name =  name, DirSource = text});
-                    cfgToSave.ContentFiles.Add(text);
                 }
 
                 switch (!string.IsNullOrEmpty(parityLocation1.Text.Trim()))
@@ -1046,6 +955,10 @@ namespace Elucidate
             {
                 e.Cancel = true;
             }
+            else
+            {
+                snapShotSources.FormClosing();
+            }
         }
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -1069,8 +982,6 @@ namespace Elucidate
             location.Text = folderBrowserDialog1.SelectedPath;
 
             ValidateParityTextBox();
-
-            ParityLocationChanged();
         }
 
         private void findParity2_Click(object sender, EventArgs e)
@@ -1128,7 +1039,14 @@ namespace Elucidate
         {
             CalculateBlockSize calc = new CalculateBlockSize();
 
-            List<string> snaps = snapShotSourcesTreeView.Nodes.Cast<TreeNode>().Select(node => node.Text).Where(text => !string.IsNullOrWhiteSpace(text)).ToList();
+            List<string> snaps = new List<string>();
+            foreach (DataGridViewRow row in snapShotSources.driveGrid.Rows)
+            {
+                if (row.Tag is CoveragePath coveragePath)
+                {
+                    snaps.Add(coveragePath.FullPath);
+                }
+            }
 
             calc.SnapShotSources = snaps;
 
@@ -1190,8 +1108,6 @@ namespace Elucidate
             {
                 return;
             }
-
-            ParityLocationChanged();
         }
 
         private void parityLocation2_Leave(object sender, EventArgs e)
@@ -1207,8 +1123,6 @@ namespace Elucidate
             {
                 return;
             }
-
-            ParityLocationChanged();
 
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
@@ -1233,8 +1147,6 @@ namespace Elucidate
             {
                 return;
             }
-
-            ParityLocationChanged();
 
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
@@ -1261,8 +1173,6 @@ namespace Elucidate
                 return;
             }
 
-            ParityLocationChanged();
-
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
             {
@@ -1287,8 +1197,6 @@ namespace Elucidate
                 return; // unchanged
             }
 
-            ParityLocationChanged();
-
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
             {
@@ -1312,8 +1220,6 @@ namespace Elucidate
             {
                 return;
             }
-
-            ParityLocationChanged();
 
             string tooltip = "Optional disk failure protection root location.";
             if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
@@ -1353,13 +1259,6 @@ namespace Elucidate
             }
         }
 
-        private void ParityLocationChanged()
-        {
-            UnsavedChangesMade = true;
-
-            driveSpace.StartProcessing(GetPathsOfInterestFromForm());
-        }
-
         private void labelParity3_CheckedChanged(object sender, EventArgs e)
         {
             bool enableOthers = !labelParity3.Checked;
@@ -1379,5 +1278,6 @@ namespace Elucidate
                 parityLocation6.Text = string.Empty;
             }
         }
+
     }
 }

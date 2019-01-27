@@ -155,6 +155,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
@@ -164,6 +165,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DataGridViewTripleValueBarColumn.cs" />
+    <Compile Include="Controls\ProtectedDrivesDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ProtectedDrivesDisplay.Designer.cs">
+      <DependentUpon>ProtectedDrivesDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="HelperClasses\AdvancedSettingsHelper.cs" />
     <Compile Include="CmdLine\CheckVerb.cs" />
     <Compile Include="CmdLine\DiffVerb.cs" />
@@ -204,15 +212,9 @@
     <Compile Include="Forms\CalculateBlockSize.Designer.cs">
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SnapRAIDThread.cs" />
     <Compile Include="HelperClasses\ErrorProviderExtensions.cs" />
-    <Compile Include="HelperClasses\AbortableBackgroundWorker.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Objects\CoveragePath.cs" />
-    <Compile Include="HelperClasses\ISynchronizeInvokeExtensions.cs" />
     <Compile Include="HelperClasses\StorageUtil.cs" />
-    <Compile Include="HelperClasses\StringUtil.cs" />
     <Compile Include="Logging\LiveLog.cs" />
     <Compile Include="Objects\StorageDevice.cs" />
     <Compile Include="Shared\BufferedTreeView.cs">
@@ -239,19 +241,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Shared\WaitCursor.cs" />
-    <Compile Include="Controls\DriveSpaceDisplay.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\DriveSpaceDisplay.Designer.cs">
-      <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AppTabs\Recovery.cs">
+    <Compile Include="TabPages\Recovery.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Threads\LogThreadClass.cs" />
-    <Compile Include="Threads\RecoverThreadClass.cs" />
-    <Compile Include="Controls\ToolStripCheckBoxMenuItem.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="HelperClasses\Util.cs" />
     <Compile Include="HelperClasses\WindowLocation.cs" />
@@ -281,6 +272,9 @@
     <EmbeddedResource Include="Controls\LogsViewerControl.resx">
       <DependentUpon>LogsViewerControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ProtectedDrivesDisplay.resx">
+      <DependentUpon>ProtectedDrivesDisplay.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\Recover.resx">
       <DependentUpon>Recover.cs</DependentUpon>
     </EmbeddedResource>
@@ -291,9 +285,6 @@
       <DependentUpon>CalculateBlockSize.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shared\MessageBoxExtForm.resx" />
-    <EmbeddedResource Include="Controls\DriveSpaceDisplay.resx">
-      <DependentUpon>DriveSpaceDisplay.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ElucidateForm.resx">
       <DependentUpon>ElucidateForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -397,10 +388,11 @@
       <Version>2.8.7</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseUniversalClock="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" BuildVersion_UseGlobalSettings="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UseUniversalClock="False" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
