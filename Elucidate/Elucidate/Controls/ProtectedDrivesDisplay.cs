@@ -32,17 +32,13 @@ namespace Elucidate.Controls
         {
             // have to stop "any" processes that might be refreshing as this is now closing
             cancelTokenSrc.Cancel();
-            if (Interlocked.Exchange(ref useWaitCursor, 0) > 0)
-            {
-                UseWaitCursor = false;
-            }
         }
 
         private void IncrementWaitCursor()
         {
             if (Interlocked.Increment(ref useWaitCursor) == 1)
             {
-                UseWaitCursor = true;
+                BeginInvoke((MethodInvoker) delegate { UseWaitCursor = true; });
             }
         }
 
@@ -50,7 +46,7 @@ namespace Elucidate.Controls
         {
             if (Interlocked.Decrement(ref useWaitCursor) == 0)
             {
-                UseWaitCursor = false;
+                BeginInvoke((MethodInvoker) delegate { UseWaitCursor = false; });
             }
         }
 
@@ -147,7 +143,7 @@ namespace Elucidate.Controls
                 });
             }
 
-            BeginInvoke((MethodInvoker) delegate { DecrementWaitCursor(); });
+            DecrementWaitCursor();
         }
 
         /// <summary>

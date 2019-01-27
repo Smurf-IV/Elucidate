@@ -62,6 +62,7 @@ namespace Elucidate
             this.findParity1 = new System.Windows.Forms.Button();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.snapShotSources = new Elucidate.Controls.ProtectedDrivesDisplay();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -110,7 +111,7 @@ namespace Elucidate
             // 
             this.DRUnit_NewNode.Name = "DRUnit_NewNode";
             this.DRUnit_NewNode.ShortcutKeys = System.Windows.Forms.Keys.Insert;
-            this.DRUnit_NewNode.Size = new System.Drawing.Size(155, 22);
+            this.DRUnit_NewNode.Size = new System.Drawing.Size(152, 22);
             this.DRUnit_NewNode.Text = "&New Node";
             this.DRUnit_NewNode.Click += new System.EventHandler(this.DRUnit_NewNode_MenuItem_Click);
             // 
@@ -122,7 +123,7 @@ namespace Elucidate
             this.refreshStripMenuItem,
             this.toolStripMenuItem1});
             this.drivesAndDirectoriesMenu.Name = "unitsMenu";
-            this.drivesAndDirectoriesMenu.Size = new System.Drawing.Size(191, 70);
+            this.drivesAndDirectoriesMenu.Size = new System.Drawing.Size(191, 48);
             // 
             // refreshStripMenuItem
             // 
@@ -431,20 +432,28 @@ namespace Elucidate
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             this.removeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.removeToolStripMenuItem.Text = "&Delete";
             this.removeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // SnapShotsMenu
             // 
-            this.SnapShotsMenu.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.SnapShotsMenu.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.SnapShotsMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.SnapShotsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.removeToolStripMenuItem,
-            this.DRUnit_NewNode});
+            this.DRUnit_NewNode,
+            this.editNameToolStripMenuItem});
             this.SnapShotsMenu.Name = "unitsMenu";
-            this.SnapShotsMenu.Size = new System.Drawing.Size(156, 48);
+            this.SnapShotsMenu.Size = new System.Drawing.Size(153, 70);
+            // 
+            // editNameToolStripMenuItem
+            // 
+            this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
+            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editNameToolStripMenuItem.Text = "&Edit Name";
+            this.editNameToolStripMenuItem.Click += new System.EventHandler(this.editName_Click);
             // 
             // groupBox1
             // 
@@ -920,6 +929,7 @@ namespace Elucidate
         private Button findParity5;
         private Button findParity4;
         private ProtectedDrivesDisplay snapShotSources;
+        private ToolStripMenuItem editNameToolStripMenuItem;
 
         private List<string> IncludePatterns { get; set; }
 

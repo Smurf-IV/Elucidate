@@ -74,6 +74,8 @@ namespace Elucidate
 
             snapShotSources.driveGrid.DragDrop += snapShotSourcesTreeView_DragDrop;
             snapShotSources.driveGrid.DragOver += snapShotSourcesTreeView_DragOver;
+            snapShotSources.driveGrid.CellEndEdit += DriveGridOnCellEndEdit;
+            snapShotSources.driveGrid.DoubleClick += editName_Click;
 
             ResizeRedraw = true;
             SetStyle(ControlStyles.UserPaint, true);
@@ -100,6 +102,7 @@ namespace Elucidate
             }
         }
 
+        
         private void Settings_Load(object sender, EventArgs e)
         {
             StartTree();
@@ -500,6 +503,46 @@ namespace Elucidate
             driveAndDirTreeView.SelectedNode = tvwChild;
 
             PerformSnapShotSourceAddNode(tvwChild);
+        }
+
+        private void editName_Click(object sender, EventArgs e)
+        {
+            DataGridViewRow selected = snapShotSources.driveGrid.SelectedRows[0];
+            if ((selected != null)
+                && (selected.Index < snapShotSources.driveGrid.RowCount)
+            )
+            {
+                if (DialogResult.Yes == KryptonMessageBox.Show(this,
+                        @"Changing a 'Name' will require a 'Full Sync' to be run.\nDo you wish to continue?",
+                        @"Name Change Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                {
+                    DataGridViewCell cell = selected.Cells[1];
+                    snapShotSources.driveGrid.CurrentCell = cell;
+                    snapShotSources.driveGrid.BeginEdit(true);
+                }
+            }
+            else
+            {
+                SystemSounds.Beep.Play();
+            }
+
+            ValidateFormData();
+        }
+
+        private void DriveGridOnCellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != 1)
+            {
+                return;
+            }
+            DataGridViewRow selected = snapShotSources.driveGrid.Rows[e.RowIndex];
+            CoveragePath coveragePath = selected.Tag as CoveragePath;
+            string value = (string)selected.Cells[1].Value;
+            if (coveragePath.Name != value)
+            {
+                coveragePath.Name = value;
+                UnsavedChangesMade = true;
+            }
         }
 
         #endregion snapShotSourcesTreeView
