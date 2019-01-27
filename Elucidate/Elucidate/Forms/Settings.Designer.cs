@@ -712,7 +712,6 @@ namespace Elucidate
             // btnReset
             // 
             this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReset.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.helpProvider1.SetHelpKeyword(this.btnReset, "ResetToLastConfig");
             this.helpProvider1.SetHelpNavigator(this.btnReset, System.Windows.Forms.HelpNavigator.Topic);
             this.btnReset.Location = new System.Drawing.Point(791, 2);

@@ -321,10 +321,13 @@ namespace Elucidate
             srConfig.LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
 
             Properties.Settings.Default.ConfigFileIsValid = srConfig.IsValid;
+            bool exists = File.Exists(Properties.Settings.Default.SnapRAIDFileLocation);
 
-            SetCommonButtonsEnabledState(srConfig.IsValid);
+            SetCommonButtonsEnabledState(srConfig.IsValid && exists);
 
-            if (srConfig.IsValid)
+            if (srConfig.IsValid
+                && exists
+                )
             {
                 BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(Properties.Settings.Default.ConfigFileLocation); });
                 driveSpaceDisplay.RefreshGrid(srConfig, false);

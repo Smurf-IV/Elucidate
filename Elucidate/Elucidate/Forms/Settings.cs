@@ -102,7 +102,6 @@ namespace Elucidate
             }
         }
 
-        
         private void Settings_Load(object sender, EventArgs e)
         {
             StartTree();
@@ -115,7 +114,8 @@ namespace Elucidate
 
             configFileLocation.Text = Properties.Settings.Default.ConfigFileLocation;
 
-            ReadConfigDetails();
+            // Text change above will trigger a ReadConfigDetails()
+            // ReadConfigDetails();
 
             UnsavedChangesMade = false;
 

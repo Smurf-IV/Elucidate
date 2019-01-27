@@ -25,11 +25,18 @@
 ### Moved Files
 
 ### Normal
+- Edit the Name of Data / Disk entry
+  - Ensure that a warning message box is displayed
+  - answer yes, allow an edit operation
+  - If the name is changed then Ensure that the notification for save is displayed
+- Press the "Reset to last" button
 
 ### Save
 - Allow save even items are still invalid (To allow extra editing later)
 
 ## MainForm
+- Should only be enabled if **both** Config and SnapRaid exe are configured.
+
 
 ### Default Tab
 

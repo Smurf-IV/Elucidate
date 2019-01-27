@@ -44,7 +44,7 @@ namespace Elucidate.Controls
 
         private void DecrementWaitCursor()
         {
-            if (Interlocked.Decrement(ref useWaitCursor) == 0)
+            if (Interlocked.Decrement(ref useWaitCursor) <= 0)
             {
                 BeginInvoke((MethodInvoker) delegate { UseWaitCursor = false; });
             }
@@ -57,10 +57,11 @@ namespace Elucidate.Controls
         /// <param name="excludeParity"></param>
         public void RefreshGrid(ConfigFileHelper srConfig, bool excludeParity)
         {
-            // have to stop "any" processes that might be refreshing as this is a new list
+            Interlocked.Exchange(ref useWaitCursor, 0);
             IncrementWaitCursor();
+            // have to stop "any" processes that might be refreshing as this is a new list
             cancelTokenSrc.Cancel();
-            while (driveGrid.Rows.Count > 1)
+            while (driveGrid.Rows.Count > 1)    // Got to leave the "New" edit row
             {
                 driveGrid.Rows.RemoveAt(0);
             }
@@ -104,7 +105,6 @@ namespace Elucidate.Controls
 
         private void StartDriveUsage(CancellationToken token, DataGridViewRow row)
         {
-            IncrementWaitCursor();
             if (row.Tag is CoveragePath coveragePath)
             {
                 DirectoryInfo dirInfo = new DirectoryInfo(coveragePath.DirectoryPath, PathFormat.FullPath);
@@ -115,11 +115,11 @@ namespace Elucidate.Controls
                     long protectedUse = File.Exists(coveragePath.FullPath) ? new FileInfo(coveragePath.FullPath).Length : 0L;
                     row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
                     row.Cells[3].Value = $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
-                    DecrementWaitCursor();
                 }
                 else
                 {
                     // Start background processing
+                    IncrementWaitCursor();
                     Task.Run(() => { ProcessProtectedSpace(row, driveInfo, dirInfo, token); }, token);
                 }
             }
@@ -129,7 +129,6 @@ namespace Elucidate.Controls
         private void ProcessProtectedSpace(DataGridViewRow row, DriveInfo driveInfo,
             DirectoryInfo dirInfo, CancellationToken token)
         {
-
             long totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
 
             ulong protectedUse = DirSize(dirInfo, token);
@@ -137,9 +136,17 @@ namespace Elucidate.Controls
             {
                 BeginInvoke((MethodInvoker) delegate
                 {
-                    row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
-                    row.Cells[3].Value =
-                        $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
+                    try
+                    {
+                        row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
+                        row.Cells[3].Value =
+                            $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
+                    }
+                    catch
+                    {
+                        // Do nothing
+                        // Might be caused by fast closure
+                    }
                 });
             }
 
