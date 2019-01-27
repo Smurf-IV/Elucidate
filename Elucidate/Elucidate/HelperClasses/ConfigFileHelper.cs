@@ -28,7 +28,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-
+using ByteSizeLib;
 using Elucidate.HelperClasses;
 using Elucidate.Objects;
 
@@ -66,6 +66,7 @@ namespace Elucidate
             @"6-parity",
             @"content",
             @"disk",
+            @"data",    // Handle older Configs
             @"nohidden",
             @"exclude",
             @"block_size",
@@ -259,8 +260,8 @@ namespace Elucidate
             }
 
             // RULE: parity devices should be greater or equal to data devices
-            ulong largestDataDevice = StorageUtil.GetDriveSizes(DataParityPaths).Max();
-            ulong smallestParityDevice = StorageUtil.GetDriveSizes(DataParityPaths).Min();
+            ByteSize largestDataDevice = new ByteSize(StorageUtil.GetDriveSizes(DataParityPaths).Max());
+            ByteSize smallestParityDevice = new ByteSize(StorageUtil.GetDriveSizes(DataParityPaths).Min());
             if (largestDataDevice > smallestParityDevice)
             {
                 ConfigWarnings.Add($@"One or more data devices [{largestDataDevice}] are larger than the smallest parity device [{smallestParityDevice}]. All parity devices should be equal or greater in size than all data devices.");
@@ -477,21 +478,22 @@ namespace Elucidate
                             break;
 
                         case @"disk":
-                        {
-                            // get the data name, d1,d2,d3 etc
-                            string diskName = configItemValue.Split(' ')[0];
-
-                            // get the path
-                            int diskSplitIndex = configItemValue.IndexOf(' ');
-
-                            string diskPath = configItemValue.Substring(diskSplitIndex + 1);
-
-                            // special handling of data sources since order preservation is extremely important
-                            if (!string.IsNullOrEmpty(diskName) && !string.IsNullOrEmpty(diskPath))
+                        case @"data": // Handle older configs
                             {
-                                SnapShotSources.Add(new SnapShotSource{ Name = diskName, DirSource = diskPath});
+                                // get the data name, d1,d2,d3 etc
+                                string diskName = configItemValue.Split(' ')[0];
+
+                                // get the path
+                                int diskSplitIndex = configItemValue.IndexOf(' ');
+
+                                string diskPath = configItemValue.Substring(diskSplitIndex + 1);
+
+                                // special handling of data sources since order preservation is extremely important
+                                if (!string.IsNullOrEmpty(diskName) && !string.IsNullOrEmpty(diskPath))
+                                {
+                                    SnapShotSources.Add(new SnapShotSource { Name = diskName, DirSource = diskPath });
+                                }
                             }
-                        }
                             break;
 
                         case @"exclude":
@@ -552,7 +554,7 @@ namespace Elucidate
             if (!string.IsNullOrWhiteSpace(ParityFile1))
             {
                 pathsOfInterest.Add(new CoveragePath
-                { FullPath = Path.GetFullPath(ParityFile1), PathType = PathTypeEnum.Parity, Name = @"Parity1"});
+                { FullPath = Path.GetFullPath(ParityFile1), PathType = PathTypeEnum.Parity, Name = @"Parity1" });
             }
 
             if (!string.IsNullOrWhiteSpace(ParityFile2)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile2), PathType = PathTypeEnum.Parity, Name = @"Parity2" }); }
@@ -834,6 +836,7 @@ namespace Elucidate
                 sb.AppendLine(@"# This directory must be outside the array.");
                 sb.AppendLine(@"# Format: ""pool DIR""");
                 sb.AppendLine(@"#pool C:\\pool");
+                sb.AppendLine();
                 sb.AppendLine(@"# Defines the Windows UNC path required to access disks from the pooling");
                 sb.AppendLine(@"# directory when shared in the network.");
                 sb.AppendLine(@"# If present (uncomment to enable), the symbolic links created in the");
@@ -844,6 +847,7 @@ namespace Elucidate
                 sb.AppendLine(@"#");
                 sb.AppendLine(@"# Format: ""share UNC_DIR""");
                 sb.AppendLine(@"#share \\\\server");
+                sb.AppendLine();
                 sb.AppendLine(@"# Defines a custom smartctl command to obtain the SMART attributes");
                 sb.AppendLine(@"# for each disk. This may be required for RAID controllers and for");
                 sb.AppendLine(@"# some USB disk that cannot be autodetected.");

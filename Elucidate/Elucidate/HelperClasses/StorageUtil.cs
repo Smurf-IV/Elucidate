@@ -128,6 +128,11 @@ namespace Elucidate.HelperClasses
                 }
             }
 
+            if (deviceSizes.Count == 0)
+            {
+                // Catch case when nothing has been set up yet
+                deviceSizes.Add(0); 
+            }
             return deviceSizes;
         }
         

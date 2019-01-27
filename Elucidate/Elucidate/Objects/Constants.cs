@@ -7,8 +7,8 @@
         public const int DefaultBlockSize = 256;
 
         public const int MinAutoSave = 0;
-        public const int MaxAutoSave = int.MaxValue;
-        public const int DefaultAutoSave = 50;
+        public const int MaxAutoSave = short.MaxValue;
+        public const int DefaultAutoSave = 250;
 
 
     }
