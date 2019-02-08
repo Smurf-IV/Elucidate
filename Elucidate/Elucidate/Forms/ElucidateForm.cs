@@ -92,7 +92,6 @@ namespace Elucidate
             }
         }
 
-
         private void Recover1_TaskStarted(object sender, EventArgs e)
         {
             tabControl.Deselecting += tabControl_Deselecting;
@@ -115,64 +114,8 @@ namespace Elucidate
         {
             e.Cancel = true;
         }
+
         #region Main Menu Toolbar Handlers
-
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start(@"https://github.com/Smurf-IV/Elucidate/blob/master/docs/Documentation.md");
-        }
-        #endregion Menu Handlers
-
-        private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
-        {
-            // persist our geometry string.
-            Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
-            Properties.Settings.Default.Save();
-        }
-
-        private void LoadConfigFile(bool launchEditSnapRAID = true)
-        {
-            srConfig.LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
-
-            Properties.Settings.Default.ConfigFileIsValid = srConfig.IsValid;
-            bool exists = File.Exists(Properties.Settings.Default.SnapRAIDFileLocation);
-
-            commonTab.SetCommonButtonsEnabledState(srConfig.IsValid && exists);
-
-            if (srConfig.IsValid
-                && exists
-                )
-            {
-                BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(Properties.Settings.Default.ConfigFileLocation); });
-                driveSpaceDisplay.RefreshGrid(srConfig, false);
-            }
-            else
-            {
-                srConfig.ConfigErrors.Add(@"Please Edit the Settings and ensure no errors when saving!");
-                Log.Fatal("The config file is not valid.[{0}]\n{1}", Properties.Settings.Default.ConfigFileLocation,
-                    string.Join($@"{Environment.NewLine} - ", srConfig.ConfigErrors));
-                if (launchEditSnapRAID)
-                {
-                    BeginInvoke((MethodInvoker)delegate
-                   {
-                       EditSnapRAIDConfigToolStripMenuItem_Click(this, EventArgs.Empty);
-                   });
-                }
-            }
-        }
-
-        private void SetElucidateFormTitle(string filePath)
-        {
-            string newTitle = "Elucidate";
-
-            if (!string.IsNullOrEmpty(filePath))
-            {
-                newTitle += $" - {filePath}";
-            }
-
-            Text = newTitle;
-        }
-
         private void EditSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (commonTab.liveRunLogControl1.ActionWorker.IsBusy) { return; }
@@ -185,14 +128,9 @@ namespace Elucidate
             LoadConfigFile(false);
         }
 
-        private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            driveSpaceDisplay.FormClosing();
-            Properties.Settings.Default.Save();
-        }
-
         private void deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Log.Info(@"Generate list of file for MessageBiox and deletion code");
             List<string> parityFiles = new List<string>();
 
             List<string> contentFiles = new List<string>();
@@ -283,6 +221,73 @@ namespace Elucidate
                     Log.Error(ex);
                 }
             }
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"https://github.com/Smurf-IV/Elucidate/blob/master/docs/Documentation.md");
+        }
+
+        private void changeLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"https://github.com/Smurf-IV/Elucidate/commits");
+        }
+        #endregion Menu Handlers
+
+        private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
+        {
+            // persist our geometry string.
+            Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
+            Properties.Settings.Default.Save();
+        }
+
+        private void LoadConfigFile(bool launchEditSnapRAID = true)
+        {
+            srConfig.LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
+
+            Properties.Settings.Default.ConfigFileIsValid = srConfig.IsValid;
+            bool exists = File.Exists(Properties.Settings.Default.SnapRAIDFileLocation);
+
+            commonTab.SetCommonButtonsEnabledState(srConfig.IsValid && exists);
+
+            if (srConfig.IsValid
+                && exists
+                )
+            {
+                BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(Properties.Settings.Default.ConfigFileLocation); });
+                driveSpaceDisplay.RefreshGrid(srConfig, false);
+            }
+            else
+            {
+                srConfig.ConfigErrors.Add(@"Please Edit the Settings and ensure no errors when saving!");
+                Log.Fatal("The config file is not valid.[{0}]\n{1}", Properties.Settings.Default.ConfigFileLocation,
+                    string.Join($@"{Environment.NewLine} - ", srConfig.ConfigErrors));
+                if (launchEditSnapRAID)
+                {
+                    BeginInvoke((MethodInvoker)delegate
+                   {
+                       EditSnapRAIDConfigToolStripMenuItem_Click(this, EventArgs.Empty);
+                   });
+                }
+            }
+        }
+
+        private void SetElucidateFormTitle(string filePath)
+        {
+            string newTitle = "Elucidate";
+
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                newTitle += $" - {filePath}";
+            }
+
+            Text = newTitle;
+        }
+
+        private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            driveSpaceDisplay.FormClosing();
+            Properties.Settings.Default.Save();
         }
     }
 }

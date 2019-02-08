@@ -46,6 +46,7 @@ namespace Elucidate
             this.SchedulePageScheduleControl = new Elucidate.Controls.Schedule();
             this.tabCommonOperations = new System.Windows.Forms.TabPage();
             this.logPanel = new System.Windows.Forms.Panel();
+            this.commonTab = new Elucidate.TabPages.CommonTab();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabLogs = new System.Windows.Forms.TabPage();
             this.logsViewerControl = new Elucidate.Controls.LogsViewerControl();
@@ -56,7 +57,7 @@ namespace Elucidate
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dangerZoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.commonTab = new CommonTab();
+            this.changeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.tabCoveragePage.SuspendLayout();
             this.tabSchedulePage.SuspendLayout();
@@ -165,6 +166,14 @@ namespace Elucidate
             this.logPanel.Size = new System.Drawing.Size(935, 474);
             this.logPanel.TabIndex = 11;
             // 
+            // commonTab
+            // 
+            this.commonTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commonTab.Location = new System.Drawing.Point(0, 0);
+            this.commonTab.Name = "commonTab";
+            this.commonTab.Size = new System.Drawing.Size(935, 474);
+            this.commonTab.TabIndex = 0;
+            // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.tabCommonOperations);
@@ -246,7 +255,8 @@ namespace Elucidate
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.helpToolStripMenuItem,
-            this.dangerZoneToolStripMenuItem});
+            this.dangerZoneToolStripMenuItem,
+            this.changeLogToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
@@ -267,7 +277,6 @@ namespace Elucidate
             // 
             this.dangerZoneToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem});
-            this.dangerZoneToolStripMenuItem.Enabled = false;
             this.dangerZoneToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dangerZoneToolStripMenuItem.Name = "dangerZoneToolStripMenuItem";
             this.dangerZoneToolStripMenuItem.Size = new System.Drawing.Size(112, 23);
@@ -277,19 +286,20 @@ namespace Elucidate
             // 
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Name = "deleteAllSnapRAIDRaidFilesToolStripMenuItem";
-            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Text = "Delete all SnapRAID files";
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.ToolTipText = "This will delete all parity and content files defined in the current configuratio" +
     "n file.";
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Click += new System.EventHandler(this.deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click);
             // 
-            // commonTab
+            // changeLogToolStripMenuItem
             // 
-            this.commonTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commonTab.Location = new System.Drawing.Point(0, 0);
-            this.commonTab.Name = "commonTab";
-            this.commonTab.Size = new System.Drawing.Size(935, 474);
-            this.commonTab.TabIndex = 0;
+            this.changeLogToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.changeLogToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changeLogToolStripMenuItem.Name = "changeLogToolStripMenuItem";
+            this.changeLogToolStripMenuItem.Size = new System.Drawing.Size(100, 23);
+            this.changeLogToolStripMenuItem.Text = "ChangeLog";
+            this.changeLogToolStripMenuItem.Click += new System.EventHandler(this.changeLogToolStripMenuItem_Click);
             // 
             // ElucidateForm
             // 
@@ -354,6 +364,7 @@ namespace Elucidate
         private ToolStripMenuItem fileToolStripMenuItem;
         private ProtectedDrivesDisplay driveSpaceDisplay;
         private CommonTab commonTab;
+        private ToolStripMenuItem changeLogToolStripMenuItem;
     }
 }
 
