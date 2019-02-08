@@ -31,20 +31,18 @@ namespace Elucidate.Controls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveRunLogControl));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.Label();
-            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.runWithoutCaptureMenuItem = new System.Windows.Forms.CheckBox();
             this.checkBoxDisplayOutput = new System.Windows.Forms.CheckBox();
             this.comboBoxProcessStatus = new System.Windows.Forms.ComboBox();
-            this.rtbLiveLog = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.rtbLiveLog = new System.Windows.Forms.ListBox();
             this.txtAddCommands = new System.Windows.Forms.TextBox();
             this.tableLayoutPanelAdditionalCommands = new System.Windows.Forms.TableLayoutPanel();
             this.checkBoxCommandLineOptions = new System.Windows.Forms.CheckBox();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rtbLiveLog)).BeginInit();
             this.tableLayoutPanelAdditionalCommands.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,22 +80,6 @@ namespace Elucidate.Controls
             this.toolStripStatusLabel1.TabIndex = 7;
             this.toolStripStatusLabel1.Text = "2000-01-01 00:00:00Z";
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.ContainerControl = this;
-            this.toolStripProgressBar1.DisplayText = "";
-            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
-            this.toolStripProgressBar1.Location = new System.Drawing.Point(621, 0);
-            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.ShowInTaskbar = true;
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(237, 39);
-            this.toolStripProgressBar1.Step = 3;
-            this.toolStripProgressBar1.TabIndex = 5;
-            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // runWithoutCaptureMenuItem
             // 
@@ -151,40 +133,18 @@ namespace Elucidate.Controls
             // 
             // rtbLiveLog
             // 
-            this.rtbLiveLog.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.rtbLiveLog.AutoIndent = false;
-            this.rtbLiveLog.AutoIndentChars = false;
-            this.rtbLiveLog.AutoScrollMinSize = new System.Drawing.Size(2, 14);
-            this.rtbLiveLog.BackBrush = null;
-            this.rtbLiveLog.CharHeight = 14;
-            this.rtbLiveLog.CharWidth = 9;
+            this.rtbLiveLog.BackColor = System.Drawing.SystemColors.Control;
             this.rtbLiveLog.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.rtbLiveLog.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.rtbLiveLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbLiveLog.Font = new System.Drawing.Font("Lucida Console", 11.25F);
-            this.rtbLiveLog.IsReplaceMode = false;
+            this.rtbLiveLog.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.rtbLiveLog.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtbLiveLog.Location = new System.Drawing.Point(0, 0);
             this.rtbLiveLog.Margin = new System.Windows.Forms.Padding(4);
             this.rtbLiveLog.Name = "rtbLiveLog";
-            this.rtbLiveLog.Paddings = new System.Windows.Forms.Padding(0);
-            this.rtbLiveLog.ReadOnly = true;
-            this.rtbLiveLog.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.rtbLiveLog.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("rtbLiveLog.ServiceColors")));
-            this.rtbLiveLog.ShowLineNumbers = false;
+            this.rtbLiveLog.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.rtbLiveLog.Size = new System.Drawing.Size(858, 244);
             this.rtbLiveLog.TabIndex = 3;
-            this.rtbLiveLog.WordWrapAutoIndent = false;
-            this.rtbLiveLog.Zoom = 100;
+            this.toolTip1.SetToolTip(this.rtbLiveLog, "Ctrl+A - selects all text\r\nCtrl+C - Copy to clipboard\r\n");
             // 
             // txtAddCommands
             // 
@@ -231,10 +191,21 @@ namespace Elucidate.Controls
             this.checkBoxCommandLineOptions.UseVisualStyleBackColor = true;
             this.checkBoxCommandLineOptions.CheckedChanged += new System.EventHandler(this.checkBoxCommandLineOptions_CheckedChanged);
             // 
-            // timer1
+            // toolStripProgressBar1
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.toolStripProgressBar1.ContainerControl = this;
+            this.toolStripProgressBar1.DisplayText = "";
+            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
+            this.toolStripProgressBar1.Location = new System.Drawing.Point(621, 0);
+            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.ShowInTaskbar = true;
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(237, 39);
+            this.toolStripProgressBar1.Step = 3;
+            this.toolStripProgressBar1.TabIndex = 5;
+            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // LiveRunLogControl
             // 
@@ -251,7 +222,6 @@ namespace Elucidate.Controls
             this.Resize += new System.EventHandler(this.LiveRunLogControl_Resize);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rtbLiveLog)).EndInit();
             this.tableLayoutPanelAdditionalCommands.ResumeLayout(false);
             this.tableLayoutPanelAdditionalCommands.PerformLayout();
             this.ResumeLayout(false);
@@ -265,12 +235,12 @@ namespace Elucidate.Controls
         private System.Windows.Forms.ComboBox comboBoxProcessStatus;
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private System.Windows.Forms.CheckBox runWithoutCaptureMenuItem;
-        private FastColoredTextBoxNS.FastColoredTextBox rtbLiveLog;
+        private ListBox rtbLiveLog;
         private Label toolStripStatusLabel1;
         private TableLayoutPanel tableLayoutPanelAdditionalCommands;
         internal TextBox txtAddCommands;
         internal CheckBox checkBoxCommandLineOptions;
         internal CheckBox checkBoxDisplayOutput;
-        private Timer timer1;
+        private ToolTip toolTip1;
     }
 }

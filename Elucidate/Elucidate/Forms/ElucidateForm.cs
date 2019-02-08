@@ -35,12 +35,8 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
-using CommandLine;
-
 using ComponentFactory.Krypton.Toolkit;
 
-using Elucidate.CmdLine;
-using Elucidate.Controls;
 using Elucidate.Shared;
 
 using NLog;
@@ -67,7 +63,6 @@ namespace Elucidate
             }
             WindowLocation.GeometryFromString(Properties.Settings.Default.WindowLocation, this);
 
-            liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
             recover1.TaskStarted += Recover1_TaskStarted;
             recover1.TaskCompleted += Recover1_TaskCompleted;
         }
@@ -93,76 +88,10 @@ namespace Elucidate
             }
             else
             {
-                string[] args = Environment.GetCommandLineArgs().Skip(1).ToArray();
-                if (args.Any())
-                {
-                    // https://github.com/commandlineparser/commandline
-                    ParserResult<AllOptions> optsResult = Parser.Default.ParseArguments<AllOptions>(args);
-                    optsResult.WithParsed<AllOptions>(DisplayStdOptions);
-                    optsResult.WithNotParsed(DisplayErrors);
-                    ParserResult<object> parserResult = Parser.Default.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(args);
-                    parserResult.WithNotParsed(DisplayErrors);
-                    // Order is important as commands "Can" be chained"
-                    // See http://www.snapraid.it/manual scrubbing for an indication of order
-                    parserResult.WithParsed<DiffVerb>(verb => DisplayAndCall(verb, Diff_Click));
-                    parserResult.WithParsed<CheckVerb>(verb => DisplayAndCall(verb, Check_Click));
-                    parserResult.WithParsed<SyncVerb>(verb => DisplayAndCall(verb, Sync_Click));
-                    parserResult.WithParsed<ScrubVerb>(verb => DisplayAndCall(verb, Scrub_Click));
-                    parserResult.WithParsed<DupVerb>(verb => DisplayAndCall(verb, DupFinder_Click));
-                    parserResult.WithParsed<StatusVerb>(verb => DisplayAndCall(verb, btnStatus_Click));
-                    parserResult.WithParsed<FixVerb>(verb => DisplayAndCall(verb, Fix_Click));
-                    // Verbs not done as they do not have buttons yet
-                    // list
-                    // smart
-                    // up
-                    // down
-                    // pool
-                    // devices
-                    // touch
-                    // rehash
-                }
+                commonTab.PerformArgs(Environment.GetCommandLineArgs().Skip(1).ToArray());
             }
         }
 
-        private void DisplayAndCall<T>(T verb, EventHandler<EventArgs> clickCall)
-        {
-            DisplayStdOptions(verb);
-            clickCall(this, EventArgs.Empty);
-        }
-
-        private void DisplayStdOptions<TO>(TO sv)
-        {
-            string commandLineRead = string.Join(" ", Environment.GetCommandLineArgs());
-            Log.Error(@"CommandLine Read: [{0}]", commandLineRead);
-            string commandLine = Parser.Default.FormatCommandLine(sv);
-            if (!string.IsNullOrWhiteSpace(commandLine))
-            {
-                Log.Info(@"CommandLine options Interpreted: [{0}]", commandLine);
-                liveRunLogControl1.txtAddCommands.Text = commandLine;
-                liveRunLogControl1.checkBoxCommandLineOptions.Checked = true;
-                if ((sv as StdOptions).Verbose)
-                {
-                    liveRunLogControl1.checkBoxDisplayOutput.Checked = true;
-                }
-            }
-        }
-
-        private void DisplayErrors(IEnumerable<Error> errs)
-        {
-            foreach (Error err in errs)
-            {
-                Log.Error(err.Tag);
-            }
-
-            StringWriter writer = new StringWriter();
-            {
-                // Force the output of the help for each verb
-                Parser parser = new Parser(with => with.HelpWriter = writer);
-                parser.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(new[] { @"--help" });
-
-                Log.Info(writer.ToString());
-            }
-        }
 
         private void Recover1_TaskStarted(object sender, EventArgs e)
         {
@@ -172,29 +101,6 @@ namespace Elucidate
         private void Recover1_TaskCompleted(object sender, EventArgs e)
         {
             tabControl.Deselecting -= tabControl_Deselecting;
-        }
-
-        private void liveRunLogControl1_RunWorkerCompleted(object sender, EventArgs e) => SetCommonButtonsEnabledState(true);
-
-        private void SetCommonButtonsEnabledState(bool enabled)
-        {
-            btnDiff.Enabled = enabled;
-            btnSync.Enabled = enabled;
-            btnCheck.Enabled = enabled;
-            btnStatus.Enabled = enabled;
-            btnScrub.Enabled = enabled;
-            btnFix.Enabled = enabled;
-            btnDupFinder.Enabled = enabled;
-            btnForceFullSync.Enabled = enabled;
-            logViewToolStripMenuItem.Enabled = enabled;
-            if (enabled)
-            {
-                tabControl.Deselecting -= tabControl_Deselecting;
-            }
-            else
-            {
-                tabControl.Deselecting += tabControl_Deselecting;
-            }
         }
 
         private void tabControl_Selected(object sender, TabControlEventArgs e)
@@ -211,109 +117,17 @@ namespace Elucidate
         }
         #region Main Menu Toolbar Handlers
 
-        private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
-
-            string userAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Elucidate");
-
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                InitialDirectory = Path.Combine(userAppData, @"Logs"),
-                Filter = @"Log files (*.log)|*.log|Archive logs (*.*)|*.*",
-                FileName = "*.log",
-                FilterIndex = 2,
-                Title = @"Select name to view contents"
-            };
-
-            if (openFileDialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-
-            if (Properties.Settings.Default.UseWindowsSettings)
-            {
-                Process word = Process.Start("Wordpad.exe", '"' + openFileDialog.FileName + '"');
-                if (word == null)
-                {
-                    return;
-                }
-
-                word.WaitForInputIdle();
-                SendKeys.SendWait("^{END}");
-            }
-            else
-            {
-                // Launch whatever "Knows" how to view log files
-                Process.Start('"' + openFileDialog.FileName + '"');
-            }
-        }
-
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start(@"https://github.com/Smurf-IV/Elucidate/blob/master/docs/Documentation.md");
         }
         #endregion Menu Handlers
 
-        private void btnStatus_Click(object sender, EventArgs e)
-        {
-            SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Status);
-        }
-
-        private void Diff_Click(object sender, EventArgs e)
-        {
-            SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Diff);
-        }
-
-        private void Check_Click(object sender, EventArgs e)
-        {
-            SetCommonButtonsEnabledState(false);
-            if (Util.IsExecutableRunning(Properties.Settings.Default.SnapRAIDFileLocation))
-            {
-                SetCommonButtonsEnabledState(true);
-                KryptonMessageBox.Show(this, @"A SnapRAID process is already running");
-                return;
-            }
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Check);
-        }
-
-        private void Sync_Click(object sender, EventArgs e)
-        {
-            SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Sync);
-        }
-
-        private void Scrub_Click(object sender, EventArgs e)
-        {
-            SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Scrub);
-        }
-
-        private void Fix_Click(object sender, EventArgs e)
-        {
-            SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Fix);
-        }
-
-        private void DupFinder_Click(object sender, EventArgs e)
-        {
-            SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Dup);
-        }
-
         private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
         {
             // persist our geometry string.
             Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
             Properties.Settings.Default.Save();
-        }
-
-        private void ForceFullSync_Click(object sender, EventArgs e)
-        {
-            SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.ForceFullSync);
         }
 
         private void LoadConfigFile(bool launchEditSnapRAID = true)
@@ -323,7 +137,7 @@ namespace Elucidate
             Properties.Settings.Default.ConfigFileIsValid = srConfig.IsValid;
             bool exists = File.Exists(Properties.Settings.Default.SnapRAIDFileLocation);
 
-            SetCommonButtonsEnabledState(srConfig.IsValid && exists);
+            commonTab.SetCommonButtonsEnabledState(srConfig.IsValid && exists);
 
             if (srConfig.IsValid
                 && exists
@@ -361,7 +175,7 @@ namespace Elucidate
 
         private void EditSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
+            if (commonTab.liveRunLogControl1.ActionWorker.IsBusy) { return; }
 
             using (Settings settingsForm = new Settings())
             {

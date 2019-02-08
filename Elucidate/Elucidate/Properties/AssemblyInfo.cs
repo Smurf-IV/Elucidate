@@ -58,8 +58,8 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2019.1.794.27")]
-[assembly: AssemblyFileVersion("19.1.794.27")]
+[assembly: AssemblyVersion("2019.2.830.8")]
+[assembly: AssemblyFileVersion("19.2.830.8")]
 [assembly: NeutralResourcesLanguage("en-US")]
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]
@@ -80,5 +80,4 @@ using System.Runtime.InteropServices;
 [assembly: Dependency("Exceptionless", LoadHint.Always)]
 [assembly: Dependency("Exceptionless.Nlog", LoadHint.Always)]
 [assembly: Dependency("Exceptionless.Windows", LoadHint.Always)]
-[assembly: Dependency("FastColoredTextBoxNS", LoadHint.Always)]
 [assembly: Dependency("NLog", LoadHint.Always)]

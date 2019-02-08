@@ -36,11 +36,24 @@
 
 ## MainForm
 - Should only be enabled if **both** Config and SnapRaid exe are configured.
+- Select a region of the _Logging_ area
+  - Use copy (Ctrl+C) and paste into another app (like WordPad)
+  - Ensure that text colouring (And actual text) are displayed
+- Compare the contents of the LiveLog area to an actual log file
+  - Ensure that no missing lines are displayed (Take into account cut off number from the app.config)
 
 
 ### Default Tab
 
 ### Logs Tab
+- Select Elucidate
+  - Observe that the view populates with the logs
+- Select "Only with Errors"
+  - observe that the available files are reduced
+
+- Select Scheduled
+- ??
+
 
 ### Coverage Tab
 - This should be populated from a valid config file

@@ -78,11 +78,6 @@
                 </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\FastColoredTextBox.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.FastColoredTextBox" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
                 <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.GroupControls" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
@@ -104,18 +99,8 @@
                 </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\Krypton Ribbon.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Ribbon" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
                 <File Source="$(var.MgtSource)\Krypton Toolkit.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.Toolkit" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Krypton Workspace.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Workspace" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
@@ -147,9 +132,9 @@
             <Component>
                 <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
             </Component>
-            <Component>
-                <File Source="$(sys.SOURCEFILEDIR)LGPLv3.0.rtf" KeyPath="yes" />    <!--Used for the FastColouredTextBox-->
-            </Component>
+            <!--<Component>
+                <File Source="$(sys.SOURCEFILEDIR) TODO" KeyPath="yes" />    --><!--Used for the Krypton--><!--
+            </Component>-->
             <Component>
                 <File Source="$(var.MgtSource)\wyDay.Controls\License.txt" KeyPath="yes" />
             </Component>

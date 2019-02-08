@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>18.8.27.3</AssemblyVersion>
+    <AssemblyVersion>19.2.830.8</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\DataGridViewTripleValueBarColumn.cs" />
+    <Compile Include="Controls\ListBoxLog.cs" />
     <Compile Include="Controls\ProtectedDrivesDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -188,10 +189,16 @@
     <Compile Include="Controls\LiveRunLogControl.Designer.cs">
       <DependentUpon>LiveRunLogControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\LogsViewerControl.cs">
+    <Compile Include="TabPages\CommonTab.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\LogsViewerControl.Designer.cs">
+    <Compile Include="TabPages\CommonTab.Designer.cs">
+      <DependentUpon>CommonTab.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TabPages\LogsViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TabPages\LogsViewerControl.Designer.cs">
       <DependentUpon>LogsViewerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\Recover.cs">
@@ -269,7 +276,10 @@
     <EmbeddedResource Include="Controls\LiveRunLogControl.resx">
       <DependentUpon>LiveRunLogControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\LogsViewerControl.resx">
+    <EmbeddedResource Include="TabPages\CommonTab.resx">
+      <DependentUpon>CommonTab.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TabPages\LogsViewerControl.resx">
       <DependentUpon>LogsViewerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ProtectedDrivesDisplay.resx">
@@ -370,16 +380,13 @@
       <Version>2.4.3</Version>
     </PackageReference>
     <PackageReference Include="Exceptionless.NLog">
-      <Version>4.3.2012</Version>
+      <Version>4.3.2022</Version>
     </PackageReference>
     <PackageReference Include="Exceptionless.Windows">
-      <Version>4.3.2012</Version>
-    </PackageReference>
-    <PackageReference Include="FCTB">
-      <Version>2.16.24</Version>
+      <Version>4.3.2022</Version>
     </PackageReference>
     <PackageReference Include="KryptonToolkitSuite5472">
-      <Version>5.472.716</Version>
+      <Version>5.472.717</Version>
     </PackageReference>
     <PackageReference Include="NLog">
       <Version>4.5.11</Version>
@@ -392,7 +399,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" BuildVersion_UseGlobalSettings="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UseUniversalClock="False" />
+      <UserProperties BuildVersion_UseUniversalClock="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
