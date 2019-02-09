@@ -293,7 +293,7 @@
             this.btnForceFullSync.Name = "btnForceFullSync";
             this.btnForceFullSync.Rounding = 14F;
             this.btnForceFullSync.Size = new System.Drawing.Size(300, 64);
-            this.btnForceFullSync.Subscript = "sync with \"-F\" option";
+            this.btnForceFullSync.Subscript = "sync with \"-F\" option,\r\nto recompute the full parity";
             this.btnForceFullSync.SubscriptFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnForceFullSync.TabIndex = 12;
             this.btnForceFullSync.Text = "Force Full Sync";

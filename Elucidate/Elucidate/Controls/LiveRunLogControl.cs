@@ -56,16 +56,20 @@ namespace Elucidate.Controls
         private ProcessPriorityClass requested = ProcessPriorityClass.Normal;
         private string lastError;
         private List<string> batchPaths;
-        private static ListBoxLog listBoxLog;
+        private static ListBoxLog ListBoxLog;
 
         public bool IsRunning { get; set; }
+
         private CommandType CommandTypeRunning { get; set; }
 
         public LiveRunLogControl()
         {
             InitializeComponent();
 
-            listBoxLog = new ListBoxLog(rtbLiveLog);
+            if (ListBoxLog == null )
+            {
+                ListBoxLog = new ListBoxLog(rtbLiveLog);
+            }
 
             AddThreadingCallbacks();
 
@@ -594,7 +598,7 @@ namespace Elucidate.Controls
         // This is used by the logging to force all to the output window
         public static void LogMethod(string levelUppercase, string message)
         {
-            listBoxLog?.LogMethod(levelUppercase, message);
+            ListBoxLog?.LogMethod(levelUppercase, message);
         }
     }
 }

@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -118,7 +119,11 @@ namespace Elucidate
         #region Main Menu Toolbar Handlers
         private void EditSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (commonTab.liveRunLogControl1.ActionWorker.IsBusy) { return; }
+            if (commonTab.liveRunLogControl1.ActionWorker.IsBusy)
+            {
+                SystemSounds.Beep.Play();
+                return;
+            }
 
             using (Settings settingsForm = new Settings())
             {
@@ -232,6 +237,28 @@ namespace Elucidate
         {
             Process.Start(@"https://github.com/Smurf-IV/Elucidate/commits");
         }
+
+        private void editConfigDirectlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (commonTab.liveRunLogControl1.ActionWorker.IsBusy)
+            {
+                SystemSounds.Beep.Play();
+                return;
+            }
+            using (Process process = new Process
+            {
+                StartInfo = new ProcessStartInfo(@"Wordpad.exe", Properties.Settings.Default.ConfigFileLocation)
+            })
+            {
+                process.Start();
+                //Wait for the window to finish loading.
+                process.WaitForInputIdle();
+                //Wait for the process to end.
+                process.WaitForExit();
+            }
+            LoadConfigFile(true);
+        }
+
         #endregion Menu Handlers
 
         private void ElucidateForm_ResizeEnd(object sender, EventArgs e)

@@ -111,15 +111,15 @@ namespace Elucidate.HelperClasses
             return 0;
         }
 
-        public static List<ulong> GetDriveSizes(ReadOnlyCollection<ConfigFileHelper.SnapShotSource> sources)
+        public static List<ulong> GetDriveSizes(List<string> sources)
         {
             List<ulong> deviceSizes = new List<ulong>();
 
-            foreach (ConfigFileHelper.SnapShotSource source in sources)
+            foreach (string source in sources)
             {
                 try
                 {
-                    string pathRoot = GetPathRoot(source.DirSource);
+                    string pathRoot = GetPathRoot(source);
                     deviceSizes.Add(GetDriveSize(pathRoot));
                 }
                 catch (Exception ex)
@@ -131,9 +131,21 @@ namespace Elucidate.HelperClasses
             if (deviceSizes.Count == 0)
             {
                 // Catch case when nothing has been set up yet
-                deviceSizes.Add(0); 
+                deviceSizes.Add(0);
             }
             return deviceSizes;
+        }
+
+        public static List<ulong> GetDriveSizes(ReadOnlyCollection<ConfigFileHelper.SnapShotSource> sources)
+        {
+            List<string> sourcePaths = new List<string>(sources.Count);
+
+            foreach (ConfigFileHelper.SnapShotSource source in sources)
+            {
+                sourcePaths.Add(source.DirSource);
+            }
+
+            return GetDriveSizes(sourcePaths);
         }
         
         /// <summary>
@@ -247,6 +259,5 @@ namespace Elucidate.HelperClasses
             out ulong lpTotalNumberOfFreeBytes);
 
         #endregion
-
     }
 }

@@ -1,3 +1,5 @@
+<hr />
+
 # Start up
 - NO CRASHING !
 - Check Start is recorded on [Exceptionless website](https://be.exceptionless.io/project/5baf46b571a3042bb85bf097/dashboard)
@@ -8,6 +10,7 @@
 
 ## Upgrade
 - Unless Config items have become disabled, display should be on the Main Tab and enabled
+- Attempt to install when Elucidate is running
 
 ## Moved Files
 - If Config is now invalid then Main Form is Disabled
@@ -15,6 +18,8 @@
 
 ## Normal
 - Display should be on the Main Tab and enabled
+
+<hr />
 
 ## Settings
 
@@ -27,12 +32,26 @@
 ### Normal
 - Edit the Name of Data / Disk entry
   - Ensure that a warning message box is displayed
-  - answer yes, allow an edit operation
+    - answer yes, allow an edit operation
   - If the name is changed then Ensure that the notification for save is displayed
 - Press the "Reset to last" button
+- Try to add a directory which is already part of the protected list
+  - Drag A directory that is already a root element
+  - Drag a directory which is a child of an existing
+  - Drag a direcotyr which is on the same drive but not currently protected
+  - Should cope with directory redirects (i.e. mount points)
 
 ### Save
 - Allow save even items are still invalid (To allow extra editing later)
+- Ensure that the Saved items reflect the choices made by the user. 
+  - Disk_Mount_Points names are stored correctly and in the order selected
+  - Contents locations reflect the Disk_Mount_Point locations
+  - Excluded items reflect user input (Remember CRUD)
+- Re-open via the menu:
+  - Ensure that the Settings are restored correctly [(Open the file in an editor and compare)](https://github.com/Smurf-IV/Elucidate/issues/39)
+  - 
+
+<hr />
 
 ## MainForm
 - Should only be enabled if **both** Config and SnapRaid exe are configured.

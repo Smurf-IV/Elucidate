@@ -40,12 +40,6 @@ namespace Elucidate.Controls
         public ListBoxLog(ListBox listBox, int maxLinesInListbox = DEFAULT_MAX_LINES_IN_LISTBOX, int defaultUpdateFrequencyms = DEFAULT_UPDATE_FREQUENCY_MS)
         {
             disposed = false;
-            timer1 = new Timer
-            {
-                Enabled = listBox.IsHandleCreated,
-                Interval = defaultUpdateFrequencyms,
-            };
-            timer1.Tick += timer1_Tick;
 
             listBoxInt = listBox;
             maxEntriesInListBox = maxLinesInListbox;
@@ -53,17 +47,26 @@ namespace Elucidate.Controls
             Paused = false;
 
             listBoxInt.SelectionMode = SelectionMode.MultiExtended;
+            // Display a horizontal scroll bar.
+            listBoxInt.HorizontalScrollbar = true;
+            listBoxInt.DrawMode = DrawMode.OwnerDrawVariable;
 
             listBoxInt.HandleCreated += OnHandleCreated;
             listBoxInt.HandleDestroyed += OnHandleDestroyed;
             listBoxInt.DrawItem += DrawItemHandler;
             listBoxInt.KeyDown += KeyDownHandler;
             listBoxInt.MeasureItem += MeasureItem;
-            listBoxInt.DrawMode = DrawMode.OwnerDrawVariable;
 
             MenuItem[] menuItems = new[] { new MenuItem("Copy", CopyMenuOnClickHandler) };
             listBoxInt.ContextMenu = new ContextMenu(menuItems);
             listBoxInt.ContextMenu.Popup += CopyMenuPopupHandler;
+
+            timer1 = new Timer
+            {
+                Enabled = listBox.IsHandleCreated,
+                Interval = defaultUpdateFrequencyms,
+            };
+            timer1.Tick += timer1_Tick;
 
         }
 
@@ -121,12 +124,18 @@ namespace Elucidate.Controls
                     };
                 }
 
-                e.ItemHeight = (int) (e.Graphics.MeasureString(logEvent.Message, listBoxInt.Font).Height + 2);
+                SizeF sizeF = e.Graphics.MeasureString(logEvent.Message, listBoxInt.Font);
+                
+                e.ItemHeight = (int)(sizeF.Height + 2);
+                if (listBoxInt.HorizontalExtent < sizeF.Width)
+                {
+                    listBoxInt.HorizontalExtent = (int) (sizeF.Width + 2);
+                }
             }
         }
 
 
-            private void DrawItemHandler(object sender, DrawItemEventArgs e)
+        private void DrawItemHandler(object sender, DrawItemEventArgs e)
         {
             if (e.Index >= 0)
             {
@@ -139,7 +148,7 @@ namespace Elucidate.Controls
                     logEvent = new LogString
                     {
                         LevelUppercase = @"FATAL",
-                        Message = ((ListBox) sender).Items[e.Index].ToString()
+                        Message = ((ListBox)sender).Items[e.Index].ToString()
                     };
                 }
 
@@ -152,7 +161,7 @@ namespace Elucidate.Controls
                     case @"ERROR":
                         color = Brushes.Red;
                         break;
-                    case @"WARNING":
+                    case @"WARN":
                         color = Brushes.Goldenrod;
                         break;
                     case @"INFO":
@@ -161,7 +170,7 @@ namespace Elucidate.Controls
                     case @"DEBUG":
                         color = Brushes.Gray;
                         break;
-                        case @"TRACE":
+                    case @"TRACE":
                         color = Brushes.DarkGray;
                         break;
                     default:
@@ -223,7 +232,7 @@ namespace Elucidate.Controls
 
                 alreadyDequing = true;
                 // Now lock in case the timer is overlapping !
-                //BeginInvoke((MethodInvoker)delegate
+                listBoxInt.BeginInvoke((MethodInvoker)delegate
                 {
                     //some stuffs for best performance
                     listBoxInt.BeginUpdate();
@@ -248,7 +257,7 @@ namespace Elucidate.Controls
                     //}
                     alreadyDequing = false;
                 }
-                //);
+                );
             }
             catch (Exception ex)
             {
@@ -256,7 +265,7 @@ namespace Elucidate.Controls
             }
         }
 
-private void CopyToClipboard()
+        private void CopyToClipboard()
         {
             if (listBoxInt.SelectedItems.Count > 0)
             {

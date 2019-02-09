@@ -28,7 +28,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using ByteSizeLib;
+
 using Elucidate.HelperClasses;
 using Elucidate.Objects;
 
@@ -147,7 +149,7 @@ namespace Elucidate
             }
         }
 
-        public ReadOnlyCollection<SnapShotSource> DataParityPaths => SnapShotSources.AsReadOnly();
+        public ReadOnlyCollection<SnapShotSource> DataSourcePaths => SnapShotSources.AsReadOnly();
 
         private List<string> ParityContentPaths
         {
@@ -242,29 +244,27 @@ namespace Elucidate
             }
 
             // RULE: check that devices are not repeated
-            if (!IsRulePassDevicesMustNotRepeat(DataParityPaths))
+            if (!IsRulePassDevicesMustNotRepeat(DataSourcePaths))
             {
-                ConfigErrors.Add("Devices for data and parity must be unique. Check the values for data and parity");
+                ConfigErrors.Add("Devices for Source and Parity must be unique. Check the values for data and parity");
             }
 
             // RULE: data paths must be accessible
-            foreach (SnapShotSource source in DataParityPaths)
+            foreach (SnapShotSource source in DataSourcePaths)
             {
                 // test if path exists
-                if (Directory.Exists(source.DirSource))
+                if (!Directory.Exists(source.DirSource))
                 {
-                    continue;
+                    ConfigErrors.Add($"Source is inaccessible or does not exist: {source.DirSource}");
                 }
-
-                ConfigErrors.Add($"Parity source is inaccessible: {source.DirSource}");
             }
 
             // RULE: parity devices should be greater or equal to data devices
-            ByteSize largestDataDevice = new ByteSize(StorageUtil.GetDriveSizes(DataParityPaths).Max());
-            ByteSize smallestParityDevice = new ByteSize(StorageUtil.GetDriveSizes(DataParityPaths).Min());
-            if (largestDataDevice > smallestParityDevice)
+            ByteSize largestSourceDevice = new ByteSize(StorageUtil.GetDriveSizes(DataSourcePaths).Max());
+            ByteSize smallestParityDevice = new ByteSize(StorageUtil.GetDriveSizes(ParityPaths).Min());
+            if (largestSourceDevice > smallestParityDevice)
             {
-                ConfigWarnings.Add($@"One or more data devices [{largestDataDevice}] are larger than the smallest parity device [{smallestParityDevice}]. All parity devices should be equal or greater in size than all data devices.");
+                ConfigWarnings.Add($@"One or more data devices [{largestSourceDevice}] are larger than the smallest parity device [{smallestParityDevice}]. All parity devices should be equal or greater in size than all data devices.");
             }
 
             // RULE: blockSize valid value
@@ -541,11 +541,11 @@ namespace Elucidate
             List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
 
             // SnapShotSource might be root or folders, so we handle both cases
-            foreach (SnapShotSource source in DataParityPaths)
+            foreach (SnapShotSource source in DataSourcePaths)
             {
                 pathsOfInterest.Add(new CoveragePath
                 {
-                    FullPath = Path.GetDirectoryName(source.DirSource) ?? Path.GetFullPath(source.DirSource),
+                    FullPath = /*Path.GetDirectoryName(source.DirSource) ?? */Path.GetFullPath(source.DirSource),
                     PathType = PathTypeEnum.Source,
                     Name = source.Name
                 });
@@ -554,19 +554,72 @@ namespace Elucidate
             if (!string.IsNullOrWhiteSpace(ParityFile1))
             {
                 pathsOfInterest.Add(new CoveragePath
-                { FullPath = Path.GetFullPath(ParityFile1), PathType = PathTypeEnum.Parity, Name = @"Parity1" });
+                {
+                    FullPath = Path.GetFullPath(ParityFile1),
+                    PathType = PathTypeEnum.Parity,
+                    Name = @"Parity1"
+                });
             }
 
-            if (!string.IsNullOrWhiteSpace(ParityFile2)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile2), PathType = PathTypeEnum.Parity, Name = @"Parity2" }); }
+            if (!string.IsNullOrWhiteSpace(ParityFile2))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    FullPath = Path.GetFullPath(ParityFile2),
+                    PathType = PathTypeEnum.Parity,
+                    Name = @"Parity2"
+                });
+            }
 
-            if (!string.IsNullOrWhiteSpace(ZParityFile)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ZParityFile), PathType = PathTypeEnum.Parity, Name = @"ZParity" }); }
-            if (!string.IsNullOrWhiteSpace(ParityFile3)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile3), PathType = PathTypeEnum.Parity, Name = @"Parity3" }); }
+            if (!string.IsNullOrWhiteSpace(ZParityFile))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    FullPath = Path.GetFullPath(ZParityFile),
+                    PathType = PathTypeEnum.Parity,
+                    Name = @"ZParity"
+                });
+            }
 
-            if (!string.IsNullOrWhiteSpace(ParityFile4)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile4), PathType = PathTypeEnum.Parity, Name = @"Parity4" }); }
+            if (!string.IsNullOrWhiteSpace(ParityFile3))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    FullPath = Path.GetFullPath(ParityFile3),
+                    PathType = PathTypeEnum.Parity,
+                    Name = @"Parity3"
+                });
+            }
 
-            if (!string.IsNullOrWhiteSpace(ParityFile5)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile5), PathType = PathTypeEnum.Parity, Name = @"Parity5" }); }
-
-            if (!string.IsNullOrWhiteSpace(ParityFile6)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(ParityFile6), PathType = PathTypeEnum.Parity, Name = @"Parity6" }); }
+            if (!string.IsNullOrWhiteSpace(ParityFile4))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    FullPath = Path.GetFullPath(ParityFile4),
+                    PathType = PathTypeEnum.Parity,
+                    Name = @"Parity4"
+                });
+            }
+            
+            if (!string.IsNullOrWhiteSpace(ParityFile5))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    FullPath = Path.GetFullPath(ParityFile5),
+                    PathType = PathTypeEnum.Parity,
+                    Name = @"Parity5"
+                });
+            }
+            
+            if (!string.IsNullOrWhiteSpace(ParityFile6))
+            {
+                pathsOfInterest.Add(new CoveragePath
+                {
+                    FullPath = Path.GetFullPath(ParityFile6),
+                    PathType = PathTypeEnum.Parity,
+                    Name = @"Parity6"
+                });
+            }
 
             return pathsOfInterest;
         }

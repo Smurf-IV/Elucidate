@@ -1,5 +1,4 @@
 ﻿#region Copyright (C)
-
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Settings.cs" company="Smurf-IV">
 //
@@ -23,7 +22,6 @@
 //  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 #endregion Copyright (C)
 
 using System;
@@ -263,7 +261,7 @@ namespace Elucidate
 
             string newDevice = StorageUtil.GetPathRoot(newPath);
 
-            if (string.IsNullOrEmpty(newPath))
+            if (string.IsNullOrWhiteSpace(newPath))
             {
                 return;
             }
@@ -271,6 +269,9 @@ namespace Elucidate
             if (!Directory.Exists(newPath))
             {
                 Log.Warn($"Data source not added. Path does not exist. Attempted to add [{newPath}]");
+                MessageBoxExt.Show(this,
+                    $"Path does not exist.\nAttempted to add:\n [{newPath}]",
+                    "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
@@ -279,29 +280,31 @@ namespace Elucidate
             {
                 if (row.Tag is CoveragePath coveragePath)
                 {
-
                     string nodeDevice = StorageUtil.GetPathRoot(coveragePath.FullPath);
 
                     Log.Trace($"adding new node, so compare, nodeDevice = {nodeDevice}");
 
-                    if (newDevice != nodeDevice)
+                    if (newDevice == nodeDevice)
                     {
-                        continue;
+
+                        Log.Warn(
+                            $"Data source not added. The path is on a device for an existing path. Attempted to add [{newPath}] which is on the same device as the existing path [{coveragePath.FullPath}]");
+
+                        MessageBoxExt.Show(this,
+                            $"Attempted to add:\n [{newPath}]\n\nWhich is on the same device as the existing device path:\n [{coveragePath.FullPath}]",
+                            "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                        return;
                     }
-
-                    Log.Warn(
-                        $"Data source not added. The path is on a device for an existing path. Attempted to add [{newPath}] which is on the same device as the existing path [{coveragePath.FullPath}]");
-
-                    MessageBoxExt.Show(this,
-                        $"The path is on a device for an existing path.\n\nExisting device path:\n{coveragePath.FullPath}",
-                        "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-
-                    return;
                 }
             }
 
             snapShotSources.AddCoverage(new CoveragePath
-                {FullPath = newPath, PathType = PathTypeEnum.Source });
+            {
+                FullPath = newPath,
+                Name = $@"d{snapShotSources.driveGrid.Rows.Count}",
+                PathType = PathTypeEnum.Source
+            });
             //snapShotSourcesTreeView.Nodes.Add(new TreeNode(newPath, selected.ImageIndex, selected.ImageIndex));
 
             UnsavedChangesMade = true;
@@ -513,7 +516,7 @@ namespace Elucidate
             )
             {
                 if (DialogResult.Yes == KryptonMessageBox.Show(this,
-                        @"Changing a 'Name' will require a 'Full Sync' to be run.\nDo you wish to continue?",
+                        "Changing a 'Name' will require a 'Full Sync' to be run.\nDo you wish to continue?",
                         @"Name Change Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
                     DataGridViewCell cell = selected.Cells[1];
@@ -834,7 +837,7 @@ namespace Elucidate
                     if (row.Tag is CoveragePath coveragePath)
                     {
                         cfgToSave.SnapShotSources.Add(new ConfigFileHelper.SnapShotSource
-                            {Name = coveragePath.Name, DirSource = coveragePath.FullPath});
+                        { Name = coveragePath.Name, DirSource = coveragePath.FullPath });
                         cfgToSave.ContentFiles.Add(coveragePath.FullPath);
                     }
                 }
