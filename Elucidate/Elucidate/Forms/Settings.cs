@@ -701,26 +701,26 @@ namespace Elucidate
 
         private void configFileLocation_TextChanged(object sender, EventArgs e)
         {
-            ReadConfigDetails();
+            ReadConfigDetails(configFileLocation.Text);
 
             ValidateFormData();
         }
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            ReadConfigDetails();
+            ReadConfigDetails(Properties.Settings.Default.ConfigFileLocation);
 
             ValidateFormData();
         }
 
-        private void ReadConfigDetails()
+        private void ReadConfigDetails(string fileToLoad)
         {
             try
             {
                 exludedFilesView.Rows.Clear();
 
 
-                cfg = new ConfigFileHelper(Properties.Settings.Default.ConfigFileLocation);
+                cfg = new ConfigFileHelper(fileToLoad);
 
                 if (!cfg.ConfigFileExists)
                 {
@@ -795,8 +795,8 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Error(ex, @"Failed to read config file.");
-                KryptonMessageBox.Show(this, ex.Message, @"Failed to read config file.");
+                Log.Error(ex, @"Failed to read config file.[{0}]", fileToLoad);
+                KryptonMessageBox.Show(this, ex.Message, $"Failed to read config file.\n[{fileToLoad}");
             }
         }
 

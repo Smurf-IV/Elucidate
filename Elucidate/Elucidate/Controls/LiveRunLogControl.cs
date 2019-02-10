@@ -66,7 +66,7 @@ namespace Elucidate.Controls
         {
             InitializeComponent();
 
-            if (ListBoxLog == null )
+            if (ListBoxLog == null)
             {
                 ListBoxLog = new ListBoxLog(rtbLiveLog);
             }
@@ -97,14 +97,15 @@ namespace Elucidate.Controls
             EventHandler handler = TaskCompleted;
             handler?.Invoke(this, e);
         }
-        
+
         private class ThreadObject
         {
             public BackgroundWorker BgdWorker;
             public Process CmdProcess;
         }
 
-        public enum CommandType {
+        public enum CommandType
+        {
             Status,
             Diff,
             Check,
@@ -121,7 +122,7 @@ namespace Elucidate.Controls
         private void LiveRunLogControl_Load(object sender, EventArgs e)
         {
         }
-        
+
         public void HideAdditionalCommands()
         {
             tableLayoutPanelAdditionalCommands.Visible = false;
@@ -132,7 +133,7 @@ namespace Elucidate.Controls
             WorkerReportsProgress = true,
             WorkerSupportsCancellation = true,
         };
-        
+
         private void AddThreadingCallbacks()
         {
             // Add threading callbacks
@@ -202,7 +203,7 @@ namespace Elucidate.Controls
             requested = ProcessPriorityClass.Normal;
 
             ActionWorker.RunWorkerAsync(command.ToString());
-            
+
             toolStripProgressBar1.DisplayText = "Running...";
 
             toolStripProgressBar1.State = ProgressBarState.Normal;
@@ -220,7 +221,7 @@ namespace Elucidate.Controls
             try
             {
                 IsRunning = true;
-                
+
                 OnTaskStarted(e);
 
                 BackgroundWorker worker = sender as BackgroundWorker;
@@ -249,7 +250,7 @@ namespace Elucidate.Controls
 
                 string args = Util.FormatSnapRaidCommandArgs(
                     command: command,
-                    additionalCommands: IsCommandLineOptionsEnabled ? txtAddCommands.Text : string.Empty, 
+                    additionalCommands: IsCommandLineOptionsEnabled ? txtAddCommands.Text : string.Empty,
                     appPath: out string appPath);
 
                 RunSnapRaid(e, args, appPath, worker);
@@ -376,7 +377,7 @@ namespace Elucidate.Controls
                 e.Cancel = true;
             }
         }
-        
+
         private void actionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             int progressPercentage = e.ProgressPercentage;
@@ -406,7 +407,7 @@ namespace Elucidate.Controls
         private void actionWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             IsRunning = false;
-            
+
             // continue running additional times if there is more work to be done
             if (CommandTypeRunning == CommandType.RecoverFix && batchPaths.Any())
             {
@@ -419,7 +420,7 @@ namespace Elucidate.Controls
             comboBoxProcessStatus.Enabled = false;
             IsCommandLineOptionsEnabled = checkBoxCommandLineOptions.Checked = false; // uncheck so the next command does not include this by accident
             checkBoxCommandLineOptions.Enabled = true;
-            
+
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
             {
                 toolStripProgressBar1.Style = ProgressBarStyle.Continuous;
@@ -446,7 +447,7 @@ namespace Elucidate.Controls
                     toolStripProgressBar1.Value = 100;
                     comboBoxProcessStatus.Text = @"Stopped";
                 }
-                
+
                 if (CommandTypeRunning == CommandType.RecoverCheck || CommandTypeRunning == CommandType.RecoverFix)
                 {
                     toolStripProgressBar1.State = ProgressBarState.Normal;
@@ -500,29 +501,30 @@ namespace Elucidate.Controls
         {
             try
             {
+                // No Resharper not in while loops
+                // ReSharper disable once TooWideLocalVariableScope
                 string buf;
                 do
                 {
-                    if (string.IsNullOrEmpty(buf = threadObject.CmdProcess.StandardOutput.ReadLine()))
+                    buf = threadObject.CmdProcess.StandardOutput.ReadLine();
+                    Log.Info("StdOut[{0}]", buf);
+                    if (!string.IsNullOrWhiteSpace(buf))
                     {
-                        continue;
+                        string[] splits = buf.Split('%');
+                        if ((splits.Length > 1)
+                           && int.TryParse(splits[0], out int percentProgress)
+                           )
+                        {
+                            threadObject.BgdWorker.ReportProgress(percentProgress, buf);
+                        }
                     }
-
-                    Log.Info($"StdOut[{buf}]");
-
-                    if (!buf.Contains("%"))
+                    else
                     {
-                        continue;
+                        // SnapRaid dumps a null length when drawing graphs etc. So need to check if still running..
+                        mreProcessExit.WaitOne(100);
                     }
-
-                    string[] splits = buf.Split('%');
-
-                    if (int.TryParse(splits[0], out int percentProgress))
-                    {
-                        threadObject.BgdWorker.ReportProgress(percentProgress, buf);
-                    }
-
-                } while (!string.IsNullOrEmpty(buf));
+                } while (!mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
+                        );
             }
             catch (Exception ex)
             {

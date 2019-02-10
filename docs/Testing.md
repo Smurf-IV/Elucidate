@@ -28,6 +28,7 @@
 ### Upgrade
 
 ### Moved Files
+- Load a file from a different location (And have the settings reflected)
 
 ### Normal
 - Edit the Name of Data / Disk entry
@@ -62,7 +63,9 @@
   - Ensure that no missing lines are displayed (Take into account cut off number from the app.config)
 
 
-### Default Tab
+### Default / Common Tab
+- When running ensure that application is responsive
+- Snapriad performs a Store, ensure app still follows these steps
 
 ### Logs Tab
 - Select Elucidate
