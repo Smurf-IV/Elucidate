@@ -50,19 +50,23 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
   - [x] Scheduling.
   - [x] Graphical view(s) of the protected data.
 
-- [ ] Phase III (Restart for 17-0x onwards)
+- [ ] Phase III (Restart for 2017-03 onwards)
   - [x] New Compiler and .Net 4.7.x	
   - [x] Command Line interface
-  - [ ] New Layout via Krypton Toolkit / Navigator / etc.
+  - [ ] New Layout via Krypton Toolkit / Navigator / etc. 
+    - In Progress
   - [ ] Translations 
   - [x] New Commands
-  - [x] Log view(s) diagnostics
   - [ ] Mailer with status reports
   - [ ] Document Test steps
+    - In Progress
   - [ ] Add to Documentation / Update Images
+    - In Progress
+  - [ ] Add _Windows EventLog_ reporting of Errors
+  - [x] Add _ExceptionLess_ for online reporting of Exceptions
 
 - [ ] Phase IV (Recovery and new SnapRAID Commands ?) 
-  - [ ] Extended Help with recovery â€“ interactive guides etc.. 
+  - [ ] Extended Help with recovery - interactive guides etc.. 
   - [ ] Show what could be recovered (This will require looking into the SnapRaid codebase to interpret the status file(s)). 
   - [ ] Notify the user if their SnapRAID version is outdated
   - [ ] Interpret the SnapRAID logs (used by the changes below)
@@ -70,7 +74,7 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
   - [ ] Modify the sync command to include an initial diff
   - [ ] Modify the sync command to throw a warning if the diff has reported problems above a threshold
   - [ ] Add user configurable settings for sync threshold requirements
-  - [ ] Extended Help with recovery – interactive guides etc..
+
 
 ## Screenshots
 
