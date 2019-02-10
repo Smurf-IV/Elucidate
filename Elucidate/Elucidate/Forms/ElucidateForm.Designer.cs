@@ -57,8 +57,9 @@ namespace Elucidate
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dangerZoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editConfigDirectlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showMeTheLatestReleaseStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.tabCoveragePage.SuspendLayout();
             this.tabSchedulePage.SuspendLayout();
@@ -278,7 +279,8 @@ namespace Elucidate
             // 
             this.dangerZoneToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem,
-            this.editConfigDirectlyToolStripMenuItem});
+            this.editConfigDirectlyToolStripMenuItem,
+            this.showMeTheLatestReleaseStatsToolStripMenuItem});
             this.dangerZoneToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dangerZoneToolStripMenuItem.Name = "dangerZoneToolStripMenuItem";
             this.dangerZoneToolStripMenuItem.Size = new System.Drawing.Size(112, 23);
@@ -288,11 +290,19 @@ namespace Elucidate
             // 
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Name = "deleteAllSnapRAIDRaidFilesToolStripMenuItem";
-            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(287, 22);
-            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Text = "&Delete SnapRAID generated files";
+            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
+            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Text = "&Delete SnapRAID Generated Files";
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.ToolTipText = "This will delete all parity and content files defined in the current configuratio" +
     "n file.";
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Click += new System.EventHandler(this.deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click);
+            // 
+            // editConfigDirectlyToolStripMenuItem
+            // 
+            this.editConfigDirectlyToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editConfigDirectlyToolStripMenuItem.Name = "editConfigDirectlyToolStripMenuItem";
+            this.editConfigDirectlyToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
+            this.editConfigDirectlyToolStripMenuItem.Text = "&Edit SnapRAID.Config Directly ...";
+            this.editConfigDirectlyToolStripMenuItem.Click += new System.EventHandler(this.editConfigDirectlyToolStripMenuItem_Click);
             // 
             // changeLogToolStripMenuItem
             // 
@@ -303,13 +313,13 @@ namespace Elucidate
             this.changeLogToolStripMenuItem.Text = "ChangeLog";
             this.changeLogToolStripMenuItem.Click += new System.EventHandler(this.changeLogToolStripMenuItem_Click);
             // 
-            // editConfigDirectlyToolStripMenuItem
+            // showMeTheLatestReleaseStatsToolStripMenuItem
             // 
-            this.editConfigDirectlyToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editConfigDirectlyToolStripMenuItem.Name = "editConfigDirectlyToolStripMenuItem";
-            this.editConfigDirectlyToolStripMenuItem.Size = new System.Drawing.Size(287, 22);
-            this.editConfigDirectlyToolStripMenuItem.Text = "&Edit SnapRAID.Config Directly";
-            this.editConfigDirectlyToolStripMenuItem.Click += new System.EventHandler(this.editConfigDirectlyToolStripMenuItem_Click);
+            this.showMeTheLatestReleaseStatsToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showMeTheLatestReleaseStatsToolStripMenuItem.Name = "showMeTheLatestReleaseStatsToolStripMenuItem";
+            this.showMeTheLatestReleaseStatsToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
+            this.showMeTheLatestReleaseStatsToolStripMenuItem.Text = "&Show Me the Latest Release Stats ...";
+            this.showMeTheLatestReleaseStatsToolStripMenuItem.Click += new System.EventHandler(this.showMeTheLatestReleaseStatsToolStripMenuItem_Click);
             // 
             // ElucidateForm
             // 
@@ -376,6 +386,7 @@ namespace Elucidate
         private CommonTab commonTab;
         private ToolStripMenuItem changeLogToolStripMenuItem;
         private ToolStripMenuItem editConfigDirectlyToolStripMenuItem;
+        private ToolStripMenuItem showMeTheLatestReleaseStatsToolStripMenuItem;
     }
 }
 

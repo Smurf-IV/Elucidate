@@ -259,6 +259,10 @@ namespace Elucidate
             LoadConfigFile(true);
         }
 
+        private void showMeTheLatestReleaseStatsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"https://www.somsubhra.com/github-release-stats/?username=Smurf-IV&repository=Elucidate");
+        }
         #endregion Menu Handlers
 
         private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
@@ -316,5 +320,6 @@ namespace Elucidate
             driveSpaceDisplay.FormClosing();
             Properties.Settings.Default.Save();
         }
+
     }
 }
