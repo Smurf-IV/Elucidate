@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToggleSwitch", "ToggleSwitc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4387A76F-EC87-446D-A4A7-E7D96F8DD9A3}"
 	ProjectSection(SolutionItems) = preProject
+		..\Index.html = ..\Index.html
 		..\license.md = ..\license.md
 		..\README.md = ..\README.md
 	EndProjectSection
@@ -95,8 +96,8 @@ Global
 		{95AFED29-C452-4F6F-9FB1-6E6E072EA4F4} = {4387A76F-EC87-446D-A4A7-E7D96F8DD9A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {39E6A612-AC12-4D63-BE2A-60EA16940A8A}
-		BuildVersion_StartDate = 2000/1/1
 		BuildVersion_UseGlobalSettings = False
+		BuildVersion_StartDate = 2000/1/1
+		SolutionGuid = {39E6A612-AC12-4D63-BE2A-60EA16940A8A}
 	EndGlobalSection
 EndGlobal
