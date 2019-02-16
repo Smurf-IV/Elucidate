@@ -75,7 +75,7 @@ namespace Elucidate.Controls
             pendingLogMessages.Enqueue(new LogString
             {
                 LevelUppercase = levelUppercase,
-                Message = message + Environment.NewLine
+                Message = message
             });
         }
 
@@ -124,12 +124,12 @@ namespace Elucidate.Controls
                     };
                 }
 
-                SizeF sizeF = e.Graphics.MeasureString(logEvent.Message, listBoxInt.Font);
+                Size sizeF = TextRenderer.MeasureText(e.Graphics, logEvent.Message, listBoxInt.Font);
                 
-                e.ItemHeight = (int)(sizeF.Height + 2);
+                e.ItemHeight = sizeF.Height + 2;
                 if (listBoxInt.HorizontalExtent < sizeF.Width)
                 {
-                    listBoxInt.HorizontalExtent = (int) (sizeF.Width + 2);
+                    listBoxInt.HorizontalExtent = sizeF.Width + 2;
                 }
             }
         }
@@ -152,29 +152,29 @@ namespace Elucidate.Controls
                     };
                 }
 
-                Brush color;
+                Color color;
                 switch (logEvent.LevelUppercase)
                 {
                     case @"FATAL":
-                        color = Brushes.White;
+                        color = Color.White;
                         break;
                     case @"ERROR":
-                        color = Brushes.Red;
+                        color = Color.Red;
                         break;
                     case @"WARN":
-                        color = Brushes.Goldenrod;
+                        color = Color.Goldenrod;
                         break;
                     case @"INFO":
-                        color = Brushes.Black;
+                        color = Color.Black;
                         break;
                     case @"DEBUG":
-                        color = Brushes.Gray;
+                        color = Color.Gray;
                         break;
                     case @"TRACE":
-                        color = Brushes.DarkGray;
+                        color = Color.DarkGray;
                         break;
                     default:
-                        color = Brushes.Black;
+                        color = Color.Black;
                         break;
                 }
 
@@ -182,8 +182,8 @@ namespace Elucidate.Controls
                 {
                     e.Graphics.FillRectangle(Brushes.Red, e.Bounds);
                 }
-
-                e.Graphics.DrawString(logEvent.Message, listBoxInt.Font, color, e.Bounds);
+                // https://blogs.msdn.microsoft.com/cjacks/2006/05/19/gdi-vs-gdi-text-rendering-performance/
+                TextRenderer.DrawText(e.Graphics, logEvent.Message, listBoxInt.Font, new Point(0, e.Bounds.Y + 2), color, TextFormatFlags.ExternalLeading);
             }
         }
 
@@ -281,7 +281,7 @@ namespace Elucidate.Controls
                     //    ((int)logEvent.Level > 5) ? 6 : ((int)logEvent.Level) + 1);
                     //selectedItemsAsRtfText.Append(FormatALogEventMessage(logEvent, messageFormat));
                     //selectedItemsAsRtfText.AppendLine(@"\par}");
-                    selectedItemsAsRtfText.Append(logEvent.Message);
+                    selectedItemsAsRtfText.AppendLine(logEvent.Message);
                 }
 
                 //selectedItemsAsRtfText.AppendLine(@"}");

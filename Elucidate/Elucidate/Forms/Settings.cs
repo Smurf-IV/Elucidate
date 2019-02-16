@@ -91,8 +91,8 @@ namespace Elucidate
             advSettingsList.Add(new AdvancedSettingsHelper("Debug Log Output", Properties.Settings.Default.DebugLoggingEnabled, "Option to include debug log output for troubleshooting Elucidate."));
 
             // Binding 'trick'.
-            checkedListBox1.DataSource = advSettingsList;
-            checkedListBox1.DisplayMember = "DisplayName";
+            checkedListBox1.ListBox.DataSource = advSettingsList;
+            checkedListBox1.ListBox.DisplayMember = "DisplayName";
             int offset = 0;
             foreach (AdvancedSettingsHelper helper in advSettingsList)
             {
@@ -1018,7 +1018,7 @@ namespace Elucidate
             FindParityFor(parityLocation1);
         }
 
-        private void FindParityFor(TextBox location)
+        private void FindParityFor(KryptonTextBox location)
         {
             if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK)
             {
@@ -1152,6 +1152,7 @@ namespace Elucidate
 
             if (textBox.Text.Trim() == cfg.ParityFile1)
             {
+                // TODO Check the others for conflict !
                 return;
             }
         }
