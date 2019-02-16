@@ -40,7 +40,7 @@ using Alphaleonis.Win32.Filesystem;
 using ComponentFactory.Krypton.Toolkit;
 
 using Elucidate.HelperClasses;
-using Exceptionless;
+
 using NLog;
 
 
@@ -109,7 +109,7 @@ namespace Elucidate
                 return numToRound; // return original number if 0 decimal places requested
             }
 
-            string strX = $"1{new String('0', decimalPlace)}";
+            string strX = $"1{new string('0', decimalPlace)}";
             int intX = Convert.ToInt32(strX);
             return Math.Ceiling(numToRound * intX) / intX;
         }

@@ -117,15 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Initial value = installed - 1GB to allow system to run.
+  <data name="label2.Values.Text" xml:space="preserve">
+    <value>Initial value = installed - 2GB to allow system to run.
 This can be increased if Swap file speed is good, 
 or decreased if using Windows 8.1 (Which uses 1.5GB).
 Values = Min / Max based on actual and projected usage.</value>
   </data>
   <data name="lblBadNews.Text" xml:space="preserve">
-    <value>For each file, even of few bytes, a whole block of parity is always allocated, and with many files this may result in a lot of unused parity space.
-When you completely fill the parity disk, you are not allowed to add more files in the data disks.</value>
+    <value>For each file, even of few bytes, a whole block of parity is always allocated, and with many files this may result in a lot of unused parity space. When you completely fill the parity disk, you are not allowed to add more files in the data disks.</value>
   </data>
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>How much memory SnapRAID requires to run?

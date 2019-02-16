@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace Elucidate
 {
-   partial class CalculateBlockSize
+    partial class CalculateBlockSize
    {
       /// <summary>
       /// Required designer variable.
@@ -32,46 +31,61 @@ namespace Elucidate
       private void InitializeComponent()
       {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalculateBlockSize));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.txtBlockSizeByCoverageMax = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtBlockSizeByCoverageMin = new System.Windows.Forms.TextBox();
-            this.btnCoverage = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.txtBlockSizeByFileCountMax = new System.Windows.Forms.TextBox();
-            this.lblBadNews = new System.Windows.Forms.Label();
-            this.txtBlockSizeByFileCountMin = new System.Windows.Forms.TextBox();
-            this.btnFileCount = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.groupBox1 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+            this.label2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.numericUpDown1 = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+            this.label1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.groupBox2 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+            this.txtBlockSizeByCoverageMax = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+            this.label3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.txtBlockSizeByCoverageMin = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+            this.btnCoverage = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.groupBox3 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+            this.txtBlockSizeByFileCountMax = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+            this.lblBadNews = new ComponentFactory.Krypton.Toolkit.KryptonWrapLabel();
+            this.txtBlockSizeByFileCountMin = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+            this.btnFileCount = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.richTextBox1 = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
+            this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox1.Panel)).BeginInit();
+            this.groupBox1.Panel.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox2.Panel)).BeginInit();
+            this.groupBox2.Panel.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox3.Panel)).BeginInit();
+            this.groupBox3.Panel.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).BeginInit();
+            this.kryptonPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.numericUpDown1);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(13, 13);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(563, 81);
+            // 
+            // groupBox1.Panel
+            // 
+            this.groupBox1.Panel.Controls.Add(this.label2);
+            this.groupBox1.Panel.Controls.Add(this.numericUpDown1);
+            this.groupBox1.Panel.Controls.Add(this.label1);
+            this.groupBox1.Size = new System.Drawing.Size(588, 98);
             this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Current OS figures:";
+            this.groupBox1.Values.Heading = "Current OS figures:";
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(181, 16);
+            this.label2.Location = new System.Drawing.Point(181, 2);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(376, 62);
+            this.label2.Size = new System.Drawing.Size(324, 68);
             this.label2.TabIndex = 2;
-            this.label2.Text = resources.GetString("label2.Text");
+            this.label2.Values.Text = resources.GetString("label2.Values.Text");
             // 
             // numericUpDown1
             // 
@@ -81,7 +95,7 @@ namespace Elucidate
             0,
             0,
             65536});
-            this.numericUpDown1.Location = new System.Drawing.Point(121, 18);
+            this.numericUpDown1.Location = new System.Drawing.Point(101, 12);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             128,
             0,
@@ -93,7 +107,7 @@ namespace Elucidate
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(54, 21);
+            this.numericUpDown1.Size = new System.Drawing.Size(74, 22);
             this.numericUpDown1.TabIndex = 1;
             this.numericUpDown1.Value = new decimal(new int[] {
             128,
@@ -103,162 +117,194 @@ namespace Elucidate
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 20);
+            this.label1.Location = new System.Drawing.Point(0, 5);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 13);
+            this.label1.Size = new System.Drawing.Size(99, 36);
+            this.label1.StateCommon.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.label1.StateCommon.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Far;
             this.label1.TabIndex = 0;
-            this.label1.Text = "&System Memory (GB):";
+            this.label1.Values.Text = "&System Memory\r\n(GB):";
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.txtBlockSizeByCoverageMax);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.txtBlockSizeByCoverageMin);
-            this.groupBox2.Controls.Add(this.btnCoverage);
-            this.groupBox2.Location = new System.Drawing.Point(13, 105);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Location = new System.Drawing.Point(0, 98);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(563, 81);
+            // 
+            // groupBox2.Panel
+            // 
+            this.groupBox2.Panel.Controls.Add(this.txtBlockSizeByCoverageMax);
+            this.groupBox2.Panel.Controls.Add(this.label3);
+            this.groupBox2.Panel.Controls.Add(this.txtBlockSizeByCoverageMin);
+            this.groupBox2.Panel.Controls.Add(this.btnCoverage);
+            this.groupBox2.Size = new System.Drawing.Size(588, 81);
             this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Calculate based on Coverage:";
+            this.groupBox2.Values.Heading = "Calculate based on Coverage:";
             // 
             // txtBlockSizeByCoverageMax
             // 
             this.txtBlockSizeByCoverageMax.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.txtBlockSizeByCoverageMax.Location = new System.Drawing.Point(101, 49);
+            this.txtBlockSizeByCoverageMax.Location = new System.Drawing.Point(101, 31);
             this.txtBlockSizeByCoverageMax.Name = "txtBlockSizeByCoverageMax";
             this.txtBlockSizeByCoverageMax.ReadOnly = true;
-            this.txtBlockSizeByCoverageMax.Size = new System.Drawing.Size(74, 21);
+            this.txtBlockSizeByCoverageMax.Size = new System.Drawing.Size(74, 20);
             this.txtBlockSizeByCoverageMax.TabIndex = 4;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(181, 13);
+            this.label3.Location = new System.Drawing.Point(181, 1);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(376, 65);
+            this.label3.Size = new System.Drawing.Size(373, 52);
             this.label3.TabIndex = 3;
-            this.label3.Text = "SnapRAID requires about TS*28 / BS bytes of RAM memory to run.\r\nWhere TS is the t" +
+            this.label3.Values.Text = "SnapRAID requires about TS*28 / BS bytes of RAM memory to run.\r\nWhere TS is the t" +
     "otal size in bytes of your disk array, \r\nand BS is the block size in bytes. ";
             // 
             // txtBlockSizeByCoverageMin
             // 
             this.txtBlockSizeByCoverageMin.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.txtBlockSizeByCoverageMin.Location = new System.Drawing.Point(101, 22);
+            this.txtBlockSizeByCoverageMin.Location = new System.Drawing.Point(101, 4);
             this.txtBlockSizeByCoverageMin.Name = "txtBlockSizeByCoverageMin";
             this.txtBlockSizeByCoverageMin.ReadOnly = true;
-            this.txtBlockSizeByCoverageMin.Size = new System.Drawing.Size(74, 21);
+            this.txtBlockSizeByCoverageMin.Size = new System.Drawing.Size(74, 20);
             this.txtBlockSizeByCoverageMin.TabIndex = 1;
             // 
             // btnCoverage
             // 
-            this.btnCoverage.Location = new System.Drawing.Point(10, 21);
+            this.btnCoverage.Location = new System.Drawing.Point(1, 3);
             this.btnCoverage.Name = "btnCoverage";
-            this.btnCoverage.Size = new System.Drawing.Size(75, 23);
+            this.btnCoverage.Size = new System.Drawing.Size(98, 48);
+            this.btnCoverage.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnCoverage.TabIndex = 0;
-            this.btnCoverage.Text = "&Coverage";
-            this.btnCoverage.UseVisualStyleBackColor = true;
+            this.btnCoverage.Values.ExtraText = "&Coverage";
+            this.btnCoverage.Values.Text = "Calculate via";
             this.btnCoverage.Click += new System.EventHandler(this.btnCoverage_Click);
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.txtBlockSizeByFileCountMax);
-            this.groupBox3.Controls.Add(this.lblBadNews);
-            this.groupBox3.Controls.Add(this.txtBlockSizeByFileCountMin);
-            this.groupBox3.Controls.Add(this.btnFileCount);
-            this.groupBox3.Location = new System.Drawing.Point(13, 197);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Location = new System.Drawing.Point(0, 179);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(563, 81);
+            // 
+            // groupBox3.Panel
+            // 
+            this.groupBox3.Panel.Controls.Add(this.txtBlockSizeByFileCountMax);
+            this.groupBox3.Panel.Controls.Add(this.lblBadNews);
+            this.groupBox3.Panel.Controls.Add(this.txtBlockSizeByFileCountMin);
+            this.groupBox3.Panel.Controls.Add(this.btnFileCount);
+            this.groupBox3.Size = new System.Drawing.Size(588, 90);
             this.groupBox3.TabIndex = 2;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Calculate based on Number Of Files:";
+            this.groupBox3.Values.Heading = "Calculate based on Number Of Files:";
             // 
             // txtBlockSizeByFileCountMax
             // 
             this.txtBlockSizeByFileCountMax.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.txtBlockSizeByFileCountMax.Location = new System.Drawing.Point(101, 49);
+            this.txtBlockSizeByFileCountMax.Location = new System.Drawing.Point(101, 30);
             this.txtBlockSizeByFileCountMax.Name = "txtBlockSizeByFileCountMax";
             this.txtBlockSizeByFileCountMax.ReadOnly = true;
-            this.txtBlockSizeByFileCountMax.Size = new System.Drawing.Size(74, 21);
+            this.txtBlockSizeByFileCountMax.Size = new System.Drawing.Size(74, 20);
             this.txtBlockSizeByFileCountMax.TabIndex = 5;
             // 
             // lblBadNews
             // 
-            this.lblBadNews.Location = new System.Drawing.Point(181, 16);
+            this.lblBadNews.AutoSize = false;
+            this.lblBadNews.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblBadNews.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(57)))), ((int)(((byte)(91)))));
+            this.lblBadNews.Location = new System.Drawing.Point(181, 1);
             this.lblBadNews.Name = "lblBadNews";
-            this.lblBadNews.Size = new System.Drawing.Size(376, 62);
-            this.lblBadNews.TabIndex = 4;
+            this.lblBadNews.Size = new System.Drawing.Size(400, 62);
             this.lblBadNews.Text = resources.GetString("lblBadNews.Text");
             // 
             // txtBlockSizeByFileCountMin
             // 
             this.txtBlockSizeByFileCountMin.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.txtBlockSizeByFileCountMin.Location = new System.Drawing.Point(101, 22);
+            this.txtBlockSizeByFileCountMin.Location = new System.Drawing.Point(101, 3);
             this.txtBlockSizeByFileCountMin.Name = "txtBlockSizeByFileCountMin";
             this.txtBlockSizeByFileCountMin.ReadOnly = true;
-            this.txtBlockSizeByFileCountMin.Size = new System.Drawing.Size(74, 21);
+            this.txtBlockSizeByFileCountMin.Size = new System.Drawing.Size(74, 20);
             this.txtBlockSizeByFileCountMin.TabIndex = 1;
             // 
             // btnFileCount
             // 
-            this.btnFileCount.Location = new System.Drawing.Point(10, 21);
+            this.btnFileCount.Location = new System.Drawing.Point(3, 2);
             this.btnFileCount.Name = "btnFileCount";
-            this.btnFileCount.Size = new System.Drawing.Size(75, 23);
+            this.btnFileCount.Size = new System.Drawing.Size(92, 48);
+            this.btnFileCount.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnFileCount.TabIndex = 0;
-            this.btnFileCount.Text = "&File Count";
-            this.btnFileCount.UseVisualStyleBackColor = true;
+            this.btnFileCount.Values.ExtraText = "&File Count";
+            this.btnFileCount.Values.Text = "Calculate via";
             this.btnFileCount.Click += new System.EventHandler(this.btnFileCount_Click);
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(12, 284);
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 269);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(564, 148);
+            this.richTextBox1.Size = new System.Drawing.Size(588, 222);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+            // 
+            // kryptonPanel1
+            // 
+            this.kryptonPanel1.Controls.Add(this.richTextBox1);
+            this.kryptonPanel1.Controls.Add(this.groupBox3);
+            this.kryptonPanel1.Controls.Add(this.groupBox2);
+            this.kryptonPanel1.Controls.Add(this.groupBox1);
+            this.kryptonPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.kryptonPanel1.Location = new System.Drawing.Point(0, 0);
+            this.kryptonPanel1.Name = "kryptonPanel1";
+            this.kryptonPanel1.Size = new System.Drawing.Size(588, 491);
+            this.kryptonPanel1.TabIndex = 4;
             // 
             // CalculateBlockSize
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(588, 444);
-            this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(588, 491);
+            this.Controls.Add(this.kryptonPanel1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "CalculateBlockSize";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Calculate Block Size";
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox1.Panel)).EndInit();
+            this.groupBox1.Panel.ResumeLayout(false);
+            this.groupBox1.Panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox2.Panel)).EndInit();
+            this.groupBox2.Panel.ResumeLayout(false);
+            this.groupBox2.Panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox2)).EndInit();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox3.Panel)).EndInit();
+            this.groupBox3.Panel.ResumeLayout(false);
+            this.groupBox3.Panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.groupBox3)).EndInit();
             this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).EndInit();
+            this.kryptonPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
       }
 
       #endregion
 
-      private GroupBox groupBox1;
-      private NumericUpDown numericUpDown1;
-      private Label label1;
-      private Label label2;
-      private GroupBox groupBox2;
-      private Label label3;
-      private TextBox txtBlockSizeByCoverageMin;
-      private Button btnCoverage;
-      private GroupBox groupBox3;
-      private TextBox txtBlockSizeByFileCountMin;
-      private Button btnFileCount;
-      private Label lblBadNews;
-      private RichTextBox richTextBox1;
-      private TextBox txtBlockSizeByCoverageMax;
-      private TextBox txtBlockSizeByFileCountMax;
-   }
+      private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox1;
+      private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown numericUpDown1;
+      private ComponentFactory.Krypton.Toolkit.KryptonLabel label1;
+      private ComponentFactory.Krypton.Toolkit.KryptonLabel label2;
+      private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox2;
+      private ComponentFactory.Krypton.Toolkit.KryptonLabel label3;
+      private ComponentFactory.Krypton.Toolkit.KryptonTextBox txtBlockSizeByCoverageMin;
+      private ComponentFactory.Krypton.Toolkit.KryptonButton btnCoverage;
+      private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox3;
+      private ComponentFactory.Krypton.Toolkit.KryptonTextBox txtBlockSizeByFileCountMin;
+      private ComponentFactory.Krypton.Toolkit.KryptonButton btnFileCount;
+      private ComponentFactory.Krypton.Toolkit.KryptonWrapLabel lblBadNews;
+      private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox richTextBox1;
+      private ComponentFactory.Krypton.Toolkit.KryptonTextBox txtBlockSizeByCoverageMax;
+      private ComponentFactory.Krypton.Toolkit.KryptonTextBox txtBlockSizeByFileCountMax;
+        private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel1;
+    }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace Elucidate.Objects
 {
@@ -11,8 +10,8 @@ namespace Elucidate.Objects
         public string DriveLetter { get; set; }
         public string Name { get; set; }
         public string FileSystem { get; set; }
-        public UInt32 Capacity { get; set; }
-        public UInt32 FreeSpace { get; set; }
+        public uint Capacity { get; set; }
+        public uint FreeSpace { get; set; }
         public string Status { get; set; }
     }
 }

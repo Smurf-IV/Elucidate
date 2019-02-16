@@ -34,17 +34,21 @@ using Elucidate.Shared;
 
 using Microsoft.VisualBasic.Devices;
 
+using NLog;
+
 namespace Elucidate
 {
     public partial class CalculateBlockSize : KryptonForm
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         public CalculateBlockSize()
         {
             ParityTargets = new List<string>(2);
             InitializeComponent();
             ulong available = new ComputerInfo().TotalPhysicalMemory;
-            const Decimal TEST_VALUE = 1UL << 30; // Should be 1 GBytes 
-            numericUpDown1.Value = (available / TEST_VALUE) - 1; // remove some to allow for the OS
+            const decimal TEST_VALUE = 1UL << 30; // Should be 1 GBytes 
+            numericUpDown1.Value = (available / TEST_VALUE) - 2; // remove some to allow for the OS
         }
 
         private void btnCoverage_Click(object sender, EventArgs e)
@@ -54,8 +58,8 @@ namespace Elucidate
                 Enabled = false;
                 using (new WaitCursor(true))
                 {
-                    UInt64 min = 0;
-                    UInt64 max = 0;
+                    ulong min = 0;
+                    ulong max = 0;
                     foreach (string path in SnapShotSources)
                     {
                         FindAndAddDisplaySizes(path, ref min, ref max);
@@ -63,10 +67,10 @@ namespace Elucidate
                     // TotalStorage*28 div(Val*1024) = OS Ram required
                     min *= 28;
                     max *= 28;
-                    UInt64 i = (1 << 10); // = 1024 
+                    ulong i = (1 << 10); // = 1024 
                     i <<= 30;   // * 1GB
-                    min /= (UInt64)(numericUpDown1.Value * i);
-                    max /= (UInt64)(numericUpDown1.Value * i);
+                    min /= (ulong)(numericUpDown1.Value * i);
+                    max /= (ulong)(numericUpDown1.Value * i);
 
                     // Any smaller than 256 is not really recommended - so let's make it the minimum
                     min = (min < 256) ? 256 : min;
@@ -82,9 +86,9 @@ namespace Elucidate
             }
         }
 
-        private static string FindNextPow2(UInt64 val)
+        private static string FindNextPow2(ulong val)
         {
-            UInt64 positions = 2;
+            ulong positions = 2;
             while (positions < val)
             {
                 positions <<= 1;
@@ -99,7 +103,7 @@ namespace Elucidate
         // Need to find 3 values, Total drive size, Root drive used, actual used by path
         // Need to be aware of UNC paths
         // Need to be aware of Junctions
-        private static void FindAndAddDisplaySizes(string path, ref UInt64 min, ref UInt64 max)
+        private static void FindAndAddDisplaySizes(string path, ref ulong min, ref ulong max)
         {
             // ReSharper disable once UnusedVariable
             Util.SourcePathFreeBytesAvailable(path, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
@@ -190,7 +194,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Exception exx = ex;
+                Log.Fatal(ex);
             }
             finally
             {

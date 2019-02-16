@@ -386,7 +386,7 @@ namespace Elucidate
                     }
                     catch (UnauthorizedAccessException uaex)
                     {
-                        Log.Info(String.Concat("No Access to subdirs in ", tvwChild.Text), uaex);
+                        Log.Info(string.Concat("No Access to subdirs in ", tvwChild.Text), uaex);
                     }
 
                     parentNode.Nodes.Add(tvwChild);

@@ -82,7 +82,7 @@ namespace Elucidate.Controls
         // Read the contents of the file.  
         static string GetFileText(string name)
         {
-            string fileContents = String.Empty;
+            string fileContents = string.Empty;
             if (File.Exists(name))
             {
                 fileContents = File.ReadAllText(name);
