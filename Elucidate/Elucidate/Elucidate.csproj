@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>19.2.948.17</AssemblyVersion>
+    <AssemblyVersion>19.2.952.17</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -131,6 +131,12 @@
     <Compile Include="ExtendedToolkit\KryptonCommandLinkButtonDesigner.cs" />
     <Compile Include="ExtendedToolkit\KryptonCommandLinkVersion1.cs" />
     <Compile Include="ExtendedToolkit\ViewDrawCommandLinkButton.cs" />
+    <Compile Include="Forms\ThemeSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ThemeSelector.designer.cs">
+      <DependentUpon>ThemeSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="HelperClasses\AdvancedSettingsHelper.cs" />
     <Compile Include="CmdLine\CheckVerb.cs" />
     <Compile Include="CmdLine\DiffVerb.cs" />
@@ -222,6 +228,9 @@
     </Compile>
     <EmbeddedResource Include="Controls\LiveRunLogControl.resx">
       <DependentUpon>LiveRunLogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ThemeSelector.resx">
+      <DependentUpon>ThemeSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TabPages\CommonTab.resx">
       <DependentUpon>CommonTab.cs</DependentUpon>

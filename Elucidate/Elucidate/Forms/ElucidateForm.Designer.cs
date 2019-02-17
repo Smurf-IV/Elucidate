@@ -57,6 +57,8 @@ namespace Elucidate
             this.showMeTheLatestReleaseStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
+            this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
+            this.changeTheThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.tabCoveragePage)).BeginInit();
             this.tabCoveragePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabSchedulePage)).BeginInit();
@@ -270,7 +272,8 @@ namespace Elucidate
             this.dangerZoneToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem,
             this.editConfigDirectlyToolStripMenuItem,
-            this.showMeTheLatestReleaseStatsToolStripMenuItem});
+            this.showMeTheLatestReleaseStatsToolStripMenuItem,
+            this.changeTheThemeToolStripMenuItem});
             this.dangerZoneToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dangerZoneToolStripMenuItem.Name = "dangerZoneToolStripMenuItem";
             this.dangerZoneToolStripMenuItem.Size = new System.Drawing.Size(112, 23);
@@ -319,6 +322,14 @@ namespace Elucidate
             this.kryptonPanel1.Name = "kryptonPanel1";
             this.kryptonPanel1.Size = new System.Drawing.Size(945, 534);
             this.kryptonPanel1.TabIndex = 5;
+            // 
+            // changeTheThemeToolStripMenuItem
+            // 
+            this.changeTheThemeToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changeTheThemeToolStripMenuItem.Name = "changeTheThemeToolStripMenuItem";
+            this.changeTheThemeToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
+            this.changeTheThemeToolStripMenuItem.Text = "&Change the Theme ...";
+            this.changeTheThemeToolStripMenuItem.Click += new System.EventHandler(this.changeTheThemeToolStripMenuItem_Click);
             // 
             // ElucidateForm
             // 
@@ -388,6 +399,8 @@ namespace Elucidate
         private ToolStripMenuItem editConfigDirectlyToolStripMenuItem;
         private ToolStripMenuItem showMeTheLatestReleaseStatsToolStripMenuItem;
         private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel1;
+        private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
+        private ToolStripMenuItem changeTheThemeToolStripMenuItem;
     }
 }
 

@@ -63,6 +63,15 @@ namespace Elucidate
                 Properties.Settings.Default.Save();
             }
             WindowLocation.GeometryFromString(Properties.Settings.Default.WindowLocation, this);
+            if (Enum.TryParse(Properties.Settings.Default.Theme, out PaletteModeManager value))
+            {
+                RecalcNonClient();
+                kryptonManager1.GlobalPaletteMode = value;
+            }
+
+            // Hook into changes in the global palette
+            KryptonManager.GlobalPaletteChanged += OnPaletteChanged;
+
         }
 
         private void ElucidateForm_Load(object sender, EventArgs e)
@@ -239,6 +248,15 @@ namespace Elucidate
         }
         #endregion Menu Handlers
 
+        private void OnPaletteChanged(object sender, EventArgs e)
+        {
+            // persist our geometry string.
+            RecalcNonClient();
+            Properties.Settings.Default.Theme = kryptonManager1.GlobalPaletteMode.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+
         private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
         {
             // persist our geometry string.
@@ -325,6 +343,14 @@ namespace Elucidate
                 //  tabCoveragePage.Reset();
             }
             Log.Trace("tabControl_SelectedPageChanged - OUT");
+        }
+
+        private void changeTheThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (ThemeSelector ts = new ThemeSelector())
+            {
+                ts.ShowDialog(this);
+            }
         }
     }
 }
