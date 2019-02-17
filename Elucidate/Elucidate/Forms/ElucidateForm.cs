@@ -37,7 +37,7 @@ using System.Text;
 using System.Windows.Forms;
 using ComponentFactory.Krypton.Navigator;
 using ComponentFactory.Krypton.Toolkit;
-
+using Elucidate.Forms;
 using Elucidate.Shared;
 
 using NLog;

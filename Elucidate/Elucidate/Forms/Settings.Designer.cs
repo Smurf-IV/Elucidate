@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Elucidate.Controls;
 using Elucidate.Shared;
 
-namespace Elucidate
+namespace Elucidate.Forms
 {
     partial class Settings
     {
@@ -86,7 +86,6 @@ namespace Elucidate
             this.findExeFile = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
             this.driveAndDirTreeView = new Elucidate.Shared.BufferedTreeView();
             this.numBlockSizeKB = new Elucidate.Shared.NumericUpDownPowerOfTwo();
@@ -932,7 +931,6 @@ namespace Elucidate
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnReset;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnSave;
         private HelpProvider helpProvider1;
-        private FolderBrowserDialog folderBrowserDialog1;
         private ComponentFactory.Krypton.Toolkit.KryptonCheckedListBox checkedListBox1;
         private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox3;
         private NumericUpDownPowerOfTwo numBlockSizeKB;

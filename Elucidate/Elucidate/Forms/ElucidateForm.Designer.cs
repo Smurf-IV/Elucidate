@@ -236,7 +236,7 @@ namespace Elucidate
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(53, 23);
-            this.helpToolStripMenuItem.Text = "&Help";
+            this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.ToolTipText = "Goto the Help page.";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
@@ -262,7 +262,7 @@ namespace Elucidate
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(77, 23);
-            this.fileToolStripMenuItem.Text = "&Settings";
+            this.fileToolStripMenuItem.Text = "Settings";
             this.fileToolStripMenuItem.Click += new System.EventHandler(this.EditSnapRAIDConfigToolStripMenuItem_Click);
             // 
             // dangerZoneToolStripMenuItem
@@ -274,7 +274,7 @@ namespace Elucidate
             this.dangerZoneToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dangerZoneToolStripMenuItem.Name = "dangerZoneToolStripMenuItem";
             this.dangerZoneToolStripMenuItem.Size = new System.Drawing.Size(112, 23);
-            this.dangerZoneToolStripMenuItem.Text = "&Danger Zone";
+            this.dangerZoneToolStripMenuItem.Text = "Danger Zone";
             // 
             // deleteAllSnapRAIDRaidFilesToolStripMenuItem
             // 
@@ -307,8 +307,8 @@ namespace Elucidate
             this.changeLogToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.changeLogToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeLogToolStripMenuItem.Name = "changeLogToolStripMenuItem";
-            this.changeLogToolStripMenuItem.Size = new System.Drawing.Size(105, 23);
-            this.changeLogToolStripMenuItem.Text = "&Change Log";
+            this.changeLogToolStripMenuItem.Size = new System.Drawing.Size(109, 23);
+            this.changeLogToolStripMenuItem.Text = "Change_Log";
             this.changeLogToolStripMenuItem.Click += new System.EventHandler(this.changeLogToolStripMenuItem_Click);
             // 
             // kryptonPanel1

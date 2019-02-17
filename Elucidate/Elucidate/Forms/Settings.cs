@@ -40,7 +40,7 @@ using Elucidate.Shared;
 
 using NLog;
 
-namespace Elucidate
+namespace Elucidate.Forms
 {
     public partial class Settings : KryptonForm
     {
@@ -484,14 +484,17 @@ namespace Elucidate
 
         private void DRUnit_NewNode_MenuItem_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog { Description = @"Browse for directory manually" };
+            FolderSelectDialog fsd = new FolderSelectDialog
+            {
+                Title = @"Select the Target Directory"
+            };
 
-            if (fbd.ShowDialog() != DialogResult.OK)
+            if (!fsd.ShowDialog(this))
             {
                 return;
             }
 
-            DirectoryInfo dirInfo = new DirectoryInfo(fbd.SelectedPath);
+            DirectoryInfo dirInfo = new DirectoryInfo(fsd.FileName);
 
             TreeNode tvwChild = new TreeNode
             {
@@ -1020,14 +1023,17 @@ namespace Elucidate
 
         private void FindParityFor(KryptonTextBox location)
         {
-            if (folderBrowserDialog1.ShowDialog(this) != DialogResult.OK)
+            FolderSelectDialog fsd = new FolderSelectDialog
             {
-                return;
+                Title = @"Select the Target Directory"
+            };
+            if (fsd.ShowDialog(this))
+            {
+
+                location.Text = fsd.FileName;
+
+                ValidateParityTextBox();
             }
-
-            location.Text = folderBrowserDialog1.SelectedPath;
-
-            ValidateParityTextBox();
         }
 
         private void findParity2_Click(object sender, EventArgs e)
