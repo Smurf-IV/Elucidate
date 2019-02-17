@@ -1003,7 +1003,7 @@ namespace Elucidate
             }
             else
             {
-                snapShotSources.FormClosing();
+                snapShotSources.StopProcessing();
             }
         }
 

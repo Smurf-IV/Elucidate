@@ -31,7 +31,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-
+using ComponentFactory.Krypton.Toolkit;
 using Elucidate.wyDay.Controls;
 
 using NLog;
@@ -542,7 +542,7 @@ namespace Elucidate.Controls
 
         private void checkBoxDisplayOutput_MouseHover(object sender, EventArgs e)
         {
-            if (sender is CheckBox senderControl)
+            if (sender is KryptonCheckBox senderControl)
             {
                 senderControl.BackColor = Color.LightSteelBlue;
             }
@@ -550,7 +550,7 @@ namespace Elucidate.Controls
 
         private void checkBoxDisplayOutput_MouseLeave(object sender, EventArgs e)
         {
-            if (sender is CheckBox senderControl)
+            if (sender is KryptonCheckBox senderControl)
             {
                 senderControl.BackColor = Color.Empty;
             }
@@ -558,7 +558,7 @@ namespace Elucidate.Controls
 
         private void checkBoxCommandLineOptions_CheckedChanged(object sender, EventArgs e)
         {
-            if (sender is CheckBox senderControl)
+            if (sender is KryptonCheckBox senderControl)
             {
                 IsCommandLineOptionsEnabled = senderControl.Checked;
             }
@@ -571,7 +571,7 @@ namespace Elucidate.Controls
                 return;
             }
 
-            ComboBox control = (ComboBox)sender;
+            KryptonComboBox control = (KryptonComboBox)sender;
 
             string strSelected = control.SelectedItem.ToString();
 

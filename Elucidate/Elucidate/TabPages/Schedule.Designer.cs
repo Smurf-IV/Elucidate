@@ -67,8 +67,6 @@ namespace Elucidate.TabPages
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.AutoSize = true;
-            this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
             this.flowLayoutPanel1.Controls.Add(this.btnGetSchedules);
             this.flowLayoutPanel1.Controls.Add(this.menuButtonNewScheduleItem);
@@ -86,7 +84,6 @@ namespace Elucidate.TabPages
             // 
             // btnGetSchedules
             // 
-            this.btnGetSchedules.AutoSize = true;
             this.flowLayoutPanel1.SetFlowBreak(this.btnGetSchedules, true);
             this.btnGetSchedules.Location = new System.Drawing.Point(6, 6);
             this.btnGetSchedules.Margin = new System.Windows.Forms.Padding(6);
@@ -218,9 +215,7 @@ namespace Elucidate.TabPages
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Schedule";
             this.Size = new System.Drawing.Size(692, 428);
-            this.Load += new System.EventHandler(this.Scheduler_Load);
             this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.panelTaskView)).EndInit();
             this.panelTaskView.ResumeLayout(false);
             this.panelTaskView.PerformLayout();

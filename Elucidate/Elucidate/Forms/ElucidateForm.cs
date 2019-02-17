@@ -35,7 +35,7 @@ using System.Media;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-
+using ComponentFactory.Krypton.Navigator;
 using ComponentFactory.Krypton.Toolkit;
 
 using Elucidate.Shared;
@@ -260,7 +260,10 @@ namespace Elucidate
                 )
             {
                 BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(Properties.Settings.Default.ConfigFileLocation); });
-                driveSpaceDisplay.RefreshGrid(srConfig, false);
+                if (tabControl.SelectedPage == tabCoveragePage)
+                {
+                    tpCoverage.RefreshGrid(srConfig, false);
+                }
             }
             else
             {
@@ -291,9 +294,37 @@ namespace Elucidate
 
         private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            driveSpaceDisplay.FormClosing();
+            tpCoverage.StopProcessing();
             Properties.Settings.Default.Save();
         }
 
+        private void tabControl_SelectedPageChanged(object sender, EventArgs e)
+        {
+            Log.Trace("tabControl_SelectedPageChanged - IN");
+            KryptonPage currentTab = tabControl.SelectedPage;
+            tpCoverage.StopProcessing();
+
+            if (currentTab == tabCommonOperations)
+            {
+                //tabCommonOperations.Reset();
+            }
+            else if (currentTab == tabLogs)
+            {
+                // tabLogs.Reset();
+            }
+            else if (currentTab == tabCoveragePage)
+            {
+                tpCoverage.RefreshGrid(srConfig, false);
+            }
+            else if (currentTab == tabSchedulePage)
+            {
+                tpSchedule.ReLoad();
+            }
+            else if (currentTab == tabRecoverFiles)
+            {
+                //  tabCoveragePage.Reset();
+            }
+            Log.Trace("tabControl_SelectedPageChanged - OUT");
+        }
     }
 }

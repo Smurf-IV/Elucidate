@@ -28,7 +28,7 @@ namespace Elucidate.Controls
             InitializeComponent();
         }
 
-        public void FormClosing()
+        public void StopProcessing()
         {
             // have to stop "any" processes that might be refreshing as this is now closing
             cancelTokenSrc.Cancel();

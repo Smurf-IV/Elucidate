@@ -52,7 +52,7 @@ namespace Elucidate.TabPages
 
         private string appExecuteScript = @"snapraid.ps1";
         private string TaskNameSelected { get; set; } = string.Empty;
-        private readonly string uniqueKeyForThisConfig;
+        private string uniqueKeyForThisConfig;
         private enum ScheduledTaskTypeEnum { Sync, Check, Diff, Scrub }
         private ScheduledTaskTypeEnum ScheduledTaskType { get; set; }
         private const string TASK_FOLDER = @"Elucidate";
@@ -62,14 +62,18 @@ namespace Elucidate.TabPages
         {
             InitializeComponent();
 
-            uniqueKeyForThisConfig = GetUniqueKeyForThisConfig();
-
             kcmItemSync.Click += ItemSyncClicked;
             kcmItemCheck.Click += ItemCheckClicked;
             kcmItemDiff.Click += ItemDiffClicked;
             kcmItemScrub.Click += ItemScrubClicked;
             taskListView.TaskSelected += TaskListView_TaskSelected;
             taskListView.MouseDoubleClick += TaskListView_MouseDoubleClick;
+        }
+
+        public void ReLoad()
+        {
+            uniqueKeyForThisConfig = GetUniqueKeyForThisConfig();
+            DisplayTaskScheduleItems();
         }
 
         private void TaskListView_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -106,10 +110,6 @@ namespace Elucidate.TabPages
             btnEdit_Click(null, null);
         }
 
-        private void Scheduler_Load(object sender, EventArgs e)
-        {
-            //DisplayTaskScheduleItems();
-        }
 
         private void TaskListView_TaskSelected(object sender, TaskListView.TaskSelectedEventArgs e)
         {
@@ -150,7 +150,6 @@ namespace Elucidate.TabPages
         {
             ItemClicked(ScheduledTaskTypeEnum.Scrub);
         }
-
 
         private void ItemClicked(ScheduledTaskTypeEnum scheduledTaskType)
         {
@@ -311,8 +310,8 @@ namespace Elucidate.TabPages
                         ts.Connected ? "Connected" : "Disconnected");
                     // Output all the tasks in the root folder with their triggers and actions
                     TaskFolder tf = ts.GetFolder(TASK_FOLDER);
-                    Log.Debug(@"{0} folder task count ({1}):", TASK_FOLDER, tf.Tasks.Count);
-                    taskListView.Tasks = tf.Tasks;
+                    Log.Debug(@"{0} folder task count ({1}):", TASK_FOLDER, tf?.Tasks.Count??0);
+                    taskListView.Tasks = tf?.Tasks??null;
                 }
             }
             catch
@@ -327,19 +326,7 @@ namespace Elucidate.TabPages
 
         private void btnGetSchedules_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Cursor.Current = Cursors.WaitCursor;
                 DisplayTaskScheduleItems();
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex);
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
-            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

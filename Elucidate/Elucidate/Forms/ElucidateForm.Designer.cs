@@ -37,12 +37,17 @@ namespace Elucidate
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ElucidateForm));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabCoveragePage = new ComponentFactory.Krypton.Navigator.KryptonPage();
+            this.tpCoverage = new Elucidate.Controls.ProtectedDrivesDisplay();
             this.tabSchedulePage = new ComponentFactory.Krypton.Navigator.KryptonPage();
+            this.tpSchedule = new Elucidate.TabPages.Schedule();
             this.tabCommonOperations = new ComponentFactory.Krypton.Navigator.KryptonPage();
             this.logPanel = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
+            this.commonTab = new Elucidate.TabPages.CommonTab();
             this.tabControl = new ComponentFactory.Krypton.Navigator.KryptonNavigator();
             this.tabLogs = new ComponentFactory.Krypton.Navigator.KryptonPage();
+            this.logsViewerControl = new Elucidate.TabPages.LogsViewerControl();
             this.tabRecoverFiles = new ComponentFactory.Krypton.Navigator.KryptonPage();
+            this.recover1 = new Elucidate.TabPages.Recover();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,11 +57,6 @@ namespace Elucidate
             this.showMeTheLatestReleaseStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.commonTab = new Elucidate.TabPages.CommonTab();
-            this.logsViewerControl = new LogsViewerControl();
-            this.driveSpaceDisplay = new Elucidate.Controls.ProtectedDrivesDisplay();
-            this.SchedulePageScheduleControl = new Schedule();
-            this.recover1 = new Recover();
             ((System.ComponentModel.ISupportInitialize)(this.tabCoveragePage)).BeginInit();
             this.tabCoveragePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabSchedulePage)).BeginInit();
@@ -79,30 +79,51 @@ namespace Elucidate
             // tabCoveragePage
             // 
             this.tabCoveragePage.AutoHiddenSlideSize = new System.Drawing.Size(200, 200);
-            this.tabCoveragePage.Controls.Add(this.driveSpaceDisplay);
+            this.tabCoveragePage.Controls.Add(this.tpCoverage);
             this.tabCoveragePage.Flags = 65534;
             this.tabCoveragePage.LastVisibleSet = true;
             this.tabCoveragePage.MinimumSize = new System.Drawing.Size(50, 50);
             this.tabCoveragePage.Name = "tabCoveragePage";
             this.tabCoveragePage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCoveragePage.Size = new System.Drawing.Size(937, 476);
+            this.tabCoveragePage.Size = new System.Drawing.Size(943, 505);
             this.tabCoveragePage.Text = "  Coverage  ";
             this.tabCoveragePage.ToolTipTitle = "Page ToolTip";
             this.tabCoveragePage.UniqueName = "83F1AC53801E4FDCCBA828F2D020A11A";
             // 
+            // tpCoverage
+            // 
+            this.tpCoverage.AllowDrop = true;
+            this.tpCoverage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tpCoverage.Location = new System.Drawing.Point(3, 3);
+            this.tpCoverage.Margin = new System.Windows.Forms.Padding(4);
+            this.tpCoverage.Name = "tpCoverage";
+            this.tpCoverage.Size = new System.Drawing.Size(937, 499);
+            this.tpCoverage.TabIndex = 0;
+            // 
             // tabSchedulePage
             // 
             this.tabSchedulePage.AutoHiddenSlideSize = new System.Drawing.Size(200, 200);
-            this.tabSchedulePage.Controls.Add(this.SchedulePageScheduleControl);
+            this.tabSchedulePage.Controls.Add(this.tpSchedule);
             this.tabSchedulePage.Flags = 65534;
             this.tabSchedulePage.LastVisibleSet = true;
             this.tabSchedulePage.MinimumSize = new System.Drawing.Size(50, 50);
             this.tabSchedulePage.Name = "tabSchedulePage";
             this.tabSchedulePage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSchedulePage.Size = new System.Drawing.Size(937, 476);
+            this.tabSchedulePage.Size = new System.Drawing.Size(943, 505);
             this.tabSchedulePage.Text = "Schedule";
             this.tabSchedulePage.ToolTipTitle = "Page ToolTip";
             this.tabSchedulePage.UniqueName = "D08ABA17CB8242C412B34C6B2FB9731D";
+            // 
+            // tpSchedule
+            // 
+            this.tpSchedule.AutoSize = true;
+            this.tpSchedule.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tpSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tpSchedule.Location = new System.Drawing.Point(3, 3);
+            this.tpSchedule.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tpSchedule.Name = "tpSchedule";
+            this.tpSchedule.Size = new System.Drawing.Size(937, 499);
+            this.tpSchedule.TabIndex = 0;
             // 
             // tabCommonOperations
             // 
@@ -113,7 +134,7 @@ namespace Elucidate
             this.tabCommonOperations.Margin = new System.Windows.Forms.Padding(0);
             this.tabCommonOperations.MinimumSize = new System.Drawing.Size(50, 50);
             this.tabCommonOperations.Name = "tabCommonOperations";
-            this.tabCommonOperations.Size = new System.Drawing.Size(943, 505);
+            this.tabCommonOperations.Size = new System.Drawing.Size(943, 503);
             this.tabCommonOperations.Text = "  Common SnapRaid  ";
             this.tabCommonOperations.ToolTipTitle = "Page ToolTip";
             this.tabCommonOperations.UniqueName = "C7A4A748B4E3458CC28B53AD5B684A5E";
@@ -124,8 +145,16 @@ namespace Elucidate
             this.logPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.logPanel.Location = new System.Drawing.Point(0, 0);
             this.logPanel.Name = "logPanel";
-            this.logPanel.Size = new System.Drawing.Size(941, 503);
+            this.logPanel.Size = new System.Drawing.Size(943, 503);
             this.logPanel.TabIndex = 11;
+            // 
+            // commonTab
+            // 
+            this.commonTab.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commonTab.Location = new System.Drawing.Point(0, 0);
+            this.commonTab.Name = "commonTab";
+            this.commonTab.Size = new System.Drawing.Size(943, 503);
+            this.commonTab.TabIndex = 0;
             // 
             // tabControl
             // 
@@ -138,6 +167,7 @@ namespace Elucidate
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl.Name = "tabControl";
+            this.tabControl.PageBackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.PanelClient;
             this.tabControl.Pages.AddRange(new ComponentFactory.Krypton.Navigator.KryptonPage[] {
             this.tabCommonOperations,
             this.tabLogs,
@@ -146,8 +176,9 @@ namespace Elucidate
             this.tabRecoverFiles});
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(945, 534);
-            this.tabControl.StateCommon.Tab.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl.StateCommon.Tab.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl.TabIndex = 4;
+            this.tabControl.SelectedPageChanged += new System.EventHandler(this.tabControl_SelectedPageChanged);
             // 
             // tabLogs
             // 
@@ -158,10 +189,22 @@ namespace Elucidate
             this.tabLogs.MinimumSize = new System.Drawing.Size(50, 50);
             this.tabLogs.Name = "tabLogs";
             this.tabLogs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLogs.Size = new System.Drawing.Size(937, 476);
+            this.tabLogs.Size = new System.Drawing.Size(943, 505);
             this.tabLogs.Text = "Log History";
             this.tabLogs.ToolTipTitle = "Page ToolTip";
             this.tabLogs.UniqueName = "2D998176807546A076BCA98AEA36EF48";
+            // 
+            // logsViewerControl
+            // 
+            this.logsViewerControl.AutoSize = true;
+            this.logsViewerControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.logsViewerControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logsViewerControl.LexerToUse = Elucidate.TabPages.LogsViewerControl.LexerNameEnum.ScanRaid;
+            this.logsViewerControl.Location = new System.Drawing.Point(3, 3);
+            this.logsViewerControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.logsViewerControl.Name = "logsViewerControl";
+            this.logsViewerControl.Size = new System.Drawing.Size(937, 499);
+            this.logsViewerControl.TabIndex = 0;
             // 
             // tabRecoverFiles
             // 
@@ -177,6 +220,15 @@ namespace Elucidate
             this.tabRecoverFiles.ToolTipTitle = "Page ToolTip";
             this.tabRecoverFiles.UniqueName = "B4F3B50AB11048A05B80EE8A2A5EDC3A";
             // 
+            // recover1
+            // 
+            this.recover1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.recover1.Location = new System.Drawing.Point(3, 3);
+            this.recover1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.recover1.Name = "recover1";
+            this.recover1.Size = new System.Drawing.Size(931, 470);
+            this.recover1.TabIndex = 0;
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -184,7 +236,7 @@ namespace Elucidate
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(53, 23);
-            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Text = "&Help";
             this.helpToolStripMenuItem.ToolTipText = "Goto the Help page.";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
@@ -222,13 +274,13 @@ namespace Elucidate
             this.dangerZoneToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dangerZoneToolStripMenuItem.Name = "dangerZoneToolStripMenuItem";
             this.dangerZoneToolStripMenuItem.Size = new System.Drawing.Size(112, 23);
-            this.dangerZoneToolStripMenuItem.Text = "Danger Zone";
+            this.dangerZoneToolStripMenuItem.Text = "&Danger Zone";
             // 
             // deleteAllSnapRAIDRaidFilesToolStripMenuItem
             // 
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Name = "deleteAllSnapRAIDRaidFilesToolStripMenuItem";
-            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(320, 22);
+            this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.Text = "&Delete SnapRAID Generated Files";
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem.ToolTipText = "This will delete all parity and content files defined in the current configuratio" +
     "n file.";
@@ -238,7 +290,7 @@ namespace Elucidate
             // 
             this.editConfigDirectlyToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.editConfigDirectlyToolStripMenuItem.Name = "editConfigDirectlyToolStripMenuItem";
-            this.editConfigDirectlyToolStripMenuItem.Size = new System.Drawing.Size(320, 22);
+            this.editConfigDirectlyToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
             this.editConfigDirectlyToolStripMenuItem.Text = "&Edit SnapRAID.Config Directly ...";
             this.editConfigDirectlyToolStripMenuItem.Click += new System.EventHandler(this.editConfigDirectlyToolStripMenuItem_Click);
             // 
@@ -246,7 +298,7 @@ namespace Elucidate
             // 
             this.showMeTheLatestReleaseStatsToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showMeTheLatestReleaseStatsToolStripMenuItem.Name = "showMeTheLatestReleaseStatsToolStripMenuItem";
-            this.showMeTheLatestReleaseStatsToolStripMenuItem.Size = new System.Drawing.Size(320, 22);
+            this.showMeTheLatestReleaseStatsToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
             this.showMeTheLatestReleaseStatsToolStripMenuItem.Text = "&Show Me the Latest Release Stats ...";
             this.showMeTheLatestReleaseStatsToolStripMenuItem.Click += new System.EventHandler(this.showMeTheLatestReleaseStatsToolStripMenuItem_Click);
             // 
@@ -255,8 +307,8 @@ namespace Elucidate
             this.changeLogToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.changeLogToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeLogToolStripMenuItem.Name = "changeLogToolStripMenuItem";
-            this.changeLogToolStripMenuItem.Size = new System.Drawing.Size(100, 23);
-            this.changeLogToolStripMenuItem.Text = "ChangeLog";
+            this.changeLogToolStripMenuItem.Size = new System.Drawing.Size(105, 23);
+            this.changeLogToolStripMenuItem.Text = "&Change Log";
             this.changeLogToolStripMenuItem.Click += new System.EventHandler(this.changeLogToolStripMenuItem_Click);
             // 
             // kryptonPanel1
@@ -267,56 +319,6 @@ namespace Elucidate
             this.kryptonPanel1.Name = "kryptonPanel1";
             this.kryptonPanel1.Size = new System.Drawing.Size(945, 534);
             this.kryptonPanel1.TabIndex = 5;
-            // 
-            // commonTab
-            // 
-            this.commonTab.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commonTab.Location = new System.Drawing.Point(0, 0);
-            this.commonTab.Name = "commonTab";
-            this.commonTab.Size = new System.Drawing.Size(941, 503);
-            this.commonTab.TabIndex = 0;
-            // 
-            // logsViewerControl
-            // 
-            this.logsViewerControl.AutoSize = true;
-            this.logsViewerControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.logsViewerControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logsViewerControl.LexerToUse = LogsViewerControl.LexerNameEnum.ScanRaid;
-            this.logsViewerControl.Location = new System.Drawing.Point(3, 3);
-            this.logsViewerControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.logsViewerControl.Name = "logsViewerControl";
-            this.logsViewerControl.Size = new System.Drawing.Size(931, 470);
-            this.logsViewerControl.TabIndex = 0;
-            // 
-            // driveSpaceDisplay
-            // 
-            this.driveSpaceDisplay.AllowDrop = true;
-            this.driveSpaceDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.driveSpaceDisplay.Location = new System.Drawing.Point(3, 3);
-            this.driveSpaceDisplay.Margin = new System.Windows.Forms.Padding(4);
-            this.driveSpaceDisplay.Name = "driveSpaceDisplay";
-            this.driveSpaceDisplay.Size = new System.Drawing.Size(931, 470);
-            this.driveSpaceDisplay.TabIndex = 0;
-            // 
-            // SchedulePageScheduleControl
-            // 
-            this.SchedulePageScheduleControl.AutoSize = true;
-            this.SchedulePageScheduleControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SchedulePageScheduleControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SchedulePageScheduleControl.Location = new System.Drawing.Point(3, 3);
-            this.SchedulePageScheduleControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.SchedulePageScheduleControl.Name = "SchedulePageScheduleControl";
-            this.SchedulePageScheduleControl.Size = new System.Drawing.Size(931, 470);
-            this.SchedulePageScheduleControl.TabIndex = 0;
-            // 
-            // recover1
-            // 
-            this.recover1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.recover1.Location = new System.Drawing.Point(3, 3);
-            this.recover1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.recover1.Name = "recover1";
-            this.recover1.Size = new System.Drawing.Size(931, 470);
-            this.recover1.TabIndex = 0;
             // 
             // ElucidateForm
             // 
@@ -369,7 +371,7 @@ namespace Elucidate
         private ComponentFactory.Krypton.Navigator.KryptonPage tabCommonOperations;
         private ComponentFactory.Krypton.Toolkit.KryptonPanel logPanel;
         private ComponentFactory.Krypton.Navigator.KryptonPage tabSchedulePage;
-        private Schedule SchedulePageScheduleControl;
+        private Schedule tpSchedule;
         private ComponentFactory.Krypton.Navigator.KryptonPage tabCoveragePage;
         private ComponentFactory.Krypton.Navigator.KryptonPage tabLogs;
         private LogsViewerControl logsViewerControl;
@@ -380,7 +382,7 @@ namespace Elucidate
         private ToolStripMenuItem dangerZoneToolStripMenuItem;
         private ToolStripMenuItem deleteAllSnapRAIDRaidFilesToolStripMenuItem;
         private ToolStripMenuItem fileToolStripMenuItem;
-        private ProtectedDrivesDisplay driveSpaceDisplay;
+        private ProtectedDrivesDisplay tpCoverage;
         private CommonTab commonTab;
         private ToolStripMenuItem changeLogToolStripMenuItem;
         private ToolStripMenuItem editConfigDirectlyToolStripMenuItem;
