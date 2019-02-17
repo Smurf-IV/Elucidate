@@ -9,7 +9,7 @@ namespace ExtendedControls.ExtendedToolkit.Values
     {
         #region Static Fields
 
-        private static readonly Image defaultImage = new Bitmap(1,1);//Properties.Resources.Question_32_x_32);Properties.Resources.Question_32_x_32;
+        private static readonly Image defaultImage = new Bitmap(1, 1);//Properties.Resources.Question_32_x_32);Properties.Resources.Question_32_x_32;
         #endregion
 
         #region Identity
@@ -76,11 +76,11 @@ namespace ExtendedControls.ExtendedToolkit.Values
         {
             Image = defaultImage;
         }
-        
+
         /// <summary>
-                 /// Gets the content short text.
-                 /// </summary>
-                 /// <returns>String value.</returns>
+        /// Gets the content short text.
+        /// </summary>
+        /// <returns>String value.</returns>
         public Image GetImage(PaletteState state)
         {
             return Image;

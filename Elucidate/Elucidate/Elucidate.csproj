@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>19.2.934.17</AssemblyVersion>
+    <AssemblyVersion>19.2.948.17</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -124,10 +124,8 @@
     <Compile Include="Controls\ProtectedDrivesDisplay.Designer.cs">
       <DependentUpon>ProtectedDrivesDisplay.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExtendedToolkit\CommandLinkButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="ExtendedToolkit\CommandLinkTextValues.cs" />
+    <Compile Include="ExtendedToolkit\CommandLinkToolTipValues.cs" />
     <Compile Include="ExtendedToolkit\ImageValue.cs" />
     <Compile Include="ExtendedToolkit\KryptonCommandLinkButtonActionList.cs" />
     <Compile Include="ExtendedToolkit\KryptonCommandLinkButtonDesigner.cs" />

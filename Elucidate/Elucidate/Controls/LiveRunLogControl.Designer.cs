@@ -86,7 +86,8 @@ namespace Elucidate.Controls
             this.toolStripStatusLabel1.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabel1.StateCommon.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.toolStripStatusLabel1.StateCommon.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
-            this.toolStripStatusLabel1.TabIndex = 7;
+            this.toolStripStatusLabel1.TabIndex = 0;
+            this.toolStripStatusLabel1.TabStop = false;
             this.toolStripStatusLabel1.Values.Text = "2000-01-01 00:00:00Z";
             // 
             // toolStripProgressBar1
@@ -102,7 +103,7 @@ namespace Elucidate.Controls
             this.toolStripProgressBar1.ShowInTaskbar = true;
             this.toolStripProgressBar1.Size = new System.Drawing.Size(256, 30);
             this.toolStripProgressBar1.Step = 3;
-            this.toolStripProgressBar1.TabIndex = 5;
+            this.toolStripProgressBar1.TabIndex = 4;
             this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // runWithoutCaptureMenuItem
@@ -114,7 +115,7 @@ namespace Elucidate.Controls
             this.runWithoutCaptureMenuItem.Name = "runWithoutCaptureMenuItem";
             this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(163, 30);
             this.runWithoutCaptureMenuItem.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.runWithoutCaptureMenuItem.TabIndex = 4;
+            this.runWithoutCaptureMenuItem.TabIndex = 3;
             this.runWithoutCaptureMenuItem.Values.Text = "Run without capture";
             this.runWithoutCaptureMenuItem.Visible = false;
             // 
@@ -130,7 +131,7 @@ namespace Elucidate.Controls
             this.checkBoxDisplayOutput.Size = new System.Drawing.Size(125, 30);
             this.checkBoxDisplayOutput.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxDisplayOutput.StateCommon.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
-            this.checkBoxDisplayOutput.TabIndex = 6;
+            this.checkBoxDisplayOutput.TabIndex = 2;
             this.checkBoxDisplayOutput.Values.Text = "Display Output";
             this.checkBoxDisplayOutput.MouseLeave += new System.EventHandler(this.checkBoxDisplayOutput_MouseLeave);
             this.checkBoxDisplayOutput.MouseHover += new System.EventHandler(this.checkBoxDisplayOutput_MouseHover);
@@ -151,7 +152,7 @@ namespace Elucidate.Controls
             this.comboBoxProcessStatus.Size = new System.Drawing.Size(120, 24);
             this.comboBoxProcessStatus.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxProcessStatus.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBoxProcessStatus.TabIndex = 3;
+            this.comboBoxProcessStatus.TabIndex = 1;
             this.comboBoxProcessStatus.Text = "Stopped";
             this.comboBoxProcessStatus.SelectedIndexChanged += new System.EventHandler(this.comboBoxProcessStatus_SelectedIndexChanged);
             // 
@@ -167,7 +168,7 @@ namespace Elucidate.Controls
             this.rtbLiveLog.Name = "rtbLiveLog";
             this.rtbLiveLog.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.rtbLiveLog.Size = new System.Drawing.Size(858, 254);
-            this.rtbLiveLog.TabIndex = 3;
+            this.rtbLiveLog.TabIndex = 0;
             this.toolTip1.SetToolTip(this.rtbLiveLog, "Ctrl+A - selects all text\r\nCtrl+C - Copy to clipboard\r\n");
             // 
             // txtAddCommands
@@ -179,7 +180,7 @@ namespace Elucidate.Controls
             this.txtAddCommands.Name = "txtAddCommands";
             this.txtAddCommands.Size = new System.Drawing.Size(502, 19);
             this.txtAddCommands.StateCommon.Content.Font = new System.Drawing.Font("Lucida Console", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAddCommands.TabIndex = 6;
+            this.txtAddCommands.TabIndex = 1;
             this.txtAddCommands.WordWrap = false;
             // 
             // tableLayoutPanelAdditionalCommands
@@ -211,7 +212,7 @@ namespace Elucidate.Controls
             this.checkBoxCommandLineOptions.Name = "checkBoxCommandLineOptions";
             this.checkBoxCommandLineOptions.Size = new System.Drawing.Size(338, 22);
             this.checkBoxCommandLineOptions.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxCommandLineOptions.TabIndex = 7;
+            this.checkBoxCommandLineOptions.TabIndex = 0;
             this.checkBoxCommandLineOptions.Values.Text = "Include Additional Command Line Options:";
             this.checkBoxCommandLineOptions.CheckedChanged += new System.EventHandler(this.checkBoxCommandLineOptions_CheckedChanged);
             // 
