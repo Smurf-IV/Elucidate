@@ -1,4 +1,4 @@
-﻿namespace Elucidate.Controls
+﻿namespace Elucidate.TabPages
 {
     partial class LogsViewerControl
     {

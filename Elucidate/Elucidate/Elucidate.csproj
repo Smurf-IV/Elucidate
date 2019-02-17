@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>19.2.878.16</AssemblyVersion>
+    <AssemblyVersion>19.2.924.17</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -50,29 +50,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Elucidate.ico</ApplicationIcon>
@@ -124,30 +101,6 @@
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup />
   <ItemGroup>
     <Reference Include="JCS.ToggleSwitch">
       <HintPath>..\ToggleSwitch\JCS.ToggleSwitch.dll</HintPath>
@@ -155,14 +108,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.DataVisualization" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\DataGridViewTripleValueBarColumn.cs" />
@@ -173,6 +124,15 @@
     <Compile Include="Controls\ProtectedDrivesDisplay.Designer.cs">
       <DependentUpon>ProtectedDrivesDisplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExtendedToolkit\CommandLinkButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ExtendedToolkit\CommandLinkTextValues.cs" />
+    <Compile Include="ExtendedToolkit\ImageValue.cs" />
+    <Compile Include="ExtendedToolkit\KryptonCommandLinkButtonActionList.cs" />
+    <Compile Include="ExtendedToolkit\KryptonCommandLinkButtonDesigner.cs" />
+    <Compile Include="ExtendedToolkit\KryptonCommandLinkVersion1.cs" />
+    <Compile Include="ExtendedToolkit\ViewDrawCommandLinkButton.cs" />
     <Compile Include="HelperClasses\AdvancedSettingsHelper.cs" />
     <Compile Include="CmdLine\CheckVerb.cs" />
     <Compile Include="CmdLine\DiffVerb.cs" />
@@ -201,16 +161,16 @@
     <Compile Include="TabPages\LogsViewerControl.Designer.cs">
       <DependentUpon>LogsViewerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Recover.cs">
+    <Compile Include="TabPages\Recover.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Recover.Designer.cs">
+    <Compile Include="TabPages\Recover.Designer.cs">
       <DependentUpon>Recover.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Schedule.cs">
+    <Compile Include="TabPages\Schedule.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Schedule.Designer.cs">
+    <Compile Include="TabPages\Schedule.Designer.cs">
       <DependentUpon>Schedule.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\CalculateBlockSize.cs">
@@ -227,21 +187,9 @@
     <Compile Include="Shared\BufferedTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Shared\CommandLinkButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Shared\FilteredTaskListView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Shared\MenuButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Shared\MessageBoxExtForm.cs" />
     <Compile Include="Shared\MessageBoxExtForm.Designer.cs" />
     <Compile Include="Shared\NumericUpDownPowerOfTwo.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Shared\SplitButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Shared\TextOverProgressBar.cs">
@@ -285,10 +233,10 @@
     <EmbeddedResource Include="Controls\ProtectedDrivesDisplay.resx">
       <DependentUpon>ProtectedDrivesDisplay.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Recover.resx">
+    <EmbeddedResource Include="TabPages\Recover.resx">
       <DependentUpon>Recover.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Schedule.resx">
+    <EmbeddedResource Include="TabPages\Schedule.resx">
       <DependentUpon>Schedule.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CalculateBlockSize.resx">
@@ -348,28 +296,6 @@
     <None Include="Resources\camera_add_48.png" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="AlphaFS">
       <Version>2.2.6</Version>
     </PackageReference>
@@ -386,7 +312,7 @@
       <Version>4.3.2022</Version>
     </PackageReference>
     <PackageReference Include="KryptonToolkitSuite5472">
-      <Version>5.472.717</Version>
+      <Version>5.472.720</Version>
     </PackageReference>
     <PackageReference Include="NLog">
       <Version>4.5.11</Version>
@@ -399,7 +325,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" BuildVersion_UseGlobalSettings="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UseUniversalClock="False" />
+      <UserProperties BuildVersion_UseUniversalClock="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

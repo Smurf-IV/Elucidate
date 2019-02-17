@@ -42,6 +42,7 @@ using Elucidate.Shared;
 
 using NLog;
 
+// ReSharper disable once CheckNamespace
 namespace Elucidate
 {
     public sealed partial class ElucidateForm : KryptonForm
@@ -53,7 +54,6 @@ namespace Elucidate
         public ElucidateForm()
         {
             InitializeComponent();
-            //RichTextBoxTarget.ReInitializeAllTextboxes(this);
 
             if (Properties.Settings.Default.UpdateRequired)
             {
@@ -63,9 +63,6 @@ namespace Elucidate
                 Properties.Settings.Default.Save();
             }
             WindowLocation.GeometryFromString(Properties.Settings.Default.WindowLocation, this);
-
-            recover1.TaskStarted += Recover1_TaskStarted;
-            recover1.TaskCompleted += Recover1_TaskCompleted;
         }
 
         private void ElucidateForm_Load(object sender, EventArgs e)
@@ -91,29 +88,6 @@ namespace Elucidate
             {
                 commonTab.PerformArgs(Environment.GetCommandLineArgs().Skip(1).ToArray());
             }
-        }
-
-        private void Recover1_TaskStarted(object sender, EventArgs e)
-        {
-            tabControl.Deselecting += tabControl_Deselecting;
-        }
-
-        private void Recover1_TaskCompleted(object sender, EventArgs e)
-        {
-            tabControl.Deselecting -= tabControl_Deselecting;
-        }
-
-        private void tabControl_Selected(object sender, TabControlEventArgs e)
-        {
-            if (tabControl.SelectedTab.Name == "tabCoveragePage")
-            {
-                
-            }
-        }
-
-        private void tabControl_Deselecting(object sender, TabControlCancelEventArgs e)
-        {
-            e.Cancel = true;
         }
 
         #region Main Menu Toolbar Handlers

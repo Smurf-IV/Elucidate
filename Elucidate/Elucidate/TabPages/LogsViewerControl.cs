@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="LogsViewerControl.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2018-2019 BlueBlock & Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2018-2019  Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ using System.Windows.Forms;
 using NLog;
 using NLog.Targets;
 
-namespace Elucidate.Controls
+namespace Elucidate.TabPages
 {
     public partial class LogsViewerControl : UserControl
     {

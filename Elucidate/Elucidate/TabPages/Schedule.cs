@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Schedule.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV) & BlueBlock
+//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,15 +30,12 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-
 using ComponentFactory.Krypton.Toolkit;
-
 using Microsoft.Win32.TaskScheduler;
-
 using NLog;
 using NLog.Targets;
 
-namespace Elucidate.Controls
+namespace Elucidate.TabPages
 {
     // See the code in the following location for taskscheduler
     // http://taskscheduler.codeplex.com/wikipage?title=Examples&referringTitle=Documentation
@@ -56,13 +53,8 @@ namespace Elucidate.Controls
         private string appExecuteScript = @"snapraid.ps1";
         private string TaskNameSelected { get; set; } = string.Empty;
         private readonly string uniqueKeyForThisConfig;
-        private readonly ContextMenuStrip menuStripNew = new ContextMenuStrip();
-        private enum ScheduledTaskTypeEnum { Sync, Check, Diff }
+        private enum ScheduledTaskTypeEnum { Sync, Check, Diff, Scrub }
         private ScheduledTaskTypeEnum ScheduledTaskType { get; set; }
-        private const string MENU_STRIP_NEW_SYNC = @"Sync";
-        private const string MENU_STRIP_NEW_CHECK = @"Check";
-        private const string MENU_STRIP_NEW_DIFF = @"Diff";
-        private const string MENU_STRIP_NEW_SCRUB = @"Scrub";
         private const string TASK_FOLDER = @"Elucidate";
         private const string TASK_NAME = @"SnapRAID <TASK_TYPE> - task created by Elucidate";
 
@@ -72,12 +64,10 @@ namespace Elucidate.Controls
 
             uniqueKeyForThisConfig = GetUniqueKeyForThisConfig();
 
-            menuStripNew.Items.Add(MENU_STRIP_NEW_SYNC);
-            menuStripNew.Items.Add(MENU_STRIP_NEW_CHECK);
-            menuStripNew.Items.Add(MENU_STRIP_NEW_DIFF);
-            menuButtonNewScheduleItem.ShowMenuUnderCursor = false;
-            menuButtonNewScheduleItem.Menu = menuStripNew;
-            menuButtonNewScheduleItem.Menu.ItemClicked += menuStrip_ItemClicked;
+            kcmItemSync.Click += ItemSyncClicked;
+            kcmItemCheck.Click += ItemCheckClicked;
+            kcmItemDiff.Click += ItemDiffClicked;
+            kcmItemScrub.Click += ItemScrubClicked;
             taskListView.TaskSelected += TaskListView_TaskSelected;
             taskListView.MouseDoubleClick += TaskListView_MouseDoubleClick;
         }
@@ -118,7 +108,7 @@ namespace Elucidate.Controls
 
         private void Scheduler_Load(object sender, EventArgs e)
         {
-            DisplayTaskScheduleItems();
+            //DisplayTaskScheduleItems();
         }
 
         private void TaskListView_TaskSelected(object sender, TaskListView.TaskSelectedEventArgs e)
@@ -141,27 +131,32 @@ namespace Elucidate.Controls
             }
         }
 
-        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void ItemSyncClicked(object sender, EventArgs e)
+        {
+            ItemClicked(ScheduledTaskTypeEnum.Sync);
+        }
+
+        private void ItemCheckClicked(object sender, EventArgs e)
+        {
+            ItemClicked(ScheduledTaskTypeEnum.Check);
+        }
+
+        private void ItemDiffClicked(object sender, EventArgs e)
+        {
+            ItemClicked(ScheduledTaskTypeEnum.Diff);
+        }
+
+        private void ItemScrubClicked(object sender, EventArgs e)
+        {
+            ItemClicked(ScheduledTaskTypeEnum.Scrub);
+        }
+
+
+        private void ItemClicked(ScheduledTaskTypeEnum scheduledTaskType)
         {
             try
             {
-                switch (e.ClickedItem.Text)
-                {
-                    case MENU_STRIP_NEW_SYNC:
-                        ScheduledTaskType = ScheduledTaskTypeEnum.Sync;
-                        break;
-                    case MENU_STRIP_NEW_CHECK:
-                        ScheduledTaskType = ScheduledTaskTypeEnum.Check;
-                        break;
-                    case MENU_STRIP_NEW_DIFF:
-                        ScheduledTaskType = ScheduledTaskTypeEnum.Diff;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException($@"Menu item '{e.ClickedItem.Text}' does not exist");
-                }
-
-                CreateScheduledTask(ScheduledTaskType);
-
+                CreateScheduledTask(scheduledTaskType);
                 DisplayTaskScheduleItems();
             }
             catch (Exception ex)
@@ -267,7 +262,7 @@ namespace Elucidate.Controls
         private string GetUniqueKeyForThisConfig()
         {
             // so each config can have a scheduled task, use the config file path to
-            // compute a unique key as a reference for the csheduled task
+            // compute a unique key as a reference for the scheduled task
             return Util.ComputeSha1Hash(Properties.Settings.Default.ConfigFileLocation.ToLower().Trim());
         }
 

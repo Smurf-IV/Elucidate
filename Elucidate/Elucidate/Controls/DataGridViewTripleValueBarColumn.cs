@@ -92,7 +92,7 @@ namespace Elucidate.Controls
                 //        g.DrawString(progressVal.ToString() + "%", cellStyle.Font, foreColorBrush, cellBounds.X + 6, cellBounds.Y + 2);
                 //}
             }
-            catch (Exception e) { }
+            catch /*(Exception e) */{ }
 
         }
     }

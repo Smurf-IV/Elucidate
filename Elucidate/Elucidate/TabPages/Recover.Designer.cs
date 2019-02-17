@@ -1,6 +1,7 @@
 ﻿using System.Windows.Forms;
+using Elucidate.Controls;
 
-namespace Elucidate.Controls
+namespace Elucidate.TabPages
 {
     partial class Recover
     {
