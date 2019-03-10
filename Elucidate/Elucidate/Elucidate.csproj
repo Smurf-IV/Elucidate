@@ -32,7 +32,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>19.2.952.17</AssemblyVersion>
+    <AssemblyVersion>19.3.969.10</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -125,7 +125,6 @@
       <DependentUpon>ProtectedDrivesDisplay.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtendedToolkit\CommandLinkTextValues.cs" />
-    <Compile Include="ExtendedToolkit\CommandLinkToolTipValues.cs" />
     <Compile Include="ExtendedToolkit\ImageValue.cs" />
     <Compile Include="ExtendedToolkit\KryptonCommandLinkButtonActionList.cs" />
     <Compile Include="ExtendedToolkit\KryptonCommandLinkButtonDesigner.cs" />
@@ -320,13 +319,13 @@
       <Version>4.3.2022</Version>
     </PackageReference>
     <PackageReference Include="KryptonToolkitSuite5472">
-      <Version>5.472.720</Version>
+      <Version>5.472.770</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.5.11</Version>
+      <Version>4.6.0-rc2</Version>
     </PackageReference>
     <PackageReference Include="TaskSchedulerEditor">
-      <Version>2.8.7</Version>
+      <Version>2.8.8</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

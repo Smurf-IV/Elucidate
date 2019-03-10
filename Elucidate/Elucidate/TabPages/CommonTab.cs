@@ -34,7 +34,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 using CommandLine;
-
+using CommandLine.Text;
 using ComponentFactory.Krypton.Toolkit;
 
 using Elucidate.CmdLine;
@@ -52,6 +52,26 @@ namespace Elucidate.TabPages
         {
             InitializeComponent();
             liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
+            // Force the output of the help for each verb
+            Parser parser = new Parser(with => with.HelpWriter = null);
+            HelpText helpVerb = new HelpText
+                {
+                    AddDashesToOption = true,
+                    AddEnumValuesToHelpText = true,
+                    AdditionalNewLineAfterOption = true,
+                    MaximumDisplayWidth = 160,
+                    AutoHelp = false,
+                    AutoVersion = false
+                };
+
+            btnSync.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<SyncVerb>(new[] { @"--help" })).ToString();
+            btnStatus.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<ScrubVerb>(new[] { @"--help" })).ToString();
+            btnDupFinder.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<DupVerb>(new[] { @"--help" })).ToString();
+            btnCheck.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<CheckVerb>(new[] { @"--help" })).ToString();
+            btnDiff.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<DiffVerb>(new[] { @"--help" })).ToString();
+            btnFix.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<FixVerb>(new[] { @"--help" })).ToString();
+            btnForceFullSync.ToolTipValues.Description = btnSync.ToolTipValues.Description;
+            btnScrub.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<ScrubVerb>(new[] { @"--help" })).ToString();
         }
 
         public void SetCommonButtonsEnabledState(bool enabled)

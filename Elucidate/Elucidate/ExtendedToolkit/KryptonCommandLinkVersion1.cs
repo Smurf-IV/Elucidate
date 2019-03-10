@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using ComponentFactory.Krypton.Toolkit;
-using Elucidate.ExtendedToolkit;
+
 using ExtendedControls.ExtendedToolkit.Values;
 using ExtendedControls.ExtendedToolkit.View_Draw;
 
@@ -43,10 +43,6 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         private bool _isDefault;
         private bool _useMnemonic;
         private bool _wasEnabled;
-        private VisualPopupToolTip _visualPopupToolTip;
-        private ToolTipManager toolTipManager;
-        private IMouseController mouseController;
-
         #endregion
 
         #region Events
@@ -78,7 +74,6 @@ namespace ExtendedControls.ExtendedToolkit.Controls
             // Create content storage
             CommandLinkImageValue = new ImageValue(NeedPaintDelegate);
             CommandLinkTextValues = new CommandLinkTextValues(NeedPaintDelegate);
-            CommandLinkToolTipValues = new CommandLinkToolTipValues(NeedPaintDelegate);
 
             // Create the palette storage
             StateCommon = new PaletteTripleRedirect(Redirector, PaletteBackStyle.ButtonCommand, PaletteBorderStyle.ButtonCommand, PaletteContentStyle.ButtonCommand, NeedPaintDelegate);
@@ -121,19 +116,11 @@ namespace ExtendedControls.ExtendedToolkit.Controls
                 TestForFocusCues = true
             };
 
-            // Create the manager for handling tooltips
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            toolTipManager = new ToolTipManager();
-            toolTipManager.ShowToolTip += OnShowToolTip;
-            toolTipManager.CancelToolTip += OnCancelToolTip;
-
             // Create a button controller to handle button style behaviour
             _buttonController = new ButtonController(drawButton, NeedPaintDelegate);
-            // If associated with a tooltip manager then pass mouse messages onto tooltip manager
-            mouseController = new ToolTipController(toolTipManager, drawButton, _buttonController);
 
             // Assign the controller to the view element to treat as a button
-            drawButton.MouseController = mouseController;//_buttonController;
+            drawButton.MouseController = _buttonController;
             drawButton.KeyController = _buttonController;
             drawButton.SourceController = _buttonController;
 
@@ -143,21 +130,6 @@ namespace ExtendedControls.ExtendedToolkit.Controls
 
             // Create the view manager instance
             ViewManager = new ViewManager(this, drawButton);
-        }
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // Remove any showing tooltip
-                OnCancelToolTip(this, EventArgs.Empty);
-            }
-
-            base.Dispose(disposing);
         }
         #endregion
 
@@ -282,14 +254,6 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [Description("CommandLink Button Text")]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public CommandLinkTextValues CommandLinkTextValues { get; }
-
-        /// <summary>
-        /// Gets access to the button content.
-        /// </summary>
-        [Category("CommandLink")]
-        [Description("CommandLink ToolTip Text")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public CommandLinkToolTipValues CommandLinkToolTipValues { get; }
 
         /// <summary>
         /// Gets access to the button content.
@@ -736,57 +700,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
                 Focus();
             }
         }
-        private void OnShowToolTip(object sender, ToolTipEventArgs e)
-        {
-            if (!IsDisposed)
-            {
-                // Do not show tooltips when the form we are in does not have focus
-                Form topForm = FindForm();
-                if ((topForm != null) && !topForm.ContainsFocus)
-                {
-                    return;
-                }
 
-                // Never show tooltips are design time
-                if (!DesignMode
-                    && CommandLinkToolTipValues.EnableToolTips
-                    )
-                {
-                    // Remove any currently showing tooltip
-                    _visualPopupToolTip?.Dispose();
-
-                    // Create the actual tooltip popup object
-                    // ReSharper disable once UseObjectOrCollectionInitializer
-                    _visualPopupToolTip = new VisualPopupToolTip(Redirector,
-                        CommandLinkToolTipValues,
-                        Renderer,
-                        PaletteBackStyle.ControlToolTip,
-                        PaletteBorderStyle.ControlToolTip,
-                        CommonHelper.ContentStyleFromLabelStyle(CommandLinkToolTipValues.ToolTipStyle));
-
-                    _visualPopupToolTip.Disposed += OnVisualPopupToolTipDisposed;
-
-                    // Show relative to the provided screen rectangle
-                    _visualPopupToolTip.ShowCalculatingSize(RectangleToScreen(e.Target.ClientRectangle));
-                }
-            }
-        }
-
-        private void OnCancelToolTip(object sender, EventArgs e)
-        {
-            // Remove any currently showing tooltip
-            _visualPopupToolTip?.Dispose();
-        }
-
-        private void OnVisualPopupToolTipDisposed(object sender, EventArgs e)
-        {
-            // Unhook events from the specific instance that generated event
-            VisualPopupToolTip popupToolTip = (VisualPopupToolTip)sender;
-            popupToolTip.Disposed -= OnVisualPopupToolTipDisposed;
-
-            // Not showing a popup page any more
-            _visualPopupToolTip = null;
-        }
         #endregion
     }
 

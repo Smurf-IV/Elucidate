@@ -30,7 +30,14 @@ namespace Elucidate.TabPages
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommonTab));
+            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues1 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
+            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues2 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
+            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues3 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
+            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues4 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
+            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues5 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
+            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues6 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
+            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues7 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
+            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues8 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
             this.liveRunLogControl1 = new Elucidate.Controls.LiveRunLogControl();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -96,23 +103,15 @@ namespace Elucidate.TabPages
             // 
             // btnSync
             // 
-            this.btnSync.ButtonStyle = ComponentFactory.Krypton.Toolkit.ButtonStyle.Standalone;
             this.btnSync.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.camera_add_48;
             this.btnSync.CommandLinkTextValues.Description = "Synchronise with any changes that may\r\nhave occurred since the last run.";
             this.btnSync.CommandLinkTextValues.Heading = "&Sync";
-            this.btnSync.CommandLinkToolTipValues.Description = resources.GetString("btnSync.CommandLinkToolTipValues.Description");
-            this.btnSync.CommandLinkToolTipValues.EnableToolTips = true;
-            this.btnSync.CommandLinkToolTipValues.Heading = "Sync Options:";
-            this.btnSync.CommandLinkToolTipValues.Image = global::Elucidate.Properties.Resources.camera_add_48;
-            this.btnSync.CommandLinkToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.SuperTip;
             this.btnSync.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSync.Enabled = false;
             this.btnSync.Location = new System.Drawing.Point(3, 83);
             this.btnSync.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnSync.Name = "btnSync";
             this.btnSync.Size = new System.Drawing.Size(300, 74);
-            this.btnSync.StateCommon.Back.Color1 = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnSync.StateCommon.Back.Color2 = System.Drawing.SystemColors.Highlight;
             this.btnSync.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnSync.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnSync.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
@@ -132,27 +131,26 @@ namespace Elucidate.TabPages
             this.btnSync.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnSync.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnSync.TabIndex = 1;
+            this.btnSync.ToolTipValues.EnableToolTips = true;
+            this.btnSync.ToolTipValues.Heading = "Sync Options:";
+            this.btnSync.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_add_48;
+            popupPositionValues1.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
+            popupPositionValues1.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
+            popupPositionValues1.PlacementTarget = null;
+            this.btnSync.ToolTipValues.ToolTipPosition = popupPositionValues1;
             this.btnSync.Click += new System.EventHandler(this.Sync_Click);
             // 
             // btnStatus
             // 
-            this.btnStatus.ButtonStyle = ComponentFactory.Krypton.Toolkit.ButtonStyle.Standalone;
             this.btnStatus.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.camera_warning_48;
             this.btnStatus.CommandLinkTextValues.Description = "A summary of the state of the disk\r\narray, upto the last sync time.";
             this.btnStatus.CommandLinkTextValues.Heading = "S&tatus";
-            this.btnStatus.CommandLinkToolTipValues.Description = resources.GetString("btnStatus.CommandLinkToolTipValues.Description");
-            this.btnStatus.CommandLinkToolTipValues.EnableToolTips = true;
-            this.btnStatus.CommandLinkToolTipValues.Heading = "Status Options:";
-            this.btnStatus.CommandLinkToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
-            this.btnStatus.CommandLinkToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.SuperTip;
             this.btnStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnStatus.Enabled = false;
             this.btnStatus.Location = new System.Drawing.Point(615, 3);
             this.btnStatus.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnStatus.Name = "btnStatus";
             this.btnStatus.Size = new System.Drawing.Size(301, 74);
-            this.btnStatus.StateCommon.Back.Color1 = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnStatus.StateCommon.Back.Color2 = System.Drawing.SystemColors.Highlight;
             this.btnStatus.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnStatus.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnStatus.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
@@ -172,28 +170,27 @@ namespace Elucidate.TabPages
             this.btnStatus.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnStatus.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnStatus.TabIndex = 6;
+            this.btnStatus.ToolTipValues.EnableToolTips = true;
+            this.btnStatus.ToolTipValues.Heading = "Status Options:";
+            this.btnStatus.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
+            popupPositionValues2.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
+            popupPositionValues2.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
+            popupPositionValues2.PlacementTarget = null;
+            this.btnStatus.ToolTipValues.ToolTipPosition = popupPositionValues2;
             this.btnStatus.Click += new System.EventHandler(this.btnStatus_Click);
             // 
             // btnDupFinder
             // 
-            this.btnDupFinder.ButtonStyle = ComponentFactory.Krypton.Toolkit.ButtonStyle.Standalone;
             this.btnDupFinder.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.camera_warning_48;
             this.btnDupFinder.CommandLinkTextValues.Description = "Lists all the duplicate files. Two files are\r\nassumed equal if their hashes match" +
     ". ";
             this.btnDupFinder.CommandLinkTextValues.Heading = "Duplicate &Finder";
-            this.btnDupFinder.CommandLinkToolTipValues.Description = resources.GetString("btnDupFinder.CommandLinkToolTipValues.Description");
-            this.btnDupFinder.CommandLinkToolTipValues.EnableToolTips = true;
-            this.btnDupFinder.CommandLinkToolTipValues.Heading = "Duplicate Finder Options:";
-            this.btnDupFinder.CommandLinkToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
-            this.btnDupFinder.CommandLinkToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.SuperTip;
             this.btnDupFinder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnDupFinder.Enabled = false;
             this.btnDupFinder.Location = new System.Drawing.Point(3, 163);
             this.btnDupFinder.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnDupFinder.Name = "btnDupFinder";
             this.btnDupFinder.Size = new System.Drawing.Size(300, 74);
-            this.btnDupFinder.StateCommon.Back.Color1 = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnDupFinder.StateCommon.Back.Color2 = System.Drawing.SystemColors.Highlight;
             this.btnDupFinder.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnDupFinder.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnDupFinder.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
@@ -213,27 +210,26 @@ namespace Elucidate.TabPages
             this.btnDupFinder.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnDupFinder.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnDupFinder.TabIndex = 2;
+            this.btnDupFinder.ToolTipValues.EnableToolTips = true;
+            this.btnDupFinder.ToolTipValues.Heading = "Duplicate Finder Options:";
+            this.btnDupFinder.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
+            popupPositionValues3.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
+            popupPositionValues3.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
+            popupPositionValues3.PlacementTarget = null;
+            this.btnDupFinder.ToolTipValues.ToolTipPosition = popupPositionValues3;
             this.btnDupFinder.Click += new System.EventHandler(this.DupFinder_Click);
             // 
             // btnCheck
             // 
-            this.btnCheck.ButtonStyle = ComponentFactory.Krypton.Toolkit.ButtonStyle.Standalone;
             this.btnCheck.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.camera_warning_48;
             this.btnCheck.CommandLinkTextValues.Description = "Check the snapshot to confirm\r\nit\'s integrity. (use -a for hash only)";
             this.btnCheck.CommandLinkTextValues.Heading = "&Check";
-            this.btnCheck.CommandLinkToolTipValues.Description = resources.GetString("btnCheck.CommandLinkToolTipValues.Description");
-            this.btnCheck.CommandLinkToolTipValues.EnableToolTips = true;
-            this.btnCheck.CommandLinkToolTipValues.Heading = "Check Options:";
-            this.btnCheck.CommandLinkToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
-            this.btnCheck.CommandLinkToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.SuperTip;
             this.btnCheck.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCheck.Enabled = false;
             this.btnCheck.Location = new System.Drawing.Point(309, 83);
             this.btnCheck.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnCheck.Name = "btnCheck";
             this.btnCheck.Size = new System.Drawing.Size(300, 74);
-            this.btnCheck.StateCommon.Back.Color1 = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnCheck.StateCommon.Back.Color2 = System.Drawing.SystemColors.Highlight;
             this.btnCheck.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnCheck.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnCheck.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
@@ -253,27 +249,26 @@ namespace Elucidate.TabPages
             this.btnCheck.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnCheck.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnCheck.TabIndex = 4;
+            this.btnCheck.ToolTipValues.EnableToolTips = true;
+            this.btnCheck.ToolTipValues.Heading = "Check Options:";
+            this.btnCheck.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
+            popupPositionValues4.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
+            popupPositionValues4.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
+            popupPositionValues4.PlacementTarget = null;
+            this.btnCheck.ToolTipValues.ToolTipPosition = popupPositionValues4;
             this.btnCheck.Click += new System.EventHandler(this.Check_Click);
             // 
             // btnDiff
             // 
-            this.btnDiff.ButtonStyle = ComponentFactory.Krypton.Toolkit.ButtonStyle.Standalone;
             this.btnDiff.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.cam_48;
             this.btnDiff.CommandLinkTextValues.Description = "Lists all the files have been modified\r\nsince the last \"sync\" command.";
             this.btnDiff.CommandLinkTextValues.Heading = "&Differences";
-            this.btnDiff.CommandLinkToolTipValues.Description = resources.GetString("btnDiff.CommandLinkToolTipValues.Description");
-            this.btnDiff.CommandLinkToolTipValues.EnableToolTips = true;
-            this.btnDiff.CommandLinkToolTipValues.Heading = "Diff Options:";
-            this.btnDiff.CommandLinkToolTipValues.Image = global::Elucidate.Properties.Resources.cam_48;
-            this.btnDiff.CommandLinkToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.SuperTip;
             this.btnDiff.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnDiff.Enabled = false;
             this.btnDiff.Location = new System.Drawing.Point(3, 3);
             this.btnDiff.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnDiff.Name = "btnDiff";
             this.btnDiff.Size = new System.Drawing.Size(300, 74);
-            this.btnDiff.StateCommon.Back.Color1 = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnDiff.StateCommon.Back.Color2 = System.Drawing.SystemColors.Highlight;
             this.btnDiff.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnDiff.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnDiff.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
@@ -293,26 +288,26 @@ namespace Elucidate.TabPages
             this.btnDiff.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnDiff.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnDiff.TabIndex = 0;
+            this.btnDiff.ToolTipValues.EnableToolTips = true;
+            this.btnDiff.ToolTipValues.Heading = "Diff Options:";
+            this.btnDiff.ToolTipValues.Image = global::Elucidate.Properties.Resources.cam_48;
+            popupPositionValues5.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
+            popupPositionValues5.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
+            popupPositionValues5.PlacementTarget = null;
+            this.btnDiff.ToolTipValues.ToolTipPosition = popupPositionValues5;
             this.btnDiff.Click += new System.EventHandler(this.Diff_Click);
             // 
             // btnFix
             // 
-            this.btnFix.ButtonStyle = ComponentFactory.Krypton.Toolkit.ButtonStyle.Standalone;
             this.btnFix.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.camera_48;
             this.btnFix.CommandLinkTextValues.Description = "Will default to using \"-e\",\r\nfix errors set by the scrub command. ";
             this.btnFix.CommandLinkTextValues.Heading = "Fi&x";
-            this.btnFix.CommandLinkToolTipValues.Description = resources.GetString("btnFix.CommandLinkToolTipValues.Description");
-            this.btnFix.CommandLinkToolTipValues.EnableToolTips = true;
-            this.btnFix.CommandLinkToolTipValues.Heading = "Fix Options:";
-            this.btnFix.CommandLinkToolTipValues.Image = global::Elucidate.Properties.Resources.camera_48;
-            this.btnFix.CommandLinkToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.SuperTip;
             this.btnFix.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnFix.Enabled = false;
             this.btnFix.Location = new System.Drawing.Point(615, 83);
             this.btnFix.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnFix.Name = "btnFix";
             this.btnFix.Size = new System.Drawing.Size(301, 74);
-            this.btnFix.StateCommon.Back.Color1 = System.Drawing.SystemColors.GradientInactiveCaption;
             this.btnFix.StateCommon.Back.Color2 = System.Drawing.SystemColors.Highlight;
             this.btnFix.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnFix.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
@@ -333,19 +328,20 @@ namespace Elucidate.TabPages
             this.btnFix.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnFix.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnFix.TabIndex = 7;
+            this.btnFix.ToolTipValues.EnableToolTips = true;
+            this.btnFix.ToolTipValues.Heading = "Fix Options:";
+            this.btnFix.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_48;
+            popupPositionValues6.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
+            popupPositionValues6.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
+            popupPositionValues6.PlacementTarget = null;
+            this.btnFix.ToolTipValues.ToolTipPosition = popupPositionValues6;
             this.btnFix.Click += new System.EventHandler(this.Fix_Click);
             // 
             // btnForceFullSync
             // 
-            this.btnForceFullSync.ButtonStyle = ComponentFactory.Krypton.Toolkit.ButtonStyle.Standalone;
             this.btnForceFullSync.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.camera_add_48;
             this.btnForceFullSync.CommandLinkTextValues.Description = "Sync with \"-F\" option,\r\nto recompute the full parity";
             this.btnForceFullSync.CommandLinkTextValues.Heading = "Force Full S&ync";
-            this.btnForceFullSync.CommandLinkToolTipValues.Description = resources.GetString("btnForceFullSync.CommandLinkToolTipValues.Description");
-            this.btnForceFullSync.CommandLinkToolTipValues.EnableToolTips = true;
-            this.btnForceFullSync.CommandLinkToolTipValues.Heading = "Full Sync Options:";
-            this.btnForceFullSync.CommandLinkToolTipValues.Image = global::Elucidate.Properties.Resources.camera_add_48;
-            this.btnForceFullSync.CommandLinkToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.SuperTip;
             this.btnForceFullSync.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnForceFullSync.Enabled = false;
             this.btnForceFullSync.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -353,8 +349,6 @@ namespace Elucidate.TabPages
             this.btnForceFullSync.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnForceFullSync.Name = "btnForceFullSync";
             this.btnForceFullSync.Size = new System.Drawing.Size(300, 74);
-            this.btnForceFullSync.StateCommon.Back.Color1 = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnForceFullSync.StateCommon.Back.Color2 = System.Drawing.SystemColors.Highlight;
             this.btnForceFullSync.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnForceFullSync.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnForceFullSync.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
@@ -374,19 +368,20 @@ namespace Elucidate.TabPages
             this.btnForceFullSync.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnForceFullSync.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnForceFullSync.TabIndex = 5;
+            this.btnForceFullSync.ToolTipValues.EnableToolTips = true;
+            this.btnForceFullSync.ToolTipValues.Heading = "Full Sync Options:";
+            this.btnForceFullSync.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_add_48;
+            popupPositionValues7.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
+            popupPositionValues7.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
+            popupPositionValues7.PlacementTarget = null;
+            this.btnForceFullSync.ToolTipValues.ToolTipPosition = popupPositionValues7;
             this.btnForceFullSync.Click += new System.EventHandler(this.ForceFullSync_Click);
             // 
             // btnScrub
             // 
-            this.btnScrub.ButtonStyle = ComponentFactory.Krypton.Toolkit.ButtonStyle.Standalone;
             this.btnScrub.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.cam_48;
             this.btnScrub.CommandLinkTextValues.Description = "Scrubs the array, checking for silent\r\nand input/output errors";
             this.btnScrub.CommandLinkTextValues.Heading = "Scr&ub";
-            this.btnScrub.CommandLinkToolTipValues.Description = resources.GetString("btnScrub.CommandLinkToolTipValues.Description");
-            this.btnScrub.CommandLinkToolTipValues.EnableToolTips = true;
-            this.btnScrub.CommandLinkToolTipValues.Heading = "Scrub Options:";
-            this.btnScrub.CommandLinkToolTipValues.Image = global::Elucidate.Properties.Resources.cam_48;
-            this.btnScrub.CommandLinkToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.SuperTip;
             this.btnScrub.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnScrub.Enabled = false;
             this.btnScrub.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -394,8 +389,6 @@ namespace Elucidate.TabPages
             this.btnScrub.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnScrub.Name = "btnScrub";
             this.btnScrub.Size = new System.Drawing.Size(300, 74);
-            this.btnScrub.StateCommon.Back.Color1 = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.btnScrub.StateCommon.Back.Color2 = System.Drawing.SystemColors.Highlight;
             this.btnScrub.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnScrub.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnScrub.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
@@ -415,6 +408,13 @@ namespace Elucidate.TabPages
             this.btnScrub.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnScrub.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.btnScrub.TabIndex = 3;
+            this.btnScrub.ToolTipValues.EnableToolTips = true;
+            this.btnScrub.ToolTipValues.Heading = "Scrub Options:";
+            this.btnScrub.ToolTipValues.Image = global::Elucidate.Properties.Resources.cam_48;
+            popupPositionValues8.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
+            popupPositionValues8.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
+            popupPositionValues8.PlacementTarget = null;
+            this.btnScrub.ToolTipValues.ToolTipPosition = popupPositionValues8;
             this.btnScrub.Click += new System.EventHandler(this.Scrub_Click);
             // 
             // CommonTab
