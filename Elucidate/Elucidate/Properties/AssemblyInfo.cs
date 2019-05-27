@@ -58,18 +58,13 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2019.4.971.11")]
-[assembly: AssemblyFileVersion("19.4.971.11")]
+[assembly: AssemblyVersion("2019.5.975.27")]
+[assembly: AssemblyFileVersion("19.5.975.27")]
 [assembly: NeutralResourcesLanguage("en-US")]
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]
-[assembly: Dependency("System.Collections.Generic", LoadHint.Always)]
-[assembly: Dependency("System.Diagnostics", LoadHint.Always)]
 [assembly: Dependency("System.Drawing", LoadHint.Always)]
 [assembly: Dependency("System.IO", LoadHint.Always)]
-[assembly: Dependency("System.Linq", LoadHint.Always)]
-[assembly: Dependency("System.Text", LoadHint.Always)]
-[assembly: Dependency("System.Threading", LoadHint.Always)]
 [assembly: Dependency("System.Windows.Forms", LoadHint.Always)]
 [assembly: Dependency("System.Xml", LoadHint.Always)]
 

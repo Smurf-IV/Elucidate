@@ -21,18 +21,16 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ShouldCreateLogs>True</ShouldCreateLogs>
     <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
     <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersionSettings>
-    </AssemblyVersionSettings>
-    <AssemblyFileVersionSettings>
-    </AssemblyFileVersionSettings>
+    <AssemblyVersionSettings>YearStamp.MonthStamp.Increment.DayStamp</AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>ShortYearStamp.MonthStamp.Increment.DayStamp</AssemblyFileVersionSettings>
     <AssemblyInfoVersionSettings>
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>19.4.971.11</AssemblyVersion>
+    <AssemblyVersion>2019.5.975.27</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>

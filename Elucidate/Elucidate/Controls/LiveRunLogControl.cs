@@ -155,45 +155,68 @@ namespace Elucidate.Controls
             CommandTypeRunning = commandToRun;
 
             StringBuilder command = new StringBuilder();
+            string defaultOption = string.Empty;
 
             switch (commandToRun)
             {
                 case CommandType.Status:
-                    command.Append(@"status ");
+                    command.Append(@"status");
                     break;
                 case CommandType.Diff:
-                    command.Append(@"diff ");
+                    command.Append(@"diff");
                     break;
                 case CommandType.QuickCheck:
-                    command.Append(@"check ");
-                    command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-a");
+                    command.Append(@"check");
+                    defaultOption = @" -a";
                     break;
                 case CommandType.Check:
                 case CommandType.RecoverCheck:
-                    command.Append(@"check ");
+                    command.Append(@"check");
                     break;
                 case CommandType.Sync:
-                    command.Append(@"sync ");
+                    command.Append(@"sync");
                     break;
                 case CommandType.Scrub:
-                    command.Append(@"scrub ");
-                    command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-p100 -o0");
+                    command.Append(@"scrub");
+                    defaultOption = @" -p100 -o0";
                     break;
                 case CommandType.Fix:
-                    command.Append(@"fix ");
-                    command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-e");
+                    command.Append(@"fix");
+                    defaultOption = @" -e";
                     break;
                 case CommandType.Dup:
-                    command.Append(@"dup ");
+                    command.Append(@"dup");
                     break;
                 case CommandType.ForceFullSync:
-                    command.Append(@"sync ");
-                    command.Append(!string.IsNullOrWhiteSpace(txtAddCommands.Text) ? txtAddCommands.Text : @"-F");
+                    command.Append(@"sync");
+                    defaultOption = @" -F";
                     break;
                 case CommandType.RecoverFix:
-                    command.Append(@"fix ");
-                    if (paths != null) { batchPaths = paths; }
+                    command.Append(@"fix");
+                    if (paths != null)
+                    {
+                        batchPaths = paths;
+                    }
                     break;
+            }
+
+            if (checkBoxCommandLineOptions.Checked)
+            {
+                string addCmd = txtAddCommands.Text;
+                if (addCmd.StartsWith(@"+"))
+                {
+                    addCmd = addCmd.TrimStart(@"+".ToCharArray());
+                }
+                else
+                {
+                    command.Append(defaultOption);
+                }
+
+                command.Append(' ').Append(addCmd);
+            }
+            else
+            {
+                command.Append(defaultOption);
             }
 
             comboBoxProcessStatus.Enabled = true;
@@ -248,10 +271,7 @@ namespace Elucidate.Controls
                 mreOutputDone.Reset();
                 mreErrorDone.Reset();
 
-                string args = Util.FormatSnapRaidCommandArgs(
-                    command: command,
-                    additionalCommands: IsCommandLineOptionsEnabled ? txtAddCommands.Text : string.Empty,
-                    appPath: out string appPath);
+                string args = Util.FormatSnapRaidCommandArgs( command, out string appPath);
 
                 RunSnapRaid(e, args, appPath, worker);
             }

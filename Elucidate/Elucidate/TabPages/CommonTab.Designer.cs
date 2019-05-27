@@ -205,7 +205,7 @@ namespace Elucidate.TabPages
             // btnCheck
             // 
             this.btnCheck.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.camera_warning_48;
-            this.btnCheck.CommandLinkTextValues.Description = "Check the snapshot to confirm\r\nit\'s integrity. (use -a for hash only)";
+            this.btnCheck.CommandLinkTextValues.Description = "Check the snapshot to confirm\r\nit\'s integrity. (default -a for hash only)";
             this.btnCheck.CommandLinkTextValues.Heading = "&Check";
             this.btnCheck.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCheck.Enabled = false;
@@ -277,7 +277,7 @@ namespace Elucidate.TabPages
             // btnFix
             // 
             this.btnFix.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.camera_48;
-            this.btnFix.CommandLinkTextValues.Description = "Will default to using \"-e\",\r\nfix errors set by the scrub command. ";
+            this.btnFix.CommandLinkTextValues.Description = "Fix errors set by the scrub command.\r\n(Default to using \"-e\") ";
             this.btnFix.CommandLinkTextValues.Heading = "Fi&x";
             this.btnFix.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnFix.Enabled = false;
@@ -350,7 +350,7 @@ namespace Elucidate.TabPages
             // btnScrub
             // 
             this.btnScrub.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.cam_48;
-            this.btnScrub.CommandLinkTextValues.Description = "Scrubs the array, checking for silent\r\nand input/output errors";
+            this.btnScrub.CommandLinkTextValues.Description = "Scrubs the array, checking for silent\r\nand IO errors (default -p100 -o0)";
             this.btnScrub.CommandLinkTextValues.Heading = "Scr&ub";
             this.btnScrub.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnScrub.Enabled = false;

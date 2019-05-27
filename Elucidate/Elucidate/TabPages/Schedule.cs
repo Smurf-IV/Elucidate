@@ -214,10 +214,7 @@ namespace Elucidate.TabPages
                 {
                     td.Triggers.Add(new DailyTrigger { DaysInterval = 1, StartBoundary = DateTime.Now + TimeSpan.FromMinutes(15) });
                 }
-                string args = Util.FormatSnapRaidCommandArgs(
-                    command: taskCommand.ToLower(),
-                    additionalCommands: string.Empty,
-                    appPath: out _);
+                string args = Util.FormatSnapRaidCommandArgs(taskCommand.ToLower(), out _);
                 args = AddLoggingToArgsForSchedule(args, ScheduledTaskType);
                 args = args.Replace(@"""", @"\""");
                 ExecAction tsAction = new ExecAction

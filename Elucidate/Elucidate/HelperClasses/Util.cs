@@ -74,7 +74,7 @@ namespace Elucidate
             }
         }
 
-        public static string FormatSnapRaidCommandArgs(string command, string additionalCommands, out string appPath)
+        public static string FormatSnapRaidCommandArgs(string command, out string appPath)
         {
             // Format according to this: http://snapraid.sourceforge.net/manual.html
             
@@ -83,7 +83,7 @@ namespace Elucidate
             // Find the meanings @ http://snapraid.sourceforge.net/manual.html
             // status|smart|up|down|diff|sync|scrub|fix|check|list|dup|pool|devices|touch|rehash
 
-            StringBuilder args = new StringBuilder(additionalCommands.Trim());
+            StringBuilder args = new StringBuilder();
 
             args.Append(' ');
 
