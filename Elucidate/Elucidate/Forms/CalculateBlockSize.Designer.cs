@@ -81,6 +81,7 @@ namespace Elucidate
             // 
             // label2
             // 
+            this.label2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label2.Location = new System.Drawing.Point(181, 2);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(324, 68);
@@ -152,6 +153,7 @@ namespace Elucidate
             // 
             // label3
             // 
+            this.label3.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label3.Location = new System.Drawing.Point(181, 1);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(373, 52);
@@ -209,6 +211,7 @@ namespace Elucidate
             this.lblBadNews.AutoSize = false;
             this.lblBadNews.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblBadNews.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(57)))), ((int)(((byte)(91)))));
+            this.lblBadNews.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.lblBadNews.Location = new System.Drawing.Point(181, 1);
             this.lblBadNews.Name = "lblBadNews";
             this.lblBadNews.Size = new System.Drawing.Size(400, 62);

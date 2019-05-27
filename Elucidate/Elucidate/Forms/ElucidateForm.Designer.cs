@@ -55,10 +55,11 @@ namespace Elucidate
             this.deleteAllSnapRAIDRaidFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editConfigDirectlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMeTheLatestReleaseStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeTheThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.themeComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.changeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
             this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
-            this.changeTheThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.tabCoveragePage)).BeginInit();
             this.tabCoveragePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tabSchedulePage)).BeginInit();
@@ -305,6 +306,22 @@ namespace Elucidate
             this.showMeTheLatestReleaseStatsToolStripMenuItem.Text = "&Show Me the Latest Release Stats ...";
             this.showMeTheLatestReleaseStatsToolStripMenuItem.Click += new System.EventHandler(this.showMeTheLatestReleaseStatsToolStripMenuItem_Click);
             // 
+            // changeTheThemeToolStripMenuItem
+            // 
+            this.changeTheThemeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.themeComboBox});
+            this.changeTheThemeToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changeTheThemeToolStripMenuItem.Name = "changeTheThemeToolStripMenuItem";
+            this.changeTheThemeToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
+            this.changeTheThemeToolStripMenuItem.Text = "&Change the Theme";
+            // 
+            // themeComboBox
+            // 
+            this.themeComboBox.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themeComboBox.Name = "themeComboBox";
+            this.themeComboBox.Size = new System.Drawing.Size(221, 26);
+            this.themeComboBox.SelectedIndexChanged += new System.EventHandler(this.themeComboBox_SelectedIndexChanged);
+            // 
             // changeLogToolStripMenuItem
             // 
             this.changeLogToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -322,14 +339,6 @@ namespace Elucidate
             this.kryptonPanel1.Name = "kryptonPanel1";
             this.kryptonPanel1.Size = new System.Drawing.Size(945, 534);
             this.kryptonPanel1.TabIndex = 5;
-            // 
-            // changeTheThemeToolStripMenuItem
-            // 
-            this.changeTheThemeToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeTheThemeToolStripMenuItem.Name = "changeTheThemeToolStripMenuItem";
-            this.changeTheThemeToolStripMenuItem.Size = new System.Drawing.Size(318, 22);
-            this.changeTheThemeToolStripMenuItem.Text = "&Change the Theme ...";
-            this.changeTheThemeToolStripMenuItem.Click += new System.EventHandler(this.changeTheThemeToolStripMenuItem_Click);
             // 
             // ElucidateForm
             // 
@@ -401,6 +410,7 @@ namespace Elucidate
         private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel1;
         private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
         private ToolStripMenuItem changeTheThemeToolStripMenuItem;
+        private ToolStripComboBox themeComboBox;
     }
 }
 

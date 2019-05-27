@@ -71,7 +71,8 @@ namespace Elucidate
 
             // Hook into changes in the global palette
             KryptonManager.GlobalPaletteChanged += OnPaletteChanged;
-
+            ThemeManager.PropagateThemeSelector(themeComboBox);
+            themeComboBox.Text = ThemeManager.ReturnPaletteModeManagerAsString(PaletteModeManager.Office2007Blue, kryptonManager1);
         }
 
         private void ElucidateForm_Load(object sender, EventArgs e)
@@ -345,12 +346,10 @@ namespace Elucidate
             Log.Trace("tabControl_SelectedPageChanged - OUT");
         }
 
-        private void changeTheThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void themeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            using (ThemeSelector ts = new ThemeSelector())
-            {
-                ts.ShowDialog(this);
-            }
+            ThemeManager.SetTheme(themeComboBox.Text, kryptonManager1);
+
         }
     }
 }

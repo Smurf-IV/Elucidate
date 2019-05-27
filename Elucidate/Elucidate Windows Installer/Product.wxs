@@ -35,7 +35,7 @@
         <Property Id="STARTAPP" Value="false"/>
 
         <!-- Support Information shown in Add/Remove programs -->
-        <Property Id="ARPHELPLINK" Value="https://github.com/Smurf-IV/Elucidate/docs" />
+        <Property Id="ARPHELPLINK" Value="https://github.com/Smurf-IV/Elucidate/blob/master/docs/Documentation.md" />
         <Property Id="ARPCOMMENTS" Value="https://github.com/Smurf-IV/Elucidate/issues"/>
         <Property Id="ARPCONTACT" Value="Smurf-IV" />
         <Property Id="ARPURLINFOABOUT" Value="https://github.com/Smurf-IV/Elucidate" />

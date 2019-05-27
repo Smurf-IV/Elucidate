@@ -30,17 +30,9 @@ namespace Elucidate.TabPages
         /// </summary>
         private void InitializeComponent()
         {
-            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues1 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
-            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues2 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
-            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues3 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
-            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues4 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
-            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues5 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
-            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues6 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
-            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues7 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
-            ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues popupPositionValues8 = new ComponentFactory.Krypton.Toolkit.Values.PopupPositionValues();
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.liveRunLogControl1 = new Elucidate.Controls.LiveRunLogControl();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.liveRunLogControl1 = new Elucidate.Controls.LiveRunLogControl();
             this.btnSync = new ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton();
             this.btnStatus = new ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton();
             this.btnDupFinder = new ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton();
@@ -63,17 +55,6 @@ namespace Elucidate.TabPages
             this.kryptonPanel1.Name = "kryptonPanel1";
             this.kryptonPanel1.Size = new System.Drawing.Size(919, 499);
             this.kryptonPanel1.TabIndex = 0;
-            // 
-            // liveRunLogControl1
-            // 
-            this.liveRunLogControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.liveRunLogControl1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.liveRunLogControl1.IsRunning = false;
-            this.liveRunLogControl1.Location = new System.Drawing.Point(0, 240);
-            this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.liveRunLogControl1.Name = "liveRunLogControl1";
-            this.liveRunLogControl1.Size = new System.Drawing.Size(919, 259);
-            this.liveRunLogControl1.TabIndex = 0;
             // 
             // tableLayoutPanel1
             // 
@@ -100,6 +81,17 @@ namespace Elucidate.TabPages
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(919, 240);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // liveRunLogControl1
+            // 
+            this.liveRunLogControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.liveRunLogControl1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.liveRunLogControl1.IsRunning = false;
+            this.liveRunLogControl1.Location = new System.Drawing.Point(0, 240);
+            this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.liveRunLogControl1.Name = "liveRunLogControl1";
+            this.liveRunLogControl1.Size = new System.Drawing.Size(919, 259);
+            this.liveRunLogControl1.TabIndex = 0;
             // 
             // btnSync
             // 
@@ -134,10 +126,7 @@ namespace Elucidate.TabPages
             this.btnSync.ToolTipValues.EnableToolTips = true;
             this.btnSync.ToolTipValues.Heading = "Sync Options:";
             this.btnSync.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_add_48;
-            popupPositionValues1.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
-            popupPositionValues1.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
-            popupPositionValues1.PlacementTarget = null;
-            this.btnSync.ToolTipValues.ToolTipPosition = popupPositionValues1;
+            this.btnSync.ToolTipValues.ToolTipPosition.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.Right;
             this.btnSync.Click += new System.EventHandler(this.Sync_Click);
             // 
             // btnStatus
@@ -173,10 +162,7 @@ namespace Elucidate.TabPages
             this.btnStatus.ToolTipValues.EnableToolTips = true;
             this.btnStatus.ToolTipValues.Heading = "Status Options:";
             this.btnStatus.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
-            popupPositionValues2.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
-            popupPositionValues2.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
-            popupPositionValues2.PlacementTarget = null;
-            this.btnStatus.ToolTipValues.ToolTipPosition = popupPositionValues2;
+            this.btnStatus.ToolTipValues.ToolTipPosition.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.Right;
             this.btnStatus.Click += new System.EventHandler(this.btnStatus_Click);
             // 
             // btnDupFinder
@@ -213,10 +199,7 @@ namespace Elucidate.TabPages
             this.btnDupFinder.ToolTipValues.EnableToolTips = true;
             this.btnDupFinder.ToolTipValues.Heading = "Duplicate Finder Options:";
             this.btnDupFinder.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
-            popupPositionValues3.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
-            popupPositionValues3.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
-            popupPositionValues3.PlacementTarget = null;
-            this.btnDupFinder.ToolTipValues.ToolTipPosition = popupPositionValues3;
+            this.btnDupFinder.ToolTipValues.ToolTipPosition.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.Relative;
             this.btnDupFinder.Click += new System.EventHandler(this.DupFinder_Click);
             // 
             // btnCheck
@@ -252,10 +235,7 @@ namespace Elucidate.TabPages
             this.btnCheck.ToolTipValues.EnableToolTips = true;
             this.btnCheck.ToolTipValues.Heading = "Check Options:";
             this.btnCheck.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
-            popupPositionValues4.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
-            popupPositionValues4.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
-            popupPositionValues4.PlacementTarget = null;
-            this.btnCheck.ToolTipValues.ToolTipPosition = popupPositionValues4;
+            this.btnCheck.ToolTipValues.ToolTipPosition.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.Right;
             this.btnCheck.Click += new System.EventHandler(this.Check_Click);
             // 
             // btnDiff
@@ -291,10 +271,7 @@ namespace Elucidate.TabPages
             this.btnDiff.ToolTipValues.EnableToolTips = true;
             this.btnDiff.ToolTipValues.Heading = "Diff Options:";
             this.btnDiff.ToolTipValues.Image = global::Elucidate.Properties.Resources.cam_48;
-            popupPositionValues5.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
-            popupPositionValues5.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
-            popupPositionValues5.PlacementTarget = null;
-            this.btnDiff.ToolTipValues.ToolTipPosition = popupPositionValues5;
+            this.btnDiff.ToolTipValues.ToolTipPosition.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.Right;
             this.btnDiff.Click += new System.EventHandler(this.Diff_Click);
             // 
             // btnFix
@@ -308,7 +285,6 @@ namespace Elucidate.TabPages
             this.btnFix.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnFix.Name = "btnFix";
             this.btnFix.Size = new System.Drawing.Size(301, 74);
-            this.btnFix.StateCommon.Back.Color2 = System.Drawing.SystemColors.Highlight;
             this.btnFix.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnFix.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnFix.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
@@ -331,10 +307,7 @@ namespace Elucidate.TabPages
             this.btnFix.ToolTipValues.EnableToolTips = true;
             this.btnFix.ToolTipValues.Heading = "Fix Options:";
             this.btnFix.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_48;
-            popupPositionValues6.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
-            popupPositionValues6.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
-            popupPositionValues6.PlacementTarget = null;
-            this.btnFix.ToolTipValues.ToolTipPosition = popupPositionValues6;
+            this.btnFix.ToolTipValues.ToolTipPosition.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.Right;
             this.btnFix.Click += new System.EventHandler(this.Fix_Click);
             // 
             // btnForceFullSync
@@ -371,10 +344,7 @@ namespace Elucidate.TabPages
             this.btnForceFullSync.ToolTipValues.EnableToolTips = true;
             this.btnForceFullSync.ToolTipValues.Heading = "Full Sync Options:";
             this.btnForceFullSync.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_add_48;
-            popupPositionValues7.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
-            popupPositionValues7.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
-            popupPositionValues7.PlacementTarget = null;
-            this.btnForceFullSync.ToolTipValues.ToolTipPosition = popupPositionValues7;
+            this.btnForceFullSync.ToolTipValues.ToolTipPosition.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.Right;
             this.btnForceFullSync.Click += new System.EventHandler(this.ForceFullSync_Click);
             // 
             // btnScrub
@@ -411,10 +381,7 @@ namespace Elucidate.TabPages
             this.btnScrub.ToolTipValues.EnableToolTips = true;
             this.btnScrub.ToolTipValues.Heading = "Scrub Options:";
             this.btnScrub.ToolTipValues.Image = global::Elucidate.Properties.Resources.cam_48;
-            popupPositionValues8.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.MousePoint;
-            popupPositionValues8.PlacementRectangle = new System.Drawing.Rectangle(0, 0, 0, 0);
-            popupPositionValues8.PlacementTarget = null;
-            this.btnScrub.ToolTipValues.ToolTipPosition = popupPositionValues8;
+            this.btnScrub.ToolTipValues.ToolTipPosition.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.Right;
             this.btnScrub.Click += new System.EventHandler(this.Scrub_Click);
             // 
             // CommonTab

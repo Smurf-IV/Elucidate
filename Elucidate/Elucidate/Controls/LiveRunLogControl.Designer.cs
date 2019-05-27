@@ -78,6 +78,7 @@ namespace Elucidate.Controls
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripStatusLabel1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.toolStripStatusLabel1.Location = new System.Drawing.Point(0, 4);
             this.toolStripStatusLabel1.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this.toolStripStatusLabel1.MinimumSize = new System.Drawing.Size(170, 22);
@@ -109,6 +110,7 @@ namespace Elucidate.Controls
             // runWithoutCaptureMenuItem
             // 
             this.runWithoutCaptureMenuItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.runWithoutCaptureMenuItem.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.runWithoutCaptureMenuItem.Location = new System.Drawing.Point(435, 0);
             this.runWithoutCaptureMenuItem.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.runWithoutCaptureMenuItem.MinimumSize = new System.Drawing.Size(122, 22);
@@ -124,6 +126,7 @@ namespace Elucidate.Controls
             this.checkBoxDisplayOutput.Checked = true;
             this.checkBoxDisplayOutput.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDisplayOutput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBoxDisplayOutput.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.checkBoxDisplayOutput.Location = new System.Drawing.Point(302, 0);
             this.checkBoxDisplayOutput.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.checkBoxDisplayOutput.MinimumSize = new System.Drawing.Size(86, 22);
@@ -207,6 +210,7 @@ namespace Elucidate.Controls
             // checkBoxCommandLineOptions
             // 
             this.checkBoxCommandLineOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkBoxCommandLineOptions.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.checkBoxCommandLineOptions.Location = new System.Drawing.Point(5, 5);
             this.checkBoxCommandLineOptions.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxCommandLineOptions.Name = "checkBoxCommandLineOptions";
