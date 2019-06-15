@@ -326,20 +326,33 @@ namespace Elucidate
 
         internal static bool IsRulePassDevicesMustNotRepeat(List<string> paths, string current)
         {
-            try
+            if (paths == null || string.IsNullOrEmpty(current))
             {
-                if (paths == null || string.IsNullOrEmpty(current))
-                {
-                    return true;
-                }
-
-                int count = paths.Where(s => !string.IsNullOrEmpty(s)).Count(temp => StorageUtil.GetPathRoot(temp).Equals(StorageUtil.GetPathRoot(current)));
-
-                return count <= 1;
+                return true;
             }
-            catch
+
+            // Need to check all entries for multiple locations
+            // ReSharper disable once CollectionNeverQueried.Local
+            Dictionary<string, int> alreadyAdded = new Dictionary<string, int>();
+            foreach (string text in paths)
             {
-                // ignored
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    string[] possiblePaths = text.Trim().Split(",".ToCharArray());
+                    try
+                    {
+                        foreach (string possiblePath in possiblePaths)
+                        {
+                            alreadyAdded.Add(possiblePath, 1);
+                        }
+                    }
+                    catch
+                    {
+                        // Not the most elegant, but "Should" be infrequent enough that,
+                        // the stack trace is worth it over a full check each time
+                        return false;
+                    }
+                }
             }
 
             return true;

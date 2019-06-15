@@ -128,7 +128,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACS
-        KQAAAk1TRnQBSQFMAgEBCwEAAfwBBQH8AQUBEgEAARIBAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFI
+        KQAAAk1TRnQBSQFMAgEBCwEAARwBBgEcAQYBEgEAARIBAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFI
         AwABNgMAAQEBAAEQBQABYAEePAAB9wFeARABQgGMATEBqQE9AeIBVQHiAVUBwgFVAYsBMQGMATEBzgE5
         AbUBVgFaAWsQAAHWAV4B7wFFAYwBPQH3AV4BWgFrAYwBPQGtAT0B1gFaMAABWgFrAdYBWgHWAVoBGAFj
         ATkBZwFaAWscAAHWAVoBcwFOAVIBSgGQAVYBCwFzAQoBcwHgAVkBUAFKAVICSgEpAe8BPQEYAWMIAAEY
@@ -308,9 +308,6 @@
         AfABAwL/AwAB4AEHAf4BAAE/BP8DAAn/AwAL
 </value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>134, 18</value>
-  </metadata>
   <metadata name="errorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>428, 16</value>
   </metadata>
@@ -319,6 +316,9 @@
   </metadata>
   <metadata name="helpProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>674, 13</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>134, 18</value>
   </metadata>
   <data name="numBlockSizeKB.ToolTip" xml:space="preserve">
     <value>You could increase this value if you do not have enough RAM memory to run SnapRAID
@@ -588,7 +588,7 @@ Block Size must be a power of 2 with a minimum value of 256 and a maximum value 
         rEEAAKxBgACsQYAArEH4AKxB+ACsQfgArEE=
 </value>
   </data>
-  <metadata name="folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>788, 16</value>
+  <metadata name="ExcludedFilesPatterns.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
 </root>

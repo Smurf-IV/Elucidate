@@ -41,7 +41,7 @@ namespace Elucidate.Forms
             this.refreshStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListUnits = new System.Windows.Forms.ImageList(this.components);
-            this.groupBox2 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+            this.grpParityLocations = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
             this.findParity6 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.findParity5 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.findParity4 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -63,13 +63,16 @@ namespace Elucidate.Forms
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupBox1 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+            this.grpSnapShotSources = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+            this.snapShotSources = new Elucidate.Controls.ProtectedDrivesDisplay();
             this.splitContainer1 = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
+            this.driveAndDirTreeView = new Elucidate.Shared.BufferedTreeView();
             this.groupBox3 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
             this.btnGetRecommended = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.checkedListBox1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckedListBox();
             this.numAutoSaveGB = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
             this.label6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.numBlockSizeKB = new Elucidate.Shared.NumericUpDownPowerOfTwo();
             this.label4 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.exludedFilesView = new ComponentFactory.Krypton.Toolkit.KryptonDataGridView();
@@ -87,19 +90,16 @@ namespace Elucidate.Forms
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.driveAndDirTreeView = new Elucidate.Shared.BufferedTreeView();
-            this.numBlockSizeKB = new Elucidate.Shared.NumericUpDownPowerOfTwo();
-            this.snapShotSources = new Elucidate.Controls.ProtectedDrivesDisplay();
             this.drivesAndDirectoriesMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.groupBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupBox2.Panel)).BeginInit();
-            this.groupBox2.Panel.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations.Panel)).BeginInit();
+            this.grpParityLocations.Panel.SuspendLayout();
+            this.grpParityLocations.SuspendLayout();
             this.SnapShotsMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.groupBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.groupBox1.Panel)).BeginInit();
-            this.groupBox1.Panel.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grpSnapShotSources)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grpSnapShotSources.Panel)).BeginInit();
+            this.grpSnapShotSources.Panel.SuspendLayout();
+            this.grpSnapShotSources.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1.Panel1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -110,6 +110,7 @@ namespace Elucidate.Forms
             ((System.ComponentModel.ISupportInitialize)(this.groupBox3.Panel)).BeginInit();
             this.groupBox3.Panel.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numBlockSizeKB)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exludedFilesView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panel2)).BeginInit();
@@ -117,7 +118,6 @@ namespace Elucidate.Forms
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).BeginInit();
             this.kryptonPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numBlockSizeKB)).BeginInit();
             this.SuspendLayout();
             // 
             // DRUnit_NewNode
@@ -170,38 +170,38 @@ namespace Elucidate.Forms
             this.imageListUnits.Images.SetKeyName(9, "Network Folder.ico");
             this.imageListUnits.Images.SetKeyName(10, "Disconnected Network.ico");
             // 
-            // groupBox2
+            // grpParityLocations
             // 
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.groupBox2.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.groupBox2.Location = new System.Drawing.Point(3, 351);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.groupBox2.Name = "groupBox2";
+            this.grpParityLocations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpParityLocations.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.grpParityLocations.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.grpParityLocations.Location = new System.Drawing.Point(3, 351);
+            this.grpParityLocations.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.grpParityLocations.Name = "grpParityLocations";
             // 
-            // groupBox2.Panel
+            // grpParityLocations.Panel
             // 
-            this.groupBox2.Panel.Controls.Add(this.findParity6);
-            this.groupBox2.Panel.Controls.Add(this.findParity5);
-            this.groupBox2.Panel.Controls.Add(this.findParity4);
-            this.groupBox2.Panel.Controls.Add(this.parityLocation6);
-            this.groupBox2.Panel.Controls.Add(this.parityLocation5);
-            this.groupBox2.Panel.Controls.Add(this.parityLocation4);
-            this.groupBox2.Panel.Controls.Add(this.findParity3);
-            this.groupBox2.Panel.Controls.Add(this.labelParity6);
-            this.groupBox2.Panel.Controls.Add(this.labelParity5);
-            this.groupBox2.Panel.Controls.Add(this.labelParity4);
-            this.groupBox2.Panel.Controls.Add(this.labelParity3);
-            this.groupBox2.Panel.Controls.Add(this.parityLocation3);
-            this.groupBox2.Panel.Controls.Add(this.labelParity2);
-            this.groupBox2.Panel.Controls.Add(this.parityLocation2);
-            this.groupBox2.Panel.Controls.Add(this.findParity2);
-            this.groupBox2.Panel.Controls.Add(this.labelParity1);
-            this.groupBox2.Panel.Controls.Add(this.parityLocation1);
-            this.groupBox2.Panel.Controls.Add(this.findParity1);
-            this.groupBox2.Size = new System.Drawing.Size(604, 200);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.Values.Heading = "Parity file locations:";
+            this.grpParityLocations.Panel.Controls.Add(this.findParity6);
+            this.grpParityLocations.Panel.Controls.Add(this.findParity5);
+            this.grpParityLocations.Panel.Controls.Add(this.findParity4);
+            this.grpParityLocations.Panel.Controls.Add(this.parityLocation6);
+            this.grpParityLocations.Panel.Controls.Add(this.parityLocation5);
+            this.grpParityLocations.Panel.Controls.Add(this.parityLocation4);
+            this.grpParityLocations.Panel.Controls.Add(this.findParity3);
+            this.grpParityLocations.Panel.Controls.Add(this.labelParity6);
+            this.grpParityLocations.Panel.Controls.Add(this.labelParity5);
+            this.grpParityLocations.Panel.Controls.Add(this.labelParity4);
+            this.grpParityLocations.Panel.Controls.Add(this.labelParity3);
+            this.grpParityLocations.Panel.Controls.Add(this.parityLocation3);
+            this.grpParityLocations.Panel.Controls.Add(this.labelParity2);
+            this.grpParityLocations.Panel.Controls.Add(this.parityLocation2);
+            this.grpParityLocations.Panel.Controls.Add(this.findParity2);
+            this.grpParityLocations.Panel.Controls.Add(this.labelParity1);
+            this.grpParityLocations.Panel.Controls.Add(this.parityLocation1);
+            this.grpParityLocations.Panel.Controls.Add(this.findParity1);
+            this.grpParityLocations.Size = new System.Drawing.Size(604, 200);
+            this.grpParityLocations.TabIndex = 1;
+            this.grpParityLocations.Values.Heading = "Parity file locations:";
             // 
             // findParity6
             // 
@@ -210,8 +210,13 @@ namespace Elucidate.Forms
             this.findParity6.Location = new System.Drawing.Point(562, 142);
             this.findParity6.Name = "findParity6";
             this.findParity6.Size = new System.Drawing.Size(35, 25);
-            this.findParity6.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.findParity6, "Browse root location for disk protection ");
+            this.findParity6.TabIndex = 17;
+            this.findParity6.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.findParity6.ToolTipValues.EnableToolTips = true;
+            this.findParity6.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.findParity6.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.findParity6.Values.Text = "...";
             this.findParity6.Click += new System.EventHandler(this.findParity6_Click);
             // 
@@ -222,8 +227,13 @@ namespace Elucidate.Forms
             this.findParity5.Location = new System.Drawing.Point(562, 114);
             this.findParity5.Name = "findParity5";
             this.findParity5.Size = new System.Drawing.Size(35, 25);
-            this.findParity5.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.findParity5, "Browse root location for disk protection ");
+            this.findParity5.TabIndex = 14;
+            this.findParity5.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.findParity5.ToolTipValues.EnableToolTips = true;
+            this.findParity5.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.findParity5.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.findParity5.Values.Text = "...";
             this.findParity5.Click += new System.EventHandler(this.findParity5_Click);
             // 
@@ -234,8 +244,13 @@ namespace Elucidate.Forms
             this.findParity4.Location = new System.Drawing.Point(562, 86);
             this.findParity4.Name = "findParity4";
             this.findParity4.Size = new System.Drawing.Size(35, 25);
-            this.findParity4.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.findParity4, "Browse root location for disk protection ");
+            this.findParity4.TabIndex = 11;
+            this.findParity4.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.findParity4.ToolTipValues.EnableToolTips = true;
+            this.findParity4.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.findParity4.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.findParity4.Values.Text = "...";
             this.findParity4.Click += new System.EventHandler(this.findParity4_Click);
             // 
@@ -251,8 +266,13 @@ namespace Elucidate.Forms
             this.parityLocation6.Name = "parityLocation6";
             this.helpProvider1.SetShowHelp(this.parityLocation6, true);
             this.parityLocation6.Size = new System.Drawing.Size(473, 20);
-            this.parityLocation6.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.parityLocation6, "Optional disk failure protection root location.");
+            this.parityLocation6.TabIndex = 16;
+            this.parityLocation6.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.parityLocation6.ToolTipValues.EnableToolTips = true;
+            this.parityLocation6.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.parityLocation6.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.parityLocation6.Leave += new System.EventHandler(this.parityLocation6_Leave);
             // 
             // parityLocation5
@@ -267,8 +287,13 @@ namespace Elucidate.Forms
             this.parityLocation5.Name = "parityLocation5";
             this.helpProvider1.SetShowHelp(this.parityLocation5, true);
             this.parityLocation5.Size = new System.Drawing.Size(473, 20);
-            this.parityLocation5.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.parityLocation5, "Optional disk failure protection root location.");
+            this.parityLocation5.TabIndex = 13;
+            this.parityLocation5.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.parityLocation5.ToolTipValues.EnableToolTips = true;
+            this.parityLocation5.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.parityLocation5.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.parityLocation5.Leave += new System.EventHandler(this.parityLocation5_Leave);
             // 
             // parityLocation4
@@ -283,8 +308,13 @@ namespace Elucidate.Forms
             this.parityLocation4.Name = "parityLocation4";
             this.helpProvider1.SetShowHelp(this.parityLocation4, true);
             this.parityLocation4.Size = new System.Drawing.Size(473, 20);
-            this.parityLocation4.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.parityLocation4, "Optional disk failure protection root location.");
+            this.parityLocation4.TabIndex = 10;
+            this.parityLocation4.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.parityLocation4.ToolTipValues.EnableToolTips = true;
+            this.parityLocation4.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.parityLocation4.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.parityLocation4.Leave += new System.EventHandler(this.parityLocation4_Leave);
             // 
             // findParity3
@@ -294,41 +324,71 @@ namespace Elucidate.Forms
             this.findParity3.Location = new System.Drawing.Point(562, 58);
             this.findParity3.Name = "findParity3";
             this.findParity3.Size = new System.Drawing.Size(35, 25);
-            this.findParity3.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.findParity3, "Browse root location for disk protection ");
+            this.findParity3.TabIndex = 8;
+            this.findParity3.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.findParity3.ToolTipValues.EnableToolTips = true;
+            this.findParity3.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.findParity3.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.findParity3.Values.Text = "...";
             this.findParity3.Click += new System.EventHandler(this.findParity3_Click);
             // 
             // labelParity6
             // 
+            this.labelParity6.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity6.Location = new System.Drawing.Point(6, 144);
             this.labelParity6.Name = "labelParity6";
             this.labelParity6.Size = new System.Drawing.Size(54, 20);
             this.labelParity6.TabIndex = 15;
-            this.toolTip1.SetToolTip(this.labelParity6, "Optional root location for parity protection");
+            this.labelParity6.TabStop = false;
+            this.labelParity6.Target = this.parityLocation6;
+            this.labelParity6.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.labelParity6.ToolTipValues.EnableToolTips = true;
+            this.labelParity6.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.labelParity6.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.labelParity6.Values.Text = "Parity &6:";
             // 
             // labelParity5
             // 
+            this.labelParity5.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity5.Location = new System.Drawing.Point(6, 116);
             this.labelParity5.Name = "labelParity5";
             this.labelParity5.Size = new System.Drawing.Size(54, 20);
-            this.labelParity5.TabIndex = 14;
-            this.toolTip1.SetToolTip(this.labelParity5, "Optional root location for parity protection");
+            this.labelParity5.TabIndex = 12;
+            this.labelParity5.TabStop = false;
+            this.labelParity5.Target = this.parityLocation5;
+            this.labelParity5.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.labelParity5.ToolTipValues.EnableToolTips = true;
+            this.labelParity5.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.labelParity5.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.labelParity5.Values.Text = "Parity &5:";
             // 
             // labelParity4
             // 
+            this.labelParity4.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity4.Location = new System.Drawing.Point(6, 88);
             this.labelParity4.Name = "labelParity4";
             this.labelParity4.Size = new System.Drawing.Size(54, 20);
-            this.labelParity4.TabIndex = 13;
-            this.toolTip1.SetToolTip(this.labelParity4, "Optional root location for parity protection");
+            this.labelParity4.TabIndex = 9;
+            this.labelParity4.TabStop = false;
+            this.labelParity4.Target = this.parityLocation4;
+            this.labelParity4.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.labelParity4.ToolTipValues.EnableToolTips = true;
+            this.labelParity4.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.labelParity4.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.labelParity4.Values.Text = "Parity &4:";
             // 
             // labelParity3
             // 
             this.labelParity3.BackColor = System.Drawing.Color.Transparent;
+            this.labelParity3.Checked = true;
             this.labelParity3.Location = new System.Drawing.Point(0, 61);
             this.labelParity3.Name = "labelParity3";
             this.labelParity3.OffFont = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -339,7 +399,7 @@ namespace Elucidate.Forms
             this.labelParity3.OnText = "Z-Parity";
             this.labelParity3.Size = new System.Drawing.Size(63, 19);
             this.labelParity3.Style = JCS.ToggleSwitch.SlideSwitch.ToggleSwitchStyle.IOS5;
-            this.labelParity3.TabIndex = 12;
+            this.labelParity3.TabIndex = 6;
             this.toolTip1.SetToolTip(this.labelParity3, "Optional root location for 3 or Z parity protection");
             this.labelParity3.CheckedChanged += new JCS.ToggleSwitch.SlideSwitch.CheckedChangedDelegate(this.labelParity3_CheckedChanged);
             // 
@@ -355,17 +415,30 @@ namespace Elucidate.Forms
             this.parityLocation3.Name = "parityLocation3";
             this.helpProvider1.SetShowHelp(this.parityLocation3, true);
             this.parityLocation3.Size = new System.Drawing.Size(473, 20);
-            this.parityLocation3.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.parityLocation3, "Optional disk failure protection root location.");
+            this.parityLocation3.TabIndex = 7;
+            this.parityLocation3.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.parityLocation3.ToolTipValues.EnableToolTips = true;
+            this.parityLocation3.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.parityLocation3.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.parityLocation3.Leave += new System.EventHandler(this.parityLocation3_Leave);
             // 
             // labelParity2
             // 
+            this.labelParity2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity2.Location = new System.Drawing.Point(6, 33);
             this.labelParity2.Name = "labelParity2";
             this.labelParity2.Size = new System.Drawing.Size(54, 20);
-            this.labelParity2.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.labelParity2, "Optional root location for parity protection");
+            this.labelParity2.TabIndex = 3;
+            this.labelParity2.TabStop = false;
+            this.labelParity2.Target = this.parityLocation2;
+            this.labelParity2.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.labelParity2.ToolTipValues.EnableToolTips = true;
+            this.labelParity2.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.labelParity2.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.labelParity2.Values.Text = "Parity &2:";
             // 
             // parityLocation2
@@ -380,8 +453,13 @@ namespace Elucidate.Forms
             this.parityLocation2.Name = "parityLocation2";
             this.helpProvider1.SetShowHelp(this.parityLocation2, true);
             this.parityLocation2.Size = new System.Drawing.Size(473, 20);
-            this.parityLocation2.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.parityLocation2, "Optional disk failure protection root location.");
+            this.parityLocation2.TabIndex = 4;
+            this.parityLocation2.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.parityLocation2.ToolTipValues.EnableToolTips = true;
+            this.parityLocation2.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.parityLocation2.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.parityLocation2.Leave += new System.EventHandler(this.parityLocation2_Leave);
             // 
             // findParity2
@@ -391,18 +469,31 @@ namespace Elucidate.Forms
             this.findParity2.Location = new System.Drawing.Point(562, 31);
             this.findParity2.Name = "findParity2";
             this.findParity2.Size = new System.Drawing.Size(35, 25);
-            this.findParity2.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.findParity2, "Browse root location for disk protection ");
+            this.findParity2.TabIndex = 5;
+            this.findParity2.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.findParity2.ToolTipValues.EnableToolTips = true;
+            this.findParity2.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.findParity2.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.findParity2.Values.Text = "...";
             this.findParity2.Click += new System.EventHandler(this.findParity2_Click);
             // 
             // labelParity1
             // 
+            this.labelParity1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity1.Location = new System.Drawing.Point(6, 5);
             this.labelParity1.Name = "labelParity1";
             this.labelParity1.Size = new System.Drawing.Size(54, 20);
             this.labelParity1.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.labelParity1, "Mandatory root location for minimum parity protection");
+            this.labelParity1.TabStop = false;
+            this.labelParity1.Target = this.parityLocation1;
+            this.labelParity1.ToolTipValues.Description = "Optional root location for minimum protection";
+            this.labelParity1.ToolTipValues.EnableToolTips = true;
+            this.labelParity1.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.labelParity1.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.labelParity1.Values.Text = "Parity &1:";
             // 
             // parityLocation1
@@ -419,7 +510,12 @@ namespace Elucidate.Forms
             this.parityLocation1.Size = new System.Drawing.Size(473, 20);
             this.parityLocation1.TabIndex = 1;
             this.parityLocation1.Text = "Z:\\";
-            this.toolTip1.SetToolTip(this.parityLocation1, "Mandatory root location for minimum protection");
+            this.parityLocation1.ToolTipValues.Description = "Mandatory root location for minimum protection";
+            this.parityLocation1.ToolTipValues.EnableToolTips = true;
+            this.parityLocation1.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.parityLocation1.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.parityLocation1.Leave += new System.EventHandler(this.parityLocation1_Leave);
             // 
             // findParity1
@@ -430,7 +526,12 @@ namespace Elucidate.Forms
             this.findParity1.Name = "findParity1";
             this.findParity1.Size = new System.Drawing.Size(35, 26);
             this.findParity1.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.findParity1, "Browse mandatory disk root location for minimum protection");
+            this.findParity1.ToolTipValues.Description = "Mandatory root location for minimum protection";
+            this.findParity1.ToolTipValues.EnableToolTips = true;
+            this.findParity1.ToolTipValues.Heading = "Specify multiple files for a single parity.\r\nAs soon a file cannot grow anymore, " +
+    "the next one starts growing.\r\nJust put more files in the same \'parity\' line, sep" +
+    "arated by , (comma).";
+            this.findParity1.ToolTipValues.Image = global::Elucidate.Properties.Resources.database_add_48;
             this.findParity1.Values.Text = "...";
             this.findParity1.Click += new System.EventHandler(this.findParity1_Click);
             // 
@@ -461,21 +562,32 @@ namespace Elucidate.Forms
             this.editNameToolStripMenuItem.Text = "&Edit Name";
             this.editNameToolStripMenuItem.Click += new System.EventHandler(this.editName_Click);
             // 
-            // groupBox1
+            // grpSnapShotSources
             // 
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Font = new System.Drawing.Font("Tahoma", 9F);
-            this.groupBox1.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.groupBox1.Location = new System.Drawing.Point(3, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.groupBox1.Name = "groupBox1";
+            this.grpSnapShotSources.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpSnapShotSources.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.grpSnapShotSources.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.grpSnapShotSources.Location = new System.Drawing.Point(3, 0);
+            this.grpSnapShotSources.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.grpSnapShotSources.Name = "grpSnapShotSources";
             // 
-            // groupBox1.Panel
+            // grpSnapShotSources.Panel
             // 
-            this.groupBox1.Panel.Controls.Add(this.snapShotSources);
-            this.groupBox1.Size = new System.Drawing.Size(604, 348);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.Values.Heading = "S&nap Shot Sources";
+            this.grpSnapShotSources.Panel.Controls.Add(this.snapShotSources);
+            this.grpSnapShotSources.Size = new System.Drawing.Size(604, 348);
+            this.grpSnapShotSources.TabIndex = 0;
+            this.grpSnapShotSources.Values.Heading = "S&nap Shot Sources";
+            // 
+            // snapShotSources
+            // 
+            this.snapShotSources.AllowDrop = true;
+            this.snapShotSources.ContextMenuStrip = this.SnapShotsMenu;
+            this.snapShotSources.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.snapShotSources.Location = new System.Drawing.Point(0, 0);
+            this.snapShotSources.Name = "snapShotSources";
+            this.snapShotSources.Size = new System.Drawing.Size(600, 324);
+            this.snapShotSources.TabIndex = 0;
+            this.snapShotSources.KeyUp += new System.Windows.Forms.KeyEventHandler(this.snapShotSourcesTreeView_KeyUp);
             // 
             // splitContainer1
             // 
@@ -499,6 +611,27 @@ namespace Elucidate.Forms
             this.splitContainer1.SplitterDistance = 320;
             this.splitContainer1.TabIndex = 4;
             // 
+            // driveAndDirTreeView
+            // 
+            this.driveAndDirTreeView.ContextMenuStrip = this.drivesAndDirectoriesMenu;
+            this.driveAndDirTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.helpProvider1.SetHelpKeyword(this.driveAndDirTreeView, "PossibleProtection");
+            this.helpProvider1.SetHelpNavigator(this.driveAndDirTreeView, System.Windows.Forms.HelpNavigator.Topic);
+            this.driveAndDirTreeView.ImageIndex = 0;
+            this.driveAndDirTreeView.ImageList = this.imageListUnits;
+            this.driveAndDirTreeView.LabelEdit = true;
+            this.driveAndDirTreeView.Location = new System.Drawing.Point(0, 3);
+            this.driveAndDirTreeView.Name = "driveAndDirTreeView";
+            this.driveAndDirTreeView.SelectedImageIndex = 0;
+            this.helpProvider1.SetShowHelp(this.driveAndDirTreeView, true);
+            this.driveAndDirTreeView.Size = new System.Drawing.Size(320, 456);
+            this.driveAndDirTreeView.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.driveAndDirTreeView, "Possible sources to be used for snap shot.");
+            this.driveAndDirTreeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.driveAndDirTreeView_BeforeExpand);
+            this.driveAndDirTreeView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseDoubleClick);
+            this.driveAndDirTreeView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseDown);
+            this.driveAndDirTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseUp);
+            // 
             // groupBox3
             // 
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -514,7 +647,7 @@ namespace Elucidate.Forms
             this.groupBox3.Panel.Controls.Add(this.numBlockSizeKB);
             this.groupBox3.Panel.Controls.Add(this.label4);
             this.groupBox3.Size = new System.Drawing.Size(320, 186);
-            this.groupBox3.TabIndex = 1;
+            this.groupBox3.TabIndex = 0;
             this.toolTip1.SetToolTip(this.groupBox3, "Unusual settings.");
             this.groupBox3.Values.Heading = "Advanced";
             // 
@@ -523,7 +656,7 @@ namespace Elucidate.Forms
             this.btnGetRecommended.Location = new System.Drawing.Point(175, 1);
             this.btnGetRecommended.Name = "btnGetRecommended";
             this.btnGetRecommended.Size = new System.Drawing.Size(137, 24);
-            this.btnGetRecommended.TabIndex = 8;
+            this.btnGetRecommended.TabIndex = 2;
             this.btnGetRecommended.Values.Text = "C&alculate ...";
             this.btnGetRecommended.Click += new System.EventHandler(this.btnGetRecommended_Click);
             // 
@@ -532,7 +665,7 @@ namespace Elucidate.Forms
             this.checkedListBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkedListBox1.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.PanelAlternate;
+            this.checkedListBox1.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.PanelClient;
             this.checkedListBox1.CheckOnClick = true;
             this.checkedListBox1.FormattingEnabled = true;
             this.helpProvider1.SetHelpString(this.checkedListBox1, "UseVerbose");
@@ -541,13 +674,14 @@ namespace Elucidate.Forms
             this.checkedListBox1.ScrollAlwaysVisible = true;
             this.helpProvider1.SetShowHelp(this.checkedListBox1, true);
             this.checkedListBox1.Size = new System.Drawing.Size(307, 102);
-            this.checkedListBox1.TabIndex = 7;
+            this.checkedListBox1.TabIndex = 5;
             this.toolTip1.SetToolTip(this.checkedListBox1, "Caution: You must know wat these settings are.");
             this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
             this.checkedListBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkedListBox1_MouseMove);
             // 
             // numAutoSaveGB
             // 
+            this.numAutoSaveGB.DecimalPlaces = 99;
             this.numAutoSaveGB.Increment = new decimal(new int[] {
             50,
             0,
@@ -574,19 +708,54 @@ namespace Elucidate.Forms
             // 
             // label6
             // 
+            this.label6.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label6.Location = new System.Drawing.Point(7, 32);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(84, 20);
             this.label6.TabIndex = 3;
+            this.label6.TabStop = false;
+            this.label6.Target = this.numAutoSaveGB;
             this.toolTip1.SetToolTip(this.label6, "The number of processed GigaBytes before a save; 0 is off.");
             this.label6.Values.Text = "AutoSave &GB:";
             // 
+            // numBlockSizeKB
+            // 
+            this.numBlockSizeKB.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.numBlockSizeKB.Location = new System.Drawing.Point(95, 3);
+            this.numBlockSizeKB.Maximum = new decimal(new int[] {
+            16384,
+            0,
+            0,
+            0});
+            this.numBlockSizeKB.Minimum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.numBlockSizeKB.Name = "numBlockSizeKB";
+            this.numBlockSizeKB.Size = new System.Drawing.Size(74, 22);
+            this.numBlockSizeKB.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.numBlockSizeKB, resources.GetString("numBlockSizeKB.ToolTip"));
+            this.numBlockSizeKB.Value = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
+            this.numBlockSizeKB.ValueChanged += new System.EventHandler(this.numBlockSizeKB_ValueChanged);
+            // 
             // label4
             // 
+            this.label4.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label4.Location = new System.Drawing.Point(7, 5);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(85, 20);
-            this.label4.TabIndex = 1;
+            this.label4.TabIndex = 0;
+            this.label4.TabStop = false;
+            this.label4.Target = this.numBlockSizeKB;
             this.toolTip1.SetToolTip(this.label4, "You could increase this value if you do not have enough RAM memory to run SnapRAI" +
         "D\r\nAs a rule of thumb, with 4GB or more memory use the default 256, with 2GB use" +
         " 512, and with 1GB use 1024.");
@@ -598,8 +767,8 @@ namespace Elucidate.Forms
             this.tableLayoutPanel1.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.grpSnapShotSources, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.grpParityLocations, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.exludedFilesView, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
@@ -729,6 +898,8 @@ namespace Elucidate.Forms
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(127, 20);
             this.label1.TabIndex = 4;
+            this.label1.TabStop = false;
+            this.label1.Target = this.configFileLocation;
             this.label1.Values.Text = "SnapRAID &Config file:";
             // 
             // findConfigFile
@@ -749,6 +920,8 @@ namespace Elucidate.Forms
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 20);
             this.label2.TabIndex = 0;
+            this.label2.TabStop = false;
+            this.label2.Target = this.snapRAIDFileLocation;
             this.label2.Values.Text = "Snap&RAID.exe:";
             // 
             // findExeFile
@@ -780,67 +953,6 @@ namespace Elucidate.Forms
             this.kryptonPanel1.Size = new System.Drawing.Size(935, 710);
             this.kryptonPanel1.TabIndex = 8;
             // 
-            // driveAndDirTreeView
-            // 
-            this.driveAndDirTreeView.ContextMenuStrip = this.drivesAndDirectoriesMenu;
-            this.driveAndDirTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.helpProvider1.SetHelpKeyword(this.driveAndDirTreeView, "PossibleProtection");
-            this.helpProvider1.SetHelpNavigator(this.driveAndDirTreeView, System.Windows.Forms.HelpNavigator.Topic);
-            this.driveAndDirTreeView.ImageIndex = 0;
-            this.driveAndDirTreeView.ImageList = this.imageListUnits;
-            this.driveAndDirTreeView.LabelEdit = true;
-            this.driveAndDirTreeView.Location = new System.Drawing.Point(0, 3);
-            this.driveAndDirTreeView.Name = "driveAndDirTreeView";
-            this.driveAndDirTreeView.SelectedImageIndex = 0;
-            this.helpProvider1.SetShowHelp(this.driveAndDirTreeView, true);
-            this.driveAndDirTreeView.Size = new System.Drawing.Size(320, 456);
-            this.driveAndDirTreeView.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.driveAndDirTreeView, "Possible sources to be used for snap shot.");
-            this.driveAndDirTreeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.driveAndDirTreeView_BeforeExpand);
-            this.driveAndDirTreeView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseDoubleClick);
-            this.driveAndDirTreeView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseDown);
-            this.driveAndDirTreeView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.driveAndDirTreeView_MouseUp);
-            // 
-            // numBlockSizeKB
-            // 
-            this.numBlockSizeKB.Increment = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.numBlockSizeKB.Location = new System.Drawing.Point(95, 3);
-            this.numBlockSizeKB.Maximum = new decimal(new int[] {
-            16384,
-            0,
-            0,
-            0});
-            this.numBlockSizeKB.Minimum = new decimal(new int[] {
-            256,
-            0,
-            0,
-            0});
-            this.numBlockSizeKB.Name = "numBlockSizeKB";
-            this.numBlockSizeKB.Size = new System.Drawing.Size(74, 22);
-            this.numBlockSizeKB.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.numBlockSizeKB, resources.GetString("numBlockSizeKB.ToolTip"));
-            this.numBlockSizeKB.Value = new decimal(new int[] {
-            256,
-            0,
-            0,
-            0});
-            this.numBlockSizeKB.ValueChanged += new System.EventHandler(this.numBlockSizeKB_ValueChanged);
-            // 
-            // snapShotSources
-            // 
-            this.snapShotSources.AllowDrop = true;
-            this.snapShotSources.ContextMenuStrip = this.SnapShotsMenu;
-            this.snapShotSources.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.snapShotSources.Location = new System.Drawing.Point(0, 0);
-            this.snapShotSources.Name = "snapShotSources";
-            this.snapShotSources.Size = new System.Drawing.Size(600, 324);
-            this.snapShotSources.TabIndex = 0;
-            this.snapShotSources.KeyUp += new System.Windows.Forms.KeyEventHandler(this.snapShotSourcesTreeView_KeyUp);
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -864,16 +976,16 @@ namespace Elucidate.Forms
             this.Load += new System.EventHandler(this.Settings_Load);
             this.Shown += new System.EventHandler(this.Settings_Shown);
             this.drivesAndDirectoriesMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.groupBox2.Panel)).EndInit();
-            this.groupBox2.Panel.ResumeLayout(false);
-            this.groupBox2.Panel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.groupBox2)).EndInit();
-            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations.Panel)).EndInit();
+            this.grpParityLocations.Panel.ResumeLayout(false);
+            this.grpParityLocations.Panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations)).EndInit();
+            this.grpParityLocations.ResumeLayout(false);
             this.SnapShotsMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.groupBox1.Panel)).EndInit();
-            this.groupBox1.Panel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.groupBox1)).EndInit();
-            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.grpSnapShotSources.Panel)).EndInit();
+            this.grpSnapShotSources.Panel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.grpSnapShotSources)).EndInit();
+            this.grpSnapShotSources.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1.Panel1)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1.Panel2)).EndInit();
@@ -885,6 +997,7 @@ namespace Elucidate.Forms
             this.groupBox3.Panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupBox3)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numBlockSizeKB)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.exludedFilesView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panel2)).EndInit();
@@ -893,7 +1006,6 @@ namespace Elucidate.Forms
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).EndInit();
             this.kryptonPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numBlockSizeKB)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -907,10 +1019,10 @@ namespace Elucidate.Forms
         private ToolStripMenuItem toolStripMenuItem1;
         private ImageList imageListUnits;
         private ToolTip toolTip1;
-        private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox2;
+        private ComponentFactory.Krypton.Toolkit.KryptonGroupBox grpParityLocations;
         private ToolStripMenuItem removeToolStripMenuItem;
         private ContextMenuStrip SnapShotsMenu;
-        private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox1;
+        private ComponentFactory.Krypton.Toolkit.KryptonGroupBox grpSnapShotSources;
         private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer splitContainer1;
         private TableLayoutPanel tableLayoutPanel1;
         private ComponentFactory.Krypton.Toolkit.KryptonPanel panel2;

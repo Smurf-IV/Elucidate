@@ -30,7 +30,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>2019.5.975.27</AssemblyVersion>
+    <AssemblyVersion>2019.6.983.15</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -308,10 +308,10 @@
       <Version>4.3.2027</Version>
     </PackageReference>
     <PackageReference Include="KryptonToolkitSuite5472">
-      <Version>5.472.1103</Version>
+      <Version>5.472.1222</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.6.3</Version>
+      <Version>4.6.5</Version>
     </PackageReference>
     <PackageReference Include="TaskSchedulerEditor">
       <Version>2.8.11</Version>

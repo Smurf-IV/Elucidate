@@ -41,6 +41,10 @@
   - Drag a directory which is a child of an existing
   - Drag a direcotyr which is on the same drive but not currently protected
   - Should cope with directory redirects (i.e. mount points)
+- Parity location changes
+  - Make sure that Multiple Parity locations can be added per Parity line
+  - Toggle between Z-Parity and Parity 3
+  - When a change is made then the Tooltip text changes to inform of the use of "Fix"
 
 ### Save
 - Allow save even items are still invalid (To allow extra editing later)

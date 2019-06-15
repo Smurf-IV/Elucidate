@@ -1,10 +1,8 @@
-Beginners Guide -
-=================
+# Beginners Guide - #
 
 
 
-How does it work ?
-==================
+## How does it work ?## 
 
 The intention of Elucidate, is to make it easier and clearer on how to use the
 [SnapRAID](http://snapraid.sourceforge.net/manual.html) Command-line
@@ -13,8 +11,8 @@ Lets take a look at the layout:
 
 ![Starting View](../Images/starting_view.png)
 
-*Menu*
-======
+## *Menu* ##
+
 
 ### [Settings](Settings.md)
 
@@ -34,8 +32,9 @@ during it's processing. On Windows this will be WordPad.
 
 A brief intro, probably this page :-)
 
-*Buttons*
-=========
+
+## *Buttons* ##
+
 
 ### *D*ifferences
 

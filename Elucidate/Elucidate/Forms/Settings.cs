@@ -47,6 +47,8 @@ namespace Elucidate.Forms
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private bool unsavedChangesMade;
+        private IOrderedEnumerable<KryptonTextBox> parityTextBoxes;
+        private List<KryptonTextBox> parityTextBoxesList;
 
         private ConfigFileHelper cfg = new ConfigFileHelper();
 
@@ -98,6 +100,10 @@ namespace Elucidate.Forms
             {
                 checkedListBox1.SetItemCheckState(offset++, helper.CheckState ? CheckState.Checked : CheckState.Unchecked);
             }
+
+            parityTextBoxesList = (parityTextBoxes = grpParityLocations.Panel.Controls.OfType<KryptonTextBox>().OrderBy(c => c.TabIndex)).ToList();
+
+            labelParity3_CheckedChanged(this, EventArgs.Empty);
         }
 
         private void Settings_Load(object sender, EventArgs e)
@@ -121,7 +127,7 @@ namespace Elucidate.Forms
 
             Properties.Settings.Default.ConfigFileIsValid = ValidateFormData();
 
-            ValidateParityTextBox();
+            ValidateParityTextBoxes();
         }
 
         #region driveAndDirTreeView
@@ -845,82 +851,34 @@ namespace Elucidate.Forms
                     }
                 }
 
-                switch (!string.IsNullOrEmpty(parityLocation1.Text.Trim()))
+                // Do not force ContentFiles creation on parity locations
+                List<string> paths = parityTextBoxesList.Select(c => c.Text).ToList();
+                cfgToSave.ParityFile1 = paths[0].Trim();    // Must have at least one to use this!
+
+                if (string.IsNullOrWhiteSpace(paths[1])) goto doneParity;
+                cfgToSave.ParityFile2 = paths[1].Trim();
+
+                if (string.IsNullOrWhiteSpace(paths[2])) goto doneParity;
+                if (labelParity3.Checked)
                 {
-                    case true:
-
-                        string trim1 = parityLocation1.Text.Trim();
-                        cfgToSave.ParityFile1 = trim1;
-                        if (string.IsNullOrEmpty(trim1))
-                        {
-                            break;
-                        }
-
-                        Util.CreateFullDirectoryPath(trim1);
-                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim1));
-
-                        string trim2 = parityLocation2.Text.Trim();
-                        cfgToSave.ParityFile2 = trim2;
-                        if (string.IsNullOrEmpty(trim2))
-                        {
-                            break;
-                        }
-
-                        Util.CreateFullDirectoryPath(trim2);
-                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim2));
-
-                        string trim3 = parityLocation3.Text.Trim();
-                        if (labelParity3.Checked)
-                        {
-                            cfgToSave.ZParityFile = trim3;
-                            cfgToSave.ParityFile3 = string.Empty;
-                        }
-                        else
-                        {
-                            cfgToSave.ZParityFile = string.Empty;
-                            cfgToSave.ParityFile3 = trim3;
-                        }
-
-                        if (string.IsNullOrEmpty(trim3))
-                        {
-                            break;
-                        }
-
-                        Util.CreateFullDirectoryPath(trim3);
-                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim3));
-
-                        string trim4 = parityLocation4.Text.Trim();
-                        cfgToSave.ParityFile4 = trim4;
-                        if (string.IsNullOrEmpty(trim4))
-                        {
-                            break;
-                        }
-
-                        Util.CreateFullDirectoryPath(trim4);
-                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim4));
-
-                        string trim5 = parityLocation5.Text.Trim();
-                        cfgToSave.ParityFile5 = trim5;
-                        if (string.IsNullOrEmpty(trim5))
-                        {
-                            break;
-                        }
-
-                        Util.CreateFullDirectoryPath(trim5);
-                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim5));
-
-                        string trim6 = parityLocation6.Text.Trim();
-                        cfgToSave.ParityFile6 = trim6;
-                        if (string.IsNullOrEmpty(trim6))
-                        {
-                            break;
-                        }
-
-                        Util.CreateFullDirectoryPath(trim6);
-                        cfgToSave.ContentFiles.Add(Path.GetDirectoryName(trim6));
-
-                        break;
+                    cfgToSave.ZParityFile = paths[2].Trim();
+                    cfgToSave.ParityFile3 = string.Empty;
                 }
+                else
+                {
+                    cfgToSave.ZParityFile = string.Empty;
+                    cfgToSave.ParityFile3 = paths[2].Trim();
+                }
+
+                if (string.IsNullOrWhiteSpace(paths[3])) goto doneParity;
+                cfgToSave.ParityFile4 = paths[3].Trim();
+
+                if (string.IsNullOrWhiteSpace(paths[4])) goto doneParity;
+                cfgToSave.ParityFile5 = paths[4].Trim();
+
+                if (string.IsNullOrWhiteSpace(paths[5])) goto doneParity;
+                cfgToSave.ParityFile6 = paths[5].Trim();
+            doneParity:
 
                 // temp backup current config
                 if (File.Exists(configFileLocation.Text))
@@ -1018,10 +976,11 @@ namespace Elucidate.Forms
 
         private void findParity1_Click(object sender, EventArgs e)
         {
-            FindParityFor(parityLocation1);
+            FindParityFor(parityLocation1, findParity1, labelParity1, cfg.ParityFile1);
         }
 
-        private void FindParityFor(KryptonTextBox location)
+        private void FindParityFor(KryptonTextBox parityLocation, KryptonButton findParity, KryptonLabel labelParity,
+            string cfgParityFile)
         {
             FolderSelectDialog fsd = new FolderSelectDialog
             {
@@ -1029,36 +988,59 @@ namespace Elucidate.Forms
             };
             if (fsd.ShowDialog(this))
             {
+                if (parityLocation.Text.Trim().EndsWith(","))
+                {
+                    parityLocation.Text += fsd.FileName;
+                }
+                else
+                {
+                    parityLocation.Text = fsd.FileName;
+                }
 
-                location.Text = fsd.FileName;
+                ValidateParityTextBoxes();
+                UpdateParityTooltip(parityLocation, findParity, labelParity, cfgParityFile);
+            }
+        }
 
-                ValidateParityTextBox();
+        private void UpdateParityTooltip(KryptonTextBox parityLocation, KryptonButton findParity,
+            KryptonLabel labelParity, string cfgParityFile)
+        {
+            if (parityLocation.Text != cfgParityFile)
+            {
+                UnsavedChangesMade = true;
+                parityLocation.ToolTipValues.Description =
+                    @"To add an additional parity drive you will need to run the ""fix"" command.";
+                findParity.ToolTipValues.Description =
+                    @"To add an additional parity drive you will need to run the ""fix"" command.";
+                labelParity.ToolTipValues.Description =
+                    @"To add an additional parity drive you will need to run the ""fix"" command.";
             }
         }
 
         private void findParity2_Click(object sender, EventArgs e)
         {
-            FindParityFor(parityLocation2);
+            FindParityFor(parityLocation2, findParity2, labelParity2, cfg.ParityFile2);
         }
 
         private void findParity3_Click(object sender, EventArgs e)
         {
-            FindParityFor(parityLocation3);
+            // There is not labelParity3 so pass in labelParity4!
+            FindParityFor(parityLocation3, findParity3, labelParity4, (labelParity3.Checked ? cfg.ZParityFile : cfg.ParityFile3));
         }
 
         private void findParity4_Click(object sender, EventArgs e)
         {
-            FindParityFor(parityLocation4);
+            FindParityFor(parityLocation4, findParity4, labelParity4, cfg.ParityFile4);
         }
 
         private void findParity5_Click(object sender, EventArgs e)
         {
-            FindParityFor(parityLocation5);
+            FindParityFor(parityLocation5, findParity5, labelParity5, cfg.ParityFile5);
         }
 
         private void findParity6_Click(object sender, EventArgs e)
         {
-            FindParityFor(parityLocation6);
+            FindParityFor(parityLocation6, findParity6, labelParity6, cfg.ParityFile6);
         }
 
         private void checkedListBox1_MouseMove(object sender, MouseEventArgs e)
@@ -1149,150 +1131,46 @@ namespace Elucidate.Forms
 
         private void parityLocation1_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox))
-            {
-                return;
-            }
-
-            ValidateParityTextBox();
-
-            if (textBox.Text.Trim() == cfg.ParityFile1)
-            {
-                // TODO Check the others for conflict !
-                return;
-            }
+            ValidateParityTextBoxes();
+            FindParityFor(parityLocation1, findParity1, labelParity1, cfg.ParityFile1);
         }
 
         private void parityLocation2_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox))
-            {
-                return;
-            }
-
-            ValidateParityTextBox();
-
-            if (textBox.Text.Trim() == cfg.ParityFile2)
-            {
-                return;
-            }
-
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-            toolTip1.SetToolTip(parityLocation2, tooltip);
-            toolTip1.SetToolTip(findParity2, tooltip);
-            toolTip1.SetToolTip(labelParity2, tooltip);
+            ValidateParityTextBoxes();
+            UpdateParityTooltip(parityLocation2, findParity2, labelParity2, cfg.ParityFile2);
         }
 
         private void parityLocation3_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox))
-            {
-                return;
-            }
-
-            ValidateParityTextBox();
-
-            if (textBox.Text.Trim() == (labelParity3.Checked ? cfg.ZParityFile : cfg.ParityFile3))
-            {
-                return;
-            }
-
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-
-            toolTip1.SetToolTip(parityLocation3, tooltip);
-            toolTip1.SetToolTip(findParity3, tooltip);
-            toolTip1.SetToolTip(labelParity3, tooltip);
+            ValidateParityTextBoxes();
+            UpdateParityTooltip(parityLocation2, findParity2, labelParity2, (labelParity3.Checked ? cfg.ZParityFile : cfg.ParityFile3));
         }
 
         private void parityLocation4_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox))
-            {
-                return;
-            }
-
-            ValidateParityTextBox();
-
-            if (textBox.Text.Trim() == cfg.ParityFile4)
-            {
-                return;
-            }
-
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-            toolTip1.SetToolTip(parityLocation4, tooltip);
-            toolTip1.SetToolTip(findParity4, tooltip);
-            toolTip1.SetToolTip(labelParity4, tooltip);
+            ValidateParityTextBoxes();
+            UpdateParityTooltip(parityLocation4, findParity4, labelParity4, cfg.ParityFile4);
         }
 
         private void parityLocation5_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox))
-            {
-                return;
-            }
-
-            ValidateParityTextBox();
-
-            if (textBox.Text.Trim() == cfg.ParityFile5)
-            {
-                return; // unchanged
-            }
-
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-            toolTip1.SetToolTip(parityLocation5, tooltip);
-            toolTip1.SetToolTip(findParity5, tooltip);
-            toolTip1.SetToolTip(labelParity5, tooltip);
+            ValidateParityTextBoxes();
+            UpdateParityTooltip(parityLocation5, findParity5, labelParity5, cfg.ParityFile5);
         }
 
         private void parityLocation6_Leave(object sender, EventArgs e)
         {
-            if (!(sender is TextBox textBox))
-            {
-                return;
-            }
-
-            ValidateParityTextBox();
-
-            if (textBox.Text.Trim() == cfg.ParityFile6)
-            {
-                return;
-            }
-
-            string tooltip = "Optional disk failure protection root location.";
-            if (!string.IsNullOrEmpty(textBox.Text) && !File.Exists(textBox.Text))
-            {
-                tooltip = "To add an additional parity drive you will need to run the \"fix\" command.";
-            }
-            toolTip1.SetToolTip(parityLocation6, tooltip);
-            toolTip1.SetToolTip(findParity6, tooltip);
-            toolTip1.SetToolTip(labelParity6, tooltip);
+            ValidateParityTextBoxes();
+            UpdateParityTooltip(parityLocation6, findParity6, labelParity6, cfg.ParityFile6);
         }
 
-        private void ValidateParityTextBox()
+        private void ValidateParityTextBoxes()
         {
-            // TODO: Must validate when multiple location per parity are used.
-            IOrderedEnumerable<TextBox> parityTextBoxes;
-            List<TextBox> parityTextBoxesList = (parityTextBoxes = groupBox2.Controls.OfType<TextBox>().OrderBy(c => c.TabIndex)).ToList();
-
+            List<string> paths = parityTextBoxesList.Select(c => c.Text).ToList();
             string previous = null;
 
-            foreach (TextBox item in parityTextBoxes)
+            foreach (KryptonTextBox item in parityTextBoxes)
             {
                 errorProvider1.SetErrorWithCount(item, "");
 
@@ -1303,7 +1181,7 @@ namespace Elucidate.Forms
                     errorProvider1.SetErrorWithCount(item, "There cannot be empty parity locations between parity locations.");
                 }
 
-                if (!ConfigFileHelper.IsRulePassDevicesMustNotRepeat(parityTextBoxesList.Select(c => c.Text).ToList(), current))
+                if (!ConfigFileHelper.IsRulePassDevicesMustNotRepeat(paths, current))
                 {
                     errorProvider1.SetErrorWithCount(item, "Only one device can be used per parity location.");
                 }
