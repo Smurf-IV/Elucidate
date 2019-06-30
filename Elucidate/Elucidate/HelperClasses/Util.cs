@@ -205,9 +205,10 @@ namespace Elucidate
         {
             try
             {
-                return dir.GetFiles()
-                           .Sum(fi => (ulong) fi.Length) + dir.GetDirectories()
+                return dir.EnumerateFiles().AsParallel().Sum(fi => (ulong)fi.Length)
+                       + dir.EnumerateDirectories()
                            .Where(d => (d.Attributes & System.IO.FileAttributes.System) == 0 && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
+                           .AsParallel()
                            .Sum(DirSize);
             }
             catch (UnauthorizedAccessException ex)
@@ -216,7 +217,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Log.Warn(ex);
             }
 
             return 0;

@@ -15,20 +15,20 @@ using NLog;
 
 namespace Elucidate.Controls
 {
-    public partial class ProtectedDrivesDisplay : UserControl
+    internal partial class ProtectedDrivesDisplay : UserControl
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private CancellationTokenSource cancelTokenSrc;
 
         private volatile int useWaitCursor;
 
-        public ProtectedDrivesDisplay()
+        internal ProtectedDrivesDisplay()
         {
             cancelTokenSrc = new CancellationTokenSource();
             InitializeComponent();
         }
 
-        public void StopProcessing()
+        internal void StopProcessing()
         {
             // have to stop "any" processes that might be refreshing as this is now closing
             cancelTokenSrc.Cancel();
@@ -38,7 +38,7 @@ namespace Elucidate.Controls
         {
             if (Interlocked.Increment(ref useWaitCursor) == 1)
             {
-                BeginInvoke((MethodInvoker) delegate { UseWaitCursor = true; });
+                BeginInvoke((MethodInvoker) (() => UseWaitCursor = true));
             }
         }
 
@@ -46,7 +46,7 @@ namespace Elucidate.Controls
         {
             if (Interlocked.Decrement(ref useWaitCursor) <= 0)
             {
-                BeginInvoke((MethodInvoker) delegate { UseWaitCursor = false; });
+                BeginInvoke((MethodInvoker) (() => UseWaitCursor = false));
             }
         }
 
@@ -120,7 +120,7 @@ namespace Elucidate.Controls
                 {
                     // Start background processing
                     IncrementWaitCursor();
-                    Task.Run(() => { ProcessProtectedSpace(row, driveInfo, dirInfo, token); }, token);
+                    Task.Run(() => ProcessProtectedSpace(row, driveInfo, dirInfo, token), token);
                 }
             }
 
@@ -157,6 +157,7 @@ namespace Elucidate.Controls
         /// Recursive and allow cancellation
         /// </summary>
         /// <param name="dir"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
         private static ulong DirSize(DirectoryInfo dir, CancellationToken token)
         {
@@ -167,9 +168,10 @@ namespace Elucidate.Controls
                     return 0UL;
                 }
 
-                return dir.GetFiles()
-                           .Sum(fi => (ulong)fi.Length) + dir.GetDirectories()
+                return dir.EnumerateFiles().AsParallel().Sum(fi => (ulong)fi.Length) 
+                       + dir.EnumerateDirectories()
                            .Where(d => (d.Attributes & System.IO.FileAttributes.System) == 0 && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
+                           .AsParallel()
                            .Sum(info => DirSize(info, token));
             }
             catch (UnauthorizedAccessException ex)
@@ -178,11 +180,20 @@ namespace Elucidate.Controls
             }
             catch (Exception ex)
             {
-                Log.Error(ex);
+                Log.Warn(ex);
             }
 
             return 0UL;
         }
 
+        private void DriveGrid_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                DataGridView.HitTestInfo hti = driveGrid.HitTest(e.X, e.Y);
+                driveGrid.ClearSelection();
+                driveGrid.Rows[hti.RowIndex].Selected = true;
+            }
+        }
     }
 }

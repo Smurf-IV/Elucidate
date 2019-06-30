@@ -1209,6 +1209,5 @@ namespace Elucidate.Forms
                 parityLocation6.Text = string.Empty;
             }
         }
-
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Elucidate.Controls
 {
-    partial class ProtectedDrivesDisplay
+    internal partial class ProtectedDrivesDisplay
     {
         /// <summary> 
         /// Required designer variable.
@@ -71,6 +71,7 @@
             this.driveGrid.Size = new System.Drawing.Size(403, 290);
             this.driveGrid.TabIndex = 0;
             this.driveGrid.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.driveGrid_RowsAdded);
+            this.driveGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DriveGrid_MouseDown);
             // 
             // colPath
             // 
