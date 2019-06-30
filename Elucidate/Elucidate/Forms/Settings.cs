@@ -559,34 +559,6 @@ namespace Elucidate.Forms
 
         #endregion snapShotSourcesTreeView
 
-        public List<CoveragePath> GetPathsOfInterest()
-        {
-            List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
-
-            // Snap-Shot source might be root or folders, so we handle both cases
-            foreach (DataGridViewRow row in snapShotSources.driveGrid.Rows)
-            {
-                if (row.Tag is CoveragePath coveragePath)
-                {
-                    pathsOfInterest.Add(coveragePath);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(parityLocation1.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation1.Text), PathType = PathTypeEnum.Parity }); }
-
-            if (!string.IsNullOrEmpty(parityLocation2.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation2.Text), PathType = PathTypeEnum.Parity }); }
-
-            if (!string.IsNullOrEmpty(parityLocation3.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation3.Text), PathType = PathTypeEnum.Parity }); }
-
-            if (!string.IsNullOrEmpty(parityLocation4.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation4.Text), PathType = PathTypeEnum.Parity }); }
-
-            if (!string.IsNullOrEmpty(parityLocation5.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation5.Text), PathType = PathTypeEnum.Parity }); }
-
-            if (!string.IsNullOrEmpty(parityLocation6.Text)) { pathsOfInterest.Add(new CoveragePath { FullPath = Path.GetFullPath(parityLocation6.Text), PathType = PathTypeEnum.Parity }); }
-
-            return pathsOfInterest;
-        }
-
         private bool ValidateFormData()
         {
             errorProvider1.Clear();
@@ -832,13 +804,12 @@ namespace Elucidate.Forms
                     AutoSaveGB = (uint)numAutoSaveGB.Value
                 };
 
-                foreach (DataGridViewRow row in exludedFilesView.Rows)
+                foreach (string value in exludedFilesView.Rows.Cast<DataGridViewRow>()
+                    .Select(row => $"{row.Cells[0].Value}")
+                    .Where(value => !string.IsNullOrWhiteSpace(value))
+                    )
                 {
-                    string value = $"{row.Cells[0].Value}";
-                    if (!string.IsNullOrWhiteSpace(value))
-                    {
-                        cfgToSave.ExcludePatterns.Add(value);
-                    }
+                    cfgToSave.ExcludePatterns.Add(value);
                 }
 
                 foreach (DataGridViewRow row in snapShotSources.driveGrid.Rows)

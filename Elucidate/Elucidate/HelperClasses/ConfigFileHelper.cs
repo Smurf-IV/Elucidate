@@ -564,77 +564,30 @@ namespace Elucidate
                 });
             }
 
-            if (!string.IsNullOrWhiteSpace(ParityFile1))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(ParityFile1),
-                    PathType = PathTypeEnum.Parity,
-                    Name = @"Parity1"
-                });
-            }
+            AddParityCoverage(pathsOfInterest, ParityFile1, @"Parity1");
 
-            if (!string.IsNullOrWhiteSpace(ParityFile2))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(ParityFile2),
-                    PathType = PathTypeEnum.Parity,
-                    Name = @"Parity2"
-                });
-            }
+            AddParityCoverage(pathsOfInterest, ParityFile2, @"Parity2");
 
-            if (!string.IsNullOrWhiteSpace(ZParityFile))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(ZParityFile),
-                    PathType = PathTypeEnum.Parity,
-                    Name = @"ZParity"
-                });
-            }
+            AddParityCoverage(pathsOfInterest, ZParityFile, @"ZParity");
 
-            if (!string.IsNullOrWhiteSpace(ParityFile3))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(ParityFile3),
-                    PathType = PathTypeEnum.Parity,
-                    Name = @"Parity3"
-                });
-            }
+            AddParityCoverage(pathsOfInterest, ParityFile3, @"Parity3");
 
-            if (!string.IsNullOrWhiteSpace(ParityFile4))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(ParityFile4),
-                    PathType = PathTypeEnum.Parity,
-                    Name = @"Parity4"
-                });
-            }
-            
-            if (!string.IsNullOrWhiteSpace(ParityFile5))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(ParityFile5),
-                    PathType = PathTypeEnum.Parity,
-                    Name = @"Parity5"
-                });
-            }
-            
-            if (!string.IsNullOrWhiteSpace(ParityFile6))
-            {
-                pathsOfInterest.Add(new CoveragePath
-                {
-                    FullPath = Path.GetFullPath(ParityFile6),
-                    PathType = PathTypeEnum.Parity,
-                    Name = @"Parity6"
-                });
-            }
+            AddParityCoverage(pathsOfInterest, ParityFile4, @"Parity4");
+
+            AddParityCoverage(pathsOfInterest, ParityFile5, @"Parity5");
+
+            AddParityCoverage(pathsOfInterest, ParityFile6, @"Parity6");
 
             return pathsOfInterest;
+        }
+
+        private static void AddParityCoverage(List<CoveragePath> pathsOfInterest, string parityPaths, string parityName)
+        {
+            if (!string.IsNullOrWhiteSpace(parityPaths))
+            {
+                string[] parities = parityPaths.Trim().Split(",".ToCharArray());
+                pathsOfInterest.AddRange(parities.Select(parity => new CoveragePath { FullPath = Path.GetFullPath(parity), PathType = PathTypeEnum.Parity, Name = parityName }));
+            }
         }
 
         /// <summary>
@@ -651,40 +604,17 @@ namespace Elucidate
 
                 // parity
                 fileContents.Append(Section2);
-                fileContents.AppendLine($"parity {(Directory.Exists(ParityFile1) ? Path.Combine(ParityFile1, @"snapraid.1.parity") : ParityFile1)}");
+                AddParityToConfig(fileContents, ParityFile1, char.MinValue);
 
-                // X-parity
+                // #-parity
                 fileContents.Append(Section3);
 
-                if (!string.IsNullOrEmpty(ParityFile2))
-                {
-                    fileContents.AppendLine($"2-parity {(Directory.Exists(ParityFile2) ? Path.Combine(ParityFile2, @"snapraid.2.parity") : ParityFile2)}");
-                }
-
-                if (!string.IsNullOrEmpty(ZParityFile))
-                {
-                    fileContents.AppendLine($"z-parity {(Directory.Exists(ZParityFile) ? Path.Combine(ZParityFile, @"snapraid.Z.parity") : ZParityFile)}");
-                }
-
-                if (!string.IsNullOrEmpty(ParityFile3))
-                {
-                    fileContents.AppendLine($"3-parity {(Directory.Exists(ParityFile3) ? Path.Combine(ParityFile3, @"snapraid.3.parity") : ParityFile3)}");
-                }
-
-                if (!string.IsNullOrEmpty(ParityFile4))
-                {
-                    fileContents.AppendLine($"4-parity {(Directory.Exists(ParityFile4) ? Path.Combine(ParityFile4, @"snapraid.4.parity") : ParityFile4)}");
-                }
-
-                if (!string.IsNullOrEmpty(ParityFile5))
-                {
-                    fileContents.AppendLine($"5-parity {(Directory.Exists(ParityFile5) ? Path.Combine(ParityFile5, @"snapraid.5.parity") : ParityFile5)}");
-                }
-
-                if (!string.IsNullOrEmpty(ParityFile6))
-                {
-                    fileContents.AppendLine($"6-parity {(Directory.Exists(ParityFile6) ? Path.Combine(ParityFile6, @"snapraid.6.parity") : ParityFile6)}");
-                }
+                AddParityToConfig(fileContents, ParityFile2, '2');
+                AddParityToConfig(fileContents, ZParityFile, 'z');
+                AddParityToConfig(fileContents, ParityFile3, '3');
+                AddParityToConfig(fileContents, ParityFile4, '4');
+                AddParityToConfig(fileContents, ParityFile5, '5');
+                AddParityToConfig(fileContents, ParityFile6, '6');
 
                 // content
                 fileContents.Append(Section4);
@@ -743,6 +673,42 @@ namespace Elucidate
                 return ex.Message;
             }
             return string.Empty;
+        }
+
+        private static void AddParityToConfig(StringBuilder fileContents, string parityPaths, char offset)
+        {
+            if (!string.IsNullOrEmpty(parityPaths))
+            {
+                if (offset != char.MinValue)
+                {
+                    fileContents.Append(offset).Append('-');
+                }
+
+                fileContents.Append("parity ");
+                string[] parities = parityPaths.Trim().Split(",".ToCharArray());
+                bool doneFirst = false;
+                foreach (string parity in parities)
+                {
+                    if (doneFirst)
+                    {
+                        fileContents.Append(',');
+                    }
+
+                    fileContents.Append(parity);
+                    doneFirst = true;
+                    if (Directory.Exists(parity))
+                    {
+                        fileContents.Append(@"\snapraid");
+                        if (offset != char.MinValue)
+                        {
+                            fileContents.Append('-').Append(offset);
+                        }
+                        fileContents.Append(@".parity");
+                    }
+                }
+
+                fileContents.AppendLine();
+            }
         }
 
         private static StringBuilder Section1

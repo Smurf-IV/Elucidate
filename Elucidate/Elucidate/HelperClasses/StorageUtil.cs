@@ -119,8 +119,8 @@ namespace Elucidate.HelperClasses
             {
                 try
                 {
-                    string pathRoot = GetPathRoot(source);
-                    deviceSizes.Add(GetDriveSize(pathRoot));
+                    string[] possiblePaths = source.Trim().Split(",".ToCharArray());
+                    deviceSizes.Add(possiblePaths.Select(GetPathRoot).Sum(GetDriveSize));
                 }
                 catch (Exception ex)
                 {
