@@ -227,7 +227,7 @@ namespace Elucidate.TabPages
                 // Create an action which sends an email
                 // td.Actions.Add(new EmailAction("Testing", "dahall@codeplex.com", "user@test.com", "You've got mail.", "mail.myisp.com"));
                 ts.RootFolder.RegisterTaskDefinition(
-                    path: $@"{TASK_FOLDER}\{GetNewTaskName()}",
+                    path: $@"{TASK_FOLDER}\{GetNewTaskName(scheduledTaskType)}",
                     definition: td,
                     createType: TaskCreation.CreateOrUpdate,
                     userId: null,
@@ -249,13 +249,14 @@ namespace Elucidate.TabPages
             return newArgs;
         }
 
-        private string GetNewTaskName()
-        {
-            string taskName = TASK_NAME.Replace(@"<TASK_TYPE>", ScheduledTaskType.ToString());
-            return $"{taskName} - Created[{DateTime.Now:yyyy-MM-dd HH-mm-ss}] - {GetUniqueKeyForThisConfig()}";
-        }
+        
+      private string GetNewTaskName(ScheduledTaskTypeEnum scheduledTaskType)
+      {
+         string taskName = TASK_NAME.Replace(@"<TASK_TYPE>", scheduledTaskType.ToString());
+         return $"{taskName} - Created[{DateTime.Now:yyyy-MM-dd HH-mm-ss}] - {GetUniqueKeyForThisConfig()}";
+      }
 
-        private string GetUniqueKeyForThisConfig()
+      private string GetUniqueKeyForThisConfig()
         {
             // so each config can have a scheduled task, use the config file path to
             // compute a unique key as a reference for the scheduled task
@@ -522,5 +523,6 @@ namespace Elucidate.TabPages
                 Cursor.Current = Cursors.Default;
             }
         }
-    }
+
+   }
 }
