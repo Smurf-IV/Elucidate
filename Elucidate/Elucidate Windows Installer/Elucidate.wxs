@@ -38,16 +38,6 @@
             </Component>
 
             <Component>
-                <File Source="$(var.MgtSource)\ActiveDirectoryObjectPicker.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.ActiveDirectoryObjectPicker" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\AeroWizard.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.AeroWizard" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
                 <File Source="$(var.MgtSource)\AlphaFS.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.AlphaFS" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
@@ -78,11 +68,6 @@
                 </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\GroupControls.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.GroupControls" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
                 <File Source="$(var.MgtSource)\JCS.ToggleSwitch.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.JCS.ToggleSwitch" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
@@ -104,31 +89,13 @@
                 </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskScheduler.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Microsoft.Win32.TaskScheduler" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Microsoft.Win32.TaskSchedulerEditor.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Microsoft.Win32.TaskSchedulerEditor" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
                 <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.NLog" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\TimeSpan2.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.TimeSpan2" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
 
 
             <!-- Text and help files-->
-            <Component>
-                <File Source="$(var.MgtSource)\snapraid.ps1" KeyPath="yes"/>
-            </Component>
             <Component>
                 <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
             </Component>

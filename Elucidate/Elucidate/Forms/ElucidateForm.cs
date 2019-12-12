@@ -337,7 +337,7 @@ namespace Elucidate
             }
             else if (currentTab == tabSchedulePage)
             {
-                tpSchedule.ReLoad();
+                //tpSchedule.Reset();
             }
             else if (currentTab == tabRecoverFiles)
             {
