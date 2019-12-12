@@ -1,5 +1,4 @@
-﻿
-namespace Elucidate.TabPages
+﻿namespace Elucidate.TabPages
 {
     partial class Schedule
     {

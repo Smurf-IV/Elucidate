@@ -38,6 +38,7 @@
     <Content Include="Banner.bmp" />
     <Content Include="GPLv2.rtf" />
     <Content Include="LGPLv3.0.rtf" />
+    <Content Include="KryptonLicense.txt" />
     <Content Include="WixUIDialogBmp.bmp" />
   </ItemGroup>
   <ItemGroup>

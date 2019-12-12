@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elucidate", "Elucidate\Elucidate.csproj", "{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}"
 EndProject
@@ -30,15 +30,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{95AFED29-C452-4F6F-9FB1-6E6E072EA4F4}"
 	ProjectSection(SolutionItems) = preProject
 		..\Images\Coverage_Tab.PNG = ..\Images\Coverage_Tab.PNG
-		..\Images\Documentation_Layout With Scheduling.png = ..\Images\Documentation_Layout With Scheduling.png
 		..\Images\Documentation_Real Time Log.png = ..\Images\Documentation_Real Time Log.png
 		..\Images\Documentation_Speed of 1.7 x64.png = ..\Images\Documentation_Speed of 1.7 x64.png
 		..\Images\Home_Layout With Scheduling.png = ..\Images\Home_Layout With Scheduling.png
 		..\Images\Pictures_Fragmentation.png = ..\Images\Pictures_Fragmentation.png
-		..\Images\Pictures_Mono Version.png = ..\Images\Pictures_Mono Version.png
 		..\Images\Pictures_Space In Path.png = ..\Images\Pictures_Space In Path.png
 		..\Images\Pictures_Speed of 1.7 x64.png = ..\Images\Pictures_Speed of 1.7 x64.png
-		..\Images\schedule_view.png = ..\Images\schedule_view.png
 		..\Images\Settings_ErrorProviders.png = ..\Images\Settings_ErrorProviders.png
 		..\Images\Settings_ExcludedPatterns.png = ..\Images\Settings_ExcludedPatterns.png
 		..\Images\Settings_Form.png = ..\Images\Settings_Form.png
@@ -77,8 +74,8 @@ Global
 		{95AFED29-C452-4F6F-9FB1-6E6E072EA4F4} = {4387A76F-EC87-446D-A4A7-E7D96F8DD9A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		BuildVersion_UseGlobalSettings = False
-		BuildVersion_StartDate = 2000/1/1
 		SolutionGuid = {39E6A612-AC12-4D63-BE2A-60EA16940A8A}
+		BuildVersion_StartDate = 2000/1/1
+		BuildVersion_UseGlobalSettings = False
 	EndGlobalSection
 EndGlobal

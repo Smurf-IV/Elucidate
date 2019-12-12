@@ -39,7 +39,7 @@
 - Try to add a directory which is already part of the protected list
   - Drag A directory that is already a root element
   - Drag a directory which is a child of an existing
-  - Drag a direcotyr which is on the same drive but not currently protected
+  - Drag a directory which is on the same drive but not currently protected
   - Should cope with directory redirects (i.e. mount points)
 - Parity location changes
   - Make sure that Multiple Parity locations can be added per Parity line
@@ -77,8 +77,6 @@
 - Select "Only with Errors"
   - observe that the available files are reduced
 
-- Select Scheduled
-- ??
 
 
 ### Coverage Tab

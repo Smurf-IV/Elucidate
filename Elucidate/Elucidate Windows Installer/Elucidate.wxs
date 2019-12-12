@@ -99,9 +99,9 @@
             <Component>
                 <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
             </Component>
-            <!--<Component>
-                <File Source="$(sys.SOURCEFILEDIR) TODO" KeyPath="yes" />    --><!--Used for the Krypton--><!--
-            </Component>-->
+            <Component>
+                <File Source="$(sys.SOURCEFILEDIR)KryptonLicense.txt" KeyPath="yes" /> 
+            </Component>
             <Component>
                 <File Source="$(var.MgtSource)\wyDay.Controls\License.txt" KeyPath="yes" />
             </Component>
