@@ -84,8 +84,10 @@ namespace Elucidate.Controls
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(205, 30);
             this.toolStripStatusLabel1.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel1.StateCommon.ShortText.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Inherit;
             this.toolStripStatusLabel1.StateCommon.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.toolStripStatusLabel1.StateCommon.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.toolStripStatusLabel1.StateCommon.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Inherit;
             this.toolStripStatusLabel1.TabIndex = 0;
             this.toolStripStatusLabel1.TabStop = false;
             this.toolStripStatusLabel1.Values.Text = "2000-01-01 00:00:00Z";
@@ -116,6 +118,8 @@ namespace Elucidate.Controls
             this.runWithoutCaptureMenuItem.Name = "runWithoutCaptureMenuItem";
             this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(199, 34);
             this.runWithoutCaptureMenuItem.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.runWithoutCaptureMenuItem.StateCommon.ShortText.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Inherit;
+            this.runWithoutCaptureMenuItem.StateCommon.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Inherit;
             this.runWithoutCaptureMenuItem.TabIndex = 3;
             this.runWithoutCaptureMenuItem.Values.Text = "Run without capture";
             this.runWithoutCaptureMenuItem.Visible = false;
@@ -132,7 +136,9 @@ namespace Elucidate.Controls
             this.checkBoxDisplayOutput.Name = "checkBoxDisplayOutput";
             this.checkBoxDisplayOutput.Size = new System.Drawing.Size(152, 34);
             this.checkBoxDisplayOutput.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxDisplayOutput.StateCommon.ShortText.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Inherit;
             this.checkBoxDisplayOutput.StateCommon.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.checkBoxDisplayOutput.StateCommon.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Inherit;
             this.checkBoxDisplayOutput.TabIndex = 2;
             this.checkBoxDisplayOutput.Values.Text = "Display Output";
             this.checkBoxDisplayOutput.MouseLeave += new System.EventHandler(this.checkBoxDisplayOutput_MouseLeave);
@@ -156,6 +162,8 @@ namespace Elucidate.Controls
             this.comboBoxProcessStatus.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxProcessStatus.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.comboBoxProcessStatus.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxProcessStatus.StateCommon.Item.Content.ShortText.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Inherit;
+            this.comboBoxProcessStatus.StateCommon.Item.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Inherit;
             this.comboBoxProcessStatus.TabIndex = 1;
             this.comboBoxProcessStatus.Text = "Stopped";
             this.comboBoxProcessStatus.SelectedIndexChanged += new System.EventHandler(this.comboBoxProcessStatus_SelectedIndexChanged);
@@ -208,6 +216,8 @@ namespace Elucidate.Controls
             this.checkBoxCommandLineOptions.Name = "checkBoxCommandLineOptions";
             this.checkBoxCommandLineOptions.Size = new System.Drawing.Size(338, 27);
             this.checkBoxCommandLineOptions.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxCommandLineOptions.StateCommon.ShortText.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Inherit;
+            this.checkBoxCommandLineOptions.StateCommon.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Inherit;
             this.checkBoxCommandLineOptions.TabIndex = 0;
             this.checkBoxCommandLineOptions.ToolTipValues.Description = "Will be unchecked after command, so the next command does not include this by acc" +
     "ident";
@@ -232,10 +242,10 @@ namespace Elucidate.Controls
             this.kryptonPanel1.Size = new System.Drawing.Size(858, 72);
             this.kryptonPanel1.TabIndex = 4;
             // 
-            // LiveRunLogControl
+            // RunControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.kryptonPanel1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

@@ -106,14 +106,14 @@ namespace Elucidate.TabPages
                     if (!isEnabled)
                     {
                         btnRecoverSelectedFiles.Enabled = false;
-                        btnRecoverAllFiles.Enabled = false;
+                        btnSelectAllFiles.Enabled = false;
                         btnClearFiles.Enabled = false;
                     }
                     else
                     {
                         bool countOfFilesRecoverable = CountFilesRecoverable(treeView1) > 0;
                         btnRecoverSelectedFiles.Enabled = countOfFilesRecoverable;
-                        btnRecoverAllFiles.Enabled = countOfFilesRecoverable;
+                        btnSelectAllFiles.Enabled = countOfFilesRecoverable;
                         btnClearFiles.Enabled = treeView1.Nodes.Count > 0;
                     }
                 }
@@ -232,13 +232,14 @@ namespace Elucidate.TabPages
                         }
 
                         Group groupFilePath = matches.Groups["FilePath"];
-
+                        
                         if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value))
                         {
                             return; // nothing to do, path is an empty string
                         }
 
                         string filePath = groupFilePath.Value;
+                        filePath = filePath.Trim(new char[]{'"'});
                         if (!matchedMissing)
                         {
                             filePath = @"/" + filePath;
@@ -288,6 +289,7 @@ namespace Elucidate.TabPages
                         }
 
                         string filePath = groupFilePath.Value;
+                        filePath = filePath.Trim(new char[] { '"' });
 
                         TreeNode[] node = treeView1.Nodes.Find($"/{filePath}", false);
                         if (node.Length <= 0)
@@ -408,8 +410,6 @@ namespace Elucidate.TabPages
             lock (treeView1)
             {
                 CheckAll(treeView1);
-
-                btnRecoverSelectedFiles_Click(sender, e);
             }
         }
 

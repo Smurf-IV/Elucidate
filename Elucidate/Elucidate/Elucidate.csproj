@@ -30,7 +30,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>2020.7.1003.4</AssemblyVersion>
+    <AssemblyVersion>2020.7.1013.5</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -146,11 +146,11 @@
     <Compile Include="CmdLine\StdOptions.cs" />
     <Compile Include="CmdLine\SyncVerb.cs" />
     <Compile Include="Objects\Constants.cs" />
-    <Compile Include="Controls\LiveRunLogControl.cs">
+    <Compile Include="Controls\RunControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\LiveRunLogControl.Designer.cs">
-      <DependentUpon>LiveRunLogControl.cs</DependentUpon>
+    <Compile Include="Controls\RunControl.Designer.cs">
+      <DependentUpon>RunControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Shared\FolderSelectDialog.cs" />
     <Compile Include="TabPages\CommonTab.cs">
@@ -221,8 +221,8 @@
     <Compile Include="wyDay.Controls\Windows7ProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="Controls\LiveRunLogControl.resx">
-      <DependentUpon>LiveRunLogControl.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\RunControl.resx">
+      <DependentUpon>RunControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LiveLog.resx">
       <DependentUpon>LiveLog.cs</DependentUpon>
@@ -322,7 +322,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseUniversalClock="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" BuildVersion_UseGlobalSettings="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UseUniversalClock="False" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

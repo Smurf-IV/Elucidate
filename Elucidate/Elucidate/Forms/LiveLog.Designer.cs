@@ -43,14 +43,14 @@
             this.rtbLiveLog.Margin = new System.Windows.Forms.Padding(4);
             this.rtbLiveLog.Name = "rtbLiveLog";
             this.rtbLiveLog.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.rtbLiveLog.Size = new System.Drawing.Size(800, 506);
+            this.rtbLiveLog.Size = new System.Drawing.Size(912, 506);
             this.rtbLiveLog.TabIndex = 1;
             // 
             // LiveLog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 506);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(912, 506);
             this.ControlBox = false;
             this.Controls.Add(this.rtbLiveLog);
             this.DoubleBuffered = true;

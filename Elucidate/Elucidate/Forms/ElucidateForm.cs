@@ -93,21 +93,33 @@ namespace Elucidate
 
         private void ElucidateForm_Shown(object sender, EventArgs e)
         {
-            LoadConfigFile();
-
-            // display any warnings from the config validation
-            if (srConfig.HasWarnings)
+            string[] args = Environment.GetCommandLineArgs().Skip(1).ToArray();
+            if (args.Contains(@"-H")
+                || args.Contains(@"--help")
+            )
             {
-                MessageBoxExt.Show(
-                    this,
-                    $"There are warnings for the configuration file:{Environment.NewLine} - {string.Join(" - ", srConfig.ConfigWarnings)}",
-                    "Configuration File Warnings",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                commonTab.PerformArgs(args);
+                commonTab.SetCommonButtonsEnabledState( false ); // Prevent button pushing !
             }
             else
             {
-                commonTab.PerformArgs(Environment.GetCommandLineArgs().Skip(1).ToArray());
+
+                LoadConfigFile();
+
+                // display any warnings from the config validation
+                if (srConfig.HasWarnings)
+                {
+                    MessageBoxExt.Show(
+                        this,
+                        $"There are warnings for the configuration file:{Environment.NewLine} - {string.Join(" - ", srConfig.ConfigWarnings)}",
+                        "Configuration File Warnings",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    commonTab.PerformArgs(args);
+                }
             }
         }
 

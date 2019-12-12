@@ -34,12 +34,12 @@ namespace Elucidate.TabPages
             this.components = new System.ComponentModel.Container();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRecoverSelectedFiles = new System.Windows.Forms.Button();
-            this.btnRecoverAllFiles = new System.Windows.Forms.Button();
+            this.btnSelectAllFiles = new System.Windows.Forms.Button();
             this.btnClearFiles = new System.Windows.Forms.Button();
+            this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.timerTreeViewFill = new System.Windows.Forms.Timer(this.components);
             this.timerTreeViewRecover = new System.Windows.Forms.Timer(this.components);
-            this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,8 +47,8 @@ namespace Elucidate.TabPages
             // 
             this.flowLayoutPanel1.AutoSize = true;
             this.flowLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel1.Controls.Add(this.btnSelectAllFiles);
             this.flowLayoutPanel1.Controls.Add(this.btnRecoverSelectedFiles);
-            this.flowLayoutPanel1.Controls.Add(this.btnRecoverAllFiles);
             this.flowLayoutPanel1.Controls.Add(this.btnClearFiles);
             this.flowLayoutPanel1.Controls.Add(this.kryptonLabel1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -60,7 +60,7 @@ namespace Elucidate.TabPages
             // 
             // btnRecoverSelectedFiles
             // 
-            this.btnRecoverSelectedFiles.Location = new System.Drawing.Point(4, 4);
+            this.btnRecoverSelectedFiles.Location = new System.Drawing.Point(197, 4);
             this.btnRecoverSelectedFiles.Margin = new System.Windows.Forms.Padding(4);
             this.btnRecoverSelectedFiles.Name = "btnRecoverSelectedFiles";
             this.btnRecoverSelectedFiles.Size = new System.Drawing.Size(185, 28);
@@ -69,16 +69,16 @@ namespace Elucidate.TabPages
             this.btnRecoverSelectedFiles.UseVisualStyleBackColor = true;
             this.btnRecoverSelectedFiles.Click += new System.EventHandler(this.btnRecoverSelectedFiles_Click);
             // 
-            // btnRecoverAllFiles
+            // btnSelectAllFiles
             // 
-            this.btnRecoverAllFiles.Location = new System.Drawing.Point(197, 4);
-            this.btnRecoverAllFiles.Margin = new System.Windows.Forms.Padding(4);
-            this.btnRecoverAllFiles.Name = "btnRecoverAllFiles";
-            this.btnRecoverAllFiles.Size = new System.Drawing.Size(185, 28);
-            this.btnRecoverAllFiles.TabIndex = 3;
-            this.btnRecoverAllFiles.Text = "Recover All Files";
-            this.btnRecoverAllFiles.UseVisualStyleBackColor = true;
-            this.btnRecoverAllFiles.Click += new System.EventHandler(this.btnRecoverAllFiles_Click);
+            this.btnSelectAllFiles.Location = new System.Drawing.Point(4, 4);
+            this.btnSelectAllFiles.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSelectAllFiles.Name = "btnSelectAllFiles";
+            this.btnSelectAllFiles.Size = new System.Drawing.Size(185, 28);
+            this.btnSelectAllFiles.TabIndex = 3;
+            this.btnSelectAllFiles.Text = "Select All Files";
+            this.btnSelectAllFiles.UseVisualStyleBackColor = true;
+            this.btnSelectAllFiles.Click += new System.EventHandler(this.btnRecoverAllFiles_Click);
             // 
             // btnClearFiles
             // 
@@ -90,6 +90,16 @@ namespace Elucidate.TabPages
             this.btnClearFiles.Text = "Clear Selected";
             this.btnClearFiles.UseVisualStyleBackColor = true;
             this.btnClearFiles.Click += new System.EventHandler(this.btnClearFiles_Click);
+            // 
+            // kryptonLabel1
+            // 
+            this.kryptonLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.kryptonLabel1.Location = new System.Drawing.Point(497, 3);
+            this.kryptonLabel1.Name = "kryptonLabel1";
+            this.kryptonLabel1.Size = new System.Drawing.Size(605, 30);
+            this.kryptonLabel1.TabIndex = 4;
+            this.kryptonLabel1.Values.Text = "Warning: Will not restore empty directories. Will not restore full paths (due to " +
+    "-a usage)";
             // 
             // treeView1
             // 
@@ -106,22 +116,13 @@ namespace Elucidate.TabPages
             // 
             // timerTreeViewFill
             // 
+            this.timerTreeViewFill.Interval = 250;
             this.timerTreeViewFill.Tick += new System.EventHandler(this.timerTreeViewFill_Tick);
             // 
             // timerTreeViewRecover
             // 
             this.timerTreeViewRecover.Interval = 250;
             this.timerTreeViewRecover.Tick += new System.EventHandler(this.timerTreeViewRecover_Tick);
-            // 
-            // kryptonLabel1
-            // 
-            this.kryptonLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.kryptonLabel1.Location = new System.Drawing.Point(497, 3);
-            this.kryptonLabel1.Name = "kryptonLabel1";
-            this.kryptonLabel1.Size = new System.Drawing.Size(605, 30);
-            this.kryptonLabel1.TabIndex = 4;
-            this.kryptonLabel1.Values.Text = "Warning: Will not restore empty directories. Will not restore full paths (due to " +
-    "-a usage)";
             // 
             // Recover
             // 
@@ -145,7 +146,7 @@ namespace Elucidate.TabPages
         private System.Windows.Forms.Timer timerTreeViewFill;
         private TreeView treeView1;
         private Timer timerTreeViewRecover;
-        private Button btnRecoverAllFiles;
+        private Button btnSelectAllFiles;
         private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel1;
     }
 }

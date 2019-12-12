@@ -42,7 +42,7 @@ using NLog;
 
 namespace Elucidate.TabPages
 {
-    public partial class CommonTab : UserControl
+    internal partial class CommonTab : UserControl
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -107,7 +107,7 @@ namespace Elucidate.TabPages
                 ParserResult<object> parserResult = Parser.Default.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(args);
                 parserResult.WithNotParsed(DisplayErrors);
                 // Order is important as commands "Can" be chained"
-                // See http://www.snapraid.it/manual scrubbing for an indication of order
+                // See http://www.snapraid.it/manual#4.1 Scrubbing for an indication of order
                 parserResult.WithParsed<DiffVerb>(verb => DisplayAndCall(verb, Diff_Click));
                 parserResult.WithParsed<CheckVerb>(verb => DisplayAndCall(verb, Check_Click));
                 parserResult.WithParsed<SyncVerb>(verb => DisplayAndCall(verb, Sync_Click));

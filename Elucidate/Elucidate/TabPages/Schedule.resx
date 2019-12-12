@@ -117,4 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="kryptonWrapLabel1.Text" xml:space="preserve">
+    <value>In order to use the CommandLine, a valid Config file first has to be created with no Errors or warnings.
+As this is an interactive UI, then it cannot be run without a logged on user (Like SnapRaid.exe can)
+Run Elucidate from a commandLine with either -H or --help after it to see the options. 
+These can be combined.
+- Order is important as commands "Can" be chained"
+- See http://www.snapraid.it/manual#4.1 Scrubbing for an indication of order
+Current implemented order:
+  Diff
+  Check
+  Sync
+  Scrub
+  DupFinder
+  btnStatus
+  Fix
+// Verbs not done as they do not have buttons yet
+// list
+// smart
+// up
+// down
+// pool
+// devices
+// touch
+// rehash
+</value>
+  </data>
 </root>
