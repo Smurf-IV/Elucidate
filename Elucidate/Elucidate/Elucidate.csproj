@@ -30,7 +30,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>2019.8.993.4</AssemblyVersion>
+    <AssemblyVersion>2019.12.997.12</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -276,9 +276,6 @@
   <ItemGroup>
     <EmbeddedResource Include="snapraid.conf.example" />
     <None Include="Resources\errorprovidericon.gif" />
-    <Content Include="snapraid.ps1">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="wyDay.Controls\License.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -308,20 +305,17 @@
       <Version>4.3.2027</Version>
     </PackageReference>
     <PackageReference Include="KryptonToolkitSuite5472">
-      <Version>5.472.1251</Version>
+      <Version>5.472.2000</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.6.6</Version>
-    </PackageReference>
-    <PackageReference Include="TaskSchedulerEditor">
-      <Version>2.8.15</Version>
+      <Version>4.6.8</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UseUniversalClock="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UseGlobalSettings="False" BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" />
+      <UserProperties BuildVersion_BuildVersioningStyle="YearStamp.MonthStamp.DayStamp.Increment" BuildVersion_UseGlobalSettings="False" BuildVersion_StartDate="2000/1/1" BuildVersion_UpdateAssemblyVersion="False" BuildVersion_UpdateFileVersion="False" BuildVersion_UseUniversalClock="False" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

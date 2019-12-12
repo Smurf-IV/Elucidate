@@ -47,7 +47,8 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
 - [x] Phase II Phase II Feature requests
   - [x] Pause, Change priority, Abort.
   - [x] Command Extension - "Allow extra parameters to the defaults used."
-  - [x] Scheduling.
+  - [x] Scheduling 
+    - Removed, use the CommandLine
   - [x] Graphical view(s) of the protected data.
 
 - [ ] Phase III (Restart for 2017-03 onwards)
