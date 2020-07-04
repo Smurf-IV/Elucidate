@@ -1,10 +1,8 @@
 ﻿#region Copyright (C)
 // ---------------------------------------------------------------------------------------------------------------
-//  Forked by BlueBlock on July 28th, 2018
-// ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="AssemblyInfo.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -39,7 +37,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Smurf-IV & BlueBlock")]
 [assembly: AssemblyProduct("Elucidate")]
-[assembly: AssemblyCopyright("Copyright © BlueBlock 2018 / Copyright © Simon Coghlan (Aka Smurf-IV) 2011-2019")]
+[assembly: AssemblyCopyright("Copyright © BlueBlock 2018 / Copyright © Simon Coghlan (Aka Smurf-IV) 2010-2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -58,8 +56,8 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2019.12.998.12")]
-[assembly: AssemblyFileVersion("19.12.998.12")]
+[assembly: AssemblyVersion("2020.7.1003.4")]
+[assembly: AssemblyFileVersion("20.7.1003.4")]
 [assembly: NeutralResourcesLanguage("en-US")]
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]

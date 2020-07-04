@@ -2,7 +2,7 @@
 
 namespace Elucidate.Controls
 {
-    partial class LiveRunLogControl
+    partial class RunControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -33,16 +33,15 @@ namespace Elucidate.Controls
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.toolStripStatusLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.runWithoutCaptureMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.checkBoxDisplayOutput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.comboBoxProcessStatus = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
-            this.rtbLiveLog = new System.Windows.Forms.ListBox();
             this.txtAddCommands = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
             this.tableLayoutPanelAdditionalCommands = new System.Windows.Forms.TableLayoutPanel();
             this.checkBoxCommandLineOptions = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxProcessStatus)).BeginInit();
             this.tableLayoutPanelAdditionalCommands.SuspendLayout();
@@ -67,12 +66,12 @@ namespace Elucidate.Controls
             this.tableLayoutPanel1.Controls.Add(this.checkBoxDisplayOutput, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.comboBoxProcessStatus, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 286);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 38);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(858, 30);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(858, 34);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // toolStripStatusLabel1
@@ -83,7 +82,7 @@ namespace Elucidate.Controls
             this.toolStripStatusLabel1.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this.toolStripStatusLabel1.MinimumSize = new System.Drawing.Size(170, 22);
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(170, 26);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(205, 30);
             this.toolStripStatusLabel1.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabel1.StateCommon.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.toolStripStatusLabel1.StateCommon.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
@@ -91,15 +90,31 @@ namespace Elucidate.Controls
             this.toolStripStatusLabel1.TabStop = false;
             this.toolStripStatusLabel1.Values.Text = "2000-01-01 00:00:00Z";
             // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.ContainerControl = this;
+            this.toolStripProgressBar1.DisplayText = "";
+            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
+            this.toolStripProgressBar1.Location = new System.Drawing.Point(700, 0);
+            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.ShowInTaskbar = true;
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(158, 34);
+            this.toolStripProgressBar1.Step = 3;
+            this.toolStripProgressBar1.TabIndex = 4;
+            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
+            // 
             // runWithoutCaptureMenuItem
             // 
             this.runWithoutCaptureMenuItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this.runWithoutCaptureMenuItem.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
-            this.runWithoutCaptureMenuItem.Location = new System.Drawing.Point(435, 0);
+            this.runWithoutCaptureMenuItem.Location = new System.Drawing.Point(497, 0);
             this.runWithoutCaptureMenuItem.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.runWithoutCaptureMenuItem.MinimumSize = new System.Drawing.Size(122, 22);
             this.runWithoutCaptureMenuItem.Name = "runWithoutCaptureMenuItem";
-            this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(163, 30);
+            this.runWithoutCaptureMenuItem.Size = new System.Drawing.Size(199, 34);
             this.runWithoutCaptureMenuItem.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.runWithoutCaptureMenuItem.TabIndex = 3;
             this.runWithoutCaptureMenuItem.Values.Text = "Run without capture";
@@ -111,11 +126,11 @@ namespace Elucidate.Controls
             this.checkBoxDisplayOutput.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDisplayOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.checkBoxDisplayOutput.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
-            this.checkBoxDisplayOutput.Location = new System.Drawing.Point(302, 0);
+            this.checkBoxDisplayOutput.Location = new System.Drawing.Point(337, 0);
             this.checkBoxDisplayOutput.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.checkBoxDisplayOutput.MinimumSize = new System.Drawing.Size(86, 22);
             this.checkBoxDisplayOutput.Name = "checkBoxDisplayOutput";
-            this.checkBoxDisplayOutput.Size = new System.Drawing.Size(125, 30);
+            this.checkBoxDisplayOutput.Size = new System.Drawing.Size(152, 34);
             this.checkBoxDisplayOutput.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxDisplayOutput.StateCommon.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.checkBoxDisplayOutput.TabIndex = 2;
@@ -129,34 +144,21 @@ namespace Elucidate.Controls
             this.comboBoxProcessStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxProcessStatus.DropDownWidth = 120;
             this.comboBoxProcessStatus.FormattingEnabled = true;
+            this.comboBoxProcessStatus.IntegralHeight = false;
             this.comboBoxProcessStatus.Items.AddRange(new object[] {
             "Stopped",
             "Running",
             "Abort"});
-            this.comboBoxProcessStatus.Location = new System.Drawing.Point(174, 3);
+            this.comboBoxProcessStatus.Location = new System.Drawing.Point(209, 3);
             this.comboBoxProcessStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxProcessStatus.Name = "comboBoxProcessStatus";
-            this.comboBoxProcessStatus.Size = new System.Drawing.Size(120, 24);
+            this.comboBoxProcessStatus.Size = new System.Drawing.Size(120, 28);
             this.comboBoxProcessStatus.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxProcessStatus.StateCommon.ComboBox.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.comboBoxProcessStatus.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxProcessStatus.TabIndex = 1;
             this.comboBoxProcessStatus.Text = "Stopped";
             this.comboBoxProcessStatus.SelectedIndexChanged += new System.EventHandler(this.comboBoxProcessStatus_SelectedIndexChanged);
-            // 
-            // rtbLiveLog
-            // 
-            this.rtbLiveLog.BackColor = System.Drawing.SystemColors.Control;
-            this.rtbLiveLog.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.rtbLiveLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbLiveLog.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.rtbLiveLog.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbLiveLog.Location = new System.Drawing.Point(0, 0);
-            this.rtbLiveLog.Margin = new System.Windows.Forms.Padding(4);
-            this.rtbLiveLog.Name = "rtbLiveLog";
-            this.rtbLiveLog.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.rtbLiveLog.Size = new System.Drawing.Size(858, 254);
-            this.rtbLiveLog.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.rtbLiveLog, "Ctrl+A - selects all text\r\nCtrl+C - Copy to clipboard\r\n");
             // 
             // txtAddCommands
             // 
@@ -165,8 +167,9 @@ namespace Elucidate.Controls
             this.txtAddCommands.Margin = new System.Windows.Forms.Padding(2, 5, 5, 1);
             this.txtAddCommands.MaxLength = 128;
             this.txtAddCommands.Name = "txtAddCommands";
-            this.txtAddCommands.Size = new System.Drawing.Size(502, 19);
+            this.txtAddCommands.Size = new System.Drawing.Size(502, 26);
             this.txtAddCommands.StateCommon.Content.Font = new System.Drawing.Font("Lucida Console", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAddCommands.StateCommon.Content.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Inherit;
             this.txtAddCommands.TabIndex = 1;
             this.txtAddCommands.ToolTipValues.Description = "Start with a single + to remove the default";
             this.txtAddCommands.ToolTipValues.EnableToolTips = true;
@@ -187,13 +190,13 @@ namespace Elucidate.Controls
             this.tableLayoutPanelAdditionalCommands.Controls.Add(this.txtAddCommands, 1, 0);
             this.tableLayoutPanelAdditionalCommands.Controls.Add(this.checkBoxCommandLineOptions, 0, 0);
             this.tableLayoutPanelAdditionalCommands.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanelAdditionalCommands.Location = new System.Drawing.Point(0, 254);
+            this.tableLayoutPanelAdditionalCommands.Location = new System.Drawing.Point(0, 1);
             this.tableLayoutPanelAdditionalCommands.Margin = new System.Windows.Forms.Padding(18);
             this.tableLayoutPanelAdditionalCommands.MinimumSize = new System.Drawing.Size(75, 15);
             this.tableLayoutPanelAdditionalCommands.Name = "tableLayoutPanelAdditionalCommands";
             this.tableLayoutPanelAdditionalCommands.RowCount = 1;
             this.tableLayoutPanelAdditionalCommands.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanelAdditionalCommands.Size = new System.Drawing.Size(858, 32);
+            this.tableLayoutPanelAdditionalCommands.Size = new System.Drawing.Size(858, 37);
             this.tableLayoutPanelAdditionalCommands.TabIndex = 1;
             // 
             // checkBoxCommandLineOptions
@@ -203,7 +206,7 @@ namespace Elucidate.Controls
             this.checkBoxCommandLineOptions.Location = new System.Drawing.Point(5, 5);
             this.checkBoxCommandLineOptions.Margin = new System.Windows.Forms.Padding(4);
             this.checkBoxCommandLineOptions.Name = "checkBoxCommandLineOptions";
-            this.checkBoxCommandLineOptions.Size = new System.Drawing.Size(338, 22);
+            this.checkBoxCommandLineOptions.Size = new System.Drawing.Size(338, 27);
             this.checkBoxCommandLineOptions.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxCommandLineOptions.TabIndex = 0;
             this.checkBoxCommandLineOptions.ToolTipValues.Description = "Will be unchecked after command, so the next command does not include this by acc" +
@@ -221,41 +224,24 @@ namespace Elucidate.Controls
             // 
             // kryptonPanel1
             // 
-            this.kryptonPanel1.Controls.Add(this.rtbLiveLog);
             this.kryptonPanel1.Controls.Add(this.tableLayoutPanelAdditionalCommands);
             this.kryptonPanel1.Controls.Add(this.tableLayoutPanel1);
             this.kryptonPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kryptonPanel1.Location = new System.Drawing.Point(0, 0);
             this.kryptonPanel1.Name = "kryptonPanel1";
-            this.kryptonPanel1.Size = new System.Drawing.Size(858, 316);
+            this.kryptonPanel1.Size = new System.Drawing.Size(858, 72);
             this.kryptonPanel1.TabIndex = 4;
-            // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.ContainerControl = this;
-            this.toolStripProgressBar1.DisplayText = "";
-            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
-            this.toolStripProgressBar1.Location = new System.Drawing.Point(602, 0);
-            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.ShowInTaskbar = true;
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(256, 30);
-            this.toolStripProgressBar1.Step = 3;
-            this.toolStripProgressBar1.TabIndex = 4;
-            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // LiveRunLogControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.kryptonPanel1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "LiveRunLogControl";
-            this.Size = new System.Drawing.Size(858, 316);
+            this.Name = "RunControl";
+            this.Size = new System.Drawing.Size(858, 72);
             this.Load += new System.EventHandler(this.LiveRunLogControl_Load);
             this.Resize += new System.EventHandler(this.LiveRunLogControl_Resize);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -276,7 +262,6 @@ namespace Elucidate.Controls
         private ComponentFactory.Krypton.Toolkit.KryptonComboBox comboBoxProcessStatus;
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private ComponentFactory.Krypton.Toolkit.KryptonCheckBox runWithoutCaptureMenuItem;
-        private ListBox rtbLiveLog;
         private ComponentFactory.Krypton.Toolkit.KryptonLabel toolStripStatusLabel1;
         private TableLayoutPanel tableLayoutPanelAdditionalCommands;
         internal ComponentFactory.Krypton.Toolkit.KryptonTextBox txtAddCommands;

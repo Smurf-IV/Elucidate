@@ -1,9 +1,8 @@
 ﻿#region Copyright (C)
-
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ElucidateForm.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +22,6 @@
 //  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 #endregion Copyright (C)
 
 using System;
@@ -35,8 +33,10 @@ using System.Media;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+
 using ComponentFactory.Krypton.Navigator;
 using ComponentFactory.Krypton.Toolkit;
+
 using Elucidate.Forms;
 using Elucidate.Shared;
 
@@ -50,6 +50,7 @@ namespace Elucidate
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly ConfigFileHelper srConfig = new ConfigFileHelper();
+        private readonly LiveLog liveLog = new LiveLog();
 
         public ElucidateForm()
         {
@@ -69,10 +70,20 @@ namespace Elucidate
                 kryptonManager1.GlobalPaletteMode = value;
             }
 
+            liveLog.Show(); // go modeless
+            liveRunLogControl1.TaskStarted += LiveRunLogControl_TaskStarted;
+
+            recover1.RunLogControl = liveRunLogControl1;
+            commonTab.RunLogControl = liveRunLogControl1;
             // Hook into changes in the global palette
             KryptonManager.GlobalPaletteChanged += OnPaletteChanged;
             ThemeManager.PropagateThemeSelector(themeComboBox);
             themeComboBox.Text = ThemeManager.ReturnPaletteModeManagerAsString(PaletteModeManager.Office2007Blue, kryptonManager1);
+        }
+
+        private void LiveRunLogControl_TaskStarted(object sender, EventArgs e)
+        {
+            BeginInvoke((MethodInvoker) (() => liveLog.BringToFront()));
         }
 
         private void ElucidateForm_Load(object sender, EventArgs e)
@@ -103,7 +114,7 @@ namespace Elucidate
         #region Main Menu Toolbar Handlers
         private void EditSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (commonTab.liveRunLogControl1.ActionWorker.IsBusy)
+            if (liveRunLogControl1.IsRunning)
             {
                 SystemSounds.Beep.Play();
                 return;
@@ -224,7 +235,7 @@ namespace Elucidate
 
         private void editConfigDirectlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (commonTab.liveRunLogControl1.ActionWorker.IsBusy)
+            if (liveRunLogControl1.IsRunning)
             {
                 SystemSounds.Beep.Play();
                 return;
@@ -254,14 +265,6 @@ namespace Elucidate
             // persist our geometry string.
             RecalcNonClient();
             Properties.Settings.Default.Theme = kryptonManager1.GlobalPaletteMode.ToString();
-            Properties.Settings.Default.Save();
-        }
-
-
-        private void ElucidateForm_ResizeEnd(object sender, EventArgs e)
-        {
-            // persist our geometry string.
-            Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
             Properties.Settings.Default.Save();
         }
 
@@ -314,6 +317,8 @@ namespace Elucidate
         private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             tpCoverage.StopProcessing();
+            Properties.Settings.Default.LogWindowLocation = WindowLocation.GeometryToString(liveLog);
+            Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
             Properties.Settings.Default.Save();
         }
 

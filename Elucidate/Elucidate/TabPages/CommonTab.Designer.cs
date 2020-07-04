@@ -17,6 +17,7 @@
             {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -30,7 +31,7 @@
         {
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.liveRunLogControl1 = new Elucidate.Controls.LiveRunLogControl();
+            this.btnCheckForMissing = new ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton();
             this.btnSync = new ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton();
             this.btnStatus = new ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton();
             this.btnDupFinder = new ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton();
@@ -46,12 +47,11 @@
             // 
             // kryptonPanel1
             // 
-            this.kryptonPanel1.Controls.Add(this.liveRunLogControl1);
             this.kryptonPanel1.Controls.Add(this.tableLayoutPanel1);
             this.kryptonPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kryptonPanel1.Location = new System.Drawing.Point(0, 0);
             this.kryptonPanel1.Name = "kryptonPanel1";
-            this.kryptonPanel1.Size = new System.Drawing.Size(919, 499);
+            this.kryptonPanel1.Size = new System.Drawing.Size(1113, 534);
             this.kryptonPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -61,6 +61,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.Controls.Add(this.btnCheckForMissing, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.btnSync, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btnStatus, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnDupFinder, 0, 2);
@@ -77,19 +78,44 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(919, 240);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1113, 279);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // liveRunLogControl1
+            // btnCheckForMissing
             // 
-            this.liveRunLogControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.liveRunLogControl1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.liveRunLogControl1.IsRunning = false;
-            this.liveRunLogControl1.Location = new System.Drawing.Point(0, 240);
-            this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.liveRunLogControl1.Name = "liveRunLogControl1";
-            this.liveRunLogControl1.Size = new System.Drawing.Size(919, 259);
-            this.liveRunLogControl1.TabIndex = 0;
+            this.btnCheckForMissing.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.database_warning_48;
+            this.btnCheckForMissing.CommandLinkTextValues.Description = "Check the snapshot for missing files\r\n(default --filter-mising)";
+            this.btnCheckForMissing.CommandLinkTextValues.Heading = "Discover &Missing";
+            this.btnCheckForMissing.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCheckForMissing.Enabled = false;
+            this.btnCheckForMissing.Location = new System.Drawing.Point(745, 189);
+            this.btnCheckForMissing.MinimumSize = new System.Drawing.Size(300, 64);
+            this.btnCheckForMissing.Name = "btnCheckForMissing";
+            this.btnCheckForMissing.Size = new System.Drawing.Size(365, 87);
+            this.btnCheckForMissing.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
+            this.btnCheckForMissing.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
+            this.btnCheckForMissing.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnCheckForMissing.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
+            this.btnCheckForMissing.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
+            this.btnCheckForMissing.StateCommon.Border.Rounding = 6;
+            this.btnCheckForMissing.StateCommon.Border.Width = 2;
+            this.btnCheckForMissing.StateCommon.Content.LongText.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheckForMissing.StateCommon.Content.LongText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.btnCheckForMissing.StateCommon.Content.LongText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.btnCheckForMissing.StateCommon.Content.LongText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.btnCheckForMissing.StateCommon.Content.LongText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Far;
+            this.btnCheckForMissing.StateCommon.Content.LongText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Word;
+            this.btnCheckForMissing.StateCommon.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheckForMissing.StateCommon.Content.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.btnCheckForMissing.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Center;
+            this.btnCheckForMissing.TabIndex = 8;
+            this.btnCheckForMissing.ToolTipValues.EnableToolTips = true;
+            this.btnCheckForMissing.ToolTipValues.Heading = "Check Options:";
+            this.btnCheckForMissing.ToolTipValues.Image = global::Elucidate.Properties.Resources.camera_warning_48;
+            this.btnCheckForMissing.ToolTipValues.ToolTipPosition.PlacementMode = ComponentFactory.Krypton.Toolkit.PlacementMode.Right;
+            this.btnCheckForMissing.Click += new System.EventHandler(this.btnCheckForMissing_Click);
             // 
             // btnSync
             // 
@@ -98,15 +124,15 @@
             this.btnSync.CommandLinkTextValues.Heading = "&Sync";
             this.btnSync.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnSync.Enabled = false;
-            this.btnSync.Location = new System.Drawing.Point(3, 83);
+            this.btnSync.Location = new System.Drawing.Point(3, 96);
             this.btnSync.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnSync.Name = "btnSync";
-            this.btnSync.Size = new System.Drawing.Size(300, 74);
+            this.btnSync.Size = new System.Drawing.Size(365, 87);
             this.btnSync.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnSync.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnSync.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.btnSync.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom)
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left)
+            this.btnSync.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.btnSync.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnSync.StateCommon.Border.Rounding = 6;
@@ -134,15 +160,15 @@
             this.btnStatus.CommandLinkTextValues.Heading = "S&tatus";
             this.btnStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnStatus.Enabled = false;
-            this.btnStatus.Location = new System.Drawing.Point(615, 3);
+            this.btnStatus.Location = new System.Drawing.Point(745, 3);
             this.btnStatus.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnStatus.Name = "btnStatus";
-            this.btnStatus.Size = new System.Drawing.Size(301, 74);
+            this.btnStatus.Size = new System.Drawing.Size(365, 87);
             this.btnStatus.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnStatus.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnStatus.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.btnStatus.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom)
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left)
+            this.btnStatus.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.btnStatus.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnStatus.StateCommon.Border.Rounding = 6;
@@ -171,15 +197,15 @@
             this.btnDupFinder.CommandLinkTextValues.Heading = "Duplicate &Finder";
             this.btnDupFinder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnDupFinder.Enabled = false;
-            this.btnDupFinder.Location = new System.Drawing.Point(3, 163);
+            this.btnDupFinder.Location = new System.Drawing.Point(3, 189);
             this.btnDupFinder.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnDupFinder.Name = "btnDupFinder";
-            this.btnDupFinder.Size = new System.Drawing.Size(300, 74);
+            this.btnDupFinder.Size = new System.Drawing.Size(365, 87);
             this.btnDupFinder.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnDupFinder.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnDupFinder.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.btnDupFinder.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom)
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left)
+            this.btnDupFinder.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.btnDupFinder.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnDupFinder.StateCommon.Border.Rounding = 6;
@@ -202,20 +228,20 @@
             // 
             // btnCheck
             // 
-            this.btnCheck.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.camera_warning_48;
+            this.btnCheck.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.database_warning_48;
             this.btnCheck.CommandLinkTextValues.Description = "Check the snapshot to confirm\r\nit\'s integrity. (default -a for hash only)";
             this.btnCheck.CommandLinkTextValues.Heading = "&Check";
             this.btnCheck.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCheck.Enabled = false;
-            this.btnCheck.Location = new System.Drawing.Point(309, 83);
+            this.btnCheck.Location = new System.Drawing.Point(374, 96);
             this.btnCheck.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnCheck.Name = "btnCheck";
-            this.btnCheck.Size = new System.Drawing.Size(300, 74);
+            this.btnCheck.Size = new System.Drawing.Size(365, 87);
             this.btnCheck.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnCheck.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnCheck.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.btnCheck.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom)
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left)
+            this.btnCheck.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.btnCheck.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnCheck.StateCommon.Border.Rounding = 6;
@@ -246,12 +272,12 @@
             this.btnDiff.Location = new System.Drawing.Point(3, 3);
             this.btnDiff.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnDiff.Name = "btnDiff";
-            this.btnDiff.Size = new System.Drawing.Size(300, 74);
+            this.btnDiff.Size = new System.Drawing.Size(365, 87);
             this.btnDiff.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnDiff.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnDiff.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.btnDiff.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom)
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left)
+            this.btnDiff.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.btnDiff.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnDiff.StateCommon.Border.Rounding = 6;
@@ -279,15 +305,15 @@
             this.btnFix.CommandLinkTextValues.Heading = "Fi&x";
             this.btnFix.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnFix.Enabled = false;
-            this.btnFix.Location = new System.Drawing.Point(615, 83);
+            this.btnFix.Location = new System.Drawing.Point(745, 96);
             this.btnFix.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnFix.Name = "btnFix";
-            this.btnFix.Size = new System.Drawing.Size(301, 74);
+            this.btnFix.Size = new System.Drawing.Size(365, 87);
             this.btnFix.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnFix.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnFix.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.btnFix.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom)
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left)
+            this.btnFix.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.btnFix.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnFix.StateCommon.Border.Rounding = 6;
@@ -316,15 +342,15 @@
             this.btnForceFullSync.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnForceFullSync.Enabled = false;
             this.btnForceFullSync.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnForceFullSync.Location = new System.Drawing.Point(309, 163);
+            this.btnForceFullSync.Location = new System.Drawing.Point(374, 189);
             this.btnForceFullSync.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnForceFullSync.Name = "btnForceFullSync";
-            this.btnForceFullSync.Size = new System.Drawing.Size(300, 74);
+            this.btnForceFullSync.Size = new System.Drawing.Size(365, 87);
             this.btnForceFullSync.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnForceFullSync.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnForceFullSync.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.btnForceFullSync.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom)
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left)
+            this.btnForceFullSync.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.btnForceFullSync.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnForceFullSync.StateCommon.Border.Rounding = 6;
@@ -353,15 +379,15 @@
             this.btnScrub.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnScrub.Enabled = false;
             this.btnScrub.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnScrub.Location = new System.Drawing.Point(309, 3);
+            this.btnScrub.Location = new System.Drawing.Point(374, 3);
             this.btnScrub.MinimumSize = new System.Drawing.Size(300, 64);
             this.btnScrub.Name = "btnScrub";
-            this.btnScrub.Size = new System.Drawing.Size(300, 74);
+            this.btnScrub.Size = new System.Drawing.Size(365, 87);
             this.btnScrub.StateCommon.Back.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnScrub.StateCommon.Border.Color1 = System.Drawing.SystemColors.Highlight;
             this.btnScrub.StateCommon.Border.Draw = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.btnScrub.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom)
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left)
+            this.btnScrub.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
+            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
             | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
             this.btnScrub.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
             this.btnScrub.StateCommon.Border.Rounding = 6;
@@ -386,8 +412,9 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.kryptonPanel1);
+            this.DoubleBuffered = true;
             this.Name = "CommonTab";
-            this.Size = new System.Drawing.Size(919, 499);
+            this.Size = new System.Drawing.Size(1113, 534);
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).EndInit();
             this.kryptonPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -406,7 +433,7 @@
         private ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton btnFix;
         private ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton btnDupFinder;
         private ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton btnForceFullSync;
-        internal Controls.LiveRunLogControl liveRunLogControl1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private ExtendedControls.ExtendedToolkit.Controls.KryptonCommandLinkButton btnCheckForMissing;
     }
 }

@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Recover.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
+//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Elucidate.Controls;
-using Elucidate.Logging;
+using Elucidate.Forms;
 
 using NLog;
 
@@ -42,82 +42,90 @@ namespace Elucidate.TabPages
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public event EventHandler TaskStarted;
+        private RunControl liveRunLogControl;
 
-        private void OnTaskStarted(EventArgs e)
+        public RunControl RunLogControl
         {
-            EventHandler handler = TaskStarted;
-            handler?.Invoke(this, e);
+            set
+            {
+                liveRunLogControl = value;
+                liveRunLogControl.TaskStarted += LiveRunLogControl_TaskStarted;
+                liveRunLogControl.TaskCompleted += LiveRunLogControl_TaskCompleted;
+            }
         }
 
-        public event EventHandler TaskCompleted;
-
-        private void OnTaskCompleted(EventArgs e)
-        {
-            EventHandler handler = TaskCompleted;
-            handler?.Invoke(this, e);
-        }
-
-        private readonly List<string> batchPaths = new List<string>();
+        private readonly Stack<string> batchPaths = new Stack<string>();
 
         public Recover()
         {
             InitializeComponent();
-            
-            liveRunLogControl.HideAdditionalCommands();
-            liveRunLogControl.ActionWorker.RunWorkerCompleted += liveRunLogControl_RunWorkerCompleted;
-            liveRunLogControl.TaskStarted += LiveRunLogControl_TaskStarted;
-            liveRunLogControl.TaskCompleted += LiveRunLogControl_TaskCompleted;
 
             SetButtonsEnabledState(true);
         }
 
         private void LiveRunLogControl_TaskStarted(object sender, EventArgs e)
         {
-            OnTaskStarted(e);
+            SetButtonsEnabledState(false);
+            switch (liveRunLogControl.CommandTypeRunning)
+            {
+                case RunControl.CommandType.Check:
+                case RunControl.CommandType.CheckForMissing:
+                    timerTreeViewFill.Enabled = true;
+                    break;
+                case RunControl.CommandType.Fix:
+                case RunControl.CommandType.RecoverFix:
+                    timerTreeViewRecover.Enabled = true;
+                    break;
+            }
         }
 
         private void LiveRunLogControl_TaskCompleted(object sender, EventArgs e)
         {
-            OnTaskCompleted(e);
+            switch (liveRunLogControl.CommandTypeRunning)
+            {
+                case RunControl.CommandType.Check:
+                case RunControl.CommandType.CheckForMissing:
+                    timerTreeViewFill.Enabled = false;
+                    timerTreeViewFill_Tick(sender, EventArgs.Empty);
+                    break;
+                case RunControl.CommandType.Fix:
+                case RunControl.CommandType.RecoverFix:
+                    timerTreeViewRecover.Enabled = false;
+                    timerTreeViewRecover_Tick(sender, EventArgs.Empty);
+                    break;
+            }
+            SetButtonsEnabledState(true);
         }
-
-        private void liveRunLogControl_RunWorkerCompleted(object sender, EventArgs e) => SetButtonsEnabledState(true);
 
         private void SetButtonsEnabledState(bool isEnabled)
         {
-            lock (treeView1)
+            void local()
             {
-                if (!isEnabled)
+                lock (treeView1)
                 {
-                    btnLoadFiles.Enabled = false;
-                    btnRecoverSelectedFiles.Enabled = false;
-                    btnRecoverAllFiles.Enabled = false;
-                    btnClearFiles.Enabled = false;
-                }
-                else
-                {
-                    bool countOfFilesRecoverable = CountFilesRecoverable(treeView1) > 0;
-                    btnLoadFiles.Enabled = true;
-                    btnRecoverSelectedFiles.Enabled = countOfFilesRecoverable;
-                    btnRecoverAllFiles.Enabled = countOfFilesRecoverable;
-                    btnClearFiles.Enabled = treeView1.Nodes.Count > 0;
+                    if (!isEnabled)
+                    {
+                        btnRecoverSelectedFiles.Enabled = false;
+                        btnRecoverAllFiles.Enabled = false;
+                        btnClearFiles.Enabled = false;
+                    }
+                    else
+                    {
+                        bool countOfFilesRecoverable = CountFilesRecoverable(treeView1) > 0;
+                        btnRecoverSelectedFiles.Enabled = countOfFilesRecoverable;
+                        btnRecoverAllFiles.Enabled = countOfFilesRecoverable;
+                        btnClearFiles.Enabled = treeView1.Nodes.Count > 0;
+                    }
                 }
             }
-        }
 
-        private void Recover_Load(object sender, EventArgs e)
-        {
-            timerTreeViewFill.Enabled = false;
-            timerTreeViewRecover.Enabled = false;
-            splitContainer1.SplitterDistance = (int)(splitContainer1.Height * 0.8);
-        }
-
-        private void Recover_Resize(object sender, EventArgs e)
-        {
-            lock (treeView1)
+            if (InvokeRequired)
             {
-                treeView1.Width = tableLayoutPanel1.Width;
+                Invoke(new Action(local));
+            }
+            else
+            {
+                local();
             }
         }
 
@@ -178,83 +186,38 @@ namespace Elucidate.TabPages
             return foundNodes.Count;
         }
 
+        private static Regex recoverable = new Regex(
+            @"(?<LogEntryTimestamp>.*\d\d:\d\d:\d\d.\d\d\d\d).*\[recoverable\s(?<FilePath>.*)\].*",
+            RegexOptions.Compiled | RegexOptions.Singleline);
+        private static Regex damaged = new Regex(
+            @"(?<LogEntryTimestamp>.*\d\d:\d\d:\d\d.\d\d\d\d).*\[damaged\s(?<FilePath>.*)\].*",
+            RegexOptions.Compiled | RegexOptions.Singleline);
+        // 2020-07-04 12:29:48.2953 [ 8]  INFO: Elucidate.Controls.LiveRunLogControl: StdOut[damaged stderr.log] 
+        private static Regex missing = new Regex(
+            @"(?<LogEntryTimestamp>.*\d\d:\d\d:\d\d.\d\d\d\d).*Missing\sfile\s'(?<FilePath>.*)'.*",
+            RegexOptions.Compiled | RegexOptions.Singleline);
+
         private void timerTreeViewFill_Tick(object sender, EventArgs e)
         {
             try
             {
                 lock (this)
                 {
-                    for (int i = 0; i < 10; i++)
+                    while (LiveLog.LogQueueRecover.TryDequeue(out string log))
                     {
-                        while (LiveLog.LogQueueRecover.Any())
-                        {
-                            LiveLog.LogString log = LiveLog.LogQueueRecover.Dequeue();
-                            if (!log.Message.Contains("[recoverable "))
-                            {
-                                continue; // this is not the line you seek
-                            }
-
-                            // use regex to parse log line and get the FilePath
-                            string regexPattern = @"(?<LogEntryTimestamp>\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d.\d\d\d\d).*\[recoverable\s(?<FilePath>.*)\].*";
-                            Match matches = Regex.Match(log.Message, regexPattern, RegexOptions.Singleline);
-                            if (!matches.Success)
-                            {
-                                // nothing to do, the string did not match regex but it contained "[recoverable ", odd
-                                Group logEntryTimestamp = matches.Groups["FilePath"];
-                                if (!logEntryTimestamp.Success)
-                                {
-                                    return; // paranoid, just check
-                                }
-
-                                Log.Error($@"Unable to retrieve the recoverable file path from log entry at '{logEntryTimestamp.Value}'");
-                                return;
-                            }
-                            Group groupFilePath = matches.Groups["FilePath"];
-
-                            if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value))
-                            {
-                                return; // nothing to do, path is an empty string
-                            }
-
-                            string filePath = groupFilePath.Value;
-                            treeView1.Invoke(new Action(() => treeView1.Nodes.Add($"/{filePath}", $"/{filePath}")));
-                        }
-                    }
-
-                    if (liveRunLogControl.ActionWorker.IsBusy || LiveLog.LogQueueRecover.Any())
-                    {
-                        return; // more items to dequeue
-                    }
-
-                    SetButtonsEnabledState(true);
-                    timerTreeViewFill.Enabled = false;
-                }
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-
-        private void timerTreeViewRecover_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                // Now lock in case the timer is overlapping !
-                lock (this)
-                {
-                    //read out of the file until the EOF
-                    while (LiveLog.LogQueueRecover.Any())
-                    {
-                        LiveLog.LogString log = LiveLog.LogQueueRecover.Dequeue();
-                        if (!log.Message.Contains("[recovered "))
-                        {
-                            continue; // this is not the line you seek
-                        }
-
+                        bool matchedMissing = false;
                         // use regex to parse log line and get the FilePath
-                        string regexPattern = @"(?<LogEntryTimestamp>\d\d\d\d-\d\d-\d\d\s\d\d:\d\d:\d\d.\d\d\d\d).*\[recovered\s(?<FilePath>.*)\].*";
-                        Match matches = Regex.Match(log.Message, regexPattern, RegexOptions.Singleline);
+                        Match matches = recoverable.Match(log);
+                        if (!matches.Success)
+                        {
+                            matches = damaged.Match(log);
+                        }
+                        if (!matches.Success)
+                        {
+                            matches = missing.Match(log);
+                            matchedMissing = true;
+                        }
+
                         if (!matches.Success)
                         {
                             // nothing to do, the string did not match regex but it contained "[recoverable ", odd
@@ -264,7 +227,58 @@ namespace Elucidate.TabPages
                                 return; // paranoid, just check
                             }
 
-                            Log.Error($@"Unable to retrieve the recovered file path from log entry at '{logEntryTimestamp.Value}'");
+                            Log.Error(@"Unable to retrieve the recoverable file path from log entry at [{0}]", logEntryTimestamp.Value);
+                            return;
+                        }
+
+                        Group groupFilePath = matches.Groups["FilePath"];
+
+                        if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value))
+                        {
+                            return; // nothing to do, path is an empty string
+                        }
+
+                        string filePath = groupFilePath.Value;
+                        if (!matchedMissing)
+                        {
+                            filePath = @"/" + filePath;
+                        }
+
+                        treeView1.Invoke(new Action(() => treeView1.Nodes.Add(filePath, filePath)));
+                    }
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+        private static Regex recovered = new Regex(
+            @"(?<LogEntryTimestamp>.*\d\d:\d\d:\d\d.\d\d\d\d).*\[recovered\s(?<FilePath>.*)\].*",
+            RegexOptions.Compiled | RegexOptions.Singleline);
+        private void timerTreeViewRecover_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                // Now lock in case the timer is overlapping !
+                lock (this)
+                {
+                    //read out of the file until the EOF
+                    while (LiveLog.LogQueueRecover.TryDequeue(out string log))
+                    {
+                        // use regex to parse log line and get the FilePath
+                        Match matches = recovered.Match(log);
+                        if (!matches.Success)
+                        {
+                            // nothing to do, the string did not match regex but it contained "[recovered ", odd
+                            Group logEntryTimestamp = matches.Groups["FilePath"];
+                            if (!logEntryTimestamp.Success)
+                            {
+                                return; // paranoid, just check
+                            }
+
+                            Log.Error(@"Unable to retrieve the recovered file path from log entry at [{0}]", logEntryTimestamp.Value);
                             return;
                         }
                         Group groupFilePath = matches.Groups["FilePath"];
@@ -278,17 +292,15 @@ namespace Elucidate.TabPages
                         TreeNode[] node = treeView1.Nodes.Find($"/{filePath}", false);
                         if (node.Length <= 0)
                         {
-                            continue;
+                            node = treeView1.Nodes.Find(filePath, false);
+                            if (node.Length <= 0)
+                            {
+                                continue;
+                            }
                         }
 
                         node[0].Text = $@"{node[0].Name} (RECOVERED)";
                         node[0].BackColor = Color.Green;
-                    }
-
-                    if (!liveRunLogControl.ActionWorker.IsBusy && !LiveLog.LogQueueRecover.Any())
-                    {
-                        //SetRecoveryButtonEnableState();
-                        timerTreeViewRecover.Enabled = false;
                     }
                 }
             }
@@ -297,7 +309,7 @@ namespace Elucidate.TabPages
                 // ignored
             }
         }
-        
+
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
         {
             SetChildrenChecked(e.Node, e.Node.Checked);
@@ -333,29 +345,17 @@ namespace Elucidate.TabPages
 
         private void UncheckAll(TreeView treeView)
         {
-            for (int i = 0; i < treeView.Nodes.Count; i++)
+            foreach (TreeNode node in treeView.Nodes)
             {
-                treeView.Nodes[i].Checked = false;
+                node.Checked = false;
             }
         }
 
         private void CheckAll(TreeView treeView)
         {
-            for (int i = 0; i < treeView.Nodes.Count; i++)
+            foreach (TreeNode node in treeView.Nodes)
             {
-                treeView.Nodes[i].Checked = true;
-            }
-        }
-
-        private void btnLoadFiles_Click(object sender, EventArgs e)
-        {
-            lock (treeView1)
-            {
-                SetButtonsEnabledState(false);
-                // run only if app is not already running an operation
-                treeView1.Nodes.Clear();
-                timerTreeViewFill.Enabled = true;
-                liveRunLogControl.StartSnapRaidProcess(LiveRunLogControl.CommandType.RecoverCheck);
+                node.Checked = true;
             }
         }
 
@@ -370,30 +370,27 @@ namespace Elucidate.TabPages
 
                 if (checkedNodes.Count == 0)
                 {
-                    // only nodes show nas green are selected so deselect all
+                    // only nodes shown as green are selected so deselect all
                     UncheckAll(treeView1);
                     return;
                 }
 
                 // recover items
-                foreach (TreeNode node in checkedNodes)
+                foreach (var node in checkedNodes.Where(node => node.BackColor != Color.Green)
+                                    .Where(node => node.FullPath.StartsWith(@"/")) // only relative paths can be restored directly
+                        )
                 {
-                    if (node.BackColor == Color.Green)
-                    {
-                        continue;
-                    }
-
-                    batchPaths.Add(node.FullPath);
-                    //paths = new List<string>(paths.OrderBy(p => p.Count(c => c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar)));
+                    batchPaths.Push(node.FullPath);
                 }
 
                 UncheckAll(treeView1);
 
                 timerTreeViewRecover.Enabled = true;
 
-                if (!liveRunLogControl.ActionWorker.IsBusy && batchPaths.Any())
+                if (!liveRunLogControl.IsRunning && (batchPaths.Count > 0))
                 {
-                    liveRunLogControl.StartSnapRaidProcess(LiveRunLogControl.CommandType.RecoverFix, batchPaths);
+                    liveRunLogControl.checkBoxDisplayOutput.Checked = true;
+                    liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.RecoverFix, batchPaths);
                 }
             }
         }
@@ -427,53 +424,3 @@ namespace Elucidate.TabPages
         }
     }
 }
-
-#region tree hier code
-// sort list of paths
-//paths = new List<string>(paths.OrderBy(p => p.Count(c => c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar)));
-//private void LoadFile(string fileFullName)
-//{
-//    List<string> items = new List<string>();
-//    var filename = new FileInfo(fileFullName).Name;
-//    items.Add(filename);
-//    do
-//    {
-//        fileFullName = new DirectoryInfo(fileFullName).Parent?.FullName;
-//        if (fileFullName != null) items.Add(new DirectoryInfo(fileFullName).Name);
-//    } while (fileFullName != null);
-
-//    foreach (string item in items.AsEnumerable().Reverse())
-//    {
-//        if (currentNode != null && currentNode.Nodes.ContainsKey(item))
-//        {
-//            currentNode = currentNode.Nodes.Find(item, true).FirstOrDefault();
-//        }
-//        else
-//        {
-//            TreeNode newnode = new TreeNode(item) { Name = item };
-//            currentNode.Nodes.Add(newnode);
-//            currentNode = newnode;
-//        }
-//    }
-
-//    //if (treeView1.TopNode == null)
-//    //{
-//    //    TreeNode root = new TreeNode("Damaged Files");
-//    //    treeView1.Nodes.Add(root);
-//    //}
-//    //TreeNode currentNode = treeView1.TopNode;
-//    //foreach (string item in items.AsEnumerable().Reverse())
-//    //{
-//    //    if (currentNode != null && currentNode.Nodes.ContainsKey(item))
-//    //    {
-//    //        currentNode = currentNode.Nodes.Find(item, true).FirstOrDefault();
-//    //    }
-//    //    else
-//    //    {
-//    //        TreeNode newnode = new TreeNode(item) { Name = item };
-//    //        currentNode.Nodes.Add(newnode);
-//    //        currentNode = newnode;
-//    //    }
-//    //}
-//}
-#endregion

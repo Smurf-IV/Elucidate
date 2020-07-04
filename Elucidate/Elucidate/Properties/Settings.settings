@@ -6,7 +6,7 @@
       <Value Profile="(Default)">c:\SnapRAID\SnapRAID.exe</Value>
     </Setting>
     <Setting Name="ConfigFileLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\SnapRAID\SnapRAID.config</Value>
+      <Value Profile="(Default)">c:\SnapRAID\SnapRAID.conf</Value>
     </Setting>
     <Setting Name="ConfigFileIsValid" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -46,6 +46,9 @@
     </Setting>
     <Setting Name="DebugLoggingEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LogWindowLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

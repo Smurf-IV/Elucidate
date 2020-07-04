@@ -1,9 +1,8 @@
 ﻿#region Copyright (C)
-
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Settings.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2019 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
+//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +22,6 @@
 //  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 #endregion Copyright (C)
 
 using System;
@@ -48,10 +46,20 @@ namespace Elucidate.TabPages
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
+        private RunControl _liveRunLogControl;
+
+        public RunControl RunLogControl
+        {
+            set
+            {
+                _liveRunLogControl = value;
+                _liveRunLogControl.TaskCompleted += liveRunLogControl1_RunWorkerCompleted;
+            }
+        }
+
         public CommonTab()
         {
             InitializeComponent();
-            liveRunLogControl1.ActionWorker.RunWorkerCompleted += liveRunLogControl1_RunWorkerCompleted;
             // Force the output of the help for each verb
             Parser parser = new Parser(with => with.HelpWriter = null);
             HelpText helpVerb = new HelpText
@@ -65,13 +73,14 @@ namespace Elucidate.TabPages
                 };
 
             btnSync.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<SyncVerb>(new[] { @"--help" })).ToString();
-            btnStatus.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<ScrubVerb>(new[] { @"--help" })).ToString();
+            btnStatus.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<StatusVerb>(new[] { @"--help" })).ToString();
             btnDupFinder.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<DupVerb>(new[] { @"--help" })).ToString();
             btnCheck.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<CheckVerb>(new[] { @"--help" })).ToString();
             btnDiff.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<DiffVerb>(new[] { @"--help" })).ToString();
             btnFix.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<FixVerb>(new[] { @"--help" })).ToString();
             btnForceFullSync.ToolTipValues.Description = btnSync.ToolTipValues.Description;
             btnScrub.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<ScrubVerb>(new[] { @"--help" })).ToString();
+            btnCheckForMissing.ToolTipValues.Description = btnCheck.ToolTipValues.Description;
         }
 
         public void SetCommonButtonsEnabledState(bool enabled)
@@ -84,6 +93,7 @@ namespace Elucidate.TabPages
             btnFix.Enabled = enabled;
             btnDupFinder.Enabled = enabled;
             btnForceFullSync.Enabled = enabled;
+            btnCheckForMissing.Enabled = enabled;
         }
 
         public void PerformArgs(string[] args)
@@ -131,11 +141,11 @@ namespace Elucidate.TabPages
             if (!string.IsNullOrWhiteSpace(commandLine))
             {
                 Log.Info(@"CommandLine options Interpreted: [{0}]", commandLine);
-                liveRunLogControl1.txtAddCommands.Text = commandLine;
-                liveRunLogControl1.checkBoxCommandLineOptions.Checked = true;
+                _liveRunLogControl.txtAddCommands.Text = commandLine;
+                _liveRunLogControl.checkBoxCommandLineOptions.Checked = true;
                 if ((sv as StdOptions).Verbose)
                 {
-                    liveRunLogControl1.checkBoxDisplayOutput.Checked = true;
+                    _liveRunLogControl.checkBoxDisplayOutput.Checked = true;
                 }
             }
         }
@@ -144,95 +154,63 @@ namespace Elucidate.TabPages
         private void btnStatus_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Status);
+            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Status);
         }
 
         private void Diff_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Diff);
+            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Diff);
         }
 
         private void Check_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            if (Util.IsExecutableRunning(Properties.Settings.Default.SnapRAIDFileLocation))
-            {
-                SetCommonButtonsEnabledState(true);
-                KryptonMessageBox.Show(this, @"A SnapRAID process is already running");
-                return;
-            }
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Check);
+            _liveRunLogControl.checkBoxDisplayOutput.Checked = true;
+            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Check);
+            KryptonMessageBox.Show(this, @"Switch to Recover tab to see the 'recoverable files' being populated",
+                @"Recovery may be available");
+        }
+
+        private void btnCheckForMissing_Click(object sender, EventArgs e)
+        {
+            SetCommonButtonsEnabledState(false);
+            _liveRunLogControl.checkBoxDisplayOutput.Checked = true;
+            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.CheckForMissing);
+            KryptonMessageBox.Show(this, @"Switch to Recover tab to see the 'recoverable files' being populated",
+                @"Recovery may be available");
         }
 
         private void Sync_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Sync);
+            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Sync);
         }
 
         private void Scrub_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Scrub);
+            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Scrub);
         }
 
         private void Fix_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Fix);
+            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Fix);
         }
 
         private void DupFinder_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.Dup);
+            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Dup);
         }
 
         private void ForceFullSync_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            liveRunLogControl1.StartSnapRaidProcess(LiveRunLogControl.CommandType.ForceFullSync);
+            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.ForceFullSync);
         }
         #endregion Button Clicks
-
-        private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (liveRunLogControl1.ActionWorker.IsBusy) { return; }
-
-            string userAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Elucidate");
-
-            OpenFileDialog openFileDialog = new OpenFileDialog
-            {
-                InitialDirectory = Path.Combine(userAppData, @"Logs"),
-                Filter = @"Log files (*.log)|*.log|Archive logs (*.*)|*.*",
-                FileName = "*.log",
-                FilterIndex = 2,
-                Title = @"Select name to view contents"
-            };
-
-            if (openFileDialog.ShowDialog() != DialogResult.OK)
-            {
-                return;
-            }
-
-            if (Properties.Settings.Default.UseWindowsSettings)
-            {
-                Process word = Process.Start("Wordpad.exe", '"' + openFileDialog.FileName + '"');
-                if (word == null)
-                {
-                    return;
-                }
-
-                word.WaitForInputIdle();
-                SendKeys.SendWait("^{END}");
-            }
-            else
-            {
-                // Launch whatever "Knows" how to view log files
-                Process.Start('"' + openFileDialog.FileName + '"');
-            }
-        }
 
         private void DisplayErrors(IEnumerable<Error> errs)
         {
@@ -252,9 +230,6 @@ namespace Elucidate.TabPages
         }
 
         private void liveRunLogControl1_RunWorkerCompleted(object sender, EventArgs e) => SetCommonButtonsEnabledState(true);
-
-
-
 
     }
 }

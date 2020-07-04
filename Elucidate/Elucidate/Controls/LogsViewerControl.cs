@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="LogsViewerControl.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2018-2019  Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
+//  Copyright (C) 2018-2020  Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -33,7 +34,7 @@ using System.Windows.Forms;
 using NLog;
 using NLog.Targets;
 
-namespace Elucidate.TabPages
+namespace Elucidate.Controls
 {
     public partial class LogsViewerControl : UserControl
     {
@@ -238,6 +239,45 @@ namespace Elucidate.TabPages
         {
             listBoxViewLogFiles.BeginInvoke((MethodInvoker)delegate { UpdateLogFileList(comboBoxLogType.SelectedItem.ToString()); });
         }
+
+        private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // if (_liveRunLogControl.ActionWorker.IsBusy) { return; }
+
+            string userAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Elucidate");
+
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = Path.Combine(userAppData, @"Logs"),
+                Filter = @"Log files (*.log)|*.log|Archive logs (*.*)|*.*",
+                FileName = "*.log",
+                FilterIndex = 2,
+                Title = @"Select name to view contents"
+            };
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            if (Properties.Settings.Default.UseWindowsSettings)
+            {
+                Process word = Process.Start("Wordpad.exe", '"' + openFileDialog.FileName + '"');
+                if (word == null)
+                {
+                    return;
+                }
+
+                word.WaitForInputIdle();
+                SendKeys.SendWait("^{END}");
+            }
+            else
+            {
+                // Launch whatever "Knows" how to view log files
+                Process.Start('"' + openFileDialog.FileName + '"');
+            }
+        }
+
 
     }
 }

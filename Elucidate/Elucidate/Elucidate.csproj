@@ -30,7 +30,7 @@
     </AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>2019.12.998.12</AssemblyVersion>
+    <AssemblyVersion>2020.7.1003.4</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
@@ -106,12 +106,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\DataGridViewTripleValueBarColumn.cs" />
@@ -128,6 +130,12 @@
     <Compile Include="ExtendedToolkit\KryptonCommandLinkButtonDesigner.cs" />
     <Compile Include="ExtendedToolkit\KryptonCommandLinkVersion1.cs" />
     <Compile Include="ExtendedToolkit\ViewDrawCommandLinkButton.cs" />
+    <Compile Include="Forms\LiveLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LiveLog.Designer.cs">
+      <DependentUpon>LiveLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="HelperClasses\AdvancedSettingsHelper.cs" />
     <Compile Include="CmdLine\CheckVerb.cs" />
     <Compile Include="CmdLine\DiffVerb.cs" />
@@ -151,10 +159,10 @@
     <Compile Include="TabPages\CommonTab.Designer.cs">
       <DependentUpon>CommonTab.cs</DependentUpon>
     </Compile>
-    <Compile Include="TabPages\LogsViewerControl.cs">
+    <Compile Include="Controls\LogsViewerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TabPages\LogsViewerControl.Designer.cs">
+    <Compile Include="Controls\LogsViewerControl.Designer.cs">
       <DependentUpon>LogsViewerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="TabPages\Recover.cs">
@@ -178,7 +186,6 @@
     <Compile Include="HelperClasses\ErrorProviderExtensions.cs" />
     <Compile Include="Objects\CoveragePath.cs" />
     <Compile Include="HelperClasses\StorageUtil.cs" />
-    <Compile Include="Logging\LiveLog.cs" />
     <Compile Include="Objects\StorageDevice.cs" />
     <Compile Include="Shared\BufferedTreeView.cs">
       <SubType>Component</SubType>
@@ -192,9 +199,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Shared\WaitCursor.cs" />
-    <Compile Include="TabPages\Recovery.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="HelperClasses\Util.cs" />
     <Compile Include="HelperClasses\WindowLocation.cs" />
     <Compile Include="HelperClasses\ConfigFileHelper.cs" />
@@ -220,10 +224,13 @@
     <EmbeddedResource Include="Controls\LiveRunLogControl.resx">
       <DependentUpon>LiveRunLogControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LiveLog.resx">
+      <DependentUpon>LiveLog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TabPages\CommonTab.resx">
       <DependentUpon>CommonTab.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TabPages\LogsViewerControl.resx">
+    <EmbeddedResource Include="Controls\LogsViewerControl.resx">
       <DependentUpon>LogsViewerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ProtectedDrivesDisplay.resx">
@@ -293,22 +300,22 @@
       <Version>2.2.6</Version>
     </PackageReference>
     <PackageReference Include="ByteSize">
-      <Version>2.0.0-beta1</Version>
+      <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="CommandLineParser">
-      <Version>2.6.0</Version>
+      <Version>2.8.0</Version>
     </PackageReference>
     <PackageReference Include="Exceptionless.NLog">
-      <Version>4.3.2027</Version>
+      <Version>4.4.0</Version>
     </PackageReference>
     <PackageReference Include="Exceptionless.Windows">
-      <Version>4.3.2027</Version>
+      <Version>4.4.0</Version>
     </PackageReference>
     <PackageReference Include="KryptonToolkitSuite5472">
-      <Version>5.472.2000</Version>
+      <Version>5.472.2098</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.6.8</Version>
+      <Version>4.7.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

@@ -124,7 +124,7 @@ namespace Elucidate.Forms
             // 
             this.DRUnit_NewNode.Name = "DRUnit_NewNode";
             this.DRUnit_NewNode.ShortcutKeys = System.Windows.Forms.Keys.Insert;
-            this.DRUnit_NewNode.Size = new System.Drawing.Size(152, 22);
+            this.DRUnit_NewNode.Size = new System.Drawing.Size(176, 24);
             this.DRUnit_NewNode.Text = "&New Node";
             this.DRUnit_NewNode.Click += new System.EventHandler(this.DRUnit_NewNode_MenuItem_Click);
             // 
@@ -136,13 +136,13 @@ namespace Elucidate.Forms
             this.refreshStripMenuItem,
             this.toolStripMenuItem1});
             this.drivesAndDirectoriesMenu.Name = "unitsMenu";
-            this.drivesAndDirectoriesMenu.Size = new System.Drawing.Size(191, 48);
+            this.drivesAndDirectoriesMenu.Size = new System.Drawing.Size(223, 52);
             // 
             // refreshStripMenuItem
             // 
             this.refreshStripMenuItem.Name = "refreshStripMenuItem";
             this.refreshStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.refreshStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.refreshStripMenuItem.Size = new System.Drawing.Size(222, 24);
             this.refreshStripMenuItem.Text = "&Refresh";
             this.refreshStripMenuItem.Click += new System.EventHandler(this.refreshStripMenuItem_Click);
             // 
@@ -150,7 +150,7 @@ namespace Elucidate.Forms
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.Insert;
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(190, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(222, 24);
             this.toolStripMenuItem1.Text = "&Add To Snap shot";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -199,7 +199,7 @@ namespace Elucidate.Forms
             this.grpParityLocations.Panel.Controls.Add(this.labelParity1);
             this.grpParityLocations.Panel.Controls.Add(this.parityLocation1);
             this.grpParityLocations.Panel.Controls.Add(this.findParity1);
-            this.grpParityLocations.Size = new System.Drawing.Size(604, 200);
+            this.grpParityLocations.Size = new System.Drawing.Size(658, 200);
             this.grpParityLocations.TabIndex = 1;
             this.grpParityLocations.Values.Heading = "Parity file locations:";
             // 
@@ -207,7 +207,7 @@ namespace Elucidate.Forms
             // 
             this.findParity6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.findParity6.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findParity6.Location = new System.Drawing.Point(562, 142);
+            this.findParity6.Location = new System.Drawing.Point(616, 142);
             this.findParity6.Name = "findParity6";
             this.findParity6.Size = new System.Drawing.Size(35, 25);
             this.findParity6.TabIndex = 17;
@@ -224,7 +224,7 @@ namespace Elucidate.Forms
             // 
             this.findParity5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.findParity5.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findParity5.Location = new System.Drawing.Point(562, 114);
+            this.findParity5.Location = new System.Drawing.Point(616, 114);
             this.findParity5.Name = "findParity5";
             this.findParity5.Size = new System.Drawing.Size(35, 25);
             this.findParity5.TabIndex = 14;
@@ -241,7 +241,7 @@ namespace Elucidate.Forms
             // 
             this.findParity4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.findParity4.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findParity4.Location = new System.Drawing.Point(562, 86);
+            this.findParity4.Location = new System.Drawing.Point(616, 86);
             this.findParity4.Name = "findParity4";
             this.findParity4.Size = new System.Drawing.Size(35, 25);
             this.findParity4.TabIndex = 11;
@@ -265,7 +265,7 @@ namespace Elucidate.Forms
             this.parityLocation6.Location = new System.Drawing.Point(65, 144);
             this.parityLocation6.Name = "parityLocation6";
             this.helpProvider1.SetShowHelp(this.parityLocation6, true);
-            this.parityLocation6.Size = new System.Drawing.Size(473, 20);
+            this.parityLocation6.Size = new System.Drawing.Size(527, 27);
             this.parityLocation6.TabIndex = 16;
             this.parityLocation6.ToolTipValues.Description = "Optional root location for minimum protection";
             this.parityLocation6.ToolTipValues.EnableToolTips = true;
@@ -286,7 +286,7 @@ namespace Elucidate.Forms
             this.parityLocation5.Location = new System.Drawing.Point(65, 116);
             this.parityLocation5.Name = "parityLocation5";
             this.helpProvider1.SetShowHelp(this.parityLocation5, true);
-            this.parityLocation5.Size = new System.Drawing.Size(473, 20);
+            this.parityLocation5.Size = new System.Drawing.Size(527, 27);
             this.parityLocation5.TabIndex = 13;
             this.parityLocation5.ToolTipValues.Description = "Optional root location for minimum protection";
             this.parityLocation5.ToolTipValues.EnableToolTips = true;
@@ -307,7 +307,7 @@ namespace Elucidate.Forms
             this.parityLocation4.Location = new System.Drawing.Point(65, 88);
             this.parityLocation4.Name = "parityLocation4";
             this.helpProvider1.SetShowHelp(this.parityLocation4, true);
-            this.parityLocation4.Size = new System.Drawing.Size(473, 20);
+            this.parityLocation4.Size = new System.Drawing.Size(527, 27);
             this.parityLocation4.TabIndex = 10;
             this.parityLocation4.ToolTipValues.Description = "Optional root location for minimum protection";
             this.parityLocation4.ToolTipValues.EnableToolTips = true;
@@ -321,7 +321,7 @@ namespace Elucidate.Forms
             // 
             this.findParity3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.findParity3.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findParity3.Location = new System.Drawing.Point(562, 58);
+            this.findParity3.Location = new System.Drawing.Point(616, 58);
             this.findParity3.Name = "findParity3";
             this.findParity3.Size = new System.Drawing.Size(35, 25);
             this.findParity3.TabIndex = 8;
@@ -339,7 +339,7 @@ namespace Elucidate.Forms
             this.labelParity6.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity6.Location = new System.Drawing.Point(6, 144);
             this.labelParity6.Name = "labelParity6";
-            this.labelParity6.Size = new System.Drawing.Size(54, 20);
+            this.labelParity6.Size = new System.Drawing.Size(66, 24);
             this.labelParity6.TabIndex = 15;
             this.labelParity6.TabStop = false;
             this.labelParity6.Target = this.parityLocation6;
@@ -356,7 +356,7 @@ namespace Elucidate.Forms
             this.labelParity5.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity5.Location = new System.Drawing.Point(6, 116);
             this.labelParity5.Name = "labelParity5";
-            this.labelParity5.Size = new System.Drawing.Size(54, 20);
+            this.labelParity5.Size = new System.Drawing.Size(66, 24);
             this.labelParity5.TabIndex = 12;
             this.labelParity5.TabStop = false;
             this.labelParity5.Target = this.parityLocation5;
@@ -373,7 +373,7 @@ namespace Elucidate.Forms
             this.labelParity4.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity4.Location = new System.Drawing.Point(6, 88);
             this.labelParity4.Name = "labelParity4";
-            this.labelParity4.Size = new System.Drawing.Size(54, 20);
+            this.labelParity4.Size = new System.Drawing.Size(66, 24);
             this.labelParity4.TabIndex = 9;
             this.labelParity4.TabStop = false;
             this.labelParity4.Target = this.parityLocation4;
@@ -414,7 +414,7 @@ namespace Elucidate.Forms
             this.parityLocation3.Location = new System.Drawing.Point(65, 60);
             this.parityLocation3.Name = "parityLocation3";
             this.helpProvider1.SetShowHelp(this.parityLocation3, true);
-            this.parityLocation3.Size = new System.Drawing.Size(473, 20);
+            this.parityLocation3.Size = new System.Drawing.Size(527, 27);
             this.parityLocation3.TabIndex = 7;
             this.parityLocation3.ToolTipValues.Description = "Optional root location for minimum protection";
             this.parityLocation3.ToolTipValues.EnableToolTips = true;
@@ -429,7 +429,7 @@ namespace Elucidate.Forms
             this.labelParity2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity2.Location = new System.Drawing.Point(6, 33);
             this.labelParity2.Name = "labelParity2";
-            this.labelParity2.Size = new System.Drawing.Size(54, 20);
+            this.labelParity2.Size = new System.Drawing.Size(66, 24);
             this.labelParity2.TabIndex = 3;
             this.labelParity2.TabStop = false;
             this.labelParity2.Target = this.parityLocation2;
@@ -452,7 +452,7 @@ namespace Elucidate.Forms
             this.parityLocation2.Location = new System.Drawing.Point(65, 33);
             this.parityLocation2.Name = "parityLocation2";
             this.helpProvider1.SetShowHelp(this.parityLocation2, true);
-            this.parityLocation2.Size = new System.Drawing.Size(473, 20);
+            this.parityLocation2.Size = new System.Drawing.Size(527, 27);
             this.parityLocation2.TabIndex = 4;
             this.parityLocation2.ToolTipValues.Description = "Optional root location for minimum protection";
             this.parityLocation2.ToolTipValues.EnableToolTips = true;
@@ -466,7 +466,7 @@ namespace Elucidate.Forms
             // 
             this.findParity2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.findParity2.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findParity2.Location = new System.Drawing.Point(562, 31);
+            this.findParity2.Location = new System.Drawing.Point(616, 31);
             this.findParity2.Name = "findParity2";
             this.findParity2.Size = new System.Drawing.Size(35, 25);
             this.findParity2.TabIndex = 5;
@@ -484,7 +484,7 @@ namespace Elucidate.Forms
             this.labelParity1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity1.Location = new System.Drawing.Point(6, 5);
             this.labelParity1.Name = "labelParity1";
-            this.labelParity1.Size = new System.Drawing.Size(54, 20);
+            this.labelParity1.Size = new System.Drawing.Size(66, 24);
             this.labelParity1.TabIndex = 0;
             this.labelParity1.TabStop = false;
             this.labelParity1.Target = this.parityLocation1;
@@ -507,7 +507,7 @@ namespace Elucidate.Forms
             this.parityLocation1.Location = new System.Drawing.Point(65, 5);
             this.parityLocation1.Name = "parityLocation1";
             this.helpProvider1.SetShowHelp(this.parityLocation1, true);
-            this.parityLocation1.Size = new System.Drawing.Size(473, 20);
+            this.parityLocation1.Size = new System.Drawing.Size(527, 27);
             this.parityLocation1.TabIndex = 1;
             this.parityLocation1.Text = "Z:\\";
             this.parityLocation1.ToolTipValues.Description = "Mandatory root location for minimum protection";
@@ -522,7 +522,7 @@ namespace Elucidate.Forms
             // 
             this.findParity1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.findParity1.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findParity1.Location = new System.Drawing.Point(562, 2);
+            this.findParity1.Location = new System.Drawing.Point(616, 2);
             this.findParity1.Name = "findParity1";
             this.findParity1.Size = new System.Drawing.Size(35, 26);
             this.findParity1.TabIndex = 2;
@@ -539,7 +539,7 @@ namespace Elucidate.Forms
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             this.removeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(176, 24);
             this.removeToolStripMenuItem.Text = "&Delete";
             this.removeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
@@ -553,12 +553,12 @@ namespace Elucidate.Forms
             this.DRUnit_NewNode,
             this.editNameToolStripMenuItem});
             this.SnapShotsMenu.Name = "unitsMenu";
-            this.SnapShotsMenu.Size = new System.Drawing.Size(153, 70);
+            this.SnapShotsMenu.Size = new System.Drawing.Size(177, 76);
             // 
             // editNameToolStripMenuItem
             // 
             this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
-            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(176, 24);
             this.editNameToolStripMenuItem.Text = "&Edit Name";
             this.editNameToolStripMenuItem.Click += new System.EventHandler(this.editName_Click);
             // 
@@ -574,7 +574,7 @@ namespace Elucidate.Forms
             // grpSnapShotSources.Panel
             // 
             this.grpSnapShotSources.Panel.Controls.Add(this.snapShotSources);
-            this.grpSnapShotSources.Size = new System.Drawing.Size(604, 348);
+            this.grpSnapShotSources.Size = new System.Drawing.Size(658, 348);
             this.grpSnapShotSources.TabIndex = 0;
             this.grpSnapShotSources.Values.Heading = "S&nap Shot Sources";
             // 
@@ -584,8 +584,9 @@ namespace Elucidate.Forms
             this.snapShotSources.ContextMenuStrip = this.SnapShotsMenu;
             this.snapShotSources.Dock = System.Windows.Forms.DockStyle.Fill;
             this.snapShotSources.Location = new System.Drawing.Point(0, 0);
+            this.snapShotSources.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.snapShotSources.Name = "snapShotSources";
-            this.snapShotSources.Size = new System.Drawing.Size(600, 324);
+            this.snapShotSources.Size = new System.Drawing.Size(654, 320);
             this.snapShotSources.TabIndex = 0;
             this.snapShotSources.KeyUp += new System.Windows.Forms.KeyEventHandler(this.snapShotSourcesTreeView_KeyUp);
             // 
@@ -607,8 +608,8 @@ namespace Elucidate.Forms
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer1.Panel2MinSize = 450;
             this.splitContainer1.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighInternalProfile;
-            this.splitContainer1.Size = new System.Drawing.Size(935, 645);
-            this.splitContainer1.SplitterDistance = 320;
+            this.splitContainer1.Size = new System.Drawing.Size(1016, 645);
+            this.splitContainer1.SplitterDistance = 347;
             this.splitContainer1.TabIndex = 4;
             // 
             // driveAndDirTreeView
@@ -624,7 +625,7 @@ namespace Elucidate.Forms
             this.driveAndDirTreeView.Name = "driveAndDirTreeView";
             this.driveAndDirTreeView.SelectedImageIndex = 0;
             this.helpProvider1.SetShowHelp(this.driveAndDirTreeView, true);
-            this.driveAndDirTreeView.Size = new System.Drawing.Size(320, 456);
+            this.driveAndDirTreeView.Size = new System.Drawing.Size(347, 456);
             this.driveAndDirTreeView.TabIndex = 1;
             this.toolTip1.SetToolTip(this.driveAndDirTreeView, "Possible sources to be used for snap shot.");
             this.driveAndDirTreeView.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.driveAndDirTreeView_BeforeExpand);
@@ -646,7 +647,7 @@ namespace Elucidate.Forms
             this.groupBox3.Panel.Controls.Add(this.label6);
             this.groupBox3.Panel.Controls.Add(this.numBlockSizeKB);
             this.groupBox3.Panel.Controls.Add(this.label4);
-            this.groupBox3.Size = new System.Drawing.Size(320, 186);
+            this.groupBox3.Size = new System.Drawing.Size(347, 186);
             this.groupBox3.TabIndex = 0;
             this.toolTip1.SetToolTip(this.groupBox3, "Unusual settings.");
             this.groupBox3.Values.Heading = "Advanced";
@@ -673,7 +674,7 @@ namespace Elucidate.Forms
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.ScrollAlwaysVisible = true;
             this.helpProvider1.SetShowHelp(this.checkedListBox1, true);
-            this.checkedListBox1.Size = new System.Drawing.Size(307, 102);
+            this.checkedListBox1.Size = new System.Drawing.Size(334, 102);
             this.checkedListBox1.TabIndex = 5;
             this.toolTip1.SetToolTip(this.checkedListBox1, "Caution: You must know wat these settings are.");
             this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
@@ -681,6 +682,7 @@ namespace Elucidate.Forms
             // 
             // numAutoSaveGB
             // 
+            this.numAutoSaveGB.AllowDecimals = true;
             this.numAutoSaveGB.DecimalPlaces = 99;
             this.numAutoSaveGB.Increment = new decimal(new int[] {
             50,
@@ -694,7 +696,7 @@ namespace Elucidate.Forms
             0,
             0});
             this.numAutoSaveGB.Name = "numAutoSaveGB";
-            this.numAutoSaveGB.Size = new System.Drawing.Size(74, 22);
+            this.numAutoSaveGB.Size = new System.Drawing.Size(74, 26);
             this.numAutoSaveGB.TabIndex = 4;
             this.toolTip1.SetToolTip(this.numAutoSaveGB, "You could increase this value if you do not have enough RAM memory to run SnapRAI" +
         "D\r\nAs a rule of thumb, with 4GB or more memory use the default 256, with 2GB use" +
@@ -711,7 +713,7 @@ namespace Elucidate.Forms
             this.label6.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label6.Location = new System.Drawing.Point(7, 32);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(84, 20);
+            this.label6.Size = new System.Drawing.Size(103, 24);
             this.label6.TabIndex = 3;
             this.label6.TabStop = false;
             this.label6.Target = this.numAutoSaveGB;
@@ -737,7 +739,7 @@ namespace Elucidate.Forms
             0,
             0});
             this.numBlockSizeKB.Name = "numBlockSizeKB";
-            this.numBlockSizeKB.Size = new System.Drawing.Size(74, 22);
+            this.numBlockSizeKB.Size = new System.Drawing.Size(74, 26);
             this.numBlockSizeKB.TabIndex = 1;
             this.toolTip1.SetToolTip(this.numBlockSizeKB, resources.GetString("numBlockSizeKB.ToolTip"));
             this.numBlockSizeKB.Value = new decimal(new int[] {
@@ -752,7 +754,7 @@ namespace Elucidate.Forms
             this.label4.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label4.Location = new System.Drawing.Point(7, 5);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(85, 20);
+            this.label4.Size = new System.Drawing.Size(105, 24);
             this.label4.TabIndex = 0;
             this.label4.TabStop = false;
             this.label4.Target = this.numBlockSizeKB;
@@ -779,11 +781,12 @@ namespace Elucidate.Forms
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.49886F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.50114F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(610, 645);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(664, 645);
             this.tableLayoutPanel1.TabIndex = 7;
             // 
             // exludedFilesView
             // 
+            this.exludedFilesView.ColumnHeadersHeight = 36;
             this.exludedFilesView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ExcludedFilesPatterns});
             this.exludedFilesView.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -792,9 +795,10 @@ namespace Elucidate.Forms
             this.helpProvider1.SetHelpNavigator(this.exludedFilesView, System.Windows.Forms.HelpNavigator.Topic);
             this.exludedFilesView.Location = new System.Drawing.Point(3, 557);
             this.exludedFilesView.Name = "exludedFilesView";
+            this.exludedFilesView.RowHeadersWidth = 51;
             this.exludedFilesView.ShowCellToolTips = false;
             this.helpProvider1.SetShowHelp(this.exludedFilesView, true);
-            this.exludedFilesView.Size = new System.Drawing.Size(604, 85);
+            this.exludedFilesView.Size = new System.Drawing.Size(658, 85);
             this.exludedFilesView.TabIndex = 2;
             this.exludedFilesView.TabStop = false;
             this.exludedFilesView.Text = "&Exclude Patterns:";
@@ -805,6 +809,7 @@ namespace Elucidate.Forms
             this.ExcludedFilesPatterns.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.ExcludedFilesPatterns.HeaderText = "Excluded File pattern(s)";
             this.ExcludedFilesPatterns.MaxInputLength = 256;
+            this.ExcludedFilesPatterns.MinimumWidth = 6;
             this.ExcludedFilesPatterns.Name = "ExcludedFilesPatterns";
             this.ExcludedFilesPatterns.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
@@ -814,7 +819,7 @@ namespace Elucidate.Forms
             this.helpProvider1.SetHelpKeyword(this.btnSave, "SaveSettings");
             this.helpProvider1.SetHelpNavigator(this.btnSave, System.Windows.Forms.HelpNavigator.Topic);
             this.errorProvider1.SetIconAlignment(this.btnSave, System.Windows.Forms.ErrorIconAlignment.MiddleLeft);
-            this.btnSave.Location = new System.Drawing.Point(791, 34);
+            this.btnSave.Location = new System.Drawing.Point(872, 34);
             this.btnSave.Name = "btnSave";
             this.helpProvider1.SetShowHelp(this.btnSave, true);
             this.btnSave.Size = new System.Drawing.Size(127, 27);
@@ -828,7 +833,7 @@ namespace Elucidate.Forms
             this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.helpProvider1.SetHelpKeyword(this.btnReset, "ResetToLastConfig");
             this.helpProvider1.SetHelpNavigator(this.btnReset, System.Windows.Forms.HelpNavigator.Topic);
-            this.btnReset.Location = new System.Drawing.Point(791, 2);
+            this.btnReset.Location = new System.Drawing.Point(872, 2);
             this.btnReset.Name = "btnReset";
             this.helpProvider1.SetShowHelp(this.btnReset, true);
             this.btnReset.Size = new System.Drawing.Size(127, 27);
@@ -849,7 +854,7 @@ namespace Elucidate.Forms
             this.configFileLocation.Name = "configFileLocation";
             this.configFileLocation.ReadOnly = true;
             this.helpProvider1.SetShowHelp(this.configFileLocation, true);
-            this.configFileLocation.Size = new System.Drawing.Size(596, 20);
+            this.configFileLocation.Size = new System.Drawing.Size(677, 27);
             this.configFileLocation.TabIndex = 5;
             this.toolTip1.SetToolTip(this.configFileLocation, "Full path to the SnapRAID config file.");
             this.configFileLocation.WordWrap = false;
@@ -868,7 +873,7 @@ namespace Elucidate.Forms
             this.snapRAIDFileLocation.Name = "snapRAIDFileLocation";
             this.snapRAIDFileLocation.ReadOnly = true;
             this.helpProvider1.SetShowHelp(this.snapRAIDFileLocation, true);
-            this.snapRAIDFileLocation.Size = new System.Drawing.Size(596, 20);
+            this.snapRAIDFileLocation.Size = new System.Drawing.Size(677, 27);
             this.snapRAIDFileLocation.TabIndex = 1;
             this.snapRAIDFileLocation.Text = "Stick some text in here";
             this.toolTip1.SetToolTip(this.snapRAIDFileLocation, "Full path to the SnapRAID application.");
@@ -888,7 +893,7 @@ namespace Elucidate.Forms
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(935, 65);
+            this.panel2.Size = new System.Drawing.Size(1016, 65);
             this.panel2.TabIndex = 0;
             // 
             // label1
@@ -896,7 +901,7 @@ namespace Elucidate.Forms
             this.label1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label1.Location = new System.Drawing.Point(3, 37);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(127, 20);
+            this.label1.Size = new System.Drawing.Size(157, 24);
             this.label1.TabIndex = 4;
             this.label1.TabStop = false;
             this.label1.Target = this.configFileLocation;
@@ -906,7 +911,7 @@ namespace Elucidate.Forms
             // 
             this.findConfigFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.findConfigFile.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findConfigFile.Location = new System.Drawing.Point(750, 35);
+            this.findConfigFile.Location = new System.Drawing.Point(831, 35);
             this.findConfigFile.Name = "findConfigFile";
             this.findConfigFile.Size = new System.Drawing.Size(35, 25);
             this.findConfigFile.TabIndex = 6;
@@ -918,7 +923,7 @@ namespace Elucidate.Forms
             this.label2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label2.Location = new System.Drawing.Point(24, 5);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 20);
+            this.label2.Size = new System.Drawing.Size(109, 24);
             this.label2.TabIndex = 0;
             this.label2.TabStop = false;
             this.label2.Target = this.snapRAIDFileLocation;
@@ -928,7 +933,7 @@ namespace Elucidate.Forms
             // 
             this.findExeFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.findExeFile.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findExeFile.Location = new System.Drawing.Point(750, 3);
+            this.findExeFile.Location = new System.Drawing.Point(831, 3);
             this.findExeFile.Name = "findExeFile";
             this.findExeFile.Size = new System.Drawing.Size(35, 25);
             this.findExeFile.TabIndex = 2;
@@ -950,14 +955,14 @@ namespace Elucidate.Forms
             this.kryptonPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kryptonPanel1.Location = new System.Drawing.Point(0, 0);
             this.kryptonPanel1.Name = "kryptonPanel1";
-            this.kryptonPanel1.Size = new System.Drawing.Size(935, 710);
+            this.kryptonPanel1.Size = new System.Drawing.Size(1016, 710);
             this.kryptonPanel1.TabIndex = 8;
             // 
             // Settings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(935, 710);
+            this.ClientSize = new System.Drawing.Size(1016, 710);
             this.Controls.Add(this.kryptonPanel1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -970,7 +975,7 @@ namespace Elucidate.Forms
             this.MinimumSize = new System.Drawing.Size(951, 749);
             this.Name = "Settings";
             this.helpProvider1.SetShowHelp(this, true);
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Settings to control SnapRAID";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Settings_FormClosing);
             this.Load += new System.EventHandler(this.Settings_Load);

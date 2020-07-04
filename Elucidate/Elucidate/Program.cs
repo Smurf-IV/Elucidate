@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
 //  <copyright file="Program.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2011-2019 Smurf-IV
+//  Copyright (C) 2011-2020 Smurf-IV
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -111,6 +111,7 @@ namespace Elucidate
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
+
                     Application.Run(new ElucidateForm());
                 }
                 else

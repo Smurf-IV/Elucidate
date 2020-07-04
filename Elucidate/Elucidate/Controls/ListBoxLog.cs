@@ -230,9 +230,10 @@ namespace Elucidate.Controls
                     return;
                 }
 
-                alreadyDequing = true;
                 // Now lock in case the timer is overlapping !
-                listBoxInt.BeginInvoke((MethodInvoker)delegate
+                alreadyDequing = true;
+
+                listBoxInt.BeginInvoke((MethodInvoker) delegate
                 {
                     //some stuffs for best performance
                     listBoxInt.BeginUpdate();
@@ -254,7 +255,6 @@ namespace Elucidate.Controls
                     }
 
                     listBoxInt.EndUpdate();
-                    //}
                     alreadyDequing = false;
                 }
                 );

@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
-//  <copyright file="ConfigFileHelper.cs" company="Smurf-IV">
+//  <copyright file="RunControl.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2018-2019 Smurf-IV & BlueBlock
+//  Copyright (C) 2018-2020 Smurf-IV & BlueBlock 2018
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,18 +27,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+
 using ComponentFactory.Krypton.Toolkit;
+
 using Elucidate.wyDay.Controls;
 
 using NLog;
 
 namespace Elucidate.Controls
 {
-    public partial class LiveRunLogControl : UserControl
+    public partial class RunControl : UserControl
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -55,21 +56,15 @@ namespace Elucidate.Controls
         private readonly ManualResetEvent mreErrorDone = new ManualResetEvent(false);
         private ProcessPriorityClass requested = ProcessPriorityClass.Normal;
         private string lastError;
-        private List<string> batchPaths;
-        private static ListBoxLog ListBoxLog;
+        private Stack<string> batchPaths;
 
-        public bool IsRunning { get; set; }
+        public bool IsRunning { get; private set; }
 
-        private CommandType CommandTypeRunning { get; set; }
+        public CommandType CommandTypeRunning { get; private set; }
 
-        public LiveRunLogControl()
+        public RunControl()
         {
             InitializeComponent();
-
-            if (ListBoxLog == null)
-            {
-                ListBoxLog = new ListBoxLog(rtbLiveLog);
-            }
 
             AddThreadingCallbacks();
 
@@ -113,8 +108,7 @@ namespace Elucidate.Controls
             Scrub,
             Fix,
             Dup,
-            QuickCheck,
-            RecoverCheck,
+            CheckForMissing,
             RecoverFix,
             ForceFullSync
         }
@@ -123,28 +117,23 @@ namespace Elucidate.Controls
         {
         }
 
-        public void HideAdditionalCommands()
-        {
-            tableLayoutPanelAdditionalCommands.Visible = false;
-        }
-
-        public readonly BackgroundWorker ActionWorker = new BackgroundWorker
+        private readonly BackgroundWorker actionWorker = new BackgroundWorker
         {
             WorkerReportsProgress = true,
-            WorkerSupportsCancellation = true,
+            WorkerSupportsCancellation = true
         };
 
         private void AddThreadingCallbacks()
         {
             // Add threading callbacks
-            ActionWorker.DoWork += actionWorker_DoWork;
-            ActionWorker.ProgressChanged += actionWorker_ProgressChanged;
-            ActionWorker.RunWorkerCompleted += actionWorker_RunWorkerCompleted;
+            actionWorker.DoWork += actionWorker_DoWork;
+            actionWorker.ProgressChanged += actionWorker_ProgressChanged;
+            actionWorker.RunWorkerCompleted += actionWorker_RunWorkerCompleted;
             comboBoxProcessStatus.Text = @"Stopped";
             comboBoxProcessStatus.Enabled = false;
         }
 
-        internal void StartSnapRaidProcess(CommandType commandToRun, List<string> paths = null)
+        internal void StartSnapRaidProcess(CommandType commandToRun, Stack<string> paths = null)
         {
             if (IsRunning)
             {
@@ -165,13 +154,13 @@ namespace Elucidate.Controls
                 case CommandType.Diff:
                     command.Append(@"diff");
                     break;
-                case CommandType.QuickCheck:
+                case CommandType.CheckForMissing:
                     command.Append(@"check");
-                    defaultOption = @" -a";
+                    defaultOption = @" -m";
                     break;
                 case CommandType.Check:
-                case CommandType.RecoverCheck:
                     command.Append(@"check");
+                    defaultOption = @" -a";
                     break;
                 case CommandType.Sync:
                     command.Append(@"sync");
@@ -225,7 +214,7 @@ namespace Elucidate.Controls
 
             requested = ProcessPriorityClass.Normal;
 
-            ActionWorker.RunWorkerAsync(command.ToString());
+            actionWorker.RunWorkerAsync(command.ToString());
 
             toolStripProgressBar1.DisplayText = "Running...";
 
@@ -243,10 +232,6 @@ namespace Elucidate.Controls
         {
             try
             {
-                IsRunning = true;
-
-                OnTaskStarted(e);
-
                 BackgroundWorker worker = sender as BackgroundWorker;
 
                 string command = e.Argument as string;
@@ -273,6 +258,10 @@ namespace Elucidate.Controls
 
                 string args = Util.FormatSnapRaidCommandArgs( command, out string appPath);
 
+                IsRunning = true;
+
+                OnTaskStarted(e);
+
                 RunSnapRaid(e, args, appPath, worker);
             }
             catch (Exception ex)
@@ -294,9 +283,11 @@ namespace Elucidate.Controls
 
                 do
                 {
-                    sbPaths.Append($"-f \"{batchPaths[batchPaths.Count - 1]}\" ");
-                    batchPaths.RemoveAt(batchPaths.Count - 1);
-                } while (sbPaths.Length < MAX_COMMAND_ARG_LENGTH && batchPaths.Any());
+                    var restore = batchPaths.Pop();
+                    sbPaths.Append(" -f \"").Append(restore).Append("\"");
+                } while ((sbPaths.Length < MAX_COMMAND_ARG_LENGTH)
+                         && (batchPaths.Count > 0)
+                        );
 
                 args += sbPaths.ToString();
             }
@@ -427,9 +418,8 @@ namespace Elucidate.Controls
         private void actionWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             IsRunning = false;
-
             // continue running additional times if there is more work to be done
-            if (CommandTypeRunning == CommandType.RecoverFix && batchPaths.Any())
+            if (CommandTypeRunning == CommandType.RecoverFix && (batchPaths.Count > 0))
             {
                 StartSnapRaidProcess(CommandType.RecoverFix);
                 return;
@@ -468,7 +458,10 @@ namespace Elucidate.Controls
                     comboBoxProcessStatus.Text = @"Stopped";
                 }
 
-                if (CommandTypeRunning == CommandType.RecoverCheck || CommandTypeRunning == CommandType.RecoverFix)
+                if (CommandTypeRunning == CommandType.Check 
+                    || CommandTypeRunning == CommandType.CheckForMissing
+                    || CommandTypeRunning == CommandType.RecoverFix
+                    )
                 {
                     toolStripProgressBar1.State = ProgressBarState.Normal;
                     toolStripProgressBar1.DisplayText = "Completed";
@@ -543,8 +536,7 @@ namespace Elucidate.Controls
                         // SnapRaid dumps a null length when drawing graphs etc. So need to check if still running..
                         mreProcessExit.WaitOne(100);
                     }
-                } while (!mreProcessExit.WaitOne(0) // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
-                        );
+                } while (!mreProcessExit.WaitOne(0)); // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
             }
             catch (Exception ex)
             {
@@ -598,13 +590,13 @@ namespace Elucidate.Controls
             switch (strSelected)
             {
                 case "Stopped":
-                    if (ActionWorker.IsBusy)
+                    if (actionWorker.IsBusy)
                     {
                         comboBoxProcessStatus.SelectedIndex = comboBoxProcessStatus.FindStringExact("Running");
                     }
                     break;
                 case "Abort":
-                    ActionWorker.CancelAsync();
+                    actionWorker.CancelAsync();
                     Log.Info("Cancelling the running process...");
                     break;
             }
@@ -613,14 +605,6 @@ namespace Elucidate.Controls
         private void LiveRunLogControl_Resize(object sender, EventArgs e)
         {
             toolStripProgressBar1.Width = 100;
-        }
-
-
-        // ReSharper disable UnusedMember.Global
-        // This is used by the logging to force all to the output window
-        public static void LogMethod(string levelUppercase, string message)
-        {
-            ListBoxLog?.LogMethod(levelUppercase, message);
         }
     }
 }
