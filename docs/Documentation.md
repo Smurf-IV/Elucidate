@@ -35,32 +35,28 @@ A brief intro, probably this page :-)
 
 ## *Buttons* ##
 
-
 ### *D*ifferences
-
 This will switch to the Real-Time View and then run the "diff" command. It will
 list all the file changes that have occurred since the last *S*ync command.
 
 ### *S*ync
-
 This will generate or refresh (synchronize) the snapshot parity data sets.
 
 ### *C*heck
-
-If will read all your data, to check if it's correct.  
+It will read all your data, to check if it's correct.  
 If an error is found, you can use the "fix" command to fix it.
 
 ### Real-time View
-
-This is a tail of the current data being written to the log view.  
-It is marked up with colors to show the type of logging; So if you see red in
-the middle of a run, then that's probably bad!
+This is a tail of the current data being written to the log file.  
+Colors are used to show the level of the logging. So if you see red in
+the middle of a run, then that's probably bad!  
+It is now a modeless window to allow all the tabs to shows their progress in a single place.![LiveLogView](../Images/LiveLogView.png)
+It will save it's position on the desktop, so it will be restored on the next run. 
 
 ### Status Bar
-
+![Status Bar](../Images/Pictures_Speed%20of%201.7%20x64.png)
 The left side shows the locale time stamp Followed by the current status.
 
-This can also be used to **Use Idle / Pause / Abort / Reset** back to Running,
-the current SnapRaid process.
+This can also be used to **Idle / Pause / Abort / Running (resume to normal)** the current SnapRaid process.
 
 The right show the progress percentages that come from SnapRAID.

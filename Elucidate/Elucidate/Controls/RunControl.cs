@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -46,12 +47,11 @@ namespace Elucidate.Controls
         // ReSharper disable once InconsistentNaming
         private const int MAX_COMMAND_ARG_LENGTH = 7000;
 
-        private bool IsCommandLineOptionsEnabled { get; set; }
-
         /// <summary>
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
         /// </summary>
         private readonly ManualResetEvent mreProcessExit = new ManualResetEvent(false);
+
         private readonly ManualResetEvent mreOutputDone = new ManualResetEvent(false);
         private readonly ManualResetEvent mreErrorDone = new ManualResetEvent(false);
         private ProcessPriorityClass requested = ProcessPriorityClass.Normal;
@@ -68,7 +68,7 @@ namespace Elucidate.Controls
 
             AddThreadingCallbacks();
 
-            toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
+            tsStartTime.Text = DateTime.Now.ToString("G");
 
             IsRunning = false;
 
@@ -186,6 +186,7 @@ namespace Elucidate.Controls
                     {
                         batchPaths = paths;
                     }
+
                     break;
             }
 
@@ -224,7 +225,7 @@ namespace Elucidate.Controls
 
             toolStripProgressBar1.Value = 0;
 
-            toolStripStatusLabel1.Text = DateTime.Now.ToString("u");
+            tsStartTime.Text = DateTime.Now.ToString("G");
 
         }
 
@@ -256,7 +257,7 @@ namespace Elucidate.Controls
                 mreOutputDone.Reset();
                 mreErrorDone.Reset();
 
-                string args = Util.FormatSnapRaidCommandArgs( command, out string appPath);
+                string args = Util.FormatSnapRaidCommandArgs(command, out string appPath);
 
                 IsRunning = true;
 
@@ -287,7 +288,7 @@ namespace Elucidate.Controls
                     sbPaths.Append(" -f \"").Append(restore).Append("\"");
                 } while ((sbPaths.Length < MAX_COMMAND_ARG_LENGTH)
                          && (batchPaths.Count > 0)
-                        );
+                );
 
                 args += sbPaths.ToString();
             }
@@ -316,7 +317,7 @@ namespace Elucidate.Controls
                 process.Start();
 
                 // Redirect the output stream of the child process.
-                ThreadObject threadObject = new ThreadObject { BgdWorker = worker, CmdProcess = process };
+                ThreadObject threadObject = new ThreadObject {BgdWorker = worker, CmdProcess = process};
                 ThreadPool.QueueUserWorkItem(o => ReadStandardOutput(threadObject));
                 ThreadPool.QueueUserWorkItem(o => ReadStandardError(threadObject));
 
@@ -325,7 +326,7 @@ namespace Elucidate.Controls
                     mreProcessExit.Set();
                 }
 
-                while (!WaitHandle.WaitAll(new WaitHandle[] { mreErrorDone, mreOutputDone, mreProcessExit }, 250))
+                while (!WaitHandle.WaitAll(new WaitHandle[] {mreErrorDone, mreOutputDone, mreProcessExit}, 250))
                 {
                     if (process.HasExited)
                     {
@@ -343,6 +344,14 @@ namespace Elucidate.Controls
                         if (current == requested)
                         {
                             continue;
+                        }
+                        if (current == ProcessPriorityClass.BelowNormal)
+                        {
+                            process.Resume();
+                        }
+                        else if ( requested == ProcessPriorityClass.BelowNormal )
+                        {
+                            process.Suspend();
                         }
 
                         Log.Fatal("Setting the process priority to[{0}]", requested);
@@ -370,16 +379,33 @@ namespace Elucidate.Controls
                 case 0:
                     break;
                 case -1:
-                    worker.ReportProgress(101, "Aborted");
+                    worker.ReportProgress(101, "Aborted: Error code -1");
                     break;
                 case 1:
-                    worker.ReportProgress(101, "Error");
+                    if ((CommandTypeRunning == CommandType.Check)
+                        || (CommandTypeRunning == CommandType.CheckForMissing)
+                        )
+                    {
+                        Log.Warn(@"Missing files have been reported, the process return code is 1, instead of the default 0");
+                    }
+                    else
+                    {
+                        worker.ReportProgress(101, "Error code 1");
+                    }
                     break;
                 case 2:
-                    worker.ReportProgress(101, "Error");
+                    if (CommandTypeRunning == CommandType.Diff)
+                    {
+                        Log.Warn(@"A 'sync' is required, the process return code is 2, instead of the default 0");
+                    }
+                    else
+                    {
+                        worker.ReportProgress(101, "Error code 2");
+                    }
+
                     break;
                 default:
-                    Log.Debug($"Unhandled ExitCode of {exitCode}");
+                    Log.Error("Unhandled ExitCode of [{0}]", exitCode);
                     break;
             }
 
@@ -406,11 +432,13 @@ namespace Elucidate.Controls
             if (progressPercentage < 101)
             {
                 // even if SnapRaid is reporting 100%, it may still be running so only100% is only shown in RunWorkerCompleted
-                toolStripProgressBar1.Value = progressPercentage == 100 ? 99 : e.ProgressPercentage;
+                toolStripProgressBar1.Value = progressPercentage == 100 ? 99 : progressPercentage;
+                toolStripProgressBar1.DisplayText = e.UserState.ToString();
             }
-            else if (e.ProgressPercentage == 101)
+            else if (progressPercentage == 101)
             {
                 toolStripProgressBar1.State = ProgressBarState.Error;
+                toolStripProgressBar1.DisplayText = lastError;
                 toolStripProgressBar1.Value = 100;
             }
         }
@@ -428,13 +456,14 @@ namespace Elucidate.Controls
             OnTaskCompleted(e);
 
             comboBoxProcessStatus.Enabled = false;
-            IsCommandLineOptionsEnabled = checkBoxCommandLineOptions.Checked = false; // uncheck so the next command does not include this by accident
+            checkBoxCommandLineOptions.Checked = false; // uncheck so the next command does not include this by accident
             checkBoxCommandLineOptions.Enabled = true;
 
             if (toolStripProgressBar1.Style == ProgressBarStyle.Marquee)
             {
                 toolStripProgressBar1.Style = ProgressBarStyle.Continuous;
             }
+
             if (e.Cancelled)
             {
                 toolStripProgressBar1.State = ProgressBarState.Pause;
@@ -458,10 +487,10 @@ namespace Elucidate.Controls
                     comboBoxProcessStatus.Text = @"Stopped";
                 }
 
-                if (CommandTypeRunning == CommandType.Check 
+                if (CommandTypeRunning == CommandType.Check
                     || CommandTypeRunning == CommandType.CheckForMissing
                     || CommandTypeRunning == CommandType.RecoverFix
-                    )
+                )
                 {
                     toolStripProgressBar1.State = ProgressBarState.Normal;
                     toolStripProgressBar1.DisplayText = "Completed";
@@ -525,8 +554,8 @@ namespace Elucidate.Controls
                     {
                         string[] splits = buf.Split('%');
                         if ((splits.Length > 1)
-                           && int.TryParse(splits[0], out int percentProgress)
-                           )
+                            && int.TryParse(splits[0], out int percentProgress)
+                        )
                         {
                             threadObject.BgdWorker.ReportProgress(percentProgress, buf);
                         }
@@ -536,7 +565,8 @@ namespace Elucidate.Controls
                         // SnapRaid dumps a null length when drawing graphs etc. So need to check if still running..
                         mreProcessExit.WaitOne(100);
                     }
-                } while (!mreProcessExit.WaitOne(0)); // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
+                } while (!mreProcessExit.WaitOne(0)
+                ); // If millisecondsTimeout is zero, the method does not block. It tests the state of the wait handle and returns immediately.
             }
             catch (Exception ex)
             {
@@ -568,14 +598,6 @@ namespace Elucidate.Controls
             }
         }
 
-        private void checkBoxCommandLineOptions_CheckedChanged(object sender, EventArgs e)
-        {
-            if (sender is KryptonCheckBox senderControl)
-            {
-                IsCommandLineOptionsEnabled = senderControl.Checked;
-            }
-        }
-
         private void comboBoxProcessStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (sender == null)
@@ -583,7 +605,7 @@ namespace Elucidate.Controls
                 return;
             }
 
-            KryptonComboBox control = (KryptonComboBox)sender;
+            KryptonComboBox control = (KryptonComboBox) sender;
 
             string strSelected = control.SelectedItem.ToString();
 
@@ -594,17 +616,79 @@ namespace Elucidate.Controls
                     {
                         comboBoxProcessStatus.SelectedIndex = comboBoxProcessStatus.FindStringExact("Running");
                     }
+
                     break;
                 case "Abort":
                     actionWorker.CancelAsync();
                     Log.Info("Cancelling the running process...");
                     break;
+                case "Idle":
+                    requested = ProcessPriorityClass.Idle;
+                    break;
+                case "Running":
+                    requested = ProcessPriorityClass.Normal;
+                    break;
+                case "Pause":
+                    requested = ProcessPriorityClass.BelowNormal;
+                    break;
+
             }
         }
 
-        private void LiveRunLogControl_Resize(object sender, EventArgs e)
+    }
+
+    // Taken from https://stackoverflow.com/questions/71257/suspend-process-in-c-sharp
+    public static class ProcessExtension
+    {
+        [Flags]
+        private enum ThreadAccess
         {
-            toolStripProgressBar1.Width = 100;
+            TERMINATE = (0x0001),
+            SUSPEND_RESUME = (0x0002),
+            GET_CONTEXT = (0x0008),
+            SET_CONTEXT = (0x0010),
+            SET_INFORMATION = (0x0020),
+            QUERY_INFORMATION = (0x0040),
+            SET_THREAD_TOKEN = (0x0080),
+            IMPERSONATE = (0x0100),
+            DIRECT_IMPERSONATION = (0x0200)
+        }
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
+
+        [DllImport("kernel32.dll")]
+        static extern uint SuspendThread(IntPtr hThread);
+
+        [DllImport("kernel32.dll")]
+        static extern int ResumeThread(IntPtr hThread);
+
+        public static void Suspend(this Process process)
+        {
+            foreach (ProcessThread thread in process.Threads)
+            {
+                var pOpenThread = OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)thread.Id);
+                if (pOpenThread == IntPtr.Zero)
+                {
+                    break;
+                }
+
+                SuspendThread(pOpenThread);
+            }
+        }
+
+        public static void Resume(this Process process)
+        {
+            foreach (ProcessThread thread in process.Threads)
+            {
+                var pOpenThread = OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)thread.Id);
+                if (pOpenThread == IntPtr.Zero)
+                {
+                    break;
+                }
+
+                ResumeThread(pOpenThread);
+            }
         }
     }
 }

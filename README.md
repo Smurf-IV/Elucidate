@@ -1,4 +1,4 @@
-# Elucidate
+﻿# Elucidate
 
 - [Project Description](#project-description)
 - [System Requirements:](#os-requirements)
@@ -16,7 +16,7 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
 
 - Windows Operating System
 - .Net Runtime 4.7.2 or higher
-- SnapRaid Version 11.3 or lower
+- SnapRaid Version 11.5 or lower
 - 10MB Free Space on target drive
 
 ## FAQs
@@ -65,10 +65,10 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
     - In Progress
   - [ ] Add _Windows EventLog_ reporting of Errors
   - [x] Add _ExceptionLess_ for online reporting of Exceptions
+  - [x] Show what could be recovered. 
 
-- [ ] Phase IV (Recovery and new SnapRAID Commands ?) 
-  - [ ] Extended Help with recovery - interactive guides etc.. 
-  - [ ] Show what could be recovered (This will require looking into the SnapRaid codebase to interpret the status file(s)). 
+- [ ] Phase IV (new SnapRAID Commands ?) 
+  - [ ] Extended Help with disk recovery - interactive guides etc.. 
   - [ ] Notify the user if their SnapRAID version is outdated
   - [ ] Interpret the SnapRAID logs (used by the changes below)
   - [ ] Provide the status of the array following a command run
@@ -79,9 +79,9 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
 
 ## Screenshots
 
-![Starting View](Images/starting_view.png)
+![Starting View](./Images/starting_view.png)
 
-![Settings Form](Images/Settings_Form.png)
+![Settings Form](./Images/Settings_Form.png)
 
 
 ## Can you Help ? 

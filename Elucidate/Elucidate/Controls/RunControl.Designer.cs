@@ -32,7 +32,7 @@ namespace Elucidate.Controls
         {
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.toolStripStatusLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.tsStartTime = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.runWithoutCaptureMenuItem = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
             this.checkBoxDisplayOutput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
@@ -60,7 +60,7 @@ namespace Elucidate.Controls
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.toolStripStatusLabel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tsStartTime, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.toolStripProgressBar1, 4, 0);
             this.tableLayoutPanel1.Controls.Add(this.runWithoutCaptureMenuItem, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.checkBoxDisplayOutput, 2, 0);
@@ -74,23 +74,23 @@ namespace Elucidate.Controls
             this.tableLayoutPanel1.Size = new System.Drawing.Size(858, 34);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // toolStripStatusLabel1
+            // tsStartTime
             // 
-            this.toolStripStatusLabel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripStatusLabel1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
-            this.toolStripStatusLabel1.Location = new System.Drawing.Point(0, 4);
-            this.toolStripStatusLabel1.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.toolStripStatusLabel1.MinimumSize = new System.Drawing.Size(170, 22);
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(205, 30);
-            this.toolStripStatusLabel1.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripStatusLabel1.StateCommon.ShortText.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Inherit;
-            this.toolStripStatusLabel1.StateCommon.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
-            this.toolStripStatusLabel1.StateCommon.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
-            this.toolStripStatusLabel1.StateCommon.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Inherit;
-            this.toolStripStatusLabel1.TabIndex = 0;
-            this.toolStripStatusLabel1.TabStop = false;
-            this.toolStripStatusLabel1.Values.Text = "2000-01-01 00:00:00Z";
+            this.tsStartTime.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tsStartTime.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.tsStartTime.Location = new System.Drawing.Point(0, 4);
+            this.tsStartTime.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
+            this.tsStartTime.MinimumSize = new System.Drawing.Size(170, 22);
+            this.tsStartTime.Name = "tsStartTime";
+            this.tsStartTime.Size = new System.Drawing.Size(205, 30);
+            this.tsStartTime.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsStartTime.StateCommon.ShortText.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Inherit;
+            this.tsStartTime.StateCommon.ShortText.TextH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.tsStartTime.StateCommon.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.tsStartTime.StateCommon.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Inherit;
+            this.tsStartTime.TabIndex = 0;
+            this.tsStartTime.TabStop = false;
+            this.tsStartTime.Values.Text = "2000-01-01 00:00:00Z";
             // 
             // toolStripProgressBar1
             // 
@@ -154,6 +154,8 @@ namespace Elucidate.Controls
             this.comboBoxProcessStatus.Items.AddRange(new object[] {
             "Stopped",
             "Running",
+            "Idle",
+            "Pause",
             "Abort"});
             this.comboBoxProcessStatus.Location = new System.Drawing.Point(209, 3);
             this.comboBoxProcessStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -226,7 +228,6 @@ namespace Elucidate.Controls
             this.checkBoxCommandLineOptions.ToolTipValues.Image = null;
             this.checkBoxCommandLineOptions.ToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.TitlePanel;
             this.checkBoxCommandLineOptions.Values.Text = "Include Additional Command Line Options:";
-            this.checkBoxCommandLineOptions.CheckedChanged += new System.EventHandler(this.checkBoxCommandLineOptions_CheckedChanged);
             // 
             // toolTip1
             // 
@@ -253,7 +254,6 @@ namespace Elucidate.Controls
             this.Name = "RunControl";
             this.Size = new System.Drawing.Size(858, 72);
             this.Load += new System.EventHandler(this.LiveRunLogControl_Load);
-            this.Resize += new System.EventHandler(this.LiveRunLogControl_Resize);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxProcessStatus)).EndInit();
@@ -272,7 +272,7 @@ namespace Elucidate.Controls
         private ComponentFactory.Krypton.Toolkit.KryptonComboBox comboBoxProcessStatus;
         private Shared.TextOverProgressBar toolStripProgressBar1;
         private ComponentFactory.Krypton.Toolkit.KryptonCheckBox runWithoutCaptureMenuItem;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel toolStripStatusLabel1;
+        private ComponentFactory.Krypton.Toolkit.KryptonLabel tsStartTime;
         private TableLayoutPanel tableLayoutPanelAdditionalCommands;
         internal ComponentFactory.Krypton.Toolkit.KryptonTextBox txtAddCommands;
         internal ComponentFactory.Krypton.Toolkit.KryptonCheckBox checkBoxCommandLineOptions;

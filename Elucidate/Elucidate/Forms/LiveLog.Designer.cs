@@ -51,12 +51,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(912, 506);
-            this.ControlBox = false;
             this.Controls.Add(this.rtbLiveLog);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(930, 500);
             this.Name = "LiveLog";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
