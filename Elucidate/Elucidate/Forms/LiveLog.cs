@@ -60,10 +60,23 @@ namespace Elucidate.Forms
             ListBoxLog?.LogMethod(levelUppercase, message);
         }
 
+        // Sort out shutdown sequence when FormClosing is overridden
+        // https://stackoverflow.com/questions/13894294/systemevents-sessionended-is-not-being-caught-or-fired/13935246#13935246
+        private const int WM_QUERYENDSESSION = 0x11;
+        private bool systemShutdown;
+        protected override void WndProc(ref System.Windows.Forms.Message m)
+        {
+            if (m.Msg == WM_QUERYENDSESSION)
+            {
+                systemShutdown = true;
+            }
+            base.WndProc(ref m);
+        }
+
         private void LiveLog_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
         {
             // Do not allow user to close this form !
-            e.Cancel = true;
+            e.Cancel = !systemShutdown;
         }
     }
 }
