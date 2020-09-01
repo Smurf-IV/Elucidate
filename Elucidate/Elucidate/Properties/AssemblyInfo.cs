@@ -56,8 +56,8 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2020.9.1021.1")]
-[assembly: AssemblyFileVersion("20.9.1021.1")]
+[assembly: AssemblyVersion("2020.9.1022.1")]
+[assembly: AssemblyFileVersion("20.9.1022.1")]
 [assembly: NeutralResourcesLanguage("en-US")]
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]
