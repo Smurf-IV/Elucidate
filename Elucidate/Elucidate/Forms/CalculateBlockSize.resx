@@ -136,6 +136,8 @@ If you have less memory than required, the recommended option is to install more
 Otherwise you have to increase the block_size option in the configuration file. The memory occupation is inversely proportional at the select block_size. For example, using "block_size 512", instead of the default 256, halves the memory occupation. But take care that using a bigger block size will also increase the amount of wasted space in the parity files.
 
 Note that running with memory swapped to disk is not recommended because it will be a huge slowdown. 
-</value>
+
+Block Size must be a power of 2 with a minimum value of 32 and a maximum value of 16384(16KB).
+https://sourceforge.net/p/snapraid/discussion/1677233/thread/927d6038/#c1f6</value>
   </data>
 </root>

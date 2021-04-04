@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Settings.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
+//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,17 +26,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
 using CommandLine;
 using CommandLine.Text;
-using ComponentFactory.Krypton.Toolkit;
 
 using Elucidate.CmdLine;
 using Elucidate.Controls;
+
+using Krypton.Toolkit;
 
 using NLog;
 
@@ -63,14 +63,14 @@ namespace Elucidate.TabPages
             // Force the output of the help for each verb
             Parser parser = new Parser(with => with.HelpWriter = null);
             HelpText helpVerb = new HelpText
-                {
-                    AddDashesToOption = true,
-                    AddEnumValuesToHelpText = true,
-                    AdditionalNewLineAfterOption = true,
-                    MaximumDisplayWidth = 160,
-                    AutoHelp = false,
-                    AutoVersion = false
-                };
+            {
+                AddDashesToOption = true,
+                AddEnumValuesToHelpText = true,
+                AdditionalNewLineAfterOption = true,
+                MaximumDisplayWidth = 160,
+                AutoHelp = false,
+                AutoVersion = false
+            };
 
             btnSync.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<SyncVerb>(new[] { @"--help" })).ToString();
             btnStatus.ToolTipValues.Description = helpVerb.AddOptions(parser.ParseArguments<StatusVerb>(new[] { @"--help" })).ToString();

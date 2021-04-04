@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
 //  <copyright file="ProtectedDrivesDisplay.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2019-2020 Smurf-IV
+//  Copyright (C) 2019-2021 Smurf-IV
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ namespace Elucidate.Controls
         {
             if (Interlocked.Increment(ref useWaitCursor) == 1)
             {
-                BeginInvoke((MethodInvoker) (() => UseWaitCursor = true));
+                BeginInvoke((MethodInvoker)(() => UseWaitCursor = true));
             }
         }
 
@@ -70,7 +70,7 @@ namespace Elucidate.Controls
         {
             if (Interlocked.Decrement(ref useWaitCursor) <= 0)
             {
-                BeginInvoke((MethodInvoker) (() => UseWaitCursor = false));
+                BeginInvoke((MethodInvoker)(() => UseWaitCursor = false));
             }
         }
 
@@ -118,7 +118,7 @@ namespace Elucidate.Controls
         {
             if (!cancelTokenSrc.IsCancellationRequested)
             {
-                for (int index = e.RowIndex; index < e.RowIndex+ e.RowCount; index++)
+                for (int index = e.RowIndex; index < e.RowIndex + e.RowCount; index++)
                 {
                     // Get data to perform drive usage display
                     DataGridViewRow row = driveGrid.Rows[index];
@@ -158,20 +158,20 @@ namespace Elucidate.Controls
             ulong protectedUse = DirSize(dirInfo, token);
             if (!token.IsCancellationRequested)
             {
-                BeginInvoke((MethodInvoker) delegate
-                {
-                    try
-                    {
-                        row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
-                        row.Cells[3].Value =
-                            $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
-                    }
-                    catch
-                    {
+                BeginInvoke((MethodInvoker)delegate
+               {
+                   try
+                   {
+                       row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
+                       row.Cells[3].Value =
+                           $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
+                   }
+                   catch
+                   {
                         // Do nothing
                         // Might be caused by fast closure
                     }
-                });
+               });
             }
 
             DecrementWaitCursor();
@@ -192,7 +192,7 @@ namespace Elucidate.Controls
                     return 0UL;
                 }
 
-                return dir.EnumerateFiles().AsParallel().Sum(fi => (ulong)fi.Length) 
+                return dir.EnumerateFiles().AsParallel().Sum(fi => (ulong)fi.Length)
                        + dir.EnumerateDirectories()
                            .Where(d => (d.Attributes & System.IO.FileAttributes.System) == 0 && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
                            .AsParallel()

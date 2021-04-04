@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="AdvancedSettingsHelper.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2012-2020 Smurf-IV
+//  Copyright (C) 2012-2021 Smurf-IV
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,20 +28,20 @@
 
 namespace Elucidate
 {
-   internal class AdvancedSettingsHelper
-   {
-      public string DisplayName { get; private set; }
+    internal class AdvancedSettingsHelper
+    {
+        public string DisplayName { get; private set; }
 
-      public bool CheckState { get; set; }
+        public bool CheckState { get; set; }
 
-      public string TootTip { get; private set; }
+        public string TootTip { get; private set; }
 
-      public AdvancedSettingsHelper(string displayName, bool checkState, string tootTip)
-      {
-         DisplayName = displayName;
-         this.CheckState = checkState;
-         TootTip = tootTip;
-      }
+        public AdvancedSettingsHelper(string displayName, bool checkState, string tootTip)
+        {
+            DisplayName = displayName;
+            this.CheckState = checkState;
+            TootTip = tootTip;
+        }
 
-   }
+    }
 }

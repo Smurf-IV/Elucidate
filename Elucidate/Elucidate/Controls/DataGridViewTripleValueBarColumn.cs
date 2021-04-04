@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -48,7 +47,7 @@ namespace Elucidate.Controls
         {
             try
             {
-                string s = ((string) value);
+                string s = ((string)value);
                 if (string.IsNullOrWhiteSpace(s))
                 {
                     return;

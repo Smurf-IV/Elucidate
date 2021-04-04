@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Schedule.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,15 +26,9 @@
 
 #endregion Copyright (C)
 
-using System;
-using System.Diagnostics;
-using System.IO;
 using System.Windows.Forms;
 
-using ComponentFactory.Krypton.Toolkit;
-
 using NLog;
-using NLog.Targets;
 
 namespace Elucidate.TabPages
 {

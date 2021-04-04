@@ -36,7 +36,7 @@ namespace Elucidate.TabPages
             this.btnRecoverSelectedFiles = new System.Windows.Forms.Button();
             this.btnSelectAllFiles = new System.Windows.Forms.Button();
             this.btnClearFiles = new System.Windows.Forms.Button();
-            this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.kryptonLabel1 = new Krypton.Toolkit.KryptonLabel();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.timerTreeViewFill = new System.Windows.Forms.Timer(this.components);
             this.timerTreeViewRecover = new System.Windows.Forms.Timer(this.components);
@@ -147,6 +147,6 @@ namespace Elucidate.TabPages
         private TreeView treeView1;
         private Timer timerTreeViewRecover;
         private Button btnSelectAllFiles;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel1;
+        private Krypton.Toolkit.KryptonLabel kryptonLabel1;
     }
 }

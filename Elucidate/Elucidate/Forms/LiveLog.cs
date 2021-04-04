@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="LiveLog.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020-2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020-2021 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,9 +26,9 @@
 
 using System.Collections.Concurrent;
 
-using ComponentFactory.Krypton.Toolkit;
-
 using Elucidate.Controls;
+
+using Krypton.Toolkit;
 
 namespace Elucidate.Forms
 {

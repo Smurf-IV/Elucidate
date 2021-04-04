@@ -2,8 +2,9 @@
 using System.Diagnostics;
 using System.Drawing;
 
-using ComponentFactory.Krypton.Toolkit;
 using ExtendedControls.ExtendedToolkit.Values;
+
+using Krypton.Toolkit;
 
 namespace ExtendedControls.ExtendedToolkit.View_Draw
 {
@@ -397,7 +398,7 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
             // Let base class perform usual processing
             base.Layout(context);
 
-            
+
         }
         #endregion
 

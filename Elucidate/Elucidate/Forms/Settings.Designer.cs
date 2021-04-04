@@ -41,55 +41,55 @@ namespace Elucidate.Forms
             this.refreshStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.imageListUnits = new System.Windows.Forms.ImageList(this.components);
-            this.grpParityLocations = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
-            this.findParity6 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.findParity5 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.findParity4 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.parityLocation6 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.parityLocation5 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.parityLocation4 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.findParity3 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.labelParity6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.labelParity5 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.labelParity4 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.grpParityLocations = new Krypton.Toolkit.KryptonGroupBox();
+            this.findParity6 = new Krypton.Toolkit.KryptonButton();
+            this.findParity5 = new Krypton.Toolkit.KryptonButton();
+            this.findParity4 = new Krypton.Toolkit.KryptonButton();
+            this.parityLocation6 = new Krypton.Toolkit.KryptonTextBox();
+            this.parityLocation5 = new Krypton.Toolkit.KryptonTextBox();
+            this.parityLocation4 = new Krypton.Toolkit.KryptonTextBox();
+            this.findParity3 = new Krypton.Toolkit.KryptonButton();
+            this.labelParity6 = new Krypton.Toolkit.KryptonLabel();
+            this.labelParity5 = new Krypton.Toolkit.KryptonLabel();
+            this.labelParity4 = new Krypton.Toolkit.KryptonLabel();
             this.labelParity3 = new JCS.ToggleSwitch.SlideSwitch();
-            this.parityLocation3 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.labelParity2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.parityLocation2 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.findParity2 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.labelParity1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.parityLocation1 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.findParity1 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.parityLocation3 = new Krypton.Toolkit.KryptonTextBox();
+            this.labelParity2 = new Krypton.Toolkit.KryptonLabel();
+            this.parityLocation2 = new Krypton.Toolkit.KryptonTextBox();
+            this.findParity2 = new Krypton.Toolkit.KryptonButton();
+            this.labelParity1 = new Krypton.Toolkit.KryptonLabel();
+            this.parityLocation1 = new Krypton.Toolkit.KryptonTextBox();
+            this.findParity1 = new Krypton.Toolkit.KryptonButton();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.grpSnapShotSources = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+            this.grpSnapShotSources = new Krypton.Toolkit.KryptonGroupBox();
             this.snapShotSources = new Elucidate.Controls.ProtectedDrivesDisplay();
-            this.splitContainer1 = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
+            this.splitContainer1 = new Krypton.Toolkit.KryptonSplitContainer();
             this.driveAndDirTreeView = new Elucidate.Shared.BufferedTreeView();
-            this.groupBox3 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
-            this.btnGetRecommended = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.checkedListBox1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckedListBox();
-            this.numAutoSaveGB = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
-            this.label6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.groupBox3 = new Krypton.Toolkit.KryptonGroupBox();
+            this.btnGetRecommended = new Krypton.Toolkit.KryptonButton();
+            this.checkedListBox1 = new Krypton.Toolkit.KryptonCheckedListBox();
+            this.numAutoSaveGB = new Krypton.Toolkit.KryptonNumericUpDown();
+            this.label6 = new Krypton.Toolkit.KryptonLabel();
             this.numBlockSizeKB = new Elucidate.Shared.NumericUpDownPowerOfTwo();
-            this.label4 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.label4 = new Krypton.Toolkit.KryptonLabel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.exludedFilesView = new ComponentFactory.Krypton.Toolkit.KryptonDataGridView();
+            this.exludedFilesView = new Krypton.Toolkit.KryptonDataGridView();
             this.ExcludedFilesPatterns = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.btnSave = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.btnReset = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.configFileLocation = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.snapRAIDFileLocation = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.panel2 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.label1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.findConfigFile = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.label2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.findExeFile = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.btnSave = new Krypton.Toolkit.KryptonButton();
+            this.btnReset = new Krypton.Toolkit.KryptonButton();
+            this.configFileLocation = new Krypton.Toolkit.KryptonTextBox();
+            this.snapRAIDFileLocation = new Krypton.Toolkit.KryptonTextBox();
+            this.panel2 = new Krypton.Toolkit.KryptonPanel();
+            this.label1 = new Krypton.Toolkit.KryptonLabel();
+            this.findConfigFile = new Krypton.Toolkit.KryptonButton();
+            this.label2 = new Krypton.Toolkit.KryptonLabel();
+            this.findExeFile = new Krypton.Toolkit.KryptonButton();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
-            this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
+            this.kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
             this.drivesAndDirectoriesMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations.Panel)).BeginInit();
@@ -336,7 +336,7 @@ namespace Elucidate.Forms
             // 
             // labelParity6
             // 
-            this.labelParity6.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.labelParity6.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity6.Location = new System.Drawing.Point(6, 144);
             this.labelParity6.Name = "labelParity6";
             this.labelParity6.Size = new System.Drawing.Size(66, 24);
@@ -353,7 +353,7 @@ namespace Elucidate.Forms
             // 
             // labelParity5
             // 
-            this.labelParity5.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.labelParity5.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity5.Location = new System.Drawing.Point(6, 116);
             this.labelParity5.Name = "labelParity5";
             this.labelParity5.Size = new System.Drawing.Size(66, 24);
@@ -370,7 +370,7 @@ namespace Elucidate.Forms
             // 
             // labelParity4
             // 
-            this.labelParity4.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.labelParity4.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity4.Location = new System.Drawing.Point(6, 88);
             this.labelParity4.Name = "labelParity4";
             this.labelParity4.Size = new System.Drawing.Size(66, 24);
@@ -426,7 +426,7 @@ namespace Elucidate.Forms
             // 
             // labelParity2
             // 
-            this.labelParity2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.labelParity2.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity2.Location = new System.Drawing.Point(6, 33);
             this.labelParity2.Name = "labelParity2";
             this.labelParity2.Size = new System.Drawing.Size(66, 24);
@@ -481,7 +481,7 @@ namespace Elucidate.Forms
             // 
             // labelParity1
             // 
-            this.labelParity1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.labelParity1.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity1.Location = new System.Drawing.Point(6, 5);
             this.labelParity1.Name = "labelParity1";
             this.labelParity1.Size = new System.Drawing.Size(66, 24);
@@ -584,7 +584,7 @@ namespace Elucidate.Forms
             this.snapShotSources.ContextMenuStrip = this.SnapShotsMenu;
             this.snapShotSources.Dock = System.Windows.Forms.DockStyle.Fill;
             this.snapShotSources.Location = new System.Drawing.Point(0, 0);
-            this.snapShotSources.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.snapShotSources.Margin = new System.Windows.Forms.Padding(4);
             this.snapShotSources.Name = "snapShotSources";
             this.snapShotSources.Size = new System.Drawing.Size(654, 320);
             this.snapShotSources.TabIndex = 0;
@@ -607,7 +607,7 @@ namespace Elucidate.Forms
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer1.Panel2MinSize = 450;
-            this.splitContainer1.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighInternalProfile;
+            this.splitContainer1.SeparatorStyle = Krypton.Toolkit.SeparatorStyle.HighInternalProfile;
             this.splitContainer1.Size = new System.Drawing.Size(1016, 645);
             this.splitContainer1.SplitterDistance = 347;
             this.splitContainer1.TabIndex = 4;
@@ -666,7 +666,7 @@ namespace Elucidate.Forms
             this.checkedListBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkedListBox1.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.PanelClient;
+            this.checkedListBox1.BackStyle = Krypton.Toolkit.PaletteBackStyle.PanelClient;
             this.checkedListBox1.CheckOnClick = true;
             this.checkedListBox1.FormattingEnabled = true;
             this.helpProvider1.SetHelpString(this.checkedListBox1, "UseVerbose");
@@ -710,7 +710,7 @@ namespace Elucidate.Forms
             // 
             // label6
             // 
-            this.label6.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.label6.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label6.Location = new System.Drawing.Point(7, 32);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(103, 24);
@@ -734,7 +734,7 @@ namespace Elucidate.Forms
             0,
             0});
             this.numBlockSizeKB.Minimum = new decimal(new int[] {
-            256,
+            32,
             0,
             0,
             0});
@@ -751,16 +751,14 @@ namespace Elucidate.Forms
             // 
             // label4
             // 
-            this.label4.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.label4.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label4.Location = new System.Drawing.Point(7, 5);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 24);
             this.label4.TabIndex = 0;
             this.label4.TabStop = false;
             this.label4.Target = this.numBlockSizeKB;
-            this.toolTip1.SetToolTip(this.label4, "You could increase this value if you do not have enough RAM memory to run SnapRAI" +
-        "D\r\nAs a rule of thumb, with 4GB or more memory use the default 256, with 2GB use" +
-        " 512, and with 1GB use 1024.");
+            this.toolTip1.SetToolTip(this.label4, resources.GetString("label4.ToolTip"));
             this.label4.Values.Text = "&Block Size KB:";
             // 
             // tableLayoutPanel1
@@ -898,7 +896,7 @@ namespace Elucidate.Forms
             // 
             // label1
             // 
-            this.label1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.label1.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label1.Location = new System.Drawing.Point(3, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(157, 24);
@@ -920,7 +918,7 @@ namespace Elucidate.Forms
             // 
             // label2
             // 
-            this.label2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.label2.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label2.Location = new System.Drawing.Point(24, 5);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(109, 24);
@@ -1024,53 +1022,53 @@ namespace Elucidate.Forms
         private ToolStripMenuItem toolStripMenuItem1;
         private ImageList imageListUnits;
         private ToolTip toolTip1;
-        private ComponentFactory.Krypton.Toolkit.KryptonGroupBox grpParityLocations;
+        private Krypton.Toolkit.KryptonGroupBox grpParityLocations;
         private ToolStripMenuItem removeToolStripMenuItem;
         private ContextMenuStrip SnapShotsMenu;
-        private ComponentFactory.Krypton.Toolkit.KryptonGroupBox grpSnapShotSources;
-        private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer splitContainer1;
+        private Krypton.Toolkit.KryptonGroupBox grpSnapShotSources;
+        private Krypton.Toolkit.KryptonSplitContainer splitContainer1;
         private TableLayoutPanel tableLayoutPanel1;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel panel2;
-        private ComponentFactory.Krypton.Toolkit.KryptonDataGridView exludedFilesView;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel label1;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox configFileLocation;
+        private Krypton.Toolkit.KryptonPanel panel2;
+        private Krypton.Toolkit.KryptonDataGridView exludedFilesView;
+        private Krypton.Toolkit.KryptonLabel label1;
+        private Krypton.Toolkit.KryptonTextBox configFileLocation;
         private ErrorProvider errorProvider1;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton findConfigFile;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel label2;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox snapRAIDFileLocation;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton findExeFile;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox parityLocation2;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton findParity2;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel labelParity1;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox parityLocation1;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton findParity1;
+        private Krypton.Toolkit.KryptonButton findConfigFile;
+        private Krypton.Toolkit.KryptonLabel label2;
+        private Krypton.Toolkit.KryptonTextBox snapRAIDFileLocation;
+        private Krypton.Toolkit.KryptonButton findExeFile;
+        private Krypton.Toolkit.KryptonTextBox parityLocation2;
+        private Krypton.Toolkit.KryptonButton findParity2;
+        private Krypton.Toolkit.KryptonLabel labelParity1;
+        private Krypton.Toolkit.KryptonTextBox parityLocation1;
+        private Krypton.Toolkit.KryptonButton findParity1;
         private DataGridViewTextBoxColumn ExcludedFilesPatterns;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnReset;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnSave;
+        private Krypton.Toolkit.KryptonButton btnReset;
+        private Krypton.Toolkit.KryptonButton btnSave;
         private HelpProvider helpProvider1;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckedListBox checkedListBox1;
-        private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox3;
+        private Krypton.Toolkit.KryptonCheckedListBox checkedListBox1;
+        private Krypton.Toolkit.KryptonGroupBox groupBox3;
         private NumericUpDownPowerOfTwo numBlockSizeKB;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel label4;
-        private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown numAutoSaveGB;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel label6;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnGetRecommended;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel labelParity2;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel labelParity6;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel labelParity5;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel labelParity4;
+        private Krypton.Toolkit.KryptonLabel label4;
+        private Krypton.Toolkit.KryptonNumericUpDown numAutoSaveGB;
+        private Krypton.Toolkit.KryptonLabel label6;
+        private Krypton.Toolkit.KryptonButton btnGetRecommended;
+        private Krypton.Toolkit.KryptonLabel labelParity2;
+        private Krypton.Toolkit.KryptonLabel labelParity6;
+        private Krypton.Toolkit.KryptonLabel labelParity5;
+        private Krypton.Toolkit.KryptonLabel labelParity4;
         private JCS.ToggleSwitch.SlideSwitch labelParity3;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox parityLocation3;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton findParity3;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox parityLocation6;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox parityLocation5;
-        private ComponentFactory.Krypton.Toolkit.KryptonTextBox parityLocation4;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton findParity6;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton findParity5;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton findParity4;
+        private Krypton.Toolkit.KryptonTextBox parityLocation3;
+        private Krypton.Toolkit.KryptonButton findParity3;
+        private Krypton.Toolkit.KryptonTextBox parityLocation6;
+        private Krypton.Toolkit.KryptonTextBox parityLocation5;
+        private Krypton.Toolkit.KryptonTextBox parityLocation4;
+        private Krypton.Toolkit.KryptonButton findParity6;
+        private Krypton.Toolkit.KryptonButton findParity5;
+        private Krypton.Toolkit.KryptonButton findParity4;
         private ProtectedDrivesDisplay snapShotSources;
         private ToolStripMenuItem editNameToolStripMenuItem;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel1;
+        private Krypton.Toolkit.KryptonPanel kryptonPanel1;
 
         private List<string> IncludePatterns { get; set; }
 

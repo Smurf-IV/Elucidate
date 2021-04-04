@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="AssemblyInfo.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
+//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Smurf-IV & BlueBlock")]
 [assembly: AssemblyProduct("Elucidate")]
-[assembly: AssemblyCopyright("Copyright © BlueBlock 2018 / Copyright © Simon Coghlan (Aka Smurf-IV) 2010-2020")]
+[assembly: AssemblyCopyright("Copyright © BlueBlock 2018 / Copyright © Simon Coghlan (Aka Smurf-IV) 2010-2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -56,8 +56,8 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2020.9.1022.1")]
-[assembly: AssemblyFileVersion("20.9.1022.1")]
+[assembly: AssemblyVersion("2021.4.1029.4")]
+[assembly: AssemblyFileVersion("21.4.1029.4")]
 [assembly: NeutralResourcesLanguage("en-US")]
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]
@@ -68,8 +68,8 @@ using System.Runtime.InteropServices;
 
 [assembly: Dependency("Alphaleonis.Win32.Filesystem", LoadHint.Always)]
 [assembly: Dependency("CommandLine", LoadHint.Always)]
-[assembly: Dependency("ComponentFactory.Krypton.Toolkit", LoadHint.Always)]
-[assembly: Dependency("ComponentFactory.Krypton.Navigator", LoadHint.Always)]
+[assembly: Dependency("Krypton.Toolkit", LoadHint.Always)]
+[assembly: Dependency("Krypton.Navigator", LoadHint.Always)]
 [assembly: Dependency("Exceptionless", LoadHint.Always)]
 [assembly: Dependency("Exceptionless.Nlog", LoadHint.Always)]
 [assembly: Dependency("Exceptionless.Windows", LoadHint.Always)]

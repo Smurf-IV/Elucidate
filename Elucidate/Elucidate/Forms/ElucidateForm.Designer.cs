@@ -40,17 +40,17 @@ namespace Elucidate
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ElucidateForm));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tabCoveragePage = new ComponentFactory.Krypton.Navigator.KryptonPage();
-            this.tabSchedulePage = new ComponentFactory.Krypton.Navigator.KryptonPage();
+            this.tabCoveragePage = new Krypton.Navigator.KryptonPage();
+            this.tabSchedulePage = new Krypton.Navigator.KryptonPage();
             this.tpSchedule = new Elucidate.TabPages.Schedule();
-            this.tabCommonOperations = new ComponentFactory.Krypton.Navigator.KryptonPage();
+            this.tabCommonOperations = new Krypton.Navigator.KryptonPage();
             this.tpCoverage = new Elucidate.Controls.ProtectedDrivesDisplay();
-            this.logPanel = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
+            this.logPanel = new Krypton.Toolkit.KryptonPanel();
             this.commonTab = new Elucidate.TabPages.CommonTab();
-            this.tabControl = new ComponentFactory.Krypton.Navigator.KryptonNavigator();
-            this.tabLogs = new ComponentFactory.Krypton.Navigator.KryptonPage();
+            this.tabControl = new Krypton.Navigator.KryptonNavigator();
+            this.tabLogs = new Krypton.Navigator.KryptonPage();
             this.logsViewerControl = new Elucidate.Controls.LogsViewerControl();
-            this.tabRecoverFiles = new ComponentFactory.Krypton.Navigator.KryptonPage();
+            this.tabRecoverFiles = new Krypton.Navigator.KryptonPage();
             this.recover1 = new Elucidate.TabPages.Recover();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -62,8 +62,8 @@ namespace Elucidate
             this.changeTheThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.themeComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.changeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
+            this.kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
+            this.kryptonManager1 = new Krypton.Toolkit.KryptonManager(this.components);
             this.liveRunLogControl1 = new Elucidate.Controls.RunControl();
             ((System.ComponentModel.ISupportInitialize)(this.tabCoveragePage)).BeginInit();
             this.tabCoveragePage.SuspendLayout();
@@ -96,7 +96,7 @@ namespace Elucidate
             this.tabCoveragePage.Padding = new System.Windows.Forms.Padding(4);
             this.tabCoveragePage.Size = new System.Drawing.Size(1179, 631);
             this.tabCoveragePage.Text = "  Coverage  ";
-            this.tabCoveragePage.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.tabCoveragePage.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabCoveragePage.ToolTipTitle = "Page ToolTip";
             this.tabCoveragePage.UniqueName = "83F1AC53801E4FDCCBA828F2D020A11A";
             // 
@@ -122,7 +122,7 @@ namespace Elucidate
             this.tabSchedulePage.Padding = new System.Windows.Forms.Padding(4);
             this.tabSchedulePage.Size = new System.Drawing.Size(1179, 558);
             this.tabSchedulePage.Text = "Schedule";
-            this.tabSchedulePage.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.tabSchedulePage.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabSchedulePage.ToolTipTitle = "Page ToolTip";
             this.tabSchedulePage.UniqueName = "D08ABA17CB8242C412B34C6B2FB9731D";
             // 
@@ -148,7 +148,7 @@ namespace Elucidate
             this.tabCommonOperations.Name = "tabCommonOperations";
             this.tabCommonOperations.Size = new System.Drawing.Size(1179, 310);
             this.tabCommonOperations.Text = "  Common SnapRaid  ";
-            this.tabCommonOperations.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.tabCommonOperations.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabCommonOperations.ToolTipTitle = "Page ToolTip";
             this.tabCommonOperations.UniqueName = "C7A4A748B4E3458CC28B53AD5B684A5E";
             // 
@@ -173,32 +173,32 @@ namespace Elucidate
             // 
             // tabControl
             // 
-            this.tabControl.Button.ButtonDisplayLogic = ComponentFactory.Krypton.Navigator.ButtonDisplayLogic.None;
-            this.tabControl.Button.CloseButtonAction = ComponentFactory.Krypton.Navigator.CloseButtonAction.None;
-            this.tabControl.Button.CloseButtonDisplay = ComponentFactory.Krypton.Navigator.ButtonDisplay.Hide;
+            this.tabControl.Button.ButtonDisplayLogic = Krypton.Navigator.ButtonDisplayLogic.None;
+            this.tabControl.Button.CloseButtonAction = Krypton.Navigator.CloseButtonAction.None;
+            this.tabControl.Button.CloseButtonDisplay = Krypton.Navigator.ButtonDisplay.Hide;
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl.Group.GroupBackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.PanelClient;
-            this.tabControl.Group.GroupBorderStyle = ComponentFactory.Krypton.Toolkit.PaletteBorderStyle.ControlClient;
-            this.tabControl.Header.HeaderStyleBar = ComponentFactory.Krypton.Toolkit.HeaderStyle.Secondary;
-            this.tabControl.Header.HeaderStylePrimary = ComponentFactory.Krypton.Toolkit.HeaderStyle.Primary;
-            this.tabControl.Header.HeaderStyleSecondary = ComponentFactory.Krypton.Toolkit.HeaderStyle.Secondary;
+            this.tabControl.Group.GroupBackStyle = Krypton.Toolkit.PaletteBackStyle.PanelClient;
+            this.tabControl.Group.GroupBorderStyle = Krypton.Toolkit.PaletteBorderStyle.ControlClient;
+            this.tabControl.Header.HeaderStyleBar = Krypton.Toolkit.HeaderStyle.Secondary;
+            this.tabControl.Header.HeaderStylePrimary = Krypton.Toolkit.HeaderStyle.Primary;
+            this.tabControl.Header.HeaderStyleSecondary = Krypton.Toolkit.HeaderStyle.Secondary;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl.Name = "tabControl";
-            this.tabControl.PageBackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.PanelClient;
-            this.tabControl.Pages.AddRange(new ComponentFactory.Krypton.Navigator.KryptonPage[] {
+            this.tabControl.PageBackStyle = Krypton.Toolkit.PaletteBackStyle.PanelClient;
+            this.tabControl.Pages.AddRange(new Krypton.Navigator.KryptonPage[] {
             this.tabCommonOperations,
             this.tabLogs,
             this.tabCoveragePage,
             this.tabSchedulePage,
             this.tabRecoverFiles});
-            this.tabControl.Panel.PanelBackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.PanelClient;
+            this.tabControl.Panel.PanelBackStyle = Krypton.Toolkit.PaletteBackStyle.PanelClient;
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1181, 346);
             this.tabControl.StateCommon.Tab.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl.StateCommon.Tab.Content.ShortText.ImageStyle = ComponentFactory.Krypton.Toolkit.PaletteImageStyle.Inherit;
-            this.tabControl.StateCommon.Tab.Content.ShortText.Trim = ComponentFactory.Krypton.Toolkit.PaletteTextTrim.Inherit;
+            this.tabControl.StateCommon.Tab.Content.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.Inherit;
+            this.tabControl.StateCommon.Tab.Content.ShortText.Trim = Krypton.Toolkit.PaletteTextTrim.Inherit;
             this.tabControl.TabIndex = 4;
             this.tabControl.SelectedPageChanged += new System.EventHandler(this.tabControl_SelectedPageChanged);
             // 
@@ -214,7 +214,7 @@ namespace Elucidate
             this.tabLogs.Padding = new System.Windows.Forms.Padding(4);
             this.tabLogs.Size = new System.Drawing.Size(1179, 631);
             this.tabLogs.Text = "Log History";
-            this.tabLogs.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.tabLogs.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabLogs.ToolTipTitle = "Page ToolTip";
             this.tabLogs.UniqueName = "2D998176807546A076BCA98AEA36EF48";
             // 
@@ -242,7 +242,7 @@ namespace Elucidate
             this.tabRecoverFiles.Padding = new System.Windows.Forms.Padding(4);
             this.tabRecoverFiles.Size = new System.Drawing.Size(1179, 310);
             this.tabRecoverFiles.Text = "Recover Files";
-            this.tabRecoverFiles.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.tabRecoverFiles.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabRecoverFiles.ToolTipTitle = "Page ToolTip";
             this.tabRecoverFiles.UniqueName = "B4F3B50AB11048A05B80EE8A2A5EDC3A";
             // 
@@ -366,7 +366,7 @@ namespace Elucidate
             // 
             // kryptonManager1
             // 
-            this.kryptonManager1.GlobalPaletteMode = ComponentFactory.Krypton.Toolkit.PaletteModeManager.Office2010Blue;
+            this.kryptonManager1.GlobalPaletteMode = Krypton.Toolkit.PaletteModeManager.Office2010Blue;
             // 
             // liveRunLogControl1
             // 
@@ -426,15 +426,15 @@ namespace Elucidate
 
         #endregion
         private ToolTip toolTip1;
-        private ComponentFactory.Krypton.Navigator.KryptonNavigator tabControl;
-        private ComponentFactory.Krypton.Navigator.KryptonPage tabCommonOperations;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel logPanel;
-        private ComponentFactory.Krypton.Navigator.KryptonPage tabSchedulePage;
+        private Krypton.Navigator.KryptonNavigator tabControl;
+        private Krypton.Navigator.KryptonPage tabCommonOperations;
+        private Krypton.Toolkit.KryptonPanel logPanel;
+        private Krypton.Navigator.KryptonPage tabSchedulePage;
         private Schedule tpSchedule;
-        private ComponentFactory.Krypton.Navigator.KryptonPage tabCoveragePage;
-        private ComponentFactory.Krypton.Navigator.KryptonPage tabLogs;
+        private Krypton.Navigator.KryptonPage tabCoveragePage;
+        private Krypton.Navigator.KryptonPage tabLogs;
         private LogsViewerControl logsViewerControl;
-        private ComponentFactory.Krypton.Navigator.KryptonPage tabRecoverFiles;
+        private Krypton.Navigator.KryptonPage tabRecoverFiles;
         private Recover recover1;
         private ToolStripMenuItem helpToolStripMenuItem;
         private MenuStrip menuStrip1;
@@ -446,8 +446,8 @@ namespace Elucidate
         private ToolStripMenuItem changeLogToolStripMenuItem;
         private ToolStripMenuItem editConfigDirectlyToolStripMenuItem;
         private ToolStripMenuItem showMeTheLatestReleaseStatsToolStripMenuItem;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel1;
-        private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
+        private Krypton.Toolkit.KryptonPanel kryptonPanel1;
+        private Krypton.Toolkit.KryptonManager kryptonManager1;
         private ToolStripMenuItem changeTheThemeToolStripMenuItem;
         private ToolStripComboBox themeComboBox;
         internal RunControl liveRunLogControl1;

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Schedule));
-            this.panelTaskView = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.kryptonLinkLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLinkLabel();
-            this.kryptonWrapLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonWrapLabel();
+            this.panelTaskView = new Krypton.Toolkit.KryptonPanel();
+            this.kryptonLinkLabel1 = new Krypton.Toolkit.KryptonLinkLabel();
+            this.kryptonWrapLabel1 = new Krypton.Toolkit.KryptonWrapLabel();
             ((System.ComponentModel.ISupportInitialize)(this.panelTaskView)).BeginInit();
             this.panelTaskView.SuspendLayout();
             this.SuspendLayout();
@@ -52,7 +52,7 @@
             // 
             // kryptonLinkLabel1
             // 
-            this.kryptonLinkLabel1.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldPanel;
+            this.kryptonLinkLabel1.LabelStyle = Krypton.Toolkit.LabelStyle.BoldPanel;
             this.kryptonLinkLabel1.Location = new System.Drawing.Point(23, 14);
             this.kryptonLinkLabel1.Name = "kryptonLinkLabel1";
             this.kryptonLinkLabel1.Size = new System.Drawing.Size(406, 20);
@@ -87,8 +87,8 @@
         }
 
         #endregion
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel panelTaskView;
-        private ComponentFactory.Krypton.Toolkit.KryptonLinkLabel kryptonLinkLabel1;
-        private ComponentFactory.Krypton.Toolkit.KryptonWrapLabel kryptonWrapLabel1;
+        private Krypton.Toolkit.KryptonPanel panelTaskView;
+        private Krypton.Toolkit.KryptonLinkLabel kryptonLinkLabel1;
+        private Krypton.Toolkit.KryptonWrapLabel kryptonWrapLabel1;
     }
 }

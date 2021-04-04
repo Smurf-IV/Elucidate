@@ -3,9 +3,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+
 using Elucidate.wyDay.Controls;
 
-// Stuff Resdharper comment here to prevent it trying to remove designer reflection methods
+// Stuff Resharper comment here to prevent it trying to remove designer reflection methods
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedMember.Global

@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="StorageUtil.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ namespace Elucidate.HelperClasses
             return s;
             */
         }
-        
+
         public static ulong GetDriveSize(string path)
         {
             bool success = GetDiskFreeSpaceEx(
@@ -147,7 +147,7 @@ namespace Elucidate.HelperClasses
 
             return GetDriveSizes(sourcePaths);
         }
-        
+
         /// <summary>
         /// Gets the storage devices.
         /// </summary>
@@ -228,7 +228,7 @@ namespace Elucidate.HelperClasses
                         }
                         catch (Exception ex)
                         {
-                            Log.Warn(ex,"A storage device failed to enumerate.");
+                            Log.Warn(ex, "A storage device failed to enumerate.");
                         }
                     }
                 }
