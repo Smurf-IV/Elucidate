@@ -29,7 +29,7 @@
     <AssemblyInfoVersionSettings>YearStamp.MonthStamp.Increment.DayStamp</AssemblyInfoVersionSettings>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
     <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
-    <AssemblyVersion>2021.4.1029.4</AssemblyVersion>
+    <AssemblyVersion>2021.4.1030.4</AssemblyVersion>
     <UpdatePackageVersion>False</UpdatePackageVersion>
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
