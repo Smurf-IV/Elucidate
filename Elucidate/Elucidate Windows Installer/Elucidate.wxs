@@ -74,23 +74,53 @@
             </Component>
 
             <Component>
-                <File Source="$(var.MgtSource)\Krypton Docking.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Docking" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Krypton Navigator.dll" KeyPath="yes" >
+                <File Source="$(var.MgtSource)\Krypton.Navigator.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.Navigator" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\Krypton Toolkit.dll" KeyPath="yes" >
+                <File Source="$(var.MgtSource)\Krypton.Toolkit.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.Toolkit" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.NLog" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Buffers.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Buffers" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Collections.Immutable.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Collections.Immutable" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Memory.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Memory" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Numerics.Vectors.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Numerics.Vectors" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Reflection.Metadata.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Reflection.Metadata" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Runtime.CompilerServices.Unsafe" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Threading.Tasks.Extensions.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Threading.Tasks.Extensions" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
 

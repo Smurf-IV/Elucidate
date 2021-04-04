@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.Design;
 using System.Drawing;
 
-using ComponentFactory.Krypton.Toolkit;
-
 using ExtendedControls.ExtendedToolkit.Controls;
+
+using Krypton.Toolkit;
 
 namespace ExtendedControls.ExtendedToolkit.Designers
 {

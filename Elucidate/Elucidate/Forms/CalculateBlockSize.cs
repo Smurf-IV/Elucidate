@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="CalculateBlockSize.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using ComponentFactory.Krypton.Toolkit;
-
 using Elucidate.Shared;
+
+using Krypton.Toolkit;
 
 using Microsoft.VisualBasic.Devices;
 
@@ -72,9 +72,10 @@ namespace Elucidate
                     min /= (ulong)(numericUpDown1.Value * i);
                     max /= (ulong)(numericUpDown1.Value * i);
 
-                    // Any smaller than 256 is not really recommended - so let's make it the minimum
-                    min = (min < 256) ? 256 : min;
-                    max = (max < 256) ? 256 : max;
+                    // Any smaller than 32 is not really recommended - so let's make it the minimum
+                    // https://sourceforge.net/p/snapraid/discussion/1677233/thread/927d6038/#c1f6
+                    min = (min < 32) ? 32 : min;
+                    max = (max < 23) ? 32 : max;
 
                     txtBlockSizeByCoverageMin.Text = FindNextPow2(min);
                     txtBlockSizeByCoverageMax.Text = FindNextPow2(max);
@@ -160,8 +161,8 @@ namespace Elucidate
                     foreach (string path in SnapShotSources)
                     {
                         Util.SourcePathFreeBytesAvailable(
-                            path, 
-                            out freeBytesAvailable, 
+                            path,
+                            out freeBytesAvailable,
                             out pathUsedBytes,
                             out rootBytesNotCoveredByPath);
 

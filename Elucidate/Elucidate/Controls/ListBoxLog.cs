@@ -125,7 +125,7 @@ namespace Elucidate.Controls
                 }
 
                 Size sizeF = TextRenderer.MeasureText(e.Graphics, logEvent.Message, listBoxInt.Font);
-                
+
                 e.ItemHeight = sizeF.Height + 2;
                 if (listBoxInt.HorizontalExtent < sizeF.Width)
                 {
@@ -233,30 +233,30 @@ namespace Elucidate.Controls
                 // Now lock in case the timer is overlapping !
                 alreadyDequing = true;
 
-                listBoxInt.BeginInvoke((MethodInvoker) delegate
-                {
+                listBoxInt.BeginInvoke((MethodInvoker)delegate
+               {
                     //some stuffs for best performance
                     listBoxInt.BeginUpdate();
 
                     // find the style to use
                     while (pendingLogMessages.TryDequeue(out LogString log))
-                    {
-                        listBoxInt.Items.Add(log);
-                    }
+                   {
+                       listBoxInt.Items.Add(log);
+                   }
 
-                    if (listBoxInt.Items.Count > maxEntriesInListBox)
-                    {
-                        listBoxInt.Items.RemoveAt(0);
-                    }
+                   if (listBoxInt.Items.Count > maxEntriesInListBox)
+                   {
+                       listBoxInt.Items.RemoveAt(0);
+                   }
 
-                    if (!Paused)
-                    {
-                        listBoxInt.TopIndex = listBoxInt.Items.Count - 1;
-                    }
+                   if (!Paused)
+                   {
+                       listBoxInt.TopIndex = listBoxInt.Items.Count - 1;
+                   }
 
-                    listBoxInt.EndUpdate();
-                    alreadyDequing = false;
-                }
+                   listBoxInt.EndUpdate();
+                   alreadyDequing = false;
+               }
                 );
             }
             catch (Exception ex)

@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="LogsViewerControl.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2018-2020  Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
+//  Copyright (C) 2018-2021  Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by

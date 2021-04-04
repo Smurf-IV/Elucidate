@@ -5,10 +5,10 @@ using System.Drawing.Design;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-using ComponentFactory.Krypton.Toolkit;
-
 using ExtendedControls.ExtendedToolkit.Values;
 using ExtendedControls.ExtendedToolkit.View_Draw;
+
+using Krypton.Toolkit;
 
 namespace ExtendedControls.ExtendedToolkit.Controls
 {

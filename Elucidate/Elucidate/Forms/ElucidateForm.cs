@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ElucidateForm.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -34,11 +34,11 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
-using ComponentFactory.Krypton.Navigator;
-using ComponentFactory.Krypton.Toolkit;
-
 using Elucidate.Forms;
 using Elucidate.Shared;
+
+using Krypton.Navigator;
+using Krypton.Toolkit;
 
 using NLog;
 
@@ -83,7 +83,7 @@ namespace Elucidate
 
         private void LiveRunLogControl_TaskStarted(object sender, EventArgs e)
         {
-            BeginInvoke((MethodInvoker) (() => liveLog.BringToFront()));
+            BeginInvoke((MethodInvoker)(() => liveLog.BringToFront()));
         }
 
         private void ElucidateForm_Load(object sender, EventArgs e)
@@ -99,7 +99,7 @@ namespace Elucidate
             )
             {
                 commonTab.PerformArgs(args);
-                commonTab.SetCommonButtonsEnabledState( false ); // Prevent button pushing !
+                commonTab.SetCommonButtonsEnabledState(false); // Prevent button pushing !
             }
             else
             {

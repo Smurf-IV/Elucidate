@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
 //  <copyright file="RunControl.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2018-2020 Smurf-IV & BlueBlock 2018
+//  Copyright (C) 2018-2021 Smurf-IV & BlueBlock 2018
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,9 +32,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-using ComponentFactory.Krypton.Toolkit;
-
 using Elucidate.wyDay.Controls;
+
+using Krypton.Toolkit;
 
 using NLog;
 
@@ -317,7 +317,7 @@ namespace Elucidate.Controls
                 process.Start();
 
                 // Redirect the output stream of the child process.
-                ThreadObject threadObject = new ThreadObject {BgdWorker = worker, CmdProcess = process};
+                ThreadObject threadObject = new ThreadObject { BgdWorker = worker, CmdProcess = process };
                 ThreadPool.QueueUserWorkItem(o => ReadStandardOutput(threadObject));
                 ThreadPool.QueueUserWorkItem(o => ReadStandardError(threadObject));
 
@@ -326,7 +326,7 @@ namespace Elucidate.Controls
                     mreProcessExit.Set();
                 }
 
-                while (!WaitHandle.WaitAll(new WaitHandle[] {mreErrorDone, mreOutputDone, mreProcessExit}, 250))
+                while (!WaitHandle.WaitAll(new WaitHandle[] { mreErrorDone, mreOutputDone, mreProcessExit }, 250))
                 {
                     if (process.HasExited)
                     {
@@ -349,7 +349,7 @@ namespace Elucidate.Controls
                         {
                             process.Resume();
                         }
-                        else if ( requested == ProcessPriorityClass.BelowNormal )
+                        else if (requested == ProcessPriorityClass.BelowNormal)
                         {
                             process.Suspend();
                         }
@@ -605,7 +605,7 @@ namespace Elucidate.Controls
                 return;
             }
 
-            KryptonComboBox control = (KryptonComboBox) sender;
+            KryptonComboBox control = (KryptonComboBox)sender;
 
             string strSelected = control.SelectedItem.ToString();
 

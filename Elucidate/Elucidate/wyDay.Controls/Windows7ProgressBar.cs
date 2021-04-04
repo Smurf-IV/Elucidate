@@ -2,6 +2,7 @@
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Windows.Forms;
+
 using wyDay.Controls;
 
 //Windows7ProgressBar v1.0, created by Wyatt O'Day

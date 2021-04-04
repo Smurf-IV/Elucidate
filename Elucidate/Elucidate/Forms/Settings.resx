@@ -128,7 +128,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACS
-        KQAAAk1TRnQBSQFMAgEBCwEAATQBBgE0AQYBEgEAARIBAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFI
+        KQAAAk1TRnQBSQFMAgEBCwEAAUQBBgFEAQYBEgEAARIBAAT/AREBAAj/AUIBTQE2BwABNgMAASgDAAFI
         AwABNgMAAQEBAAEQBQABYAEePAAB9wFeARABQgGMATEBqQE9AeIBVQHiAVUBwgFVAYsBMQGMATEBzgE5
         AbUBVgFaAWsQAAHWAV4B7wFFAYwBPQH3AV4BWgFrAYwBPQGtAT0B1gFaMAABWgFrAdYBWgHWAVoBGAFj
         ATkBZwFaAWscAAHWAVoBcwFOAVIBSgGQAVYBCwFzAQoBcwHgAVkBUAFKAVICSgEpAe8BPQEYAWMIAAEY
@@ -322,8 +322,15 @@
   </metadata>
   <data name="numBlockSizeKB.ToolTip" xml:space="preserve">
     <value>You could increase this value if you do not have enough RAM memory to run SnapRAID
-As a rule of thumb, with 4GB or more memory use the default 256, with 2GB use 512, and with 1GB use 1024.
-Block Size must be a power of 2 with a minimum value of 256 and a maximum value of 16384(16KB).</value>
+As a rule of thumb, with 4GB or more memory use the default 256 (Or lower), with 2GB use 512, and with 1GB use 1024.
+Block Size must be a power of 2 with a minimum value of 32 and a maximum value of 16384(16KB).
+https://sourceforge.net/p/snapraid/discussion/1677233/thread/927d6038/#c1f6</value>
+  </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value>You could increase this value if you do not have enough RAM memory to run SnapRAID
+As a rule of thumb, with 4GB or more memory use the default 256 (Or lower), with 2GB use 512, and with 1GB use 1024.
+Block Size must be a power of 2 with a minimum value of 32 and a maximum value of 16384(16KB).
+https://sourceforge.net/p/snapraid/discussion/1677233/thread/927d6038/#c1f6</value>
   </data>
   <metadata name="SnapShotsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>9, 16</value>

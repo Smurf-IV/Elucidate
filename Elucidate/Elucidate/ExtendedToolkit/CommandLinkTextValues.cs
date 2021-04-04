@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
-using ComponentFactory.Krypton.Toolkit;
+
+using Krypton.Toolkit;
 
 namespace ExtendedControls.ExtendedToolkit.Values
 {

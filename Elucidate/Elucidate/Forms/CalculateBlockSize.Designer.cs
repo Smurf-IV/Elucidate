@@ -31,22 +31,22 @@ namespace Elucidate
       private void InitializeComponent()
       {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalculateBlockSize));
-            this.groupBox1 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
-            this.label2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.numericUpDown1 = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
-            this.label1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.groupBox2 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
-            this.txtBlockSizeByCoverageMax = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.label3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.txtBlockSizeByCoverageMin = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.btnCoverage = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.groupBox3 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
-            this.txtBlockSizeByFileCountMax = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.lblBadNews = new ComponentFactory.Krypton.Toolkit.KryptonWrapLabel();
-            this.txtBlockSizeByFileCountMin = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-            this.btnFileCount = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.richTextBox1 = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
-            this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
+            this.groupBox1 = new Krypton.Toolkit.KryptonGroupBox();
+            this.label2 = new Krypton.Toolkit.KryptonLabel();
+            this.numericUpDown1 = new Krypton.Toolkit.KryptonNumericUpDown();
+            this.label1 = new Krypton.Toolkit.KryptonLabel();
+            this.groupBox2 = new Krypton.Toolkit.KryptonGroupBox();
+            this.txtBlockSizeByCoverageMax = new Krypton.Toolkit.KryptonTextBox();
+            this.label3 = new Krypton.Toolkit.KryptonLabel();
+            this.txtBlockSizeByCoverageMin = new Krypton.Toolkit.KryptonTextBox();
+            this.btnCoverage = new Krypton.Toolkit.KryptonButton();
+            this.groupBox3 = new Krypton.Toolkit.KryptonGroupBox();
+            this.txtBlockSizeByFileCountMax = new Krypton.Toolkit.KryptonTextBox();
+            this.lblBadNews = new Krypton.Toolkit.KryptonWrapLabel();
+            this.txtBlockSizeByFileCountMin = new Krypton.Toolkit.KryptonTextBox();
+            this.btnFileCount = new Krypton.Toolkit.KryptonButton();
+            this.richTextBox1 = new Krypton.Toolkit.KryptonRichTextBox();
+            this.kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
             ((System.ComponentModel.ISupportInitialize)(this.groupBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupBox1.Panel)).BeginInit();
             this.groupBox1.Panel.SuspendLayout();
@@ -81,15 +81,16 @@ namespace Elucidate
             // 
             // label2
             // 
-            this.label2.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.label2.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label2.Location = new System.Drawing.Point(181, 2);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(324, 68);
+            this.label2.Size = new System.Drawing.Size(402, 84);
             this.label2.TabIndex = 2;
             this.label2.Values.Text = resources.GetString("label2.Values.Text");
             // 
             // numericUpDown1
             // 
+            this.numericUpDown1.AllowDecimals = true;
             this.numericUpDown1.DecimalPlaces = 1;
             this.numericUpDown1.Increment = new decimal(new int[] {
             5,
@@ -108,7 +109,7 @@ namespace Elucidate
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(74, 22);
+            this.numericUpDown1.Size = new System.Drawing.Size(74, 26);
             this.numericUpDown1.TabIndex = 1;
             this.numericUpDown1.Value = new decimal(new int[] {
             128,
@@ -120,9 +121,9 @@ namespace Elucidate
             // 
             this.label1.Location = new System.Drawing.Point(0, 5);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 36);
-            this.label1.StateCommon.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.label1.StateCommon.ShortText.MultiLineH = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Far;
+            this.label1.Size = new System.Drawing.Size(121, 44);
+            this.label1.StateCommon.ShortText.MultiLine = Krypton.Toolkit.InheritBool.True;
+            this.label1.StateCommon.ShortText.MultiLineH = Krypton.Toolkit.PaletteRelativeAlign.Far;
             this.label1.TabIndex = 0;
             this.label1.Values.Text = "&System Memory\r\n(GB):";
             // 
@@ -148,15 +149,15 @@ namespace Elucidate
             this.txtBlockSizeByCoverageMax.Location = new System.Drawing.Point(101, 31);
             this.txtBlockSizeByCoverageMax.Name = "txtBlockSizeByCoverageMax";
             this.txtBlockSizeByCoverageMax.ReadOnly = true;
-            this.txtBlockSizeByCoverageMax.Size = new System.Drawing.Size(74, 20);
+            this.txtBlockSizeByCoverageMax.Size = new System.Drawing.Size(74, 27);
             this.txtBlockSizeByCoverageMax.TabIndex = 4;
             // 
             // label3
             // 
-            this.label3.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.label3.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label3.Location = new System.Drawing.Point(181, 1);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(373, 52);
+            this.label3.Size = new System.Drawing.Size(464, 64);
             this.label3.TabIndex = 3;
             this.label3.Values.Text = "SnapRAID requires about TS*28 / BS bytes of RAM memory to run.\r\nWhere TS is the t" +
     "otal size in bytes of your disk array, \r\nand BS is the block size in bytes. ";
@@ -167,7 +168,7 @@ namespace Elucidate
             this.txtBlockSizeByCoverageMin.Location = new System.Drawing.Point(101, 4);
             this.txtBlockSizeByCoverageMin.Name = "txtBlockSizeByCoverageMin";
             this.txtBlockSizeByCoverageMin.ReadOnly = true;
-            this.txtBlockSizeByCoverageMin.Size = new System.Drawing.Size(74, 20);
+            this.txtBlockSizeByCoverageMin.Size = new System.Drawing.Size(74, 27);
             this.txtBlockSizeByCoverageMin.TabIndex = 1;
             // 
             // btnCoverage
@@ -175,7 +176,7 @@ namespace Elucidate
             this.btnCoverage.Location = new System.Drawing.Point(1, 3);
             this.btnCoverage.Name = "btnCoverage";
             this.btnCoverage.Size = new System.Drawing.Size(98, 48);
-            this.btnCoverage.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.btnCoverage.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnCoverage.TabIndex = 0;
             this.btnCoverage.Values.ExtraText = "&Coverage";
             this.btnCoverage.Values.Text = "Calculate via";
@@ -203,7 +204,7 @@ namespace Elucidate
             this.txtBlockSizeByFileCountMax.Location = new System.Drawing.Point(101, 30);
             this.txtBlockSizeByFileCountMax.Name = "txtBlockSizeByFileCountMax";
             this.txtBlockSizeByFileCountMax.ReadOnly = true;
-            this.txtBlockSizeByFileCountMax.Size = new System.Drawing.Size(74, 20);
+            this.txtBlockSizeByFileCountMax.Size = new System.Drawing.Size(74, 27);
             this.txtBlockSizeByFileCountMax.TabIndex = 5;
             // 
             // lblBadNews
@@ -211,7 +212,7 @@ namespace Elucidate
             this.lblBadNews.AutoSize = false;
             this.lblBadNews.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblBadNews.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(57)))), ((int)(((byte)(91)))));
-            this.lblBadNews.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.NormalPanel;
+            this.lblBadNews.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.lblBadNews.Location = new System.Drawing.Point(181, 1);
             this.lblBadNews.Name = "lblBadNews";
             this.lblBadNews.Size = new System.Drawing.Size(400, 62);
@@ -223,7 +224,7 @@ namespace Elucidate
             this.txtBlockSizeByFileCountMin.Location = new System.Drawing.Point(101, 3);
             this.txtBlockSizeByFileCountMin.Name = "txtBlockSizeByFileCountMin";
             this.txtBlockSizeByFileCountMin.ReadOnly = true;
-            this.txtBlockSizeByFileCountMin.Size = new System.Drawing.Size(74, 20);
+            this.txtBlockSizeByFileCountMin.Size = new System.Drawing.Size(74, 27);
             this.txtBlockSizeByFileCountMin.TabIndex = 1;
             // 
             // btnFileCount
@@ -231,7 +232,7 @@ namespace Elucidate
             this.btnFileCount.Location = new System.Drawing.Point(3, 2);
             this.btnFileCount.Name = "btnFileCount";
             this.btnFileCount.Size = new System.Drawing.Size(92, 48);
-            this.btnFileCount.StateCommon.Content.ShortText.TextV = ComponentFactory.Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.btnFileCount.StateCommon.Content.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.btnFileCount.TabIndex = 0;
             this.btnFileCount.Values.ExtraText = "&File Count";
             this.btnFileCount.Values.Text = "Calculate via";
@@ -261,7 +262,7 @@ namespace Elucidate
             // 
             // CalculateBlockSize
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(588, 491);
             this.Controls.Add(this.kryptonPanel1);
@@ -293,21 +294,21 @@ namespace Elucidate
 
       #endregion
 
-      private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox1;
-      private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown numericUpDown1;
-      private ComponentFactory.Krypton.Toolkit.KryptonLabel label1;
-      private ComponentFactory.Krypton.Toolkit.KryptonLabel label2;
-      private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox2;
-      private ComponentFactory.Krypton.Toolkit.KryptonLabel label3;
-      private ComponentFactory.Krypton.Toolkit.KryptonTextBox txtBlockSizeByCoverageMin;
-      private ComponentFactory.Krypton.Toolkit.KryptonButton btnCoverage;
-      private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox3;
-      private ComponentFactory.Krypton.Toolkit.KryptonTextBox txtBlockSizeByFileCountMin;
-      private ComponentFactory.Krypton.Toolkit.KryptonButton btnFileCount;
-      private ComponentFactory.Krypton.Toolkit.KryptonWrapLabel lblBadNews;
-      private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox richTextBox1;
-      private ComponentFactory.Krypton.Toolkit.KryptonTextBox txtBlockSizeByCoverageMax;
-      private ComponentFactory.Krypton.Toolkit.KryptonTextBox txtBlockSizeByFileCountMax;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel1;
+      private Krypton.Toolkit.KryptonGroupBox groupBox1;
+      private Krypton.Toolkit.KryptonNumericUpDown numericUpDown1;
+      private Krypton.Toolkit.KryptonLabel label1;
+      private Krypton.Toolkit.KryptonLabel label2;
+      private Krypton.Toolkit.KryptonGroupBox groupBox2;
+      private Krypton.Toolkit.KryptonLabel label3;
+      private Krypton.Toolkit.KryptonTextBox txtBlockSizeByCoverageMin;
+      private Krypton.Toolkit.KryptonButton btnCoverage;
+      private Krypton.Toolkit.KryptonGroupBox groupBox3;
+      private Krypton.Toolkit.KryptonTextBox txtBlockSizeByFileCountMin;
+      private Krypton.Toolkit.KryptonButton btnFileCount;
+      private Krypton.Toolkit.KryptonWrapLabel lblBadNews;
+      private Krypton.Toolkit.KryptonRichTextBox richTextBox1;
+      private Krypton.Toolkit.KryptonTextBox txtBlockSizeByCoverageMax;
+      private Krypton.Toolkit.KryptonTextBox txtBlockSizeByFileCountMax;
+        private Krypton.Toolkit.KryptonPanel kryptonPanel1;
     }
 }

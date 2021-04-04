@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="CoveragePath.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2018-2020 Smurf-IV & BlueBlock 2018
+//  Copyright (C) 2018-2021 Smurf-IV & BlueBlock 2018
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,9 +37,9 @@ using System.Windows.Forms;
 
 using Alphaleonis.Win32.Filesystem;
 
-using ComponentFactory.Krypton.Toolkit;
-
 using Elucidate.HelperClasses;
+
+using Krypton.Toolkit;
 
 using NLog;
 
@@ -77,9 +77,9 @@ namespace Elucidate
         public static string FormatSnapRaidCommandArgs(string command, out string appPath)
         {
             // Format according to this: http://snapraid.sourceforge.net/manual.html
-            
+
             appPath = Properties.Settings.Default.SnapRAIDFileLocation;
-            
+
             // Find the meanings @ http://snapraid.sourceforge.net/manual.html
             // status|smart|up|down|diff|sync|scrub|fix|check|list|dup|pool|devices|touch|rehash
 
@@ -101,7 +101,7 @@ namespace Elucidate
 
             return args.ToString();
         }
-        
+
         public static double RoundUpToDecimalPlace(double numToRound, int decimalPlace)
         {
             if (decimalPlace < 1)
@@ -156,7 +156,7 @@ namespace Elucidate
         {
             Process process = null;
 
-            ProcessStartInfo processStartInfo = new ProcessStartInfo {FileName = fileName};
+            ProcessStartInfo processStartInfo = new ProcessStartInfo { FileName = fileName };
 
             if (Environment.OSVersion.Version.Major >= 6) // Windows Vista or higher
             {
@@ -224,8 +224,8 @@ namespace Elucidate
         }
 
         public static void SourcePathFreeBytesAvailable(
-            string path, 
-            out ulong freeBytesAvailable, 
+            string path,
+            out ulong freeBytesAvailable,
             out ulong pathUsedBytes,
             out ulong rootBytesNotCoveredByPath)
         {
@@ -237,7 +237,7 @@ namespace Elucidate
             GetDiskFreeSpaceExW(rootPath, out freeBytesAvailable, out ulong totalBytes, out ulong num3);
 
             ulong driveUsedBytes = totalBytes - freeBytesAvailable;
-            
+
             rootBytesNotCoveredByPath = 0;
 
             Log.Debug($"rootPath {rootPath} freeBytesAvailable {freeBytesAvailable} totalBytes {totalBytes} num3 {num3}");
@@ -253,7 +253,7 @@ namespace Elucidate
                 Log.Debug("Need to perform some calculations of Path usage. TotalBytes[{0}]", totalBytes);
 
                 pathUsedBytes = DirSize(new DirectoryInfo(path));
-                
+
                 if (pathUsedBytes < driveUsedBytes) // Might be driven down a symlink/junction/ softlink path or file
                 {
                     rootBytesNotCoveredByPath = driveUsedBytes - pathUsedBytes;
@@ -262,7 +262,7 @@ namespace Elucidate
         }
 
     }
-    
+
     internal static class Enumerator
     {
         public static ulong Sum<T>(this IEnumerable<T> source, Func<T, ulong> selector)

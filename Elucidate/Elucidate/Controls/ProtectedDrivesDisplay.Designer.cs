@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.driveGrid = new ComponentFactory.Krypton.Toolkit.KryptonDataGridView();
-            this.colPath = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewTextBoxColumn();
-            this.colName = new ComponentFactory.Krypton.Toolkit.KryptonDataGridViewTextBoxColumn();
+            this.kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
+            this.driveGrid = new Krypton.Toolkit.KryptonDataGridView();
+            this.colPath = new Krypton.Toolkit.KryptonDataGridViewTextBoxColumn();
+            this.colName = new Krypton.Toolkit.KryptonDataGridViewTextBoxColumn();
             this.colDriveSpace = new Elucidate.Controls.DataGridViewTripleValueBarColumn();
             this.colDetails = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).BeginInit();
@@ -127,10 +127,10 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel1;
-        internal ComponentFactory.Krypton.Toolkit.KryptonDataGridView driveGrid;
-        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewTextBoxColumn colPath;
-        private ComponentFactory.Krypton.Toolkit.KryptonDataGridViewTextBoxColumn colName;
+        private Krypton.Toolkit.KryptonPanel kryptonPanel1;
+        internal Krypton.Toolkit.KryptonDataGridView driveGrid;
+        private Krypton.Toolkit.KryptonDataGridViewTextBoxColumn colPath;
+        private Krypton.Toolkit.KryptonDataGridViewTextBoxColumn colName;
         private DataGridViewTripleValueBarColumn colDriveSpace;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDetails;
     }
