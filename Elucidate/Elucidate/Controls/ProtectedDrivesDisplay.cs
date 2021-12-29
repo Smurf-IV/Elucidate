@@ -23,7 +23,6 @@
 #endregion Copyright (C)
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -89,11 +88,11 @@ namespace Elucidate.Controls
             {
                 driveGrid.Rows.RemoveAt(0);
             }
-            List<CoveragePath> pathsOfInterest = srConfig.GetPathsOfInterest();
+            var pathsOfInterest = srConfig.GetPathsOfInterest();
             cancelTokenSrc = new CancellationTokenSource();
             if (excludeParity)
             {
-                foreach (CoveragePath coveragePath in pathsOfInterest.Where(s => s.PathType == PathTypeEnum.Source))
+                foreach (CoveragePath coveragePath in pathsOfInterest.Where(static s => s.PathType == PathTypeEnum.Source))
                 {
                     AddCoverage(coveragePath);
                 }
@@ -118,25 +117,25 @@ namespace Elucidate.Controls
         {
             if (!cancelTokenSrc.IsCancellationRequested)
             {
-                for (int index = e.RowIndex; index < e.RowIndex + e.RowCount; index++)
+                for (var index = e.RowIndex; index < e.RowIndex + e.RowCount; index++)
                 {
                     // Get data to perform drive usage display
                     DataGridViewRow row = driveGrid.Rows[index];
-                    StartDriveUsage(cancelTokenSrc.Token, row);
+                    StartDriveUsage(row, cancelTokenSrc.Token);
                 }
             }
         }
 
-        private void StartDriveUsage(CancellationToken token, DataGridViewRow row)
+        private void StartDriveUsage(DataGridViewRow row, CancellationToken token)
         {
             if (row.Tag is CoveragePath coveragePath)
             {
-                DirectoryInfo dirInfo = new DirectoryInfo(coveragePath.DirectoryPath, PathFormat.FullPath);
-                DriveInfo driveInfo = new DriveInfo(dirInfo.Root.FullName);
+                var dirInfo = new DirectoryInfo(coveragePath.DirectoryPath, PathFormat.FullPath);
+                var driveInfo = new DriveInfo(dirInfo.Root.FullName);
                 if (coveragePath.PathType == PathTypeEnum.Parity)
                 {
-                    long totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
-                    long protectedUse = File.Exists(coveragePath.FullPath) ? new FileInfo(coveragePath.FullPath).Length : 0L;
+                    var totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
+                    var protectedUse = File.Exists(coveragePath.FullPath) ? new FileInfo(coveragePath.FullPath).Length : 0L;
                     row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
                     row.Cells[3].Value = $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
                 }
@@ -153,9 +152,9 @@ namespace Elucidate.Controls
         private void ProcessProtectedSpace(DataGridViewRow row, DriveInfo driveInfo,
             DirectoryInfo dirInfo, CancellationToken token)
         {
-            long totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
+            var totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
 
-            ulong protectedUse = DirSize(dirInfo, token);
+            var protectedUse = DirSize(dirInfo, token);
             if (!token.IsCancellationRequested)
             {
                 BeginInvoke((MethodInvoker)delegate
@@ -168,9 +167,9 @@ namespace Elucidate.Controls
                    }
                    catch
                    {
-                        // Do nothing
-                        // Might be caused by fast closure
-                    }
+                       // Do nothing
+                       // Might be caused by fast closure
+                   }
                });
             }
 
@@ -192,15 +191,16 @@ namespace Elucidate.Controls
                     return 0UL;
                 }
 
-                return dir.EnumerateFiles().AsParallel().Sum(fi => (ulong)fi.Length)
+                return dir.EnumerateFiles().AsParallel().Sum(static fi => (ulong)fi.Length)
                        + dir.EnumerateDirectories()
-                           .Where(d => (d.Attributes & System.IO.FileAttributes.System) == 0 && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
+                           .Where(static d => (d.Attributes & System.IO.FileAttributes.System) == 0 
+                                              && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
                            .AsParallel()
                            .Sum(info => DirSize(info, token));
             }
             catch (UnauthorizedAccessException ex)
             {
-                Log.Warn(string.Concat("No Access to ", dir.FullName), ex);
+                Log.Warn(ex, @"No Access to [{0}]", dir.FullName);
             }
             catch (Exception ex)
             {

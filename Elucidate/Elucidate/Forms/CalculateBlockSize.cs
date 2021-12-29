@@ -46,9 +46,9 @@ namespace Elucidate
         {
             ParityTargets = new List<string>(2);
             InitializeComponent();
-            ulong available = new ComputerInfo().TotalPhysicalMemory;
-            const decimal TEST_VALUE = 1UL << 30; // Should be 1 GBytes 
-            numericUpDown1.Value = (available / TEST_VALUE) - 2; // remove some to allow for the OS
+            var available = new ComputerInfo().TotalPhysicalMemory;
+            const decimal testValue = 1UL << 30; // Should be 1 GBytes 
+            numericUpDown1.Value = (available / testValue) - 2; // remove some to allow for the OS
         }
 
         private void btnCoverage_Click(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace Elucidate
                 {
                     ulong min = 0;
                     ulong max = 0;
-                    foreach (string path in SnapShotSources)
+                    foreach (var path in SnapShotSources)
                     {
                         FindAndAddDisplaySizes(path, ref min, ref max);
                     }
@@ -107,7 +107,7 @@ namespace Elucidate
         private static void FindAndAddDisplaySizes(string path, ref ulong min, ref ulong max)
         {
             // ReSharper disable once UnusedVariable
-            Util.SourcePathFreeBytesAvailable(path, out ulong freeBytesAvailable, out ulong pathUsedBytes, out ulong rootBytesNotCoveredByPath);
+            Util.SourcePathFreeBytesAvailable(path, out var freeBytesAvailable, out var pathUsedBytes, out var rootBytesNotCoveredByPath);
 
             min += pathUsedBytes;
             max += pathUsedBytes;
@@ -136,12 +136,12 @@ namespace Elucidate
                     // 1st get the Minimum space that could be used for the Parity (Ignore the existing parity)
                     // For each parity target find min space after ignoring "existing" parity file
 
-                    ulong maxParitySizeAvailable = ulong.MaxValue;
-                    foreach (string parityTarget in ParityTargets)
+                    var maxParitySizeAvailable = ulong.MaxValue;
+                    foreach (var parityTarget in ParityTargets)
                     {
-                        string parityTargetDriveRoot = Directory.GetDirectoryRoot(parityTarget);
+                        var parityTargetDriveRoot = Directory.GetDirectoryRoot(parityTarget);
                         Util.SourcePathFreeBytesAvailable(parityTargetDriveRoot, out freeBytesAvailable, out pathUsedBytes, out rootBytesNotCoveredByPath);
-                        ulong currentTarget = freeBytesAvailable + pathUsedBytes;
+                        var currentTarget = freeBytesAvailable + pathUsedBytes;
                         if (maxParitySizeAvailable > currentTarget)
                         {
                             maxParitySizeAvailable = currentTarget;
@@ -158,7 +158,7 @@ namespace Elucidate
                     // Set Max value to the max of those
                     // 4 - Find the Max covered, 
                     ulong maxProjectedSource = 0;
-                    foreach (string path in SnapShotSources)
+                    foreach (var path in SnapShotSources)
                     {
                         Util.SourcePathFreeBytesAvailable(
                             path,
@@ -166,7 +166,7 @@ namespace Elucidate
                             out pathUsedBytes,
                             out rootBytesNotCoveredByPath);
 
-                        ulong currentSource = freeBytesAvailable + pathUsedBytes;
+                        var currentSource = freeBytesAvailable + pathUsedBytes;
 
                         if (maxProjectedSource < currentSource)
                         {
@@ -177,8 +177,8 @@ namespace Elucidate
                     // 5 - Make sure that Parity has enough room times the number of max files, 
                     // and add onto the left over space to find the min and max values.
 
-                    ulong minParityNeeded = maxProjectedSource + (minFiles * ulong.Parse(txtBlockSizeByCoverageMin.Text)) / 2;
-                    ulong maxParityNeeded = maxProjectedSource + (maxFiles * ulong.Parse(txtBlockSizeByCoverageMax.Text)) / 2;
+                    var minParityNeeded = maxProjectedSource + (minFiles * ulong.Parse(txtBlockSizeByCoverageMin.Text)) / 2;
+                    var maxParityNeeded = maxProjectedSource + (maxFiles * ulong.Parse(txtBlockSizeByCoverageMax.Text)) / 2;
                     if (maxParityNeeded > maxParitySizeAvailable)
                     {
                         lblBadNews.Text =

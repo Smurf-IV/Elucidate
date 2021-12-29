@@ -3,8 +3,6 @@
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
 
-    <?define MgtSource=$(sys.SOURCEFILEDIR)..\Elucidate\bin\x64\Release ?>
-
     <!-- do not change this ever !-->
     <?define UpgradeCode = "B015A529-67FB-4009-93A8-E7465CA191C1" ?>
 
@@ -52,11 +50,11 @@
         <Property Id="LOGVERBOSE" Value="1"/>
 
         <PropertyRef Id="NETFRAMEWORK45" />
-        <PropertyRef Id="WIX_IS_NETFRAMEWORK_472_OR_LATER_INSTALLED"/>
+        <PropertyRef Id="WIX_IS_NETFRAMEWORK_480_OR_LATER_INSTALLED"/>
 
         <!-- Taken from https://github.com/wixtoolset/issues/issues/5575#issuecomment-386223409 -->
-        <Condition Message="[ProductName] Requires .NET Framework 4.7.2 or later to be installed. Please install from the `Pre-Reqs` folder.">
-            <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_472_OR_LATER_INSTALLED]]>
+        <Condition Message="[ProductName] Requires .NET Framework 4.8 or later to be installed.">
+            <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_480_OR_LATER_INSTALLED]]>
         </Condition>
 
         <Condition Message="You need to be an administrator to install this product.">

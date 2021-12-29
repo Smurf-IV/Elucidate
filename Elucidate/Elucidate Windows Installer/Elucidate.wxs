@@ -4,7 +4,7 @@
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
     >
 
-    <?define MgtSource=$(sys.SOURCEFILEDIR)..\Elucidate\bin\Release ?>
+    <?define MgtSource=$(sys.SOURCEFILEDIR)..\Elucidate\bin\x64\Release\net48 ?>
 
     <Fragment>
 
@@ -18,7 +18,7 @@
             <Component Id="Client" Guid="5EBF3F29-9CF1-44FE-A94C-CC1B4FE09367" >
                 <File Id="InstallerIcon" Name="Elucidate.ico" Source="$(sys.SOURCEFILEDIR)..\Elucidate\Elucidate.ico" />
                 <File Id="Elucidate.exe" Name="Elucidate.exe" Source="$(var.MgtSource)\Elucidate.exe" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Elucidate" Platform="all" Priority="1" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.Elucidate" Platform="64bit" Priority="1" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <!-- Event Source creation for all OS with .NET 4 Full -->
@@ -39,48 +39,48 @@
 
             <Component>
                 <File Source="$(var.MgtSource)\AlphaFS.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.AlphaFS" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.AlphaFS" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\ByteSize.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.ByteSize" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.ByteSize" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\CommandLine.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.CommandLine" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.CommandLine" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\Exceptionless.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Exceptionless" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.Exceptionless" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\Exceptionless.NLog.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Exceptionless.NLog" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.Exceptionless.NLog" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\Exceptionless.Windows.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Exceptionless.Windows" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.Exceptionless.Windows" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\JCS.ToggleSwitch.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.JCS.ToggleSwitch" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.JCS.ToggleSwitch" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
 
             <Component>
                 <File Source="$(var.MgtSource)\Krypton.Navigator.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Navigator" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.Navigator" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\Krypton.Toolkit.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Toolkit" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.Toolkit" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
@@ -90,37 +90,37 @@
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\System.Buffers.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Buffers" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.System.Buffers" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\System.Collections.Immutable.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Collections.Immutable" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.System.Collections.Immutable" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\System.Memory.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Memory" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.System.Memory" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\System.Numerics.Vectors.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Numerics.Vectors" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.System.Numerics.Vectors" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\System.Reflection.Metadata.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Reflection.Metadata" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.System.Reflection.Metadata" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Runtime.CompilerServices.Unsafe" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.System.Runtime.CompilerServices.Unsafe" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
             <Component>
                 <File Source="$(var.MgtSource)\System.Threading.Tasks.Extensions.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Threading.Tasks.Extensions" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+                    <netfx:NativeImage Id="ngen.System.Threading.Tasks.Extensions" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
 

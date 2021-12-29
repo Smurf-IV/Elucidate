@@ -39,7 +39,7 @@ namespace Elucidate
         public AdvancedSettingsHelper(string displayName, bool checkState, string tootTip)
         {
             DisplayName = displayName;
-            this.CheckState = checkState;
+            CheckState = checkState;
             TootTip = tootTip;
         }
 

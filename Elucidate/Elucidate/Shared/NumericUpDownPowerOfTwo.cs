@@ -10,7 +10,7 @@ namespace Elucidate.Shared
             try
             {
                 base.UpButton();
-                Value = Value * 2;
+                Value *= 2;
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -22,7 +22,7 @@ namespace Elucidate.Shared
             try
             {
                 base.DownButton();
-                Value = Value / 2;
+                Value /= 2;
             }
             catch (ArgumentOutOfRangeException)
             {

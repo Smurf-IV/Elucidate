@@ -10,8 +10,8 @@ namespace ExtendedControls.ExtendedToolkit.Designers
     internal class KryptonCommandLinkButtonActionList : DesignerActionList
     {
         #region Instance Fields
-        private readonly KryptonCommandLinkButton _button;
-        private readonly IComponentChangeService _service;
+        private readonly KryptonCommandLinkButton button;
+        private readonly IComponentChangeService service;
         #endregion
 
         #region Identity
@@ -23,10 +23,10 @@ namespace ExtendedControls.ExtendedToolkit.Designers
             : base(owner.Component)
         {
             // Remember the button instance
-            _button = owner.Component as KryptonCommandLinkButton;
+            button = owner.Component as KryptonCommandLinkButton;
 
             // Cache service used to notify when a property has changed
-            _service = (IComponentChangeService)GetService(typeof(IComponentChangeService));
+            service = (IComponentChangeService)GetService(typeof(IComponentChangeService));
         }
         #endregion
 
@@ -36,14 +36,14 @@ namespace ExtendedControls.ExtendedToolkit.Designers
         /// </summary>
         public ButtonStyle ButtonStyle
         {
-            get => _button.ButtonStyle;
+            get => button.ButtonStyle;
 
             set
             {
-                if (_button.ButtonStyle != value)
+                if (button.ButtonStyle != value)
                 {
-                    _service.OnComponentChanged(_button, null, _button.ButtonStyle, value);
-                    _button.ButtonStyle = value;
+                    service.OnComponentChanged(button, null, button.ButtonStyle, value);
+                    button.ButtonStyle = value;
                 }
             }
         }
@@ -53,14 +53,14 @@ namespace ExtendedControls.ExtendedToolkit.Designers
         /// </summary>
         public VisualOrientation Orientation
         {
-            get => _button.Orientation;
+            get => button.Orientation;
 
             set
             {
-                if (_button.Orientation != value)
+                if (button.Orientation != value)
                 {
-                    _service.OnComponentChanged(_button, null, _button.Orientation, value);
-                    _button.Orientation = value;
+                    service.OnComponentChanged(button, null, button.Orientation, value);
+                    button.Orientation = value;
                 }
             }
         }
@@ -70,14 +70,14 @@ namespace ExtendedControls.ExtendedToolkit.Designers
         /// </summary>
         public string Heading
         {
-            get => _button.CommandLinkTextValues.Heading;
+            get => button.CommandLinkTextValues.Heading;
 
             set
             {
-                if (_button.CommandLinkTextValues.Heading != value)
+                if (button.CommandLinkTextValues.Heading != value)
                 {
-                    _service.OnComponentChanged(_button, null, _button.CommandLinkTextValues.Heading, value);
-                    _button.CommandLinkTextValues.Heading = value;
+                    service.OnComponentChanged(button, null, button.CommandLinkTextValues.Heading, value);
+                    button.CommandLinkTextValues.Heading = value;
                 }
             }
         }
@@ -87,14 +87,14 @@ namespace ExtendedControls.ExtendedToolkit.Designers
         /// </summary>
         public string Description
         {
-            get => _button.CommandLinkTextValues.Description;
+            get => button.CommandLinkTextValues.Description;
 
             set
             {
-                if (_button.CommandLinkTextValues.Description != value)
+                if (button.CommandLinkTextValues.Description != value)
                 {
-                    _service.OnComponentChanged(_button, null, _button.CommandLinkTextValues.Description, value);
-                    _button.CommandLinkTextValues.Description = value;
+                    service.OnComponentChanged(button, null, button.CommandLinkTextValues.Description, value);
+                    button.CommandLinkTextValues.Description = value;
                 }
             }
         }
@@ -104,14 +104,14 @@ namespace ExtendedControls.ExtendedToolkit.Designers
         /// </summary>
         public Image Image
         {
-            get => _button.CommandLinkImageValue.Image;
+            get => button.CommandLinkImageValue.Image;
 
             set
             {
-                if (_button.CommandLinkImageValue.Image != value)
+                if (button.CommandLinkImageValue.Image != value)
                 {
-                    _service.OnComponentChanged(_button, null, _button.CommandLinkImageValue.Image, value);
-                    _button.CommandLinkImageValue.Image = value;
+                    service.OnComponentChanged(button, null, button.CommandLinkImageValue.Image, value);
+                    button.CommandLinkImageValue.Image = value;
                 }
             }
         }
@@ -121,14 +121,14 @@ namespace ExtendedControls.ExtendedToolkit.Designers
         /// </summary>
         public PaletteMode PaletteMode
         {
-            get => _button.PaletteMode;
+            get => button.PaletteMode;
 
             set
             {
-                if (_button.PaletteMode != value)
+                if (button.PaletteMode != value)
                 {
-                    _service.OnComponentChanged(_button, null, _button.PaletteMode, value);
-                    _button.PaletteMode = value;
+                    service.OnComponentChanged(button, null, button.PaletteMode, value);
+                    button.PaletteMode = value;
                 }
             }
         }
@@ -142,10 +142,10 @@ namespace ExtendedControls.ExtendedToolkit.Designers
         public override DesignerActionItemCollection GetSortedActionItems()
         {
             // Create a new collection for holding the single item we want to create
-            DesignerActionItemCollection actions = new DesignerActionItemCollection();
+            var actions = new DesignerActionItemCollection();
 
             // This can be null when deleting a control instance at design time
-            if (_button != null)
+            if (button != null)
             {
                 // Add the list of button specific actions
                 actions.Add(new DesignerActionHeaderItem("Appearance"));

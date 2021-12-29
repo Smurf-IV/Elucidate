@@ -44,12 +44,10 @@ namespace Elucidate.HelperClasses
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public static string NormalizePath(string path)
-        {
-            return Path.GetFullPath(new Uri(path).LocalPath)
+        public static string NormalizePath(string path) =>
+            Path.GetFullPath(new Uri(path).LocalPath)
                 .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                 .ToUpperInvariant();
-        }
 
         public static bool IsPathRoot(string path)
         {
@@ -58,7 +56,7 @@ namespace Elucidate.HelperClasses
                 return false;
             }
 
-            string root = GetVolumePathName(path);
+            var root = GetVolumePathName(path);
             return path == root;
         }
 
@@ -69,21 +67,20 @@ namespace Elucidate.HelperClasses
         /// <returns>System.String.</returns>
         public static string GetPathRoot(string path)
         {
-            string root = GetVolumePathName(path);
+            var root = GetVolumePathName(path);
             return Path.GetFullPath(root);
         }
 
         public static string GetVolumeGuidPath(string mountPoint)
         {
-            StringBuilder sb = new StringBuilder(50);
+            var sb = new StringBuilder(50);
             GetVolumeNameForVolumeMountPoint(mountPoint, sb, 50);
             return sb.ToString();
         }
 
-        public static string GetVolumePathName(string path)
-        {
-            return Volume.GetVolumePathName(path);
-            /*const int MaxVolumeNameLength = 100;
+        public static string GetVolumePathName(string path) => Volume.GetVolumePathName(path);
+
+        /*const int MaxVolumeNameLength = 100;
             StringBuilder sb = new StringBuilder(MaxVolumeNameLength);
             if (!GetVolumePathName(path, sb, MaxVolumeNameLength))
             {
@@ -93,15 +90,13 @@ namespace Elucidate.HelperClasses
             string s = sb.ToString();
             return s;
             */
-        }
-
         public static ulong GetDriveSize(string path)
         {
-            bool success = GetDiskFreeSpaceEx(
+            var success = GetDiskFreeSpaceEx(
                 path,
-                out ulong _,
-                out ulong totalNumberOfBytes,
-                out ulong _);
+                out var _,
+                out var totalNumberOfBytes,
+                out var _);
 
             if (success)
             {
@@ -113,13 +108,13 @@ namespace Elucidate.HelperClasses
 
         public static List<ulong> GetDriveSizes(List<string> sources)
         {
-            List<ulong> deviceSizes = new List<ulong>();
+            var deviceSizes = new List<ulong>();
 
-            foreach (string source in sources)
+            foreach (var source in sources)
             {
                 try
                 {
-                    string[] possiblePaths = source.Trim().Split(",".ToCharArray());
+                    var possiblePaths = source.Trim().Split(",".ToCharArray());
                     deviceSizes.Add(possiblePaths.Select(GetPathRoot).Sum(GetDriveSize));
                 }
                 catch (Exception ex)
@@ -138,7 +133,7 @@ namespace Elucidate.HelperClasses
 
         public static List<ulong> GetDriveSizes(ReadOnlyCollection<ConfigFileHelper.SnapShotSource> sources)
         {
-            List<string> sourcePaths = new List<string>(sources.Count);
+            var sourcePaths = new List<string>(sources.Count);
 
             foreach (ConfigFileHelper.SnapShotSource source in sources)
             {
@@ -155,82 +150,64 @@ namespace Elucidate.HelperClasses
         /// <returns>List&lt;StorageDevice&gt;.</returns>
         public static List<StorageDevice> GetStorageDevices(bool isIncludeNonMountedStorage = false)
         {
-            List<StorageDevice> storageDevices = new List<StorageDevice>();
+            var storageDevices = new List<StorageDevice>();
 
-            using (ManagementObjectSearcher mgmtObjSearcher = new ManagementObjectSearcher("SELECT * FROM Win32_Volume"))
-            {
-                using (ManagementObjectCollection managementQuery = mgmtObjSearcher.Get())
+            using var mgmtObjSearcher = new ManagementObjectSearcher(@"SELECT * FROM Win32_Volume");
+            using ManagementObjectCollection managementQuery = mgmtObjSearcher.Get();
+            // convert to LINQ to Objects query
+            var query =
+                from ManagementObject mo in managementQuery
+                orderby Convert.ToString(mo[@"DriveLetter"])
+                select new
                 {
-                    // convert to LINQ to Objects query
-                    var query =
-                        from ManagementObject mo in managementQuery
-                        orderby Convert.ToString(mo["DriveLetter"])
-                        select new
-                        {
-                            Caption = Convert.ToString(mo["Caption"]),
-                            Name = Convert.ToString(mo["Name"]),
-                            DeviceID = Convert.ToString(mo["DeviceID"]),
-                            DriveType = Convert.ToUInt32(mo["DriveType"]),
-                            DriveLetter = Convert.ToString(mo["DriveLetter"]),
-                            FileSystem = Convert.ToString(mo["FileSystem"])
-                        };
+                    Caption = Convert.ToString(mo[@"Caption"]),
+                    Name = Convert.ToString(mo[@"Name"]),
+                    DeviceID = Convert.ToString(mo[@"DeviceID"]),
+                    DriveType = Convert.ToUInt32(mo[@"DriveType"]),
+                    DriveLetter = Convert.ToString(mo[@"DriveLetter"]),
+                    FileSystem = Convert.ToString(mo[@"FileSystem"])
+                };
 
-                    // grab the fields
-                    foreach (var item in query)
+            // grab the fields
+            foreach (var item in query)
+            {
+                try
+                {
+                    // ReSharper disable once UnusedVariable
+                    var success = GetDiskFreeSpaceEx(
+                        item.DeviceID,
+                        out var freeBytesAvailable,
+                        out var totalNumberOfBytes,
+                        out var _);
+
+                    var device = new StorageDevice
                     {
-                        try
+                        Caption = item.Caption,
+                        Name = item.Name,
+                        DeviceId = item.DeviceID,
+                        DriveLetter = item.DriveLetter,
+                        FileSystem = item.FileSystem,
+                        Capacity = (uint)totalNumberOfBytes,
+                        FreeSpace = (uint)freeBytesAvailable,
+                        DriveType = item.DriveType switch
                         {
-                            // ReSharper disable once UnusedVariable
-                            bool success = GetDiskFreeSpaceEx(
-                                item.DeviceID,
-                                out ulong freeBytesAvailable,
-                                out ulong totalNumberOfBytes,
-                                out ulong _);
-
-                            StorageDevice device = new StorageDevice
-                            {
-                                Caption = item.Caption,
-                                Name = item.Name,
-                                DeviceId = item.DeviceID,
-                                DriveLetter = item.DriveLetter,
-                                FileSystem = item.FileSystem,
-                                Capacity = (uint)totalNumberOfBytes,
-                                FreeSpace = (uint)freeBytesAvailable
-                            };
-
-                            switch (item.DriveType)
-                            {
-                                case (uint)System.IO.DriveType.Removable:
-                                    device.DriveType = System.IO.DriveType.Removable;
-                                    break;
-
-                                case (uint)System.IO.DriveType.Fixed:
-                                    device.DriveType = System.IO.DriveType.Fixed;
-                                    break;
-
-                                case (uint)System.IO.DriveType.Network:
-                                    device.DriveType = System.IO.DriveType.Network;
-                                    break;
-
-                                case (uint)System.IO.DriveType.CDRom:
-                                    device.DriveType = System.IO.DriveType.CDRom;
-                                    break;
-
-                                default:
-                                    device.DriveType = System.IO.DriveType.Unknown;
-                                    break;
-                            }
-
-                            if (!string.IsNullOrEmpty(device.Caption) && (!device.Caption.StartsWith(@"\\?\") || isIncludeNonMountedStorage))
-                            {
-                                storageDevices.Add(device);
-                            }
+                            (uint)System.IO.DriveType.Removable => System.IO.DriveType.Removable,
+                            (uint)System.IO.DriveType.Fixed => System.IO.DriveType.Fixed,
+                            (uint)System.IO.DriveType.Network => System.IO.DriveType.Network,
+                            (uint)System.IO.DriveType.CDRom => System.IO.DriveType.CDRom,
+                            _ => System.IO.DriveType.Unknown
                         }
-                        catch (Exception ex)
-                        {
-                            Log.Warn(ex, "A storage device failed to enumerate.");
-                        }
+                    };
+
+                    if (!string.IsNullOrEmpty(device.Caption)
+                        && (!device.Caption.StartsWith(@"\\?\") || isIncludeNonMountedStorage))
+                    {
+                        storageDevices.Add(device);
                     }
+                }
+                catch (Exception ex)
+                {
+                    Log.Warn(ex, @"A storage device failed to enumerate.");
                 }
             }
 
@@ -239,24 +216,15 @@ namespace Elucidate.HelperClasses
 
         #region DllImport
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool GetVolumeNameForVolumeMountPoint(
-            string lpszFileName,
-            [Out] StringBuilder lpszVollpszVolumePathName,
-            int cchBufferLength);
+        [DllImport(@"kernel32.dll", SetLastError = true)]
+        private static extern bool GetVolumeNameForVolumeMountPoint(string lpszFileName, [Out] StringBuilder lpszVolLpszVolumePathName, int cchBufferLength);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool GetVolumePathName(
-            string lpszVolumeMountPoint,
-            [Out] StringBuilder lpszVolumeName,
-            int cchBufferLength);
+        [DllImport(@"kernel32.dll", SetLastError = true)]
+        private static extern bool GetVolumePathName(string lpszVolumeMountPoint, [Out] StringBuilder lpszVolumeName, int cchBufferLength);
 
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [DllImport(@"kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
-            out ulong lpFreeBytesAvailable,
-            out ulong lpTotalNumberOfBytes,
-            out ulong lpTotalNumberOfFreeBytes);
+        private static extern bool GetDiskFreeSpaceEx(string lpDirectoryName, out ulong lpFreeBytesAvailable, out ulong lpTotalNumberOfBytes, out ulong lpTotalNumberOfFreeBytes);
 
         #endregion
     }

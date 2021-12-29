@@ -46,14 +46,14 @@ namespace Elucidate.TabPages
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        private RunControl _liveRunLogControl;
+        private RunControl liveRunLogControl;
 
         public RunControl RunLogControl
         {
             set
             {
-                _liveRunLogControl = value;
-                _liveRunLogControl.TaskCompleted += liveRunLogControl1_RunWorkerCompleted;
+                liveRunLogControl = value;
+                liveRunLogControl.TaskCompleted += liveRunLogControl1_RunWorkerCompleted;
             }
         }
 
@@ -61,8 +61,8 @@ namespace Elucidate.TabPages
         {
             InitializeComponent();
             // Force the output of the help for each verb
-            Parser parser = new Parser(with => with.HelpWriter = null);
-            HelpText helpVerb = new HelpText
+            var parser = new Parser(with => with.HelpWriter = null);
+            var helpVerb = new HelpText
             {
                 AddDashesToOption = true,
                 AddEnumValuesToHelpText = true,
@@ -101,10 +101,10 @@ namespace Elucidate.TabPages
             if (args.Any())
             {
                 // https://github.com/commandlineparser/commandline
-                ParserResult<AllOptions> optsResult = Parser.Default.ParseArguments<AllOptions>(args);
-                optsResult.WithParsed<AllOptions>(DisplayStdOptions);
+                var optsResult = Parser.Default.ParseArguments<AllOptions>(args);
+                optsResult.WithParsed(DisplayStdOptions);
                 optsResult.WithNotParsed(DisplayErrors);
-                ParserResult<object> parserResult = Parser.Default.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(args);
+                var parserResult = Parser.Default.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(args);
                 parserResult.WithNotParsed(DisplayErrors);
                 // Order is important as commands "Can" be chained"
                 // See http://www.snapraid.it/manual#4.1 Scrubbing for an indication of order
@@ -135,17 +135,17 @@ namespace Elucidate.TabPages
 
         private void DisplayStdOptions<TO>(TO sv)
         {
-            string commandLineRead = string.Join(" ", Environment.GetCommandLineArgs());
+            var commandLineRead = string.Join(" ", Environment.GetCommandLineArgs());
             Log.Error(@"CommandLine Read: [{0}]", commandLineRead);
-            string commandLine = Parser.Default.FormatCommandLine(sv);
+            var commandLine = Parser.Default.FormatCommandLine(sv);
             if (!string.IsNullOrWhiteSpace(commandLine))
             {
                 Log.Info(@"CommandLine options Interpreted: [{0}]", commandLine);
-                _liveRunLogControl.txtAddCommands.Text = commandLine;
-                _liveRunLogControl.checkBoxCommandLineOptions.Checked = true;
+                liveRunLogControl.txtAddCommands.Text = commandLine;
+                liveRunLogControl.checkBoxCommandLineOptions.Checked = true;
                 if ((sv as StdOptions).Verbose)
                 {
-                    _liveRunLogControl.checkBoxDisplayOutput.Checked = true;
+                    liveRunLogControl.checkBoxDisplayOutput.Checked = true;
                 }
             }
         }
@@ -154,20 +154,20 @@ namespace Elucidate.TabPages
         private void btnStatus_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Status);
+            liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Status);
         }
 
         private void Diff_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Diff);
+            liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Diff);
         }
 
         private void Check_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            _liveRunLogControl.checkBoxDisplayOutput.Checked = true;
-            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Check);
+            liveRunLogControl.checkBoxDisplayOutput.Checked = true;
+            liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Check);
             KryptonMessageBox.Show(this, @"Switch to Recover tab to see the 'recoverable files' being populated",
                 @"Recovery may be available");
         }
@@ -175,8 +175,8 @@ namespace Elucidate.TabPages
         private void btnCheckForMissing_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            _liveRunLogControl.checkBoxDisplayOutput.Checked = true;
-            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.CheckForMissing);
+            liveRunLogControl.checkBoxDisplayOutput.Checked = true;
+            liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.CheckForMissing);
             KryptonMessageBox.Show(this, @"Switch to Recover tab to see the 'recoverable files' being populated",
                 @"Recovery may be available");
         }
@@ -184,31 +184,31 @@ namespace Elucidate.TabPages
         private void Sync_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Sync);
+            liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Sync);
         }
 
         private void Scrub_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Scrub);
+            liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Scrub);
         }
 
         private void Fix_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Fix);
+            liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Fix);
         }
 
         private void DupFinder_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Dup);
+            liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.Dup);
         }
 
         private void ForceFullSync_Click(object sender, EventArgs e)
         {
             SetCommonButtonsEnabledState(false);
-            _liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.ForceFullSync);
+            liveRunLogControl.StartSnapRaidProcess(RunControl.CommandType.ForceFullSync);
         }
         #endregion Button Clicks
 
@@ -219,10 +219,10 @@ namespace Elucidate.TabPages
                 Log.Error(err.Tag);
             }
 
-            StringWriter writer = new StringWriter();
+            var writer = new StringWriter();
             {
                 // Force the output of the help for each verb
-                Parser parser = new Parser(with => with.HelpWriter = writer);
+                var parser = new Parser(with => with.HelpWriter = writer);
                 parser.ParseArguments<SyncVerb, DiffVerb, CheckVerb, FixVerb, ScrubVerb, DupVerb, StatusVerb>(new[] { @"--help" });
 
                 Log.Info(writer.ToString());

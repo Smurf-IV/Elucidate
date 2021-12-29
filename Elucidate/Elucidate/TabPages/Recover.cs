@@ -54,7 +54,7 @@ namespace Elucidate.TabPages
             }
         }
 
-        private readonly Stack<string> batchPaths = new Stack<string>();
+        private readonly Stack<string> batchPaths = new ();
 
         public Recover()
         {
@@ -99,7 +99,7 @@ namespace Elucidate.TabPages
 
         private void SetButtonsEnabledState(bool isEnabled)
         {
-            void local()
+            void Local()
             {
                 lock (treeView1)
                 {
@@ -111,7 +111,7 @@ namespace Elucidate.TabPages
                     }
                     else
                     {
-                        bool countOfFilesRecoverable = CountFilesRecoverable(treeView1) > 0;
+                        var countOfFilesRecoverable = CountFilesRecoverable(treeView1) > 0;
                         btnRecoverSelectedFiles.Enabled = countOfFilesRecoverable;
                         btnSelectAllFiles.Enabled = countOfFilesRecoverable;
                         btnClearFiles.Enabled = treeView1.Nodes.Count > 0;
@@ -121,11 +121,11 @@ namespace Elucidate.TabPages
 
             if (InvokeRequired)
             {
-                Invoke(new Action(local));
+                Invoke(new Action(Local));
             }
             else
             {
-                local();
+                Local();
             }
         }
 
@@ -164,7 +164,7 @@ namespace Elucidate.TabPages
         // Return a lst of the checked TreeView nodes.
         private List<TreeNode> CheckedNodes(TreeView trv)
         {
-            List<TreeNode> checkedNodes = new List<TreeNode>();
+            var checkedNodes = new List<TreeNode>();
             FindCheckedNodes(checkedNodes, trv.Nodes);
             return checkedNodes;
         }
@@ -172,7 +172,7 @@ namespace Elucidate.TabPages
         // Return the count of all recoverable files
         private int CountFilesRecoverable(TreeView trv)
         {
-            List<TreeNode> foundNodes = new List<TreeNode>();
+            var foundNodes = new List<TreeNode>();
             FindRecoverableNodes(foundNodes, trv.Nodes);
             return foundNodes.Count;
         }
@@ -181,19 +181,19 @@ namespace Elucidate.TabPages
         // ReSharper disable once UnusedMember.Local
         private int CountFilesChecked(TreeView trv)
         {
-            List<TreeNode> foundNodes = new List<TreeNode>();
+            var foundNodes = new List<TreeNode>();
             FindCheckedNodes(foundNodes, trv.Nodes);
             return foundNodes.Count;
         }
 
-        private static Regex recoverable = new Regex(
+        private static readonly Regex Recoverable = new (
             @"(?<LogEntryTimestamp>.*\d\d:\d\d:\d\d.\d\d\d\d).*\[recoverable\s(?<FilePath>.*)\].*",
             RegexOptions.Compiled | RegexOptions.Singleline);
-        private static Regex damaged = new Regex(
+        private static readonly Regex Damaged = new (
             @"(?<LogEntryTimestamp>.*\d\d:\d\d:\d\d.\d\d\d\d).*\[damaged\s(?<FilePath>.*)\].*",
             RegexOptions.Compiled | RegexOptions.Singleline);
         // 2020-07-04 12:29:48.2953 [ 8]  INFO: Elucidate.Controls.LiveRunLogControl: StdOut[damaged stderr.log] 
-        private static Regex missing = new Regex(
+        private static readonly Regex Missing = new (
             @"(?<LogEntryTimestamp>.*\d\d:\d\d:\d\d.\d\d\d\d).*Missing\sfile\s'(?<FilePath>.*)'.*",
             RegexOptions.Compiled | RegexOptions.Singleline);
 
@@ -203,18 +203,18 @@ namespace Elucidate.TabPages
             {
                 lock (this)
                 {
-                    while (LiveLog.LogQueueRecover.TryDequeue(out string log))
+                    while (LiveLog.LogQueueRecover.TryDequeue(out var log))
                     {
-                        bool matchedMissing = false;
+                        var matchedMissing = false;
                         // use regex to parse log line and get the FilePath
-                        Match matches = recoverable.Match(log);
+                        Match matches = Recoverable.Match(log);
                         if (!matches.Success)
                         {
-                            matches = damaged.Match(log);
+                            matches = Damaged.Match(log);
                         }
                         if (!matches.Success)
                         {
-                            matches = missing.Match(log);
+                            matches = Missing.Match(log);
                             matchedMissing = true;
                         }
 
@@ -238,7 +238,7 @@ namespace Elucidate.TabPages
                             return; // nothing to do, path is an empty string
                         }
 
-                        string filePath = groupFilePath.Value;
+                        var filePath = groupFilePath.Value;
                         filePath = filePath.Trim(new char[] { '"' });
                         if (!matchedMissing)
                         {
@@ -255,7 +255,7 @@ namespace Elucidate.TabPages
             }
         }
 
-        private static Regex recovered = new Regex(
+        private static readonly Regex Recovered = new (
             @"(?<LogEntryTimestamp>.*\d\d:\d\d:\d\d.\d\d\d\d).*\[recovered\s(?<FilePath>.*)\].*",
             RegexOptions.Compiled | RegexOptions.Singleline);
         private void timerTreeViewRecover_Tick(object sender, EventArgs e)
@@ -266,10 +266,10 @@ namespace Elucidate.TabPages
                 lock (this)
                 {
                     //read out of the file until the EOF
-                    while (LiveLog.LogQueueRecover.TryDequeue(out string log))
+                    while (LiveLog.LogQueueRecover.TryDequeue(out var log))
                     {
                         // use regex to parse log line and get the FilePath
-                        Match matches = recovered.Match(log);
+                        Match matches = Recovered.Match(log);
                         if (!matches.Success)
                         {
                             // nothing to do, the string did not match regex but it contained "[recovered ", odd
@@ -288,10 +288,10 @@ namespace Elucidate.TabPages
                             return; // nothing to do, path is an empty string
                         }
 
-                        string filePath = groupFilePath.Value;
+                        var filePath = groupFilePath.Value;
                         filePath = filePath.Trim(new char[] { '"' });
 
-                        TreeNode[] node = treeView1.Nodes.Find($"/{filePath}", false);
+                        var node = treeView1.Nodes.Find($"/{filePath}", false);
                         if (node.Length <= 0)
                         {
                             node = treeView1.Nodes.Find(filePath, false);
@@ -335,17 +335,17 @@ namespace Elucidate.TabPages
             }
         }
 
-        private void SetNodeColor(TreeNode treeNode)
+        private static void SetNodeColor(TreeNode treeNode)
         {
             treeNode.BackColor = treeNode.Checked ? Color.Aqua : Color.Empty;
         }
 
-        private void ToggleNodeCheckbox(TreeNode treeNode)
+        private static void ToggleNodeCheckbox(TreeNode treeNode)
         {
             treeNode.Checked = !treeNode.Checked;
         }
 
-        private void UncheckAll(TreeView treeView)
+        private static void UncheckAll(TreeView treeView)
         {
             foreach (TreeNode node in treeView.Nodes)
             {
@@ -353,7 +353,7 @@ namespace Elucidate.TabPages
             }
         }
 
-        private void CheckAll(TreeView treeView)
+        private static void CheckAll(TreeView treeView)
         {
             foreach (TreeNode node in treeView.Nodes)
             {
@@ -368,7 +368,7 @@ namespace Elucidate.TabPages
                 SetButtonsEnabledState(false);
 
                 // Get the checked nodes eligible to be recovered
-                List<TreeNode> checkedNodes = CheckedNodes(treeView1);
+                var checkedNodes = CheckedNodes(treeView1);
 
                 if (checkedNodes.Count == 0)
                 {

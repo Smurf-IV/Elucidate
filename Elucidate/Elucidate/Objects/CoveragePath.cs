@@ -44,13 +44,11 @@ namespace Elucidate.Objects
         {
             get
             {
-                switch (PathType)
-                {
-                    case PathTypeEnum.Parity:
-                        return Path.GetDirectoryName(FullPath);
-                    default:
-                        return FullPath;
-                }
+                return PathType switch
+                       {
+                           PathTypeEnum.Parity => Path.GetDirectoryName(FullPath),
+                           _                   => FullPath
+                       };
             }
         }
     }

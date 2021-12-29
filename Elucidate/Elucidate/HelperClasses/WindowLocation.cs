@@ -15,19 +15,19 @@ namespace Elucidate
             {
                 return;
             }
-            string[] numbers = thisWindowGeometry.Split('|');
-            string windowString = numbers[4];
+            var numbers = thisWindowGeometry.Split('|');
+            var windowString = numbers[4];
             switch (windowString)
             {
-                case "Normal":
+                case @"Normal":
                     {
-                        Point windowPoint = new Point(int.Parse(numbers[0], CultureInfo.InvariantCulture),
+                        var windowPoint = new Point(int.Parse(numbers[0], CultureInfo.InvariantCulture),
                                                       int.Parse(numbers[1], CultureInfo.InvariantCulture));
-                        Size windowSize = new Size(int.Parse(numbers[2], CultureInfo.InvariantCulture),
+                        var windowSize = new Size(int.Parse(numbers[2], CultureInfo.InvariantCulture),
                                                    int.Parse(numbers[3], CultureInfo.InvariantCulture));
 
-                        bool locOkay = GeometryIsBizarreLocation(windowPoint, windowSize);
-                        bool sizeOkay = GeometryIsBizarreSize(windowSize);
+                        var locOkay = GeometryIsBizarreLocation(windowPoint, windowSize);
+                        var sizeOkay = GeometryIsBizarreSize(windowSize);
 
                         if (locOkay && sizeOkay)
                         {
@@ -43,7 +43,7 @@ namespace Elucidate
                     }
                     break;
 
-                case "Maximized":
+                case @"Maximized":
                     formIn.Location = new Point(100, 100);
                     formIn.StartPosition = FormStartPosition.Manual;
                     formIn.WindowState = FormWindowState.Maximized;
@@ -73,11 +73,9 @@ namespace Elucidate
             return locOkay;
         }
 
-        private static bool GeometryIsBizarreSize(Size size)
-        {
-            return (size.Height <= Screen.PrimaryScreen.WorkingArea.Height &&
-                size.Width <= Screen.PrimaryScreen.WorkingArea.Width);
-        }
+        private static bool GeometryIsBizarreSize(Size size) =>
+            (size.Height <= Screen.PrimaryScreen.WorkingArea.Height &&
+             size.Width <= Screen.PrimaryScreen.WorkingArea.Width);
 
         public static string GeometryToString(Form mainForm)
         {

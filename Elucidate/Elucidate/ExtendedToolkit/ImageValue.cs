@@ -9,7 +9,7 @@ namespace ExtendedControls.ExtendedToolkit.Values
     {
         #region Static Fields
 
-        private static readonly Image defaultImage = new Bitmap(1, 1);//Properties.Resources.Question_32_x_32);Properties.Resources.Question_32_x_32;
+        private static readonly Image DefaultImage = new Bitmap(1, 1);//Properties.Resources.Question_32_x_32);Properties.Resources.Question_32_x_32;
         #endregion
 
         #region Identity
@@ -29,9 +29,9 @@ namespace ExtendedControls.ExtendedToolkit.Values
         #endregion
 
         #region Instance Fields
-        private Color _transparent;
+        private Color transparent;
 
-        private Image _image;
+        private Image image;
 
         [Localizable(true)]
         [Category("Visuals")]
@@ -39,12 +39,12 @@ namespace ExtendedControls.ExtendedToolkit.Values
         [RefreshProperties(RefreshProperties.All)]
         public Image Image
         {
-            get => _image;
+            get => image;
             set
             {
-                if (_image != value)
+                if (image != value)
                 {
-                    _image = value;
+                    image = value;
                     PerformNeedPaint(true);
                 }
             }
@@ -57,16 +57,13 @@ namespace ExtendedControls.ExtendedToolkit.Values
         /// Gets a value indicating if all values are default.
         /// </summary>
         [Browsable(false)]
-        public override bool IsDefault => ((Image == defaultImage) &&
+        public override bool IsDefault => ((Image == DefaultImage) &&
                                            (ImageTransparentColor == Color.Empty)
                                            );
 
         #endregion
 
-        private bool ShouldSerializeImage()
-        {
-            return Image != defaultImage;
-        }
+        private bool ShouldSerializeImage() => Image != DefaultImage;
 
         #region IContentValues
         /// <summary>
@@ -74,27 +71,18 @@ namespace ExtendedControls.ExtendedToolkit.Values
         /// </summary>
         public void ResetImage()
         {
-            Image = defaultImage;
+            Image = DefaultImage;
         }
 
         /// <summary>
         /// Gets the content short text.
         /// </summary>
         /// <returns>String value.</returns>
-        public Image GetImage(PaletteState state)
-        {
-            return Image;
-        }
+        public Image GetImage(PaletteState state) => Image;
 
-        public string GetShortText()
-        {
-            return string.Empty;
-        }
+        public string GetShortText() => string.Empty;
 
-        public string GetLongText()
-        {
-            return string.Empty;
-        }
+        public string GetLongText() => string.Empty;
 
         #endregion
 
@@ -109,22 +97,19 @@ namespace ExtendedControls.ExtendedToolkit.Values
         [KryptonDefaultColorAttribute()]
         public Color ImageTransparentColor
         {
-            get => _transparent;
+            get => transparent;
 
             set
             {
-                if (_transparent != value)
+                if (transparent != value)
                 {
-                    _transparent = value;
+                    transparent = value;
                     PerformNeedPaint(true);
                 }
             }
         }
 
-        private bool ShouldSerializeImageTransparentColor()
-        {
-            return ImageTransparentColor != Color.Empty;
-        }
+        private bool ShouldSerializeImageTransparentColor() => ImageTransparentColor != Color.Empty;
 
         /// <summary>
         /// Resets the ImageTransparentColor property to its default value.
@@ -139,10 +124,8 @@ namespace ExtendedControls.ExtendedToolkit.Values
         /// </summary>
         /// <param name="state">The state for which the image color is needed.</param>
         /// <returns>Color value.</returns>
-        public virtual Color GetImageTransparentColor(PaletteState state)
-        {
-            return ImageTransparentColor;
-        }
+        public virtual Color GetImageTransparentColor(PaletteState state) => ImageTransparentColor;
+
         #endregion
 
 

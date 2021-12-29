@@ -34,7 +34,7 @@ namespace Elucidate.Controls
             public string Message;
         };
 
-        private readonly ConcurrentQueue<LogString> pendingLogMessages = new ConcurrentQueue<LogString>();
+        private readonly ConcurrentQueue<LogString> pendingLogMessages = new ();
         private bool alreadyDequing;
 
         public ListBoxLog(ListBox listBox, int maxLinesInListbox = DEFAULT_MAX_LINES_IN_LISTBOX, int defaultUpdateFrequencyms = DEFAULT_UPDATE_FREQUENCY_MS)
@@ -57,7 +57,7 @@ namespace Elucidate.Controls
             listBoxInt.KeyDown += KeyDownHandler;
             listBoxInt.MeasureItem += MeasureItem;
 
-            MenuItem[] menuItems = new[] { new MenuItem("Copy", CopyMenuOnClickHandler) };
+            var menuItems = new[] { new MenuItem("Copy", CopyMenuOnClickHandler) };
             listBoxInt.ContextMenu = new ContextMenu(menuItems);
             listBoxInt.ContextMenu.Popup += CopyMenuPopupHandler;
 
@@ -115,7 +115,7 @@ namespace Elucidate.Controls
         {
             if (e.Index >= 0)
             {
-                if (!(((ListBox)sender).Items[e.Index] is LogString logEvent))
+                if (((ListBox)sender).Items[e.Index] is not LogString logEvent)
                 {
                     logEvent = new LogString
                     {
@@ -143,7 +143,7 @@ namespace Elucidate.Controls
                 e.DrawFocusRectangle();
 
                 // SafeGuard against wrong configuration of list box
-                if (!(((ListBox)sender).Items[e.Index] is LogString logEvent))
+                if (((ListBox)sender).Items[e.Index] is not LogString logEvent)
                 {
                     logEvent = new LogString
                     {
@@ -152,31 +152,16 @@ namespace Elucidate.Controls
                     };
                 }
 
-                Color color;
-                switch (logEvent.LevelUppercase)
-                {
-                    case @"FATAL":
-                        color = Color.White;
-                        break;
-                    case @"ERROR":
-                        color = Color.Red;
-                        break;
-                    case @"WARN":
-                        color = Color.Goldenrod;
-                        break;
-                    case @"INFO":
-                        color = Color.Black;
-                        break;
-                    case @"DEBUG":
-                        color = Color.Gray;
-                        break;
-                    case @"TRACE":
-                        color = Color.DarkGray;
-                        break;
-                    default:
-                        color = Color.Black;
-                        break;
-                }
+                Color color = logEvent.LevelUppercase switch
+                              {
+                                  @"FATAL" => Color.White,
+                                  @"ERROR" => Color.Red,
+                                  @"WARN"  => Color.Goldenrod,
+                                  @"INFO"  => Color.Black,
+                                  @"DEBUG" => Color.Gray,
+                                  @"TRACE" => Color.DarkGray,
+                                  _        => Color.Black
+                              };
 
                 if (logEvent.LevelUppercase == @"FATAL")
                 {
@@ -198,7 +183,7 @@ namespace Elucidate.Controls
                 else if (e.KeyCode == Keys.C)
                 {
                     listBoxInt.BeginUpdate();
-                    for (int i = listBoxInt.Items.Count - 1; i >= 0; i--)
+                    for (var i = listBoxInt.Items.Count - 1; i >= 0; i--)
                     {
                         listBoxInt.SetSelected(i, true);
                     }
@@ -235,11 +220,11 @@ namespace Elucidate.Controls
 
                 listBoxInt.BeginInvoke((MethodInvoker)delegate
                {
-                    //some stuffs for best performance
-                    listBoxInt.BeginUpdate();
+                   //some stuffs for best performance
+                   listBoxInt.BeginUpdate();
 
-                    // find the style to use
-                    while (pendingLogMessages.TryDequeue(out LogString log))
+                   // find the style to use
+                   while (pendingLogMessages.TryDequeue(out LogString log))
                    {
                        listBoxInt.Items.Add(log);
                    }
@@ -269,7 +254,7 @@ namespace Elucidate.Controls
         {
             if (listBoxInt.SelectedItems.Count > 0)
             {
-                StringBuilder selectedItemsAsRtfText = new StringBuilder();
+                var selectedItemsAsRtfText = new StringBuilder();
                 //selectedItemsAsRtfText.AppendLine(@"{\rtf1\ansi\deff0{\fonttbl{\f0\fcharset0 Courier;}}");
                 //selectedItemsAsRtfText.AppendLine(
                 //    @"{\colortbl;\red255\green255\blue255;\red255\green0\blue0;\red218\green165\blue32;\red0\green128\blue0;\red0\green0\blue255;\red0\green0\blue0}");
@@ -292,7 +277,7 @@ namespace Elucidate.Controls
         }
 
 
-        private void Dispose(bool disposing)
+        private void Dispose(bool _)
         {
             if (listBoxInt != null)
             {
