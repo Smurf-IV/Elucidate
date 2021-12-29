@@ -15,7 +15,7 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
 ## System Requirements
 
 - Windows Operating System
-- .Net Runtime 4.7.2 or higher
+- .Net Runtime 4.8.0
 - SnapRaid Version 11.5 or lower
 - 10MB Free Space on target drive
 
