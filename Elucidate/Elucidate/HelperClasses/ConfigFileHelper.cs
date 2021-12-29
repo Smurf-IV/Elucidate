@@ -135,7 +135,7 @@ namespace Elucidate
         {
             get
             {
-                List<string> allParityPaths = new List<string>
+                var allParityPaths = new List<string>
                 {
                     ParityFile1,
                     ParityFile2,
@@ -145,7 +145,7 @@ namespace Elucidate
                     ParityFile5,
                     ParityFile6
                 };
-                return allParityPaths.Where(p => !string.IsNullOrEmpty(p)).ToList();
+                return allParityPaths.Where(static p => !string.IsNullOrEmpty(p)).ToList();
             }
         }
 
@@ -155,7 +155,7 @@ namespace Elucidate
         {
             get
             {
-                List<string> allParityContentPaths = ParityPaths.ToList();
+                var allParityContentPaths = ParityPaths.ToList();
                 allParityContentPaths.AddRange(ContentFiles);
                 return allParityContentPaths;
             }
@@ -180,19 +180,8 @@ namespace Elucidate
             }
         }
 
-        public bool IsNewSync()
-        {
-            // TODO: if files are missing then we have not run the first sync, so the error message for the content files should be ignored
-            foreach (string path in ParityContentPaths)
-            {
-                if (File.Exists(path))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
+        // Note: if files are missing then we have not run the first sync, so the error message for the content files should be ignored
+        public bool IsNewSync() => !(from path in ParityContentPaths where File.Exists(path) select new { }).Any();
 
         public void LoadConfigFile(string configFile)
         {
@@ -223,7 +212,7 @@ namespace Elucidate
                 return;
             }
 
-            Log.Debug("validating config file {0}", ConfigPath);
+            Log.Debug(@"validating config file {0}", ConfigPath);
 
             // RULE: at least one data source must be specified
             if (!SnapShotSources.Any())
@@ -250,40 +239,36 @@ namespace Elucidate
             }
 
             // RULE: data paths must be accessible
-            foreach (SnapShotSource source in DataSourcePaths)
+            foreach (SnapShotSource source in DataSourcePaths.Where(static source => !Directory.Exists(source.DirSource)))
             {
-                // test if path exists
-                if (!Directory.Exists(source.DirSource))
-                {
-                    ConfigErrors.Add($"Source is inaccessible or does not exist: {source.DirSource}");
-                }
+                ConfigErrors.Add($"Source is inaccessible or does not exist: {source.DirSource}");
             }
 
             // RULE: parity devices should be greater or equal to data devices
-            ByteSize largestSourceDevice = new ByteSize(StorageUtil.GetDriveSizes(DataSourcePaths).Max());
-            ByteSize smallestParityDevice = new ByteSize(StorageUtil.GetDriveSizes(ParityPaths).Min());
+            var largestSourceDevice = new ByteSize(StorageUtil.GetDriveSizes(DataSourcePaths).Max());
+            var smallestParityDevice = new ByteSize(StorageUtil.GetDriveSizes(ParityPaths).Min());
             if (largestSourceDevice > smallestParityDevice)
             {
                 ConfigWarnings.Add($@"One or more data devices [{largestSourceDevice}] are larger than the smallest parity device [{smallestParityDevice}]. All parity devices should be equal or greater in size than all data devices.");
             }
 
             // RULE: blockSize valid value
-            if (BlockSizeKB < 1 || BlockSizeKB > 16384)
+            if (BlockSizeKB is < 1 or > 16384)
             {
                 ConfigErrors.Add(@"The blockSize value is invalid and must be between 1 and 16384");
             }
 
             // RULE: autoSave valid value
-            if (AutoSaveGB > Constants.MaxAutoSave)
+            if (AutoSaveGB > Constants.MAX_AUTO_SAVE)
             {
-                ConfigErrors.Add($"The autoSave value is invalid and must be between {Constants.MinAutoSave} and {Constants.MaxAutoSave}");
+                ConfigErrors.Add($"The autoSave value is invalid and must be between {Constants.MIN_AUTO_SAVE} and {Constants.MAX_AUTO_SAVE}");
             }
 
             if (!IsValid)
             {
                 Log.Error(@"The configuration file is not valid. See errors below:");
 
-                foreach (string error in ConfigErrors)
+                foreach (var error in ConfigErrors)
                 {
                     Log.Error(@" - {0}", error);
                 }
@@ -292,13 +277,13 @@ namespace Elucidate
 
         private static bool IsRulePassDevicesMustNotRepeat(ReadOnlyCollection<SnapShotSource> sources)
         {
-            List<string> roots = new List<string>();
+            var roots = new List<string>();
 
             try
             {
                 foreach (SnapShotSource source in sources)
                 {
-                    string root = string.Empty;
+                    var root = string.Empty;
                     try
                     {
                         root = StorageUtil.GetPathRoot(source.DirSource);
@@ -333,15 +318,15 @@ namespace Elucidate
 
             // Need to check all entries for multiple locations
             // ReSharper disable once CollectionNeverQueried.Local
-            Dictionary<string, int> alreadyAdded = new Dictionary<string, int>();
-            foreach (string text in paths)
+            var alreadyAdded = new Dictionary<string, int>();
+            foreach (var text in paths)
             {
                 if (!string.IsNullOrWhiteSpace(text))
                 {
-                    string[] possiblePaths = text.Trim().Split(",".ToCharArray());
+                    var possiblePaths = text.Trim().Split(",".ToCharArray());
                     try
                     {
-                        foreach (string possiblePath in possiblePaths)
+                        foreach (var possiblePath in possiblePaths)
                         {
                             alreadyAdded.Add(possiblePath, 1);
                         }
@@ -390,7 +375,7 @@ namespace Elucidate
                     return false;
                 }
 
-                bool isConfigRead = true;
+                var isConfigRead = true;
 
                 ParityFile1 = string.Empty;
                 ParityFile2 = string.Empty;
@@ -412,27 +397,21 @@ namespace Elucidate
 
                 IncludePatterns.Clear();
 
-                BlockSizeKB = Constants.DefaultBlockSize;
+                BlockSizeKB = Constants.DEFAULT_BLOCK_SIZE;
 
-                AutoSaveGB = Constants.DefaultAutoSave;
+                AutoSaveGB = Constants.DEFAULT_AUTO_SAVE;
 
-                foreach (string line in File.ReadLines(ConfigPath))
+                foreach (var configItem in from line in File.ReadLines(ConfigPath)
+                                           select line.Trim()
+                         into lineStart
+                                           where !string.IsNullOrWhiteSpace(lineStart) && !lineStart.StartsWith(@"#")
+                                           select lineStart.Split(new[] { ' ' }, 2)
+                         )
                 {
-                    string lineStart = line.Trim();
-
-                    if (string.IsNullOrWhiteSpace(lineStart) || lineStart.StartsWith(@"#"))
-                    {
-                        continue;
-                    }
-
-                    // Not a comment so process the line
-
-                    // split the line by the first space encountered
-                    string[] configItem = lineStart.Split(new[] { ' ' }, 2);
                     Log.Trace(@"configItem [{0}]", string.Join(" ", configItem));
-                    string configItemName = configItem[0] ?? string.Empty;
+                    var configItemName = configItem[0] ?? string.Empty;
                     Log.Trace(@"configItemName [{0}]", configItemName);
-                    string configItemValue = (configItem.Length > 1) ? configItem[1] : string.Empty;
+                    var configItemValue = (configItem.Length > 1) ? configItem[1] : string.Empty;
                     Log.Trace(@"configItemValue [{0}]", configItemValue);
 
                     // ignore the line if it is not an a recognized setting
@@ -494,12 +473,12 @@ namespace Elucidate
                         case @"data": // Handle older configs
                             {
                                 // get the data name, d1,d2,d3 etc
-                                string diskName = configItemValue.Split(' ')[0];
+                                var diskName = configItemValue.Split(' ')[0];
 
                                 // get the path
-                                int diskSplitIndex = configItemValue.IndexOf(' ');
+                                var diskSplitIndex = configItemValue.IndexOf(' ');
 
-                                string diskPath = configItemValue.Substring(diskSplitIndex + 1);
+                                var diskPath = configItemValue.Substring(diskSplitIndex + 1);
 
                                 // special handling of data sources since order preservation is extremely important
                                 if (!string.IsNullOrEmpty(diskName) && !string.IsNullOrEmpty(diskPath))
@@ -519,7 +498,7 @@ namespace Elucidate
 
                         case @"block_size":
                             BlockSizeKB = uint.Parse(configItemValue);
-                            if (BlockSizeKB < Constants.MinBlockSize || BlockSizeKB > Constants.MaxBlockSize)
+                            if (BlockSizeKB is < Constants.MIN_BLOCK_SIZE or > Constants.MAX_BLOCK_SIZE)
                             {
                                 isConfigRead = false;
                             }
@@ -528,7 +507,7 @@ namespace Elucidate
                         case @"autosave":
                             AutoSaveGB = uint.Parse(configItemValue);
                             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                            if (AutoSaveGB < Constants.MinAutoSave || AutoSaveGB > Constants.MaxAutoSave)
+                            if (AutoSaveGB is < Constants.MIN_AUTO_SAVE or > Constants.MAX_AUTO_SAVE)
                             {
                                 isConfigRead = false;
                             }
@@ -551,7 +530,7 @@ namespace Elucidate
 
         public List<CoveragePath> GetPathsOfInterest()
         {
-            List<CoveragePath> pathsOfInterest = new List<CoveragePath>();
+            var pathsOfInterest = new List<CoveragePath>();
 
             // SnapShotSource might be root or folders, so we handle both cases
             foreach (SnapShotSource source in DataSourcePaths)
@@ -585,7 +564,7 @@ namespace Elucidate
         {
             if (!string.IsNullOrWhiteSpace(parityPaths))
             {
-                string[] parities = parityPaths.Trim().Split(",".ToCharArray());
+                var parities = parityPaths.Trim().Split(",".ToCharArray());
                 pathsOfInterest.AddRange(parities.Select(parity => new CoveragePath { FullPath = Path.GetFullPath(parity), PathType = PathTypeEnum.Parity, Name = parityName }));
             }
         }
@@ -598,7 +577,7 @@ namespace Elucidate
         {
             try
             {
-                StringBuilder fileContents = new StringBuilder();
+                var fileContents = new StringBuilder();
 
                 fileContents.Append(Section1);
 
@@ -624,7 +603,7 @@ namespace Elucidate
                 fileContents.Append(Section5);
                 foreach (SnapShotSource shotSource in SnapShotSources)
                 {
-                    fileContents.Append(@"disk ").Append(shotSource.Name).Append(@" ").AppendLine(shotSource.DirSource);
+                    fileContents.Append(@"disk ").Append(shotSource.Name).Append(' ').AppendLine(shotSource.DirSource);
                 }
 
                 // exclude hidden files
@@ -646,7 +625,9 @@ namespace Elucidate
 
                 // blocksize
                 fileContents.Append(Section8);
-                BlockSizeKB = BlockSizeKB >= Constants.MinBlockSize && BlockSizeKB <= Constants.MaxBlockSize ? BlockSizeKB : Constants.DefaultBlockSize;
+                BlockSizeKB = BlockSizeKB is >= Constants.MIN_BLOCK_SIZE and <= Constants.MAX_BLOCK_SIZE
+                    ? BlockSizeKB
+                    : Constants.DEFAULT_BLOCK_SIZE;
                 fileContents.Append("block_size ").Append(BlockSizeKB).AppendLine();
 
                 // hashsize
@@ -655,7 +636,7 @@ namespace Elucidate
                 // autosave
                 fileContents.Append(Section10);
                 // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-                AutoSaveGB = AutoSaveGB >= Constants.MinAutoSave && AutoSaveGB <= Constants.MaxAutoSave ? AutoSaveGB : Constants.DefaultAutoSave;
+                AutoSaveGB = AutoSaveGB is >= Constants.MIN_AUTO_SAVE and <= Constants.MAX_AUTO_SAVE ? AutoSaveGB : Constants.DEFAULT_AUTO_SAVE;
                 fileContents.Append(@"autosave ").Append(AutoSaveGB).AppendLine();
 
                 // pool
@@ -685,9 +666,9 @@ namespace Elucidate
                 }
 
                 fileContents.Append("parity ");
-                string[] parities = parityPaths.Trim().Split(",".ToCharArray());
-                bool doneFirst = false;
-                foreach (string parity in parities)
+                var parities = parityPaths.Trim().Split(",".ToCharArray());
+                var doneFirst = false;
+                foreach (var parity in parities)
                 {
                     if (doneFirst)
                     {
@@ -715,7 +696,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine(@"# Example configuration for SnapRaid for Windows");
                 return sb;
             }
@@ -725,7 +706,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine(@"# Defines the file to use as parity storage");
                 sb.AppendLine(@"# It must NOT be in a data disk");
                 sb.AppendLine(@"# Format: ""parity FILE [,FILE] ...""");
@@ -738,7 +719,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine();
                 sb.AppendLine(@"# Defines the files to use as additional parity storage.");
                 sb.AppendLine(@"# If specified, they enable the multiple failures protection");
@@ -755,7 +736,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine();
                 sb.AppendLine(@"# Defines the files to use as content list");
                 sb.AppendLine(@"# You can use multiple specification to store more copies");
@@ -771,7 +752,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine();
                 sb.AppendLine(@"# Defines the data disks to use");
                 sb.AppendLine(@"# The name and mount point association is relevant for parity, do not change it");
@@ -786,7 +767,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine();
                 sb.AppendLine(@"# Excludes hidden files and directories (uncomment to enable).");
                 return sb;
@@ -797,7 +778,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine();
                 sb.AppendLine(@"# Defines files and directories to exclude");
                 sb.AppendLine(@"# Remember that all the paths are relative at the mount points");
@@ -813,7 +794,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine();
                 sb.AppendLine(@"# Defines the block size in kibi bytes (1024 bytes) (uncomment to enable).");
                 sb.AppendLine(@"# WARNING: Changing this value is for experts only!");
@@ -827,7 +808,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine();
                 sb.AppendLine(@"# Defines the hash size in bytes (uncomment to enable).");
                 sb.AppendLine(@"# WARNING: Changing this value is for experts only!");
@@ -842,7 +823,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine();
                 sb.AppendLine(@"# Automatically save the state when syncing after the specified amount");
                 sb.AppendLine(@"# of GB processed (uncomment to enable).");
@@ -859,7 +840,7 @@ namespace Elucidate
         {
             get
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine();
                 sb.AppendLine(@"# Defines the pooling directory where the virtual view of the disk");
                 sb.AppendLine(@"# array is created using the ""pool"" command (uncomment to enable).");

@@ -44,14 +44,14 @@ namespace Elucidate.Controls
 
         public LexerNameEnum LexerToUse { get; set; } = LexerNameEnum.NLog;
 
-        private readonly FileSystemWatcher logFileWatcher = new FileSystemWatcher();
+        private readonly FileSystemWatcher logFileWatcher = new();
 
         private string selectedDirectoryTitle;
 
-        private readonly string snapraidErrorSearchTerm = "error: ";
-        private readonly string snapraidWarningSearchTerm = "WARNING";
-        private readonly string elucidateErrorSearchTerm = "] ERROR ";
-        private readonly string elucidateWarningSearchTerm = "] WARN ";
+        private readonly string snapraidErrorSearchTerm = @"error: ";
+        private readonly string snapraidWarningSearchTerm = @"WARNING";
+        private readonly string elucidateErrorSearchTerm = @"] ERROR ";
+        private readonly string elucidateWarningSearchTerm = @"] WARN ";
 
         // log file path is based upon the config file location
         private string logSourcePath;
@@ -81,9 +81,9 @@ namespace Elucidate.Controls
         }
 
         // Read the contents of the file.  
-        static string GetFileText(string name)
+        private static string GetFileText(string name)
         {
-            string fileContents = string.Empty;
+            var fileContents = string.Empty;
             if (File.Exists(name))
             {
                 fileContents = File.ReadAllText(name);
@@ -98,8 +98,8 @@ namespace Elucidate.Controls
                 FileTarget fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("file");
                 // Need to set timestamp here if filename uses date. 
                 // For example - filename="${basedir}/logs/${shortdate}/trace.log"
-                LogEventInfo logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
-                string fileName = fileTarget.FileName.Render(logEventInfo);
+                var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+                var fileName = fileTarget.FileName.Render(logEventInfo);
                 selectedDirectoryTitle = Path.GetDirectoryName(fileName);
             }
             else
@@ -112,7 +112,7 @@ namespace Elucidate.Controls
 
             // remember user selection
             string selectedIndexValue = null;
-            int selectedIndex = listBoxViewLogFiles.SelectedIndex;
+            var selectedIndex = listBoxViewLogFiles.SelectedIndex;
             if (selectedIndex >= 0)
             {
                 selectedIndexValue = listBoxViewLogFiles.SelectedItems[0].ToString();
@@ -120,7 +120,7 @@ namespace Elucidate.Controls
 
             switch (selectedDirectoryTitle)
             {
-                case "SnapRAID Scheduled Jobs":
+                case @"SnapRAID Scheduled Jobs":
                     // SnapRAID Scheduled Jobs
                     errorSearchTerm = snapraidErrorSearchTerm;
                     warningSearchTerm = snapraidWarningSearchTerm;
@@ -135,7 +135,7 @@ namespace Elucidate.Controls
                     logFileWatcher.Filter = "*.log";
                     logFileWatcher.EnableRaisingEvents = true;
                     break;
-                case "Elucidate":
+                case @"Elucidate":
                     // Elucidate
                     errorSearchTerm = elucidateErrorSearchTerm;
                     warningSearchTerm = elucidateWarningSearchTerm;
@@ -159,32 +159,32 @@ namespace Elucidate.Controls
 
             listBoxViewLogFiles.Items.Clear();
 
-            DirectoryInfo logFileDirectoryInfo = new DirectoryInfo(logSourcePath);
+            var logFileDirectoryInfo = new DirectoryInfo(logSourcePath);
 
-            List<FileInfo> allLogs = logFileDirectoryInfo.GetFiles("*.log").OrderByDescending(a => a.Name).ToList();
+            var allLogs = logFileDirectoryInfo.GetFiles(@"*.log").OrderByDescending(static a => a.Name).ToList();
 
-            List<FileInfo> filteredLogs = new List<FileInfo>();
+            var filteredLogs = new List<FileInfo>();
 
             if (checkedFilesWithError.Checked)
             {
-                IEnumerable<FileInfo> filesWithErrors = from file in allLogs
-                                                        let fileText = GetFileText(file.FullName)
-                                                        where fileText.Contains(errorSearchTerm)
-                                                        select file;
+                var filesWithErrors = from file in allLogs
+                                      let fileText = GetFileText(file.FullName)
+                                      where fileText.Contains(errorSearchTerm)
+                                      select file;
                 filteredLogs = filteredLogs.Union(filesWithErrors).ToList();
             }
 
             if (checkedFilesWithWarn.Checked)
             {
-                IEnumerable<FileInfo> filesWithWarnings = from file in allLogs
-                                                          let fileText = GetFileText(file.FullName)
-                                                          where fileText.Contains(warningSearchTerm)
-                                                          select file;
+                var filesWithWarnings = from file in allLogs
+                                        let fileText = GetFileText(file.FullName)
+                                        where fileText.Contains(warningSearchTerm)
+                                        select file;
                 filteredLogs = filteredLogs.Union(filesWithWarnings).ToList();
             }
 
-            List<FileInfo> logsToShow = filteredLogs.Count > 0 ? filteredLogs : allLogs;
-            logsToShow = logsToShow.OrderByDescending(a => a.Name).ToList();
+            var logsToShow = filteredLogs.Count > 0 ? filteredLogs : allLogs;
+            logsToShow = logsToShow.OrderByDescending(static a => a.Name).ToList();
             foreach (FileInfo log in logsToShow)
             {
                 listBoxViewLogFiles.Items.Add(log.Name);
@@ -193,7 +193,7 @@ namespace Elucidate.Controls
             // restore user selection, if it still exists
             if (selectedIndex >= 0 && !string.IsNullOrEmpty(selectedIndexValue))
             {
-                int indexFound = listBoxViewLogFiles.FindStringExact(selectedIndexValue);
+                var indexFound = listBoxViewLogFiles.FindStringExact(selectedIndexValue);
                 if (indexFound >= 0)
                 {
                     listBoxViewLogFiles.SelectedIndex = indexFound;
@@ -213,7 +213,7 @@ namespace Elucidate.Controls
                 return;
             }
 
-            string fullPath = $@"{logSourcePath}\{listBoxViewLogFiles.SelectedItems[0]}";
+            var fullPath = $@"{logSourcePath}\{listBoxViewLogFiles.SelectedItems[0]}";
 
             scintilla.ReadOnly = false;
             scintilla.Text = File.ReadAllText(fullPath);
@@ -244,13 +244,13 @@ namespace Elucidate.Controls
         {
             // if (_liveRunLogControl.ActionWorker.IsBusy) { return; }
 
-            string userAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Elucidate");
+            var userAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), @"Elucidate");
 
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
                 InitialDirectory = Path.Combine(userAppData, @"Logs"),
                 Filter = @"Log files (*.log)|*.log|Archive logs (*.*)|*.*",
-                FileName = "*.log",
+                FileName = @"*.log",
                 FilterIndex = 2,
                 Title = @"Select name to view contents"
             };

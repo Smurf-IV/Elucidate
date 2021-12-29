@@ -57,7 +57,7 @@ namespace Elucidate
                 return;
             }
 
-            string dir = Path.GetDirectoryName(path);
+            var dir = Path.GetDirectoryName(path);
 
             try
             {
@@ -83,7 +83,7 @@ namespace Elucidate
             // Find the meanings @ http://snapraid.sourceforge.net/manual.html
             // status|smart|up|down|diff|sync|scrub|fix|check|list|dup|pool|devices|touch|rehash
 
-            StringBuilder args = new StringBuilder();
+            var args = new StringBuilder();
 
             args.Append(' ');
 
@@ -94,10 +94,17 @@ namespace Elucidate
 
             if (Properties.Settings.Default.FindByNameInSync)
             {
-                args.Append("-N ");
+                switch (command)
+                {
+                    case @"sync": 
+                    case @"check":
+                    case @"fix":
+                        args.Append("-N ");
+                        break;
+                }
             }
 
-            args.AppendFormat("-c \"{0}\" {1}", Properties.Settings.Default.ConfigFileLocation, command);
+            args.AppendFormat("-c \"{0}\" ", Properties.Settings.Default.ConfigFileLocation).Append(command);
 
             return args.ToString();
         }
@@ -109,35 +116,33 @@ namespace Elucidate
                 return numToRound; // return original number if 0 decimal places requested
             }
 
-            string strX = $"1{new string('0', decimalPlace)}";
-            int intX = Convert.ToInt32(strX);
+            var strX = $"1{new string('0', decimalPlace)}";
+            var intX = Convert.ToInt32(strX);
             return Math.Ceiling(numToRound * intX) / intX;
         }
 
         public static string ComputeSha1Hash(string rawData)
         {
             // Create a SHA1
-            using (SHA1 sha1Hash = SHA1.Create())
+            using SHA1 sha1Hash = SHA1.Create();
+            // ComputeHash - returns byte array  
+            var bytes = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+            // Convert byte array to a string   
+            var builder = new StringBuilder();
+            foreach (var bt in bytes)
             {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha1Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                foreach (byte bt in bytes)
-                {
-                    builder.Append(bt.ToString("x2"));
-                }
-
-                return builder.ToString();
+                builder.Append(bt.ToString("x2"));
             }
+
+            return builder.ToString();
         }
 
         public static bool IsExecutableRunning(string exePath)
         {
-            string path = exePath;
+            var path = exePath;
 
-            string fileName = Path.GetFileName(path);
+            var fileName = Path.GetFileName(path);
 
             // Get the process that is already running as per the exe file name.
 
@@ -146,7 +151,7 @@ namespace Elucidate
                 return false;
             }
 
-            Process[] processName = Process.GetProcessesByName(fileName.Substring(0, fileName.LastIndexOf('.')));
+            var processName = Process.GetProcessesByName(fileName.Substring(0, fileName.LastIndexOf('.')));
 
             return processName.Length > 0;
         }
@@ -156,7 +161,7 @@ namespace Elucidate
         {
             Process process = null;
 
-            ProcessStartInfo processStartInfo = new ProcessStartInfo { FileName = fileName };
+            var processStartInfo = new ProcessStartInfo { FileName = fileName };
 
             if (Environment.OSVersion.Version.Major >= 6) // Windows Vista or higher
             {
@@ -205,9 +210,10 @@ namespace Elucidate
         {
             try
             {
-                return dir.EnumerateFiles().AsParallel().Sum(fi => (ulong)fi.Length)
+                return dir.EnumerateFiles().AsParallel().Sum(static fi => (ulong)fi.Length)
                        + dir.EnumerateDirectories()
-                           .Where(d => (d.Attributes & System.IO.FileAttributes.System) == 0 && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
+                           .Where(static d => (d.Attributes & System.IO.FileAttributes.System) == 0 
+                                              && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
                            .AsParallel()
                            .Sum(DirSize);
             }
@@ -229,14 +235,14 @@ namespace Elucidate
             out ulong pathUsedBytes,
             out ulong rootBytesNotCoveredByPath)
         {
-            string fullPath = StorageUtil.NormalizePath(Path.GetFullPath(path));
+            var fullPath = StorageUtil.NormalizePath(Path.GetFullPath(path));
 
-            string rootPath = StorageUtil.NormalizePath(StorageUtil.GetPathRoot(path));
+            var rootPath = StorageUtil.NormalizePath(StorageUtil.GetPathRoot(path));
 
             // ReSharper disable once UnusedVariable
-            GetDiskFreeSpaceExW(rootPath, out freeBytesAvailable, out ulong totalBytes, out ulong num3);
+            GetDiskFreeSpaceExW(rootPath, out freeBytesAvailable, out var totalBytes, out var num3);
 
-            ulong driveUsedBytes = totalBytes - freeBytesAvailable;
+            var driveUsedBytes = totalBytes - freeBytesAvailable;
 
             rootBytesNotCoveredByPath = 0;
 
@@ -244,13 +250,13 @@ namespace Elucidate
 
             if (rootPath == fullPath)
             {
-                Log.Trace("Nothing more to do, so get values for the series");
+                Log.Trace(@"Nothing more to do, so get values for the series");
 
                 pathUsedBytes = driveUsedBytes;
             }
             else
             {
-                Log.Debug("Need to perform some calculations of Path usage. TotalBytes[{0}]", totalBytes);
+                Log.Debug(@"Need to perform some calculations of Path usage. TotalBytes[{0}]", totalBytes);
 
                 pathUsedBytes = DirSize(new DirectoryInfo(path));
 
@@ -265,14 +271,11 @@ namespace Elucidate
 
     internal static class Enumerator
     {
-        public static ulong Sum<T>(this IEnumerable<T> source, Func<T, ulong> selector)
-        {
-            return source.Select(selector).Sum();
-        }
+        public static ulong Sum<T>(this IEnumerable<T> source, Func<T, ulong> selector) => source.Select(selector).Sum();
 
         private static ulong Sum(this IEnumerable<ulong> source)
         {
-            return source.Aggregate(0UL, (current, number) => current + number);
+            return source.Aggregate(0UL, static (current, number) => current + number);
         }
     }
 

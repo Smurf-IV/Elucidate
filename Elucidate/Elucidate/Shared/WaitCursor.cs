@@ -91,7 +91,7 @@ namespace Elucidate.Shared
                 throw new ArgumentNullException(nameof(curs));
             }
 
-            this.targetControl = target;
+            targetControl = target;
             if (targetControl != null)
             {
                 previousCursor = targetControl.Cursor;
@@ -127,6 +127,7 @@ namespace Elucidate.Shared
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         //Change the Mouse Pointer back to the previous

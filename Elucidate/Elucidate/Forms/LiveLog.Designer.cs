@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveLog));
             this.rtbLiveLog = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
@@ -54,7 +53,6 @@
             this.Controls.Add(this.rtbLiveLog);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(930, 500);
             this.Name = "LiveLog";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;

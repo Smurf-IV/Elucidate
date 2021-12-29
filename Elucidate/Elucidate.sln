@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elucidate", "Elucidate\Elucidate.csproj", "{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Elucidate", "Elucidate\Elucidate.csproj", "{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Elucidate Windows Installer", "Elucidate Windows Installer\Elucidate Windows Installer.wixproj", "{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}"
 EndProject
@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ToggleSwitch", "ToggleSwitc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4387A76F-EC87-446D-A4A7-E7D96F8DD9A3}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\license.md = ..\license.md
 		..\README.md = ..\README.md
 	EndProjectSection
@@ -60,8 +61,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Release|Any CPU.ActiveCfg = Release|x64
+		{C45A0899-34D4-4CB0-B5FF-9DFADBC5E70E}.Release|Any CPU.Build.0 = Release|x64
 		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Release|Any CPU.ActiveCfg = Release|x64
 		{EA76FDE5-C6AE-46B7-ADA4-F3DC9DCCC9FB}.Release|Any CPU.Build.0 = Release|x64
@@ -74,8 +75,18 @@ Global
 		{95AFED29-C452-4F6F-9FB1-6E6E072EA4F4} = {4387A76F-EC87-446D-A4A7-E7D96F8DD9A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {39E6A612-AC12-4D63-BE2A-60EA16940A8A}
-		BuildVersion_StartDate = 2000/1/1
 		BuildVersion_UseGlobalSettings = False
+		BuildVersion_StartDate = 2000/1/1
+		SolutionGuid = {39E6A612-AC12-4D63-BE2A-60EA16940A8A}
+	EndGlobalSection
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyInfoVersion = False
+		AssemblyVersionSettings = YearStamp.MonthStamp.DayStamp.Increment
+		AssemblyFileVersionSettings = ShortYearStamp.MonthStamp.DayStamp.Increment
+		UpdatePackageVersion = False
+		AssemblyInfoVersionType = SettingsVersion
+		InheritWinAppVersionFrom = None
 	EndGlobalSection
 EndGlobal

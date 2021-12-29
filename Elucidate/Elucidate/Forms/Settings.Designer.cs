@@ -64,7 +64,6 @@ namespace Elucidate.Forms
             this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grpSnapShotSources = new Krypton.Toolkit.KryptonGroupBox();
-            this.snapShotSources = new Elucidate.Controls.ProtectedDrivesDisplay();
             this.splitContainer1 = new Krypton.Toolkit.KryptonSplitContainer();
             this.driveAndDirTreeView = new Elucidate.Shared.BufferedTreeView();
             this.groupBox3 = new Krypton.Toolkit.KryptonGroupBox();
@@ -336,7 +335,6 @@ namespace Elucidate.Forms
             // 
             // labelParity6
             // 
-            this.labelParity6.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity6.Location = new System.Drawing.Point(6, 144);
             this.labelParity6.Name = "labelParity6";
             this.labelParity6.Size = new System.Drawing.Size(66, 24);
@@ -353,7 +351,6 @@ namespace Elucidate.Forms
             // 
             // labelParity5
             // 
-            this.labelParity5.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity5.Location = new System.Drawing.Point(6, 116);
             this.labelParity5.Name = "labelParity5";
             this.labelParity5.Size = new System.Drawing.Size(66, 24);
@@ -370,7 +367,6 @@ namespace Elucidate.Forms
             // 
             // labelParity4
             // 
-            this.labelParity4.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity4.Location = new System.Drawing.Point(6, 88);
             this.labelParity4.Name = "labelParity4";
             this.labelParity4.Size = new System.Drawing.Size(66, 24);
@@ -426,7 +422,6 @@ namespace Elucidate.Forms
             // 
             // labelParity2
             // 
-            this.labelParity2.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity2.Location = new System.Drawing.Point(6, 33);
             this.labelParity2.Name = "labelParity2";
             this.labelParity2.Size = new System.Drawing.Size(66, 24);
@@ -481,7 +476,6 @@ namespace Elucidate.Forms
             // 
             // labelParity1
             // 
-            this.labelParity1.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.labelParity1.Location = new System.Drawing.Point(6, 5);
             this.labelParity1.Name = "labelParity1";
             this.labelParity1.Size = new System.Drawing.Size(66, 24);
@@ -710,7 +704,6 @@ namespace Elucidate.Forms
             // 
             // label6
             // 
-            this.label6.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label6.Location = new System.Drawing.Point(7, 32);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(103, 24);
@@ -751,7 +744,6 @@ namespace Elucidate.Forms
             // 
             // label4
             // 
-            this.label4.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label4.Location = new System.Drawing.Point(7, 5);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(105, 24);
@@ -896,7 +888,6 @@ namespace Elucidate.Forms
             // 
             // label1
             // 
-            this.label1.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label1.Location = new System.Drawing.Point(3, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(157, 24);
@@ -918,7 +909,6 @@ namespace Elucidate.Forms
             // 
             // label2
             // 
-            this.label2.LabelStyle = Krypton.Toolkit.LabelStyle.NormalPanel;
             this.label2.Location = new System.Drawing.Point(24, 5);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(109, 24);
@@ -944,7 +934,7 @@ namespace Elucidate.Forms
             // 
             // helpProvider1
             // 
-            this.helpProvider1.HelpNamespace = "https://github.com/BlueBlock/Elucidatewikipage?title=Settings";
+            this.helpProvider1.HelpNamespace = "https://github.com/Smurf-IV/Elucidate/blob/master/docs/Settings.md";
             // 
             // kryptonPanel1
             // 
@@ -964,10 +954,8 @@ namespace Elucidate.Forms
             this.Controls.Add(this.kryptonPanel1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HelpButton = true;
             this.helpProvider1.SetHelpKeyword(this, "d");
             this.helpProvider1.SetHelpNavigator(this, System.Windows.Forms.HelpNavigator.Topic);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(951, 749);
@@ -975,6 +963,7 @@ namespace Elucidate.Forms
             this.helpProvider1.SetShowHelp(this, true);
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.Text = "Settings to control SnapRAID";
+            this.TextExtra = "Use F1 on fields for help";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Settings_FormClosing);
             this.Load += new System.EventHandler(this.Settings_Load);
             this.Shown += new System.EventHandler(this.Settings_Shown);

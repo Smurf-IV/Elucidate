@@ -56,21 +56,20 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2021.4.1030.4")]
-[assembly: AssemblyFileVersion("21.4.1030.4")]
-[assembly: NeutralResourcesLanguage("en-US")]
+[assembly: AssemblyVersion("2021.12.29.10")]
+[assembly: AssemblyFileVersion("21.12.29.10")]
 // TODO: Add more relevant hints here
-[assembly: Dependency("System", LoadHint.Always)]
-[assembly: Dependency("System.Drawing", LoadHint.Always)]
-[assembly: Dependency("System.IO", LoadHint.Always)]
-[assembly: Dependency("System.Windows.Forms", LoadHint.Always)]
-[assembly: Dependency("System.Xml", LoadHint.Always)]
-
-[assembly: Dependency("Alphaleonis.Win32.Filesystem", LoadHint.Always)]
-[assembly: Dependency("CommandLine", LoadHint.Always)]
-[assembly: Dependency("Krypton.Toolkit", LoadHint.Always)]
-[assembly: Dependency("Krypton.Navigator", LoadHint.Always)]
-[assembly: Dependency("Exceptionless", LoadHint.Always)]
-[assembly: Dependency("Exceptionless.Nlog", LoadHint.Always)]
-[assembly: Dependency("Exceptionless.Windows", LoadHint.Always)]
-[assembly: Dependency("NLog", LoadHint.Always)]
+[assembly: Dependency(@"System", LoadHint.Always)]
+[assembly: Dependency(@"System.Drawing", LoadHint.Always)]
+[assembly: Dependency(@"System.IO", LoadHint.Always)]
+[assembly: Dependency(@"System.Windows.Forms", LoadHint.Always)]
+[assembly: Dependency(@"System.Xml", LoadHint.Always)]
+                      
+[assembly: Dependency(@"Alphaleonis.Win32.Filesystem", LoadHint.Always)]
+[assembly: Dependency(@"CommandLine", LoadHint.Always)]
+[assembly: Dependency(@"Krypton.Toolkit", LoadHint.Always)]
+[assembly: Dependency(@"Krypton.Navigator", LoadHint.Always)]
+[assembly: Dependency(@"Exceptionless", LoadHint.Always)]
+[assembly: Dependency(@"Exceptionless.Nlog", LoadHint.Always)]
+[assembly: Dependency(@"Exceptionless.Windows", LoadHint.Always)]
+[assembly: Dependency(@"NLog", LoadHint.Always)]

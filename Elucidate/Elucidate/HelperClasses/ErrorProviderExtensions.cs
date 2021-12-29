@@ -30,7 +30,7 @@ namespace Elucidate.HelperClasses
 {
     public static class ErrorProviderExtensions
     {
-        private static int _count;
+        private static int Count;
 
         public static void SetErrorWithCount(this ErrorProvider ep, Control c, string message)
         {
@@ -38,26 +38,20 @@ namespace Elucidate.HelperClasses
             {
                 if (ep.GetError(c) != "")
                 {
-                    _count--;
+                    Count--;
                 }
             }
             else
             if (ep.GetError(c) == "")
             {
-                _count++;
+                Count++;
             }
 
             ep.SetError(c, message);
         }
 
-        public static bool HasErrors(this ErrorProvider ep)
-        {
-            return _count != 0;
-        }
+        public static bool HasErrors(this ErrorProvider _) => Count != 0;
 
-        public static int GetErrorCount(this ErrorProvider ep)
-        {
-            return _count;
-        }
+        public static int GetErrorCount(this ErrorProvider _) => Count;
     }
 }

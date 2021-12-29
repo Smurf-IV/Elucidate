@@ -9,13 +9,12 @@ namespace ExtendedControls.ExtendedToolkit.Designers
         /// <summary>
         /// Initialize a new instance of the KryptonButtonDesigner class.
         /// </summary>
-        public KryptonCommandLinkButtonDesigner()
-        {
+        public KryptonCommandLinkButtonDesigner() =>
             // The resizing handles around the control need to change depending on the
             // value of the AutoSize and AutoSizeMode properties. When in AutoSize you
             // do not get the resizing handles, otherwise you do.
             AutoResizeHandles = true;
-        }
+
         #endregion
 
         #region Public Overrides
@@ -27,7 +26,7 @@ namespace ExtendedControls.ExtendedToolkit.Designers
             get
             {
                 // Create a collection of action lists
-                DesignerActionListCollection actionLists = new DesignerActionListCollection
+                var actionLists = new DesignerActionListCollection
                 {
                     // Add the button specific list
                     new KryptonCommandLinkButtonActionList(this)

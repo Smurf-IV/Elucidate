@@ -8,7 +8,7 @@ namespace Elucidate.Shared
     {
         protected override void OnHandleCreated(EventArgs e)
         {
-            SendMessage(this.Handle, TVM_SETEXTENDEDSTYLE, (IntPtr)TVS_EX_DOUBLEBUFFER, (IntPtr)TVS_EX_DOUBLEBUFFER);
+            SendMessage(Handle, TVM_SETEXTENDEDSTYLE, (IntPtr)TVS_EX_DOUBLEBUFFER, (IntPtr)TVS_EX_DOUBLEBUFFER);
             base.OnHandleCreated(e);
         }
 

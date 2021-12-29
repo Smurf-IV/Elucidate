@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -50,10 +51,10 @@ namespace Elucidate.Controls
         /// <summary>
         /// eventing idea taken from http://stackoverflow.com/questions/1423484/using-bashcygwin-inside-c-program
         /// </summary>
-        private readonly ManualResetEvent mreProcessExit = new ManualResetEvent(false);
+        private readonly ManualResetEvent mreProcessExit = new (false);
 
-        private readonly ManualResetEvent mreOutputDone = new ManualResetEvent(false);
-        private readonly ManualResetEvent mreErrorDone = new ManualResetEvent(false);
+        private readonly ManualResetEvent mreOutputDone = new (false);
+        private readonly ManualResetEvent mreErrorDone = new (false);
         private ProcessPriorityClass requested = ProcessPriorityClass.Normal;
         private string lastError;
         private Stack<string> batchPaths;
@@ -117,7 +118,7 @@ namespace Elucidate.Controls
         {
         }
 
-        private readonly BackgroundWorker actionWorker = new BackgroundWorker
+        private readonly BackgroundWorker actionWorker = new ()
         {
             WorkerReportsProgress = true,
             WorkerSupportsCancellation = true
@@ -137,14 +138,14 @@ namespace Elucidate.Controls
         {
             if (IsRunning)
             {
-                Log.Debug("Command button clicked but a command is still running.");
+                Log.Debug(@"Command button clicked but a command is still running.");
                 return;
             }
 
             CommandTypeRunning = commandToRun;
 
-            StringBuilder command = new StringBuilder();
-            string defaultOption = string.Empty;
+            var command = new StringBuilder();
+            var defaultOption = string.Empty;
 
             switch (commandToRun)
             {
@@ -192,7 +193,7 @@ namespace Elucidate.Controls
 
             if (checkBoxCommandLineOptions.Checked)
             {
-                string addCmd = txtAddCommands.Text;
+                var addCmd = txtAddCommands.Text;
                 if (addCmd.StartsWith(@"+"))
                 {
                     addCmd = addCmd.TrimStart(@"+".ToCharArray());
@@ -233,22 +234,20 @@ namespace Elucidate.Controls
         {
             try
             {
-                BackgroundWorker worker = sender as BackgroundWorker;
-
-                string command = e.Argument as string;
+                var command = e.Argument as string;
 
                 lastError = string.Empty;
 
-                if (worker == null)
+                if (sender is not BackgroundWorker worker)
                 {
-                    Log.Error("Passed in worker is null");
+                    Log.Error(@"Passed in worker is null");
                     e.Cancel = true;
                     return;
                 }
 
                 if (string.IsNullOrWhiteSpace(command))
                 {
-                    Log.Error("Passed in command is null");
+                    Log.Error(@"Passed in command is null");
                     e.Cancel = true;
                     return;
                 }
@@ -257,7 +256,7 @@ namespace Elucidate.Controls
                 mreOutputDone.Reset();
                 mreErrorDone.Reset();
 
-                string args = Util.FormatSnapRaidCommandArgs(command, out string appPath);
+                var args = Util.FormatSnapRaidCommandArgs(command, out var appPath);
 
                 IsRunning = true;
 
@@ -275,17 +274,17 @@ namespace Elucidate.Controls
 
         private void RunSnapRaid(DoWorkEventArgs e, string args, string appPath, BackgroundWorker worker)
         {
-            Log.Info("#########################################");
+            Log.Info(@"#########################################");
 
             // RecoveryFix
             if (CommandTypeRunning == CommandType.RecoverFix)
             {
-                StringBuilder sbPaths = new StringBuilder();
+                var sbPaths = new StringBuilder();
 
                 do
                 {
                     var restore = batchPaths.Pop();
-                    sbPaths.Append(" -f \"").Append(restore).Append("\"");
+                    sbPaths.Append(" -f \"").Append(restore).Append('"');
                 } while ((sbPaths.Length < MAX_COMMAND_ARG_LENGTH)
                          && (batchPaths.Count > 0)
                 );
@@ -295,7 +294,7 @@ namespace Elucidate.Controls
 
             int exitCode;
 
-            using (Process process = new Process
+            using (var process = new Process
             {
                 StartInfo = new ProcessStartInfo(appPath, args)
                 {
@@ -309,17 +308,17 @@ namespace Elucidate.Controls
                 EnableRaisingEvents = true
             })
             {
-                Log.Info("Using: {0}", process.StartInfo.FileName);
-                Log.Info("with: {0}", process.StartInfo.Arguments);
+                Log.Info(@"Using: [{0}]", process.StartInfo.FileName);
+                Log.Info(@"with: [{0}]", process.StartInfo.Arguments);
 
                 process.Exited += Exited;
 
                 process.Start();
 
                 // Redirect the output stream of the child process.
-                ThreadObject threadObject = new ThreadObject { BgdWorker = worker, CmdProcess = process };
-                ThreadPool.QueueUserWorkItem(o => ReadStandardOutput(threadObject));
-                ThreadPool.QueueUserWorkItem(o => ReadStandardError(threadObject));
+                var threadObject = new ThreadObject { BgdWorker = worker, CmdProcess = process };
+                ThreadPool.QueueUserWorkItem(_ => ReadStandardOutput(threadObject));
+                ThreadPool.QueueUserWorkItem(_ => ReadStandardError(threadObject));
 
                 if (process.HasExited)
                 {
@@ -335,7 +334,7 @@ namespace Elucidate.Controls
 
                     if (worker.CancellationPending)
                     {
-                        Log.Fatal("Attempting to stop the process..");
+                        Log.Fatal(@"Attempting to stop the process..");
                         process.Kill();
                     }
                     else
@@ -354,7 +353,7 @@ namespace Elucidate.Controls
                             process.Suspend();
                         }
 
-                        Log.Fatal("Setting the process priority to[{0}]", requested);
+                        Log.Fatal(@"Setting the process priority to[{0}]", requested);
                         process.PriorityClass = requested;
                     }
                 }
@@ -363,12 +362,12 @@ namespace Elucidate.Controls
 
                 if (exitCode == 0)
                 {
-                    Log.Info("ExitCode=[{0}]", exitCode);
+                    Log.Info(@"ExitCode=[{0}]", exitCode);
                     lastError = string.Empty;
                 }
                 else
                 {
-                    Log.Error("ExitCode=[{0}]", exitCode);
+                    Log.Error(@"ExitCode=[{0}]", exitCode);
                 }
 
                 process.Close();
@@ -382,8 +381,7 @@ namespace Elucidate.Controls
                     worker.ReportProgress(101, "Aborted: Error code -1");
                     break;
                 case 1:
-                    if ((CommandTypeRunning == CommandType.Check)
-                        || (CommandTypeRunning == CommandType.CheckForMissing)
+                    if (CommandTypeRunning is CommandType.Check or CommandType.CheckForMissing
                         )
                     {
                         Log.Warn(@"Missing files have been reported, the process return code is 1, instead of the default 0");
@@ -405,7 +403,7 @@ namespace Elucidate.Controls
 
                     break;
                 default:
-                    Log.Error("Unhandled ExitCode of [{0}]", exitCode);
+                    Log.Error(@"Unhandled ExitCode of [{0}]", exitCode);
                     break;
             }
 
@@ -417,7 +415,7 @@ namespace Elucidate.Controls
 
         private void actionWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            int progressPercentage = e.ProgressPercentage;
+            var progressPercentage = e.ProgressPercentage;
 
             if (progressPercentage == 101)
             {
@@ -468,7 +466,7 @@ namespace Elucidate.Controls
             {
                 toolStripProgressBar1.State = ProgressBarState.Pause;
                 toolStripProgressBar1.DisplayText = "Cancelled";
-                Log.Error("The thread has been cancelled");
+                Log.Error(@"The thread has been cancelled");
                 comboBoxProcessStatus.Text = @"Abort";
             }
             else if (e.Error != null)
@@ -487,9 +485,7 @@ namespace Elucidate.Controls
                     comboBoxProcessStatus.Text = @"Stopped";
                 }
 
-                if (CommandTypeRunning == CommandType.Check
-                    || CommandTypeRunning == CommandType.CheckForMissing
-                    || CommandTypeRunning == CommandType.RecoverFix
+                if (CommandTypeRunning is CommandType.Check or CommandType.CheckForMissing or CommandType.RecoverFix
                 )
                 {
                     toolStripProgressBar1.State = ProgressBarState.Normal;
@@ -505,7 +501,7 @@ namespace Elucidate.Controls
                     }
 
                     toolStripProgressBar1.DisplayText = "Error";
-                    Log.Debug($"Last Error: {lastError}");
+                    Log.Debug(@"Last Error: {lastError}", lastError);
                 }
             }
 
@@ -549,12 +545,12 @@ namespace Elucidate.Controls
                 do
                 {
                     buf = threadObject.CmdProcess.StandardOutput.ReadLine();
-                    Log.Info("StdOut[{0}]", buf);
+                    Log.Info(@"StdOut[{0}]", buf);
                     if (!string.IsNullOrWhiteSpace(buf))
                     {
-                        string[] splits = buf.Split('%');
+                        var splits = buf.Split('%');
                         if ((splits.Length > 1)
-                            && int.TryParse(splits[0], out int percentProgress)
+                            && int.TryParse(splits[0], out var percentProgress)
                         )
                         {
                             threadObject.BgdWorker.ReportProgress(percentProgress, buf);
@@ -578,7 +574,7 @@ namespace Elucidate.Controls
 
         private void Exited(object o, EventArgs e)
         {
-            Log.Debug("Process has exited");
+            Log.Debug(@"Process has exited");
             mreProcessExit.Set();
         }
 
@@ -607,28 +603,27 @@ namespace Elucidate.Controls
 
             KryptonComboBox control = (KryptonComboBox)sender;
 
-            string strSelected = control.SelectedItem.ToString();
+            var strSelected = control.SelectedItem.ToString();
 
             switch (strSelected)
             {
-                case "Stopped":
+                case @"Stopped":
                     if (actionWorker.IsBusy)
                     {
-                        comboBoxProcessStatus.SelectedIndex = comboBoxProcessStatus.FindStringExact("Running");
+                        comboBoxProcessStatus.SelectedIndex = comboBoxProcessStatus.FindStringExact(@"Running");
                     }
-
                     break;
-                case "Abort":
+                case @"Abort":
                     actionWorker.CancelAsync();
-                    Log.Info("Cancelling the running process...");
+                    Log.Info(@"Cancelling the running process...");
                     break;
-                case "Idle":
+                case @"Idle":
                     requested = ProcessPriorityClass.Idle;
                     break;
-                case "Running":
+                case @"Running":
                     requested = ProcessPriorityClass.Normal;
                     break;
-                case "Pause":
+                case @"Pause":
                     requested = ProcessPriorityClass.BelowNormal;
                     break;
 
@@ -643,50 +638,44 @@ namespace Elucidate.Controls
         [Flags]
         private enum ThreadAccess
         {
-            TERMINATE = (0x0001),
-            SUSPEND_RESUME = (0x0002),
-            GET_CONTEXT = (0x0008),
-            SET_CONTEXT = (0x0010),
-            SET_INFORMATION = (0x0020),
-            QUERY_INFORMATION = (0x0040),
-            SET_THREAD_TOKEN = (0x0080),
-            IMPERSONATE = (0x0100),
-            DIRECT_IMPERSONATION = (0x0200)
+            Terminate = (0x0001),
+            SuspendResume = (0x0002),
+            GetContext = (0x0008),
+            SetContext = (0x0010),
+            SetInformation = (0x0020),
+            QueryInformation = (0x0040),
+            SetThreadToken = (0x0080),
+            Impersonate = (0x0100),
+            DirectImpersonation = (0x0200)
         }
 
-        [DllImport("kernel32.dll")]
-        static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
+        [DllImport(@"kernel32.dll")]
+        private static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
+
+        [DllImport(@"kernel32.dll")]
+        private static extern uint SuspendThread(IntPtr hThread);
 
         [DllImport("kernel32.dll")]
-        static extern uint SuspendThread(IntPtr hThread);
-
-        [DllImport("kernel32.dll")]
-        static extern int ResumeThread(IntPtr hThread);
+        private static extern int ResumeThread(IntPtr hThread);
 
         public static void Suspend(this Process process)
         {
-            foreach (ProcessThread thread in process.Threads)
+            foreach (IntPtr pOpenThread in (from ProcessThread thread in process.Threads 
+                         select OpenThread(ThreadAccess.SuspendResume, false, (uint)thread.Id))
+                        .TakeWhile(static pOpenThread => pOpenThread != IntPtr.Zero)
+                        )
             {
-                var pOpenThread = OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)thread.Id);
-                if (pOpenThread == IntPtr.Zero)
-                {
-                    break;
-                }
-
                 SuspendThread(pOpenThread);
             }
         }
 
         public static void Resume(this Process process)
         {
-            foreach (ProcessThread thread in process.Threads)
+            foreach (IntPtr pOpenThread in (from ProcessThread thread in process.Threads 
+                         select OpenThread(ThreadAccess.SuspendResume, false, (uint)thread.Id))
+                        .TakeWhile(static pOpenThread => pOpenThread != IntPtr.Zero)
+                        )
             {
-                var pOpenThread = OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)thread.Id);
-                if (pOpenThread == IntPtr.Zero)
-                {
-                    break;
-                }
-
                 ResumeThread(pOpenThread);
             }
         }

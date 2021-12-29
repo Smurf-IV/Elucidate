@@ -6,29 +6,23 @@ namespace ExtendedControls.ExtendedToolkit.Values
 {
     public class CommandLinkTextValues : CaptionValues
     {
-        private const string _defaultHeading = @"Command Link V1";
-        private const string _defaultDescription = @"Here be the ""Note Text""";
+        private const string DEFAULT_HEADING = @"Command Link V1";
+        private const string DEFAULT_DESCRIPTION = @"Here be the ""Note Text""";
 
         public CommandLinkTextValues(NeedPaintHandler needPaint)
             : base(needPaint)
         {
         }
 
-        protected override string GetHeadingDefault()
-        {
-            return _defaultHeading;
-        }
+        protected override string GetHeadingDefault() => DEFAULT_HEADING;
 
-        protected override string GetDescriptionDefault()
-        {
-            return _defaultDescription;
-        }
+        protected override string GetDescriptionDefault() => DEFAULT_DESCRIPTION;
 
         #region Description
         /// <summary>
         /// Gets and sets the header description text.
         /// </summary>
-        [DefaultValue(_defaultDescription)]
+        [DefaultValue(DEFAULT_DESCRIPTION)]
         public override string Description
         {
             get => base.Description;
@@ -38,8 +32,8 @@ namespace ExtendedControls.ExtendedToolkit.Values
 
         public void ResetText()
         {
-            Heading = _defaultHeading;
-            Description = _defaultDescription;
+            Heading = DEFAULT_HEADING;
+            Description = DEFAULT_DESCRIPTION;
         }
     }
 }

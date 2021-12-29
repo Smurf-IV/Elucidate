@@ -15,18 +15,18 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
     {
         #region Instance Fields
 
-        private IPaletteTriple _paletteDisabled;
-        private IPaletteTriple _paletteNormal;
-        private IPaletteTriple _paletteTracking;
-        private IPaletteTriple _palettePressed;
-        private IPaletteTriple _paletteCheckedNormal;
-        private IPaletteTriple _paletteCheckedTracking;
-        private IPaletteTriple _paletteCheckedPressed;
-        private readonly ViewDrawCanvas _drawCanvas;
-        private readonly ViewDrawContent _drawContent;
-        private readonly ViewDrawContent _drawImageContent;
-        private readonly ViewLayoutCenter _drawImage;
-        private bool _forcePaletteUpdate;
+        private IPaletteTriple paletteDisabled;
+        private IPaletteTriple paletteNormal;
+        private IPaletteTriple paletteTracking;
+        private IPaletteTriple palettePressed;
+        private IPaletteTriple paletteCheckedNormal;
+        private IPaletteTriple paletteCheckedTracking;
+        private IPaletteTriple paletteCheckedPressed;
+        private readonly ViewDrawCanvas drawCanvas;
+        private readonly ViewDrawContent drawContent;
+        private readonly ViewDrawContent drawImageContent;
+        private readonly ViewLayoutCenter drawImage;
+        private bool forcePaletteUpdate;
         #endregion
 
         #region Identity
@@ -58,21 +58,21 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
         }
 
         /// <summary>
-		/// Initialize a new instance of the ViewDrawButton class.
-		/// </summary>
-		/// <param name="paletteDisabled">Palette source for the disabled state.</param>
-		/// <param name="paletteNormal">Palette source for the normal state.</param>
-		/// <param name="paletteTracking">Palette source for the tracking state.</param>
-		/// <param name="palettePressed">Palette source for the pressed state.</param>
+        /// Initialize a new instance of the ViewDrawButton class.
+        /// </summary>
+        /// <param name="paletteDisabled">Palette source for the disabled state.</param>
+        /// <param name="paletteNormal">Palette source for the normal state.</param>
+        /// <param name="paletteTracking">Palette source for the tracking state.</param>
+        /// <param name="palettePressed">Palette source for the pressed state.</param>
         /// <param name="paletteCheckedNormal">Palette source for the normal checked state.</param>
         /// <param name="paletteCheckedTracking">Palette source for the tracking checked state.</param>
         /// <param name="paletteCheckedPressed">Palette source for the pressed checked state.</param>
         /// <param name="paletteMetric">Palette source for metric values.</param>
         /// <param name="imageValue"></param>
         /// <param name="commandLinkTextValues"></param>
-		/// <param name="orientation">Visual orientation of the content.</param>
-		/// <param name="useMnemonic">Use mnemonics.</param>
-		public ViewDrawCommandLinkButton(IPaletteTriple paletteDisabled,
+        /// <param name="orientation">Visual orientation of the content.</param>
+        /// <param name="useMnemonic">Use mnemonics.</param>
+        public ViewDrawCommandLinkButton(IPaletteTriple paletteDisabled,
                               IPaletteTriple paletteNormal,
                               IPaletteTriple paletteTracking,
                               IPaletteTriple palettePressed,
@@ -85,26 +85,26 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
                               bool useMnemonic)
         {
             // Remember the source information
-            _paletteDisabled = paletteDisabled;
-            _paletteNormal = paletteNormal;
-            _paletteTracking = paletteTracking;
-            _palettePressed = palettePressed;
-            _paletteCheckedNormal = paletteCheckedNormal;
-            _paletteCheckedTracking = paletteCheckedTracking;
-            _paletteCheckedPressed = paletteCheckedPressed;
-            CurrentPalette = _paletteNormal;
+            this.paletteDisabled = paletteDisabled;
+            this.paletteNormal = paletteNormal;
+            this.paletteTracking = paletteTracking;
+            this.palettePressed = palettePressed;
+            this.paletteCheckedNormal = paletteCheckedNormal;
+            this.paletteCheckedTracking = paletteCheckedTracking;
+            this.paletteCheckedPressed = paletteCheckedPressed;
+            CurrentPalette = this.paletteNormal;
 
             // Default to not being checked
             Checked = false;
             AllowUncheck = true;
 
             // Create the drop down view
-            _drawImageContent = new ViewDrawContent(_paletteNormal.PaletteContent, imageValue, orientation);
-            _drawImage = new ViewLayoutCenter(paletteMetric, PaletteMetricPadding.BarPaddingOnly,
-                orientation, _drawImageContent);
+            drawImageContent = new ViewDrawContent(this.paletteNormal.PaletteContent, imageValue, orientation);
+            drawImage = new ViewLayoutCenter(paletteMetric, PaletteMetricPadding.BarPaddingOnly,
+                orientation, drawImageContent);
 
             // Our view contains background and border with content inside
-            _drawContent = new ViewDrawContent(_paletteNormal.PaletteContent, commandLinkTextValues, orientation)
+            drawContent = new ViewDrawContent(this.paletteNormal.PaletteContent, commandLinkTextValues, orientation)
             {
                 // Pass the mnemonic default to the content view
                 UseMnemonic = useMnemonic
@@ -113,13 +113,13 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
             // Use a docker layout to organize the contents of the canvas
             LayoutDocker = new ViewLayoutDocker
             {
-                { _drawContent, ViewDockStyle.Left },
-                { _drawImage, ViewDockStyle.Left }
+                { drawContent, ViewDockStyle.Left },
+                { drawImage, ViewDockStyle.Left }
             };
             LayoutDocker.Tag = this;
 
 
-            _drawCanvas = new ViewDrawCanvas(_paletteNormal.PaletteBack, _paletteNormal.PaletteBorder, paletteMetric,
+            drawCanvas = new ViewDrawCanvas(this.paletteNormal.PaletteBack, this.paletteNormal.PaletteBorder, paletteMetric,
                 PaletteMetricPadding.BarPaddingTabs, orientation)
             {
                 // Place the content inside the canvas
@@ -127,18 +127,17 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
             };
 
             // Place the canvas inside ourself
-            Add(_drawCanvas);
+            Add(drawCanvas);
         }
 
         /// <summary>
         /// Obtains the String representation of this instance.
         /// </summary>
         /// <returns>User readable name of the instance.</returns>
-        public override string ToString()
-        {
+        public override string ToString() =>
             // Return the class name and instance identifier
-            return "ViewDrawButton:" + Id;
-        }
+            "ViewDrawButton:" + Id;
+
         #endregion
 
         #region LayoutDocker
@@ -163,8 +162,8 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
         /// </summary>
         public IContentValues ButtonValues
         {
-            get => _drawContent.Values;
-            set => _drawContent.Values = value;
+            get => drawContent.Values;
+            set => drawContent.Values = value;
         }
         #endregion
 
@@ -174,8 +173,8 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
         /// </summary>
         public bool DrawTabBorder
         {
-            get => _drawCanvas.DrawTabBorder;
-            set => _drawCanvas.DrawTabBorder = value;
+            get => drawCanvas.DrawTabBorder;
+            set => drawCanvas.DrawTabBorder = value;
         }
         #endregion
 
@@ -185,16 +184,16 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
         /// </summary>
         public TabBorderStyle TabBorderStyle
         {
-            get => _drawCanvas.TabBorderStyle;
-            set => _drawCanvas.TabBorderStyle = value;
+            get => drawCanvas.TabBorderStyle;
+            set => drawCanvas.TabBorderStyle = value;
         }
         #endregion
 
         #region Enabled
         /// <summary>
-		/// Gets and sets the enabled state of the element.
-		/// </summary>
-		public override bool Enabled
+        /// Gets and sets the enabled state of the element.
+        /// </summary>
+        public override bool Enabled
         {
             get => base.Enabled;
 
@@ -208,9 +207,9 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
                 }
 
                 // Pass on the new state to the child elements
-                _drawCanvas.Enabled = value;
-                _drawContent.Enabled = value;
-                _drawImageContent.Enabled = value;
+                drawCanvas.Enabled = value;
+                drawContent.Enabled = value;
+                drawImageContent.Enabled = value;
             }
         }
         #endregion
@@ -221,7 +220,7 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
         /// </summary>
         public virtual VisualOrientation Orientation
         {
-            get => _drawCanvas.Orientation;
+            get => drawCanvas.Orientation;
             set => SetOrientation(value, value);
         }
 
@@ -233,8 +232,8 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
         public void SetOrientation(VisualOrientation borderBackOrient,
                                    VisualOrientation contentOrient)
         {
-            _drawCanvas.Orientation = borderBackOrient;
-            _drawContent.Orientation = contentOrient;
+            drawCanvas.Orientation = borderBackOrient;
+            drawContent.Orientation = contentOrient;
         }
         #endregion
 
@@ -244,8 +243,8 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
         /// </summary>
         public bool UseMnemonic
         {
-            get => _drawContent.UseMnemonic;
-            set => _drawContent.UseMnemonic = value;
+            get => drawContent.UseMnemonic;
+            set => drawContent.UseMnemonic = value;
         }
         #endregion
 
@@ -271,8 +270,8 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
         /// </summary>
         public bool DrawButtonComposition
         {
-            get => _drawCanvas.DrawCanvasOnComposition;
-            set => _drawCanvas.DrawCanvasOnComposition = value;
+            get => drawCanvas.DrawCanvasOnComposition;
+            set => drawCanvas.DrawCanvasOnComposition = value;
         }
         #endregion
 
@@ -282,8 +281,8 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
         /// </summary>
         public bool TestForFocusCues
         {
-            get => _drawContent.TestForFocusCues;
-            set => _drawContent.TestForFocusCues = value;
+            get => drawContent.TestForFocusCues;
+            set => drawContent.TestForFocusCues = value;
         }
         #endregion
 
@@ -306,13 +305,13 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
             Debug.Assert(palettePressed != null);
 
             // Remember the new palette settings
-            _paletteDisabled = paletteDisabled;
-            _paletteNormal = paletteNormal;
-            _paletteTracking = paletteTracking;
-            _palettePressed = palettePressed;
+            this.paletteDisabled = paletteDisabled;
+            this.paletteNormal = paletteNormal;
+            this.paletteTracking = paletteTracking;
+            this.palettePressed = palettePressed;
 
             // Must force update of palettes to use latest ones provided
-            _forcePaletteUpdate = true;
+            forcePaletteUpdate = true;
         }
 
         /// <summary>
@@ -330,12 +329,12 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
             Debug.Assert(paletteCheckedPressed != null);
 
             // Remember the new palette settings
-            _paletteCheckedNormal = paletteCheckedNormal;
-            _paletteCheckedTracking = paletteCheckedTracking;
-            _paletteCheckedPressed = paletteCheckedPressed;
+            this.paletteCheckedNormal = paletteCheckedNormal;
+            this.paletteCheckedTracking = paletteCheckedTracking;
+            this.paletteCheckedPressed = paletteCheckedPressed;
 
             // Must force update of palettes to use latest ones provided
-            _forcePaletteUpdate = true;
+            forcePaletteUpdate = true;
         }
         #endregion
 
@@ -353,25 +352,25 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
             CheckPaletteState(context);
 
             // Ask the renderer to evaluate the given palette
-            return _drawCanvas.EvalTransparentPaint(context);
+            return drawCanvas.EvalTransparentPaint(context);
         }
         #endregion
 
         #region Layout
         /// <summary>
-		/// Discover the preferred size of the element.
-		/// </summary>
-		/// <param name="context">Layout context.</param>
-		public override Size GetPreferredSize(ViewLayoutContext context)
+        /// Discover the preferred size of the element.
+        /// </summary>
+        /// <param name="context">Layout context.</param>
+        public override Size GetPreferredSize(ViewLayoutContext context)
         {
             Debug.Assert(context != null);
-            Debug.Assert(_drawCanvas != null);
+            Debug.Assert(drawCanvas != null);
 
             // Ensure that child elements have correct palette state
             CheckPaletteState(context);
 
             // Delegate work to the child canvas
-            return _drawCanvas.GetPreferredSize(context);
+            return drawCanvas.GetPreferredSize(context);
         }
 
         /// <summary>
@@ -442,18 +441,13 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
                 if (AllowUncheck)
                 {
                     // Show feedback on tracking and pressed
-                    switch (buttonState)
-                    {
-                        case PaletteState.Normal:
-                            buttonState = PaletteState.CheckedNormal;
-                            break;
-                        case PaletteState.Tracking:
-                            buttonState = PaletteState.CheckedTracking;
-                            break;
-                        case PaletteState.Pressed:
-                            buttonState = PaletteState.CheckedPressed;
-                            break;
-                    }
+                    buttonState = buttonState switch
+                                  {
+                                      PaletteState.Normal   => PaletteState.CheckedNormal,
+                                      PaletteState.Tracking => PaletteState.CheckedTracking,
+                                      PaletteState.Pressed  => PaletteState.CheckedPressed,
+                                      _                     => buttonState
+                                  };
                 }
                 else
                 {
@@ -463,39 +457,39 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
             }
 
             // If the child elements are not in correct state
-            if (_forcePaletteUpdate || (_drawCanvas.ElementState != buttonState))
+            if (forcePaletteUpdate || (drawCanvas.ElementState != buttonState))
             {
                 // No longer need to force the palettes to be updated
-                _forcePaletteUpdate = false;
+                forcePaletteUpdate = false;
 
                 // Switch the child elements over to correct state
-                _drawCanvas.ElementState = buttonState;
-                _drawContent.ElementState = buttonState;
-                _drawImageContent.ElementState = buttonState;
+                drawCanvas.ElementState = buttonState;
+                drawContent.ElementState = buttonState;
+                drawImageContent.ElementState = buttonState;
 
                 // Push the correct palettes into them
                 switch (buttonState)
                 {
                     case PaletteState.Disabled:
-                        CurrentPalette = _paletteDisabled;
+                        CurrentPalette = paletteDisabled;
                         break;
                     case PaletteState.Normal:
-                        CurrentPalette = _paletteNormal;
+                        CurrentPalette = paletteNormal;
                         break;
                     case PaletteState.CheckedNormal:
-                        CurrentPalette = _paletteCheckedNormal;
+                        CurrentPalette = paletteCheckedNormal;
                         break;
                     case PaletteState.Pressed:
-                        CurrentPalette = _palettePressed;
+                        CurrentPalette = palettePressed;
                         break;
                     case PaletteState.CheckedPressed:
-                        CurrentPalette = _paletteCheckedPressed;
+                        CurrentPalette = paletteCheckedPressed;
                         break;
                     case PaletteState.Tracking:
-                        CurrentPalette = _paletteTracking;
+                        CurrentPalette = paletteTracking;
                         break;
                     case PaletteState.CheckedTracking:
-                        CurrentPalette = _paletteCheckedTracking;
+                        CurrentPalette = paletteCheckedTracking;
                         break;
                     default:
                         // Should never happen!
@@ -504,8 +498,8 @@ namespace ExtendedControls.ExtendedToolkit.View_Draw
                 }
 
                 // Update with the correct palettes
-                _drawCanvas.SetPalettes(CurrentPalette.PaletteBack, CurrentPalette.PaletteBorder);
-                _drawContent.SetPalette(CurrentPalette.PaletteContent);
+                drawCanvas.SetPalettes(CurrentPalette.PaletteBack, CurrentPalette.PaletteBorder);
+                drawContent.SetPalette(CurrentPalette.PaletteContent);
                 //_drawImageContent.SetPalette(CurrentPalette.PaletteContent);
             }
         }

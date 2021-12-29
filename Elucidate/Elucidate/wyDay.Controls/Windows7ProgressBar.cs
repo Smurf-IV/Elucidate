@@ -16,19 +16,17 @@ namespace Elucidate.wyDay.Controls
     [ToolboxBitmap(typeof(ProgressBar))]
     public class Windows7ProgressBar : ProgressBar
     {
-        bool showInTaskbar;
-        private ProgressBarState m_State = ProgressBarState.Normal;
-        ContainerControl ownerForm;
+        private bool showInTaskbar;
+        private ProgressBarState mState = ProgressBarState.Normal;
+        private ContainerControl ownerForm;
 
         public Windows7ProgressBar() { }
 
-        public Windows7ProgressBar(ContainerControl parentControl)
-        {
-            ContainerControl = parentControl;
-        }
+        public Windows7ProgressBar(ContainerControl parentControl) => ContainerControl = parentControl;
+
         public ContainerControl ContainerControl
         {
-            get { return ownerForm; }
+            get => ownerForm;
             set
             {
                 ownerForm = value;
@@ -45,12 +43,7 @@ namespace Elucidate.wyDay.Controls
             {
                 // Runs at design time, ensures designer initializes ContainerControl
                 base.Site = value;
-                if (value == null)
-                {
-                    return;
-                }
-                IDesignerHost service = value.GetService(typeof(IDesignerHost)) as IDesignerHost;
-                if (service == null)
+                if (value?.GetService(typeof(IDesignerHost)) is not IDesignerHost service)
                 {
                     return;
                 }
@@ -60,16 +53,16 @@ namespace Elucidate.wyDay.Controls
             }
         }
 
-        void Windows7ProgressBar_Shown(object sender, System.EventArgs e)
+        private void Windows7ProgressBar_Shown(object sender, System.EventArgs e)
         {
             if (ShowInTaskbar)
             {
                 if (Style != ProgressBarStyle.Marquee)
                 {
-                    SetValueInTB();
+                    SetValueInTb();
                 }
 
-                SetStateInTB();
+                SetStateInTb();
             }
 
             ((Form)ownerForm).Shown -= Windows7ProgressBar_Shown;
@@ -83,10 +76,7 @@ namespace Elucidate.wyDay.Controls
         [DefaultValue(false)]
         public bool ShowInTaskbar
         {
-            get
-            {
-                return showInTaskbar;
-            }
+            get => showInTaskbar;
             set
             {
                 if (showInTaskbar != value)
@@ -98,10 +88,10 @@ namespace Elucidate.wyDay.Controls
                     {
                         if (Style != ProgressBarStyle.Marquee)
                         {
-                            SetValueInTB();
+                            SetValueInTb();
                         }
 
-                        SetStateInTB();
+                        SetStateInTb();
                     }
                 }
             }
@@ -114,16 +104,13 @@ namespace Elucidate.wyDay.Controls
         /// <returns>The position within the range of the progress bar. The default is 0.</returns>
         public new int Value
         {
-            get
-            {
-                return base.Value;
-            }
+            get => base.Value;
             set
             {
                 base.Value = value;
 
                 // send signal to the taskbar.
-                SetValueInTB();
+                SetValueInTb();
             }
         }
 
@@ -133,10 +120,7 @@ namespace Elucidate.wyDay.Controls
         /// <returns>One of the ProgressBarStyle values. The default is ProgressBarStyle.Blocks</returns>
         public new ProgressBarStyle Style
         {
-            get
-            {
-                return base.Style;
-            }
+            get => base.Style;
             set
             {
                 base.Style = value;
@@ -144,7 +128,7 @@ namespace Elucidate.wyDay.Controls
                 // set the style of the progress bar
                 if (showInTaskbar && ownerForm != null)
                 {
-                    SetStateInTB();
+                    SetStateInTb();
                 }
             }
         }
@@ -156,12 +140,12 @@ namespace Elucidate.wyDay.Controls
         [DefaultValue(ProgressBarState.Normal)]
         public ProgressBarState State
         {
-            get { return m_State; }
+            get => mState;
             set
             {
-                m_State = value;
+                mState = value;
 
-                bool wasMarquee = Style == ProgressBarStyle.Marquee;
+                var wasMarquee = Style == ProgressBarStyle.Marquee;
 
                 if (wasMarquee)
                 // sets the state to normal (and implicity calls SetStateInTB() )
@@ -176,12 +160,12 @@ namespace Elucidate.wyDay.Controls
                 if (wasMarquee)
                 // the Taskbar PB value needs to be reset
                 {
-                    SetValueInTB();
+                    SetValueInTb();
                 }
                 else
                 // there wasn't a marquee, thus we need to update the taskbar
                 {
-                    SetStateInTB();
+                    SetStateInTb();
                 }
             }
         }
@@ -195,7 +179,7 @@ namespace Elucidate.wyDay.Controls
             base.Increment(value);
 
             // send signal to the taskbar.
-            SetValueInTB();
+            SetValueInTb();
         }
 
         /// <summary>
@@ -206,21 +190,21 @@ namespace Elucidate.wyDay.Controls
             base.PerformStep();
 
             // send signal to the taskbar.
-            SetValueInTB();
+            SetValueInTb();
         }
 
-        private void SetValueInTB()
+        private void SetValueInTb()
         {
             if (showInTaskbar)
             {
-                ulong maximum = (ulong)(Maximum - Minimum);
-                ulong progress = (ulong)(Value - Minimum);
+                var maximum = (ulong)(Maximum - Minimum);
+                var progress = (ulong)(Value - Minimum);
 
                 Windows7Taskbar.SetProgressValue(ownerForm.Handle, progress, maximum);
             }
         }
 
-        private void SetStateInTB()
+        private void SetStateInTb()
         {
             if (ownerForm == null)
             {
@@ -237,11 +221,11 @@ namespace Elucidate.wyDay.Controls
             {
                 thmState = ThumbnailProgressState.Indeterminate;
             }
-            else if (m_State == ProgressBarState.Error)
+            else if (mState == ProgressBarState.Error)
             {
                 thmState = ThumbnailProgressState.Error;
             }
-            else if (m_State == ProgressBarState.Pause)
+            else if (mState == ProgressBarState.Pause)
             {
                 thmState = ThumbnailProgressState.Paused;
             }

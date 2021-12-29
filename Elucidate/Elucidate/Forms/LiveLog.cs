@@ -38,6 +38,7 @@ namespace Elucidate.Forms
 
         public LiveLog()
         {
+            Icon = Properties.Resources.ElucidateIco;
             InitializeComponent();
             ListBoxLog ??= new ListBoxLog(rtbLiveLog);
             WindowLocation.GeometryFromString(Properties.Settings.Default.LogWindowLocation, this);

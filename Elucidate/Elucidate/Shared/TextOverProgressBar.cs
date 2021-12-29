@@ -21,12 +21,15 @@ namespace Elucidate.Shared
     /// </summary>
     public class TextOverProgressBar : Windows7ProgressBar
     {
-        private readonly Timer marqueeTimer = new Timer();
+        private readonly Timer marqueeTimer = new();
 
         public TextOverProgressBar()
         {
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint |
-               ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw | ControlStyles.SupportsTransparentBackColor, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint 
+                     | ControlStyles.UserPaint 
+                     | ControlStyles.OptimizedDoubleBuffer 
+                     | ControlStyles.ResizeRedraw 
+                     | ControlStyles.SupportsTransparentBackColor, true);
             marqueeTimer.Interval = 1000;
             marqueeTimer.Tick += AnimateTimer_OnTick;
             marqueeTimer.Enabled = (Style == ProgressBarStyle.Marquee);
@@ -43,7 +46,7 @@ namespace Elucidate.Shared
         [DefaultValue(typeof(string), "ControlText")]
         public string DisplayText
         {
-            get { return Text; }
+            get => Text;
             set
             {
                 if (Text != value)
@@ -61,27 +64,19 @@ namespace Elucidate.Shared
 
         public new ProgressBarState State
         {
-            get { return base.State; }
+            get => base.State;
             set
             {
                 if (base.State != value)
                 {
                     base.State = value;
-                    Color newColor;
-                    switch (value)
+                    Color newColor = value switch
                     {
-                        case ProgressBarState.Normal:
-                            newColor = Color.LimeGreen;
-                            break;
-                        case ProgressBarState.Pause:
-                            newColor = Color.FromArgb(210, 200, 0);
-                            break;
-                        case ProgressBarState.Error:
-                            newColor = Color.Red;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException("value");
-                    }
+                        ProgressBarState.Normal => Color.LimeGreen,
+                        ProgressBarState.Pause => Color.FromArgb(210, 200, 0),
+                        ProgressBarState.Error => Color.Red,
+                        _ => throw new ArgumentOutOfRangeException(nameof(State))
+                    };
                     ForeColor = Color.FromArgb(Enabled ? 255 : 128, newColor);
                 }
             }
@@ -94,10 +89,7 @@ namespace Elucidate.Shared
         [DefaultValue(ProgressBarStyle.Blocks)]
         public new ProgressBarStyle Style
         {
-            get
-            {
-                return base.Style;
-            }
+            get => base.Style;
             set
             {
                 if (base.Style == value)
@@ -112,24 +104,22 @@ namespace Elucidate.Shared
 
         private void PaintMarquee(PaintEventArgs e)
         {
-            float stepWidthPixel = (float)Width / Maximum;
-            int localValue = (int)(Value * stepWidthPixel);
+            var stepWidthPixel = (float)Width / Maximum;
+            var localValue = (int)(Value * stepWidthPixel);
             stepWidthPixel *= Step;
             stepWidthPixel = Math.Max(stepWidthPixel, 5);
-            int left = Math.Max(Math.Min(localValue + 2, (int)(localValue + stepWidthPixel)), 2);
-            Rectangle rec = new Rectangle(left, 2, (int)stepWidthPixel * 2, Height);
+            var left = Math.Max(Math.Min(localValue + 2, (int)(localValue + stepWidthPixel)), 2);
+            var rec = new Rectangle(left, 2, (int)stepWidthPixel * 2, Height);
             rec.Height -= 3;
 
             // Create a linear gradient brush
-            using (LinearGradientBrush rgBrush = new LinearGradientBrush(rec, Color.Transparent, ForeColor, 0.0f, true))
-            {
-                // Set sigma bell shape
-                rgBrush.SetSigmaBellShape(0.5f, 1.0f);
-                // Set blend triangular shape
-                rgBrush.SetBlendTriangularShape(0.5f, 1.0f);
-                // Fill rectangle again
-                e.Graphics.FillRectangle(rgBrush, rec);
-            }
+            using var rgBrush = new LinearGradientBrush(rec, Color.Transparent, ForeColor, 0.0f, true);
+            // Set sigma bell shape
+            rgBrush.SetSigmaBellShape(0.5f, 1.0f);
+            // Set blend triangular shape
+            rgBrush.SetBlendTriangularShape(0.5f, 1.0f);
+            // Fill rectangle again
+            e.Graphics.FillRectangle(rgBrush, rec);
         }
 
 
@@ -141,7 +131,7 @@ namespace Elucidate.Shared
             }
             if (Style == ProgressBarStyle.Marquee)
             {
-                int localValue = Value;
+                var localValue = Value;
                 if (State != ProgressBarState.Pause)
                 {
                     localValue += Step;
@@ -170,7 +160,7 @@ namespace Elucidate.Shared
         /// <param name="radiusY"></param>
         public static GraphicsPath GetRoundedRect(RectangleF baseRect, float radiusX, float radiusY)
         {
-            GraphicsPath gp = new GraphicsPath();
+            var gp = new GraphicsPath();
             gp.StartFigure();
 
             if (radiusX <= 0.0F || radiusY <= 0.0F)
@@ -180,7 +170,7 @@ namespace Elucidate.Shared
             else
             {
                 //arcs work with diameters (radius * 2)
-                PointF d = new PointF(Math.Min(radiusX * 2, baseRect.Width), Math.Min(radiusY * 2, baseRect.Height));
+                var d = new PointF(Math.Min(radiusX * 2, baseRect.Width), Math.Min(radiusY * 2, baseRect.Height));
                 gp.AddArc(baseRect.X, baseRect.Y, d.X, d.Y, 180, 90);
                 gp.AddArc(baseRect.Right - d.X, baseRect.Y, d.X, d.Y, 270, 90);
                 gp.AddArc(baseRect.Right - d.X, baseRect.Bottom - d.Y, d.X, d.Y, 0, 90);
@@ -202,20 +192,16 @@ namespace Elucidate.Shared
         }
         private void DrawBackground(Graphics g, Rectangle rect)
         {
-            using (GraphicsPath backgroundPath = GetRoundedRect(rect, 2, 2))
-            {
-                using (Brush backBrush = new SolidBrush(BackColor))
-                {
-                    g.FillPath(backBrush, backgroundPath);
-                }
-            }
+            using GraphicsPath backgroundPath = GetRoundedRect(rect, 2, 2);
+            using Brush backBrush = new SolidBrush(BackColor);
+            g.FillPath(backBrush, backgroundPath);
         }
         private readonly Color black30 = Color.FromArgb(30, Color.Black);
         private readonly Color black20 = Color.FromArgb(20, Color.Black);
         private readonly Color white128 = Color.FromArgb(128, Color.White);
         private void DrawBarHighlight(Graphics g, Rectangle rect)
         {
-            Rectangle tr = new Rectangle(rect.Left + 1, rect.Top + 1, rect.Width - 1, 6);
+            var tr = new Rectangle(rect.Left + 1, rect.Top + 1, rect.Width - 1, 6);
             using (GraphicsPath tp = GetRoundedRect(tr, 2, 2))
             {
                 g.SetClip(tp);
@@ -226,38 +212,34 @@ namespace Elucidate.Shared
                 g.ResetClip();
             }
 
-            Rectangle br = new Rectangle(rect.Left + 1, rect.Bottom - 8, rect.Width - 1, 6);
-            using (GraphicsPath bp = GetRoundedRect(br, 2, 2))
+            var br = new Rectangle(rect.Left + 1, rect.Bottom - 8, rect.Width - 1, 6);
+            using GraphicsPath bp = GetRoundedRect(br, 2, 2);
+            g.SetClip(bp);
+            using (Brush bg = new LinearGradientBrush(br, Color.Transparent, black20, LinearGradientMode.Vertical))
             {
-                g.SetClip(bp);
-                using (Brush bg = new LinearGradientBrush(br, Color.Transparent, black20, LinearGradientMode.Vertical))
-                {
-                    g.FillPath(bg, bp);
-                }
-                g.ResetClip();
+                g.FillPath(bg, bp);
             }
+            g.ResetClip();
         }
 
         private void DrawBackgroundShadows(Graphics g, Rectangle rect)
         {
-            Rectangle lr = new Rectangle(rect.Left + 2, rect.Top + 2, 10, rect.Height - 5);
+            var lr = new Rectangle(rect.Left + 2, rect.Top + 2, 10, rect.Height - 5);
             using (Brush lg = new LinearGradientBrush(lr, black30, Color.Transparent, LinearGradientMode.Horizontal))
             {
                 lr.X--;
                 g.FillRectangle(lg, lr);
             }
 
-            Rectangle rr = new Rectangle(rect.Right - 12, rect.Top + 2, 10, rect.Height - 5);
-            using (Brush rg = new LinearGradientBrush(rr, Color.Transparent, black20, LinearGradientMode.Horizontal))
-            {
-                g.FillRectangle(rg, rr);
-            }
+            var rr = new Rectangle(rect.Right - 12, rect.Top + 2, 10, rect.Height - 5);
+            using Brush rg = new LinearGradientBrush(rr, Color.Transparent, black20, LinearGradientMode.Horizontal);
+            g.FillRectangle(rg, rr);
         }
         #endregion
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            Rectangle rec = new Rectangle(0, 0, Width, Height);
+            var rec = new Rectangle(0, 0, Width, Height);
 
             if (ProgressBarRenderer.IsSupported)
             {
@@ -271,7 +253,7 @@ namespace Elucidate.Shared
             {
                 case ProgressBarStyle.Blocks:
                 case ProgressBarStyle.Continuous:
-                    using (LinearGradientBrush brush = new LinearGradientBrush(rec, BackColor, ForeColor,
+                    using (var brush = new LinearGradientBrush(rec, BackColor, ForeColor,
                                                                              LinearGradientMode.Vertical))
                     {
                         e.Graphics.FillRectangle(brush, 1, 1, (int)(rec.Width * ((double)Value / Maximum)) - 3, rec.Height - 3);
@@ -281,23 +263,18 @@ namespace Elucidate.Shared
                     PaintMarquee(e);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(Style));
             }
 
-            using (SolidBrush sb = new SolidBrush(TextColor))
+            using var sb = new SolidBrush(TextColor);
+            using var sf = new StringFormat(StringFormatFlags.NoWrap)
             {
-                using (StringFormat sf = new StringFormat(StringFormatFlags.NoWrap)
-                {
-                    Alignment = TextAlignment,
-                    LineAlignment = StringAlignment.Center,
-                    Trimming = StringTrimming.EllipsisWord
-                }
-                   )
-                {
-                    rec.Inflate(-5, -2);
-                    e.Graphics.DrawString(Text, Font, sb, rec, sf);
-                }
-            }
+                Alignment = TextAlignment,
+                LineAlignment = StringAlignment.Center,
+                Trimming = StringTrimming.EllipsisWord
+            };
+            rec.Inflate(-5, -2);
+            e.Graphics.DrawString(Text, Font, sb, rec, sf);
         }
 
 

@@ -66,13 +66,13 @@ namespace Elucidate.Shared
 
         private static ShowDialogResult ShowXpDialog(IntPtr ownerHandle, string initialDirectory, string title)
         {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog
+            var folderBrowserDialog = new FolderBrowserDialog
             {
                 Description = title,
                 SelectedPath = initialDirectory,
                 ShowNewFolderButton = true
             };
-            ShowDialogResult dialogResult = new ShowDialogResult();
+            var dialogResult = new ShowDialogResult();
             if (folderBrowserDialog.ShowDialog(new WindowWrapper(ownerHandle)) == DialogResult.OK)
             {
                 dialogResult.Result = true;
@@ -105,7 +105,7 @@ namespace Elucidate.Shared
 
             public static ShowDialogResult Show(IntPtr ownerHandle, string initialDirectory, string title, string targetDirectory)
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog
+                var openFileDialog = new OpenFileDialog
                 {
                     AddExtension = false,
                     CheckFileExists = false,
@@ -119,9 +119,9 @@ namespace Elucidate.Shared
                     ValidateNames = true
                 };
 
-                object iFileDialog = CreateVistaDialogMethodInfo.Invoke(openFileDialog, new object[] { });
+                object iFileDialog = CreateVistaDialogMethodInfo.Invoke(openFileDialog, Array.Empty<object>());
                 OnBeforeVistaDialogMethodInfo.Invoke(openFileDialog, new[] { iFileDialog });
-                SetOptionsMethodInfo.Invoke(iFileDialog, new object[] { (uint)GetOptionsMethodInfo.Invoke(openFileDialog, new object[] { }) | FosPickFoldersBitFlag });
+                SetOptionsMethodInfo.Invoke(iFileDialog, new object[] { (uint)GetOptionsMethodInfo.Invoke(openFileDialog, Array.Empty<object>()) | FosPickFoldersBitFlag });
                 object[] adviseParametersWithOutputConnectionToken = new[] { VistaDialogEventsConstructorInfo.Invoke(new object[] { openFileDialog }), 0U };
                 AdviseMethodInfo.Invoke(iFileDialog, adviseParametersWithOutputConnectionToken);
 

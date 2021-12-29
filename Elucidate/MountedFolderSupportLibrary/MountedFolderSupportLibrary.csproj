@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Platforms>AnyCPU;x64;x86</Platforms>
-    <ShouldCreateLogs>False</ShouldCreateLogs>
+      <TargetFrameworks>net48</TargetFrameworks>
     <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
     <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
@@ -12,8 +10,8 @@
     <AssemblyInfoVersionType>SettingsVersion</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
     <PrimaryVersionType>AssemblyVersionAttribute</PrimaryVersionType>
-    <AssemblyVersion>2018.9.28.29</AssemblyVersion>
-    <FileVersion>18.9.28.29</FileVersion>
+    <AssemblyVersion>2021.12.29.30</AssemblyVersion>
+    <FileVersion>21.12.29.30</FileVersion>
   </PropertyGroup>
 
 </Project>

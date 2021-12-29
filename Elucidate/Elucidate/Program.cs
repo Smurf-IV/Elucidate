@@ -65,7 +65,7 @@ namespace Elucidate
 
                 ExceptionlessClient.Default.Configuration.SetVersion(Assembly.GetExecutingAssembly().GetName().Version);
 
-                AppDomain.CurrentDomain.UnhandledException += (sender, e) => LogUnhandledException(e.ExceptionObject);
+                AppDomain.CurrentDomain.UnhandledException += static (_, e) => LogUnhandledException(e.ExceptionObject);
                 //if (FileUtil.IsDirectoryCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)))
                 //{
                 //    FileUtil.SetDirectoryAsCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation));
@@ -84,8 +84,8 @@ namespace Elucidate
             }
             try
             {
-                Log.Info("=====================================================================");
-                Log.Info("File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
+                Log.Info(@"=====================================================================");
+                Log.Info(@"File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
                 CheckAndRunSingleApp();
             }
             catch (Exception ex)
@@ -95,30 +95,28 @@ namespace Elucidate
             }
             finally
             {
-                Log.Info("File Closing");
-                Log.Info("=====================================================================");
+                Log.Info(@"File Closing");
+                Log.Info(@"=====================================================================");
             }
         }
 
         private static void CheckAndRunSingleApp()
         {
-            string mutexName = $"{Path.GetFileName(Application.ExecutablePath)} [{Environment.UserName}]";
+            var mutexName = $"{Path.GetFileName(Application.ExecutablePath)} [{Environment.UserName}]";
 
             // ReSharper disable once UnusedVariable
-            using (Mutex appUserMutex = new Mutex(true, mutexName, out bool grantedOwnership))
+            using var appUserMutex = new Mutex(true, mutexName, out var grantedOwnership);
+            if (grantedOwnership)
             {
-                if (grantedOwnership)
-                {
-                    Application.EnableVisualStyles();
-                    Application.SetCompatibleTextRenderingDefault(false);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-                    Application.Run(new ElucidateForm());
-                }
-                else
-                {
-                    KryptonMessageBox.Show($@"{mutexName} is already running", mutexName, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    Log.Error($@"{mutexName} is already running");
-                }
+                Application.Run(new ElucidateForm());
+            }
+            else
+            {
+                KryptonMessageBox.Show($@"{mutexName} is already running", mutexName, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                Log.Error($@"{mutexName} is already running");
             }
         }
 
@@ -127,7 +125,7 @@ namespace Elucidate
             try
             {
                 Log.Fatal("Unhandled exception.\r\n{0}", exceptionObject);
-                string cs = Assembly.GetExecutingAssembly().GetName().Name;
+                var cs = Assembly.GetExecutingAssembly().GetName().Name;
                 try
                 {
                     if (!EventLog.SourceExists(cs))

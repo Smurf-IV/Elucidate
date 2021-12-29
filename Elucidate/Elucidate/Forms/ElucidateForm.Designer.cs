@@ -44,7 +44,6 @@ namespace Elucidate
             this.tabSchedulePage = new Krypton.Navigator.KryptonPage();
             this.tpSchedule = new Elucidate.TabPages.Schedule();
             this.tabCommonOperations = new Krypton.Navigator.KryptonPage();
-            this.tpCoverage = new Elucidate.Controls.ProtectedDrivesDisplay();
             this.logPanel = new Krypton.Toolkit.KryptonPanel();
             this.commonTab = new Elucidate.TabPages.CommonTab();
             this.tabControl = new Krypton.Navigator.KryptonNavigator();
@@ -96,7 +95,6 @@ namespace Elucidate
             this.tabCoveragePage.Padding = new System.Windows.Forms.Padding(4);
             this.tabCoveragePage.Size = new System.Drawing.Size(1179, 631);
             this.tabCoveragePage.Text = "  Coverage  ";
-            this.tabCoveragePage.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabCoveragePage.ToolTipTitle = "Page ToolTip";
             this.tabCoveragePage.UniqueName = "83F1AC53801E4FDCCBA828F2D020A11A";
             // 
@@ -122,7 +120,6 @@ namespace Elucidate
             this.tabSchedulePage.Padding = new System.Windows.Forms.Padding(4);
             this.tabSchedulePage.Size = new System.Drawing.Size(1179, 558);
             this.tabSchedulePage.Text = "Schedule";
-            this.tabSchedulePage.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabSchedulePage.ToolTipTitle = "Page ToolTip";
             this.tabSchedulePage.UniqueName = "D08ABA17CB8242C412B34C6B2FB9731D";
             // 
@@ -148,7 +145,6 @@ namespace Elucidate
             this.tabCommonOperations.Name = "tabCommonOperations";
             this.tabCommonOperations.Size = new System.Drawing.Size(1179, 310);
             this.tabCommonOperations.Text = "  Common SnapRaid  ";
-            this.tabCommonOperations.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabCommonOperations.ToolTipTitle = "Page ToolTip";
             this.tabCommonOperations.UniqueName = "C7A4A748B4E3458CC28B53AD5B684A5E";
             // 
@@ -179,10 +175,6 @@ namespace Elucidate
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl.Group.GroupBackStyle = Krypton.Toolkit.PaletteBackStyle.PanelClient;
-            this.tabControl.Group.GroupBorderStyle = Krypton.Toolkit.PaletteBorderStyle.ControlClient;
-            this.tabControl.Header.HeaderStyleBar = Krypton.Toolkit.HeaderStyle.Secondary;
-            this.tabControl.Header.HeaderStylePrimary = Krypton.Toolkit.HeaderStyle.Primary;
-            this.tabControl.Header.HeaderStyleSecondary = Krypton.Toolkit.HeaderStyle.Secondary;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl.Name = "tabControl";
@@ -193,12 +185,9 @@ namespace Elucidate
             this.tabCoveragePage,
             this.tabSchedulePage,
             this.tabRecoverFiles});
-            this.tabControl.Panel.PanelBackStyle = Krypton.Toolkit.PaletteBackStyle.PanelClient;
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1181, 346);
             this.tabControl.StateCommon.Tab.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl.StateCommon.Tab.Content.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.Inherit;
-            this.tabControl.StateCommon.Tab.Content.ShortText.Trim = Krypton.Toolkit.PaletteTextTrim.Inherit;
             this.tabControl.TabIndex = 4;
             this.tabControl.SelectedPageChanged += new System.EventHandler(this.tabControl_SelectedPageChanged);
             // 
@@ -214,7 +203,6 @@ namespace Elucidate
             this.tabLogs.Padding = new System.Windows.Forms.Padding(4);
             this.tabLogs.Size = new System.Drawing.Size(1179, 631);
             this.tabLogs.Text = "Log History";
-            this.tabLogs.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabLogs.ToolTipTitle = "Page ToolTip";
             this.tabLogs.UniqueName = "2D998176807546A076BCA98AEA36EF48";
             // 
@@ -242,7 +230,6 @@ namespace Elucidate
             this.tabRecoverFiles.Padding = new System.Windows.Forms.Padding(4);
             this.tabRecoverFiles.Size = new System.Drawing.Size(1179, 310);
             this.tabRecoverFiles.Text = "Recover Files";
-            this.tabRecoverFiles.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.tabRecoverFiles.ToolTipTitle = "Page ToolTip";
             this.tabRecoverFiles.UniqueName = "B4F3B50AB11048A05B80EE8A2A5EDC3A";
             // 
@@ -388,7 +375,6 @@ namespace Elucidate
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);

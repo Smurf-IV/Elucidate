@@ -35,7 +35,6 @@ using System.Text;
 using System.Windows.Forms;
 
 using Elucidate.Forms;
-using Elucidate.Shared;
 
 using Krypton.Navigator;
 using Krypton.Toolkit;
@@ -49,11 +48,15 @@ namespace Elucidate
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        private readonly ConfigFileHelper srConfig = new ConfigFileHelper();
-        private readonly LiveLog liveLog = new LiveLog();
+        private readonly ConfigFileHelper srConfig = new ();
+        private readonly LiveLog liveLog = new ();
 
         public ElucidateForm()
         {
+            // For some reason the designer keeps removing the following !!
+            tpCoverage = new Controls.ProtectedDrivesDisplay();
+            Icon = Properties.Resources.ElucidateIco;
+
             InitializeComponent();
 
             if (Properties.Settings.Default.UpdateRequired)
@@ -93,7 +96,7 @@ namespace Elucidate
 
         private void ElucidateForm_Shown(object sender, EventArgs e)
         {
-            string[] args = Environment.GetCommandLineArgs().Skip(1).ToArray();
+            var args = Environment.GetCommandLineArgs().Skip(1).ToArray();
             if (args.Contains(@"-H")
                 || args.Contains(@"--help")
             )
@@ -109,7 +112,7 @@ namespace Elucidate
                 // display any warnings from the config validation
                 if (srConfig.HasWarnings)
                 {
-                    MessageBoxExt.Show(
+                    KryptonMessageBox.Show(
                         this,
                         $"There are warnings for the configuration file:{Environment.NewLine} - {string.Join(" - ", srConfig.ConfigWarnings)}",
                         "Configuration File Warnings",
@@ -132,7 +135,7 @@ namespace Elucidate
                 return;
             }
 
-            using (Settings settingsForm = new Settings())
+            using (var settingsForm = new Settings())
             {
                 settingsForm.ShowDialog(this);
             }
@@ -143,9 +146,7 @@ namespace Elucidate
         private void deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Log.Info(@"Generate list of file for MessageBiox and deletion code");
-            List<string> parityFiles = new List<string>();
-
-            List<string> contentFiles = new List<string>();
+            var parityFiles = new List<string>();
 
             if (!string.IsNullOrWhiteSpace(srConfig.ParityFile1))
             {
@@ -182,12 +183,8 @@ namespace Elucidate
                 parityFiles.Add(srConfig.ParityFile6);
             }
 
-            foreach (string file in srConfig.ContentFiles)
-            {
-                contentFiles.Add(file);
-            }
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.AppendLine(@"Are you sure you want to remove the files below?");
 
@@ -195,12 +192,13 @@ namespace Elucidate
 
             sb.AppendLine();
 
-            foreach (string file in parityFiles)
+            foreach (var file in parityFiles)
             {
                 sb.AppendLine($@"Parity File: {file}");
             }
 
-            foreach (string file in contentFiles)
+            var contentFiles = srConfig.ContentFiles.ToList();
+            foreach (var file in contentFiles)
             {
                 sb.AppendLine($@"Content File: {file}");
             }
@@ -216,17 +214,17 @@ namespace Elucidate
             {
                 try
                 {
-                    foreach (string file in parityFiles)
+                    foreach (var file in parityFiles)
                     {
                         File.Delete(file);
                     }
 
-                    foreach (string file in contentFiles)
+                    foreach (var file in contentFiles)
                     {
                         File.Delete(file);
                     }
 
-                    MessageBoxExt.Show(this, @"The SnapRAID files have been removed", @"Files Removed");
+                    KryptonMessageBox.Show(this, @"The SnapRAID files have been removed", @"Files Removed");
                 }
                 catch (Exception ex)
                 {
@@ -252,7 +250,7 @@ namespace Elucidate
                 SystemSounds.Beep.Play();
                 return;
             }
-            using (Process process = new Process
+            using (var process = new Process
             {
                 StartInfo = new ProcessStartInfo(@"Wordpad.exe", Properties.Settings.Default.ConfigFileLocation)
             })
@@ -285,7 +283,7 @@ namespace Elucidate
             srConfig.LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
 
             Properties.Settings.Default.ConfigFileIsValid = srConfig.IsValid;
-            bool exists = File.Exists(Properties.Settings.Default.SnapRAIDFileLocation);
+            var exists = File.Exists(Properties.Settings.Default.SnapRAIDFileLocation);
 
             commonTab.SetCommonButtonsEnabledState(srConfig.IsValid && exists);
 
@@ -316,7 +314,7 @@ namespace Elucidate
 
         private void SetElucidateFormTitle(string filePath)
         {
-            string newTitle = "Elucidate";
+            var newTitle = "Elucidate";
 
             if (!string.IsNullOrEmpty(filePath))
             {
@@ -336,7 +334,7 @@ namespace Elucidate
 
         private void tabControl_SelectedPageChanged(object sender, EventArgs e)
         {
-            Log.Trace("tabControl_SelectedPageChanged - IN");
+            Log.Trace(@"tabControl_SelectedPageChanged - IN");
             KryptonPage currentTab = tabControl.SelectedPage;
             tpCoverage.StopProcessing();
 
@@ -360,7 +358,7 @@ namespace Elucidate
             {
                 //  tabCoveragePage.Reset();
             }
-            Log.Trace("tabControl_SelectedPageChanged - OUT");
+            Log.Trace(@"tabControl_SelectedPageChanged - OUT");
         }
 
         private void themeComboBox_SelectedIndexChanged(object sender, EventArgs e)

@@ -32,17 +32,17 @@ namespace ExtendedControls.ExtendedToolkit.Controls
     {
         #region Instance Fields
         private readonly ViewDrawCommandLinkButton drawButton;
-        private ButtonStyle _style;
-        private readonly ButtonController _buttonController;
-        private VisualOrientation _orientation;
-        private readonly PaletteTripleOverride _overrideFocus;
-        private readonly PaletteTripleOverride _overrideNormal;
-        private readonly PaletteTripleOverride _overrideTracking;
-        private readonly PaletteTripleOverride _overridePressed;
-        private IKryptonCommand _command;
-        private bool _isDefault;
-        private bool _useMnemonic;
-        private bool _wasEnabled;
+        private ButtonStyle style;
+        private readonly ButtonController buttonController;
+        private VisualOrientation orientation;
+        private readonly PaletteTripleOverride overrideFocus;
+        private readonly PaletteTripleOverride overrideNormal;
+        private readonly PaletteTripleOverride overrideTracking;
+        private readonly PaletteTripleOverride overridePressed;
+        private IKryptonCommand command;
+        private bool isDefault;
+        private bool useMnemonic;
+        private bool wasEnabled;
         #endregion
 
         #region Events
@@ -57,7 +57,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         #region Identity
         /// <summary>
         /// Initialize a new instance of the KryptonButton class.
-		/// </summary>
+        /// </summary>
         public KryptonCommandLinkButton()
         {
             // We generate click events manually, suppress default
@@ -68,8 +68,8 @@ namespace ExtendedControls.ExtendedToolkit.Controls
             // Set default button properties
             base.AutoSize = false;
             DialogResult = DialogResult.None;
-            _orientation = VisualOrientation.Top;
-            _useMnemonic = true;
+            orientation = VisualOrientation.Top;
+            useMnemonic = true;
 
             // Create content storage
             CommandLinkImageValue = new ImageValue(NeedPaintDelegate);
@@ -89,24 +89,29 @@ namespace ExtendedControls.ExtendedToolkit.Controls
             StateTracking = new PaletteTriple(StateCommon, NeedPaintDelegate);
             StatePressed = new PaletteTriple(StateCommon, NeedPaintDelegate);
             OverrideDefault = new PaletteTripleRedirect(Redirector, PaletteBackStyle.ButtonCommand, PaletteBorderStyle.ButtonCommand, PaletteContentStyle.ButtonCommand, NeedPaintDelegate);
-            OverrideFocus = new PaletteTripleRedirect(Redirector, PaletteBackStyle.ButtonCommand, PaletteBorderStyle.ButtonCommand, PaletteContentStyle.ButtonCommand, NeedPaintDelegate);
-            OverrideFocus.Border.Draw = InheritBool.True;
-            OverrideFocus.Border.DrawBorders = PaletteDrawBorders.All;
-            OverrideFocus.Border.GraphicsHint = PaletteGraphicsHint.AntiAlias;
+            OverrideFocus = new PaletteTripleRedirect(Redirector, PaletteBackStyle.ButtonCommand, PaletteBorderStyle.ButtonCommand, PaletteContentStyle.ButtonCommand, NeedPaintDelegate)
+            {
+                Border =
+                    {
+                        Draw = InheritBool.True,
+                        DrawBorders = PaletteDrawBorders.All,
+                        GraphicsHint = PaletteGraphicsHint.AntiAlias
+                    }
+            };
             // Force style update
             ButtonStyle = ButtonStyle.Command;
 
             // Create the override handling classes
-            _overrideFocus = new PaletteTripleOverride(OverrideFocus, StateNormal, PaletteState.FocusOverride);
-            _overrideNormal = new PaletteTripleOverride(OverrideDefault, _overrideFocus, PaletteState.NormalDefaultOverride);
-            _overrideTracking = new PaletteTripleOverride(OverrideFocus, StateTracking, PaletteState.FocusOverride);
-            _overridePressed = new PaletteTripleOverride(OverrideFocus, StatePressed, PaletteState.FocusOverride);
+            overrideFocus = new PaletteTripleOverride(OverrideFocus, StateNormal, PaletteState.FocusOverride);
+            overrideNormal = new PaletteTripleOverride(OverrideDefault, overrideFocus, PaletteState.NormalDefaultOverride);
+            overrideTracking = new PaletteTripleOverride(OverrideFocus, StateTracking, PaletteState.FocusOverride);
+            overridePressed = new PaletteTripleOverride(OverrideFocus, StatePressed, PaletteState.FocusOverride);
 
             // Create the view button instance
             drawButton = new ViewDrawCommandLinkButton(StateDisabled,
-                                             _overrideNormal,
-                                             _overrideTracking,
-                                             _overridePressed,
+                                             overrideNormal,
+                                             overrideTracking,
+                                             overridePressed,
                                              new PaletteMetricRedirect(Redirector),
                                              CommandLinkImageValue, CommandLinkTextValues,
                                              Orientation,
@@ -117,16 +122,16 @@ namespace ExtendedControls.ExtendedToolkit.Controls
             };
 
             // Create a button controller to handle button style behaviour
-            _buttonController = new ButtonController(drawButton, NeedPaintDelegate);
+            buttonController = new ButtonController(drawButton, NeedPaintDelegate);
 
             // Assign the controller to the view element to treat as a button
-            drawButton.MouseController = _buttonController;
-            drawButton.KeyController = _buttonController;
-            drawButton.SourceController = _buttonController;
+            drawButton.MouseController = buttonController;
+            drawButton.KeyController = buttonController;
+            drawButton.SourceController = buttonController;
 
             // Need to know when user clicks the button view or mouse selects it
-            _buttonController.Click += OnButtonClick;
-            _buttonController.MouseSelect += OnButtonSelect;
+            buttonController.Click += OnButtonClick;
+            buttonController.MouseSelect += OnButtonSelect;
 
             // Create the view manager instance
             ViewManager = new ViewManager(this, drawButton);
@@ -179,11 +184,9 @@ namespace ExtendedControls.ExtendedToolkit.Controls
             set => CommandLinkTextValues.Heading = value;
         }
 
-        private bool ShouldSerializeText()
-        {
+        private static bool ShouldSerializeText() =>
             // Never serialize, let the button values serialize instead
-            return false;
-        }
+            false;
 
         /// <summary>
         /// Resets the Text property to its default value.
@@ -201,13 +204,13 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DefaultValue(typeof(VisualOrientation), "Top")]
         public virtual VisualOrientation Orientation
         {
-            get => _orientation;
+            get => orientation;
 
             set
             {
-                if (_orientation != value)
+                if (orientation != value)
                 {
-                    _orientation = value;
+                    orientation = value;
 
                     // Update the associated visual elements that are effected
                     drawButton.Orientation = value;
@@ -224,23 +227,20 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [Description("Button style.")]
         public ButtonStyle ButtonStyle
         {
-            get => _style;
+            get => style;
 
             set
             {
-                if (_style != value)
+                if (style != value)
                 {
-                    _style = value;
-                    SetStyles(_style);
+                    style = value;
+                    SetStyles(style);
                     PerformNeedPaint(true);
                 }
             }
         }
 
-        private bool ShouldSerializeButtonStyle()
-        {
-            return (ButtonStyle != ButtonStyle.Command);
-        }
+        private bool ShouldSerializeButtonStyle() => (ButtonStyle != ButtonStyle.Command);
 
         private void ResetButtonStyle()
         {
@@ -263,10 +263,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ImageValue CommandLinkImageValue { get; }
 
-        private bool ShouldSerializeValues()
-        {
-            return false;
-        }
+        private static bool ShouldSerializeCommandLinkImageValue() => false;
 
         /// <summary>
         /// Gets access to the common button appearance that other states can override.
@@ -276,10 +273,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public PaletteTripleRedirect StateCommon { get; }
 
-        private bool ShouldSerializeStateCommon()
-        {
-            return !StateCommon.IsDefault;
-        }
+        private bool ShouldSerializeStateCommon() => !StateCommon.IsDefault;
 
         /// <summary>
         /// Gets access to the disabled button appearance entries.
@@ -289,10 +283,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public PaletteTriple StateDisabled { get; }
 
-        private bool ShouldSerializeStateDisabled()
-        {
-            return !StateDisabled.IsDefault;
-        }
+        private bool ShouldSerializeStateDisabled() => !StateDisabled.IsDefault;
 
         /// <summary>
         /// Gets access to the normal button appearance entries.
@@ -302,10 +293,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public PaletteTriple StateNormal { get; }
 
-        private bool ShouldSerializeStateNormal()
-        {
-            return !StateNormal.IsDefault;
-        }
+        private bool ShouldSerializeStateNormal() => !StateNormal.IsDefault;
 
         /// <summary>
         /// Gets access to the hot tracking button appearance entries.
@@ -315,10 +303,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public PaletteTriple StateTracking { get; }
 
-        private bool ShouldSerializeStateTracking()
-        {
-            return !StateTracking.IsDefault;
-        }
+        private bool ShouldSerializeStateTracking() => !StateTracking.IsDefault;
 
         /// <summary>
         /// Gets access to the pressed button appearance entries.
@@ -328,10 +313,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public PaletteTriple StatePressed { get; }
 
-        private bool ShouldSerializeStatePressed()
-        {
-            return !StatePressed.IsDefault;
-        }
+        private bool ShouldSerializeStatePressed() => !StatePressed.IsDefault;
 
         /// <summary>
         /// Gets access to the normal button appearance when default.
@@ -341,10 +323,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public PaletteTripleRedirect OverrideDefault { get; }
 
-        private bool ShouldSerializeOverrideDefault()
-        {
-            return !OverrideDefault.IsDefault;
-        }
+        private bool ShouldSerializeOverrideDefault() => !OverrideDefault.IsDefault;
 
         /// <summary>
         /// Gets access to the button appearance when it has focus.
@@ -354,10 +333,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public PaletteTripleRedirect OverrideFocus { get; }
 
-        private bool ShouldSerializeOverrideFocus()
-        {
-            return !OverrideFocus.IsDefault;
-        }
+        private bool ShouldSerializeOverrideFocus() => !OverrideFocus.IsDefault;
 
         /// <summary>
         /// Gets or sets the value returned to the parent form when the button is clicked.
@@ -375,31 +351,31 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DefaultValue(null)]
         public virtual IKryptonCommand KryptonCommand
         {
-            get => _command;
+            get => command;
 
             set
             {
-                if (_command == value)
+                if (command == value)
                     return;
-                if (_command != null)
+                if (command != null)
                 {
-                    _command.PropertyChanged -= OnCommandPropertyChanged;
+                    command.PropertyChanged -= OnCommandPropertyChanged;
                 }
                 else
                 {
-                    _wasEnabled = Enabled;
+                    wasEnabled = Enabled;
                 }
 
-                _command = value;
+                command = value;
                 OnKryptonCommandChanged(EventArgs.Empty);
 
-                if (_command != null)
+                if (command != null)
                 {
-                    _command.PropertyChanged += OnCommandPropertyChanged;
+                    command.PropertyChanged += OnCommandPropertyChanged;
                 }
                 else
                 {
-                    Enabled = _wasEnabled;
+                    Enabled = wasEnabled;
                 }
             }
         }
@@ -410,13 +386,13 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         /// <param name="value">true if the control should behave as a default button; otherwise false.</param>
         public void NotifyDefault(bool value)
         {
-            if (!ViewDrawButton.IsFixed && (_isDefault != value))
+            if (!ViewDrawButton.IsFixed && (isDefault != value))
             {
                 // Remember new default status
-                _isDefault = value;
+                isDefault = value;
 
                 // Decide if the default overrides should be applied
-                _overrideNormal.Apply = value;
+                overrideNormal.Apply = value;
 
                 // Change in default state requires a layout and repaint
                 PerformNeedPaint(true);
@@ -442,13 +418,13 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         [DefaultValue(true)]
         public bool UseMnemonic
         {
-            get => _useMnemonic;
+            get => useMnemonic;
 
             set
             {
-                if (_useMnemonic != value)
+                if (useMnemonic != value)
                 {
-                    _useMnemonic = value;
+                    useMnemonic = value;
                     drawButton.UseMnemonic = value;
                     PerformNeedPaint(true);
                 }
@@ -464,8 +440,8 @@ namespace ExtendedControls.ExtendedToolkit.Controls
             if (state == PaletteState.NormalDefaultOverride)
             {
                 // Setup the overrides correctly to match state
-                _overrideFocus.Apply = true;
-                _overrideNormal.Apply = true;
+                overrideFocus.Apply = true;
+                overrideNormal.Apply = true;
 
                 // Must pass a proper drawing state to the view
                 state = PaletteState.Normal;
@@ -491,7 +467,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         /// <summary>
         /// Gets the default size of the control.
         /// </summary>
-        protected override Size DefaultSize => new Size(250, 55);
+        protected override Size DefaultSize => new (250, 55);
 
         /// <summary>
         /// Gets the default Input Method Editor (IME) mode supported by this control.
@@ -520,9 +496,9 @@ namespace ExtendedControls.ExtendedToolkit.Controls
             if (!ViewDrawButton.IsFixed)
             {
                 // Apply the focus overrides
-                _overrideFocus.Apply = true;
-                _overrideTracking.Apply = true;
-                _overridePressed.Apply = true;
+                overrideFocus.Apply = true;
+                overrideTracking.Apply = true;
+                overridePressed.Apply = true;
 
                 // Change in focus requires a repaint
                 PerformNeedPaint(false);
@@ -541,9 +517,9 @@ namespace ExtendedControls.ExtendedToolkit.Controls
             if (!ViewDrawButton.IsFixed)
             {
                 // Apply the focus overrides
-                _overrideFocus.Apply = false;
-                _overrideTracking.Apply = false;
-                _overridePressed.Apply = false;
+                overrideFocus.Apply = false;
+                overrideTracking.Apply = false;
+                overridePressed.Apply = false;
 
                 // Change in focus requires a repaint
                 PerformNeedPaint(false);
@@ -604,7 +580,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         /// </summary>
         protected override void ContextMenuClosed()
         {
-            _buttonController.RemoveFixed();
+            buttonController.RemoveFixed();
         }
 
         #endregion
@@ -626,10 +602,7 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         /// </summary>
         /// <returns>Set of button values.</returns>
         /// <param name="needPaint">Delegate for notifying paint requests.</param>
-        protected virtual ButtonValues CreateButtonValues(NeedPaintHandler needPaint)
-        {
-            return new ButtonValues(needPaint);
-        }
+        protected virtual ButtonValues CreateButtonValues(NeedPaintHandler needPaint) => new (needPaint);
 
         /// <summary>
         /// Raises the KryptonCommandChanged event.
@@ -658,13 +631,13 @@ namespace ExtendedControls.ExtendedToolkit.Controls
         {
             switch (e.PropertyName)
             {
-                case "Enabled":
+                case @"Enabled":
                     Enabled = KryptonCommand.Enabled;
                     break;
-                case "Text":
-                case "ExtraText":
-                case "ImageSmall":
-                case "ImageTransparentColor":
+                case @"Text":
+                case @"ExtraText":
+                case @"ImageSmall":
+                case @"ImageTransparentColor":
                     PerformNeedPaint(true);
                     break;
             }
