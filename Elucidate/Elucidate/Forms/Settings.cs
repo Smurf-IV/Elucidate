@@ -70,6 +70,9 @@ namespace Elucidate.Forms
 
         public Settings()
         {
+            // For some reason the designer keeps removing the following !!
+            snapShotSources = new Controls.ProtectedDrivesDisplay();
+            Icon = Properties.Resources.ElucidateIco;
             InitializeComponent();
 
             snapShotSources.driveGrid.DragDrop += snapShotSourcesTreeView_DragDrop;

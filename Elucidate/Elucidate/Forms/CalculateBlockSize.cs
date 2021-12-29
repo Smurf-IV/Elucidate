@@ -45,6 +45,8 @@ namespace Elucidate
         public CalculateBlockSize()
         {
             ParityTargets = new List<string>(2);
+            Icon = Properties.Resources.ElucidateIco;
+
             InitializeComponent();
             var available = new ComputerInfo().TotalPhysicalMemory;
             const decimal testValue = 1UL << 30; // Should be 1 GBytes 

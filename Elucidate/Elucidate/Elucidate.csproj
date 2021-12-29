@@ -10,7 +10,7 @@
         <PlatformTarget>AnyCPU</PlatformTarget>
         <ApplicationIcon>Elucidate.ico</ApplicationIcon>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
-        <NeutralLanguage>en</NeutralLanguage>
+        <NeutralLanguage>en-GB</NeutralLanguage>
         <WarningLevel>5</WarningLevel>
         <LangVersion>preview</LangVersion>
         <AnalysLevel>preview</AnalysLevel>
@@ -24,7 +24,6 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <Content Include="Elucidate.ico" />
-        <None Include="Resources\cam_48.png" />
         <None Include="Resources\camera_48.png" />
         <None Include="Resources\database_add_48.png" />
         <None Include="Resources\database_warning_48.png" />

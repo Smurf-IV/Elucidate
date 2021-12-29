@@ -53,6 +53,10 @@ namespace Elucidate
 
         public ElucidateForm()
         {
+            // For some reason the designer keeps removing the following !!
+            tpCoverage = new Controls.ProtectedDrivesDisplay();
+            Icon = Properties.Resources.ElucidateIco;
+
             InitializeComponent();
 
             if (Properties.Settings.Default.UpdateRequired)

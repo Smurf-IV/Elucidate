@@ -79,4 +79,14 @@ Global
 		BuildVersion_StartDate = 2000/1/1
 		SolutionGuid = {39E6A612-AC12-4D63-BE2A-60EA16940A8A}
 	EndGlobalSection
+	GlobalSection(AutomaticVersions) = postSolution
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyInfoVersion = False
+		AssemblyVersionSettings = YearStamp.MonthStamp.DayStamp.Increment
+		AssemblyFileVersionSettings = ShortYearStamp.MonthStamp.DayStamp.Increment
+		UpdatePackageVersion = False
+		AssemblyInfoVersionType = SettingsVersion
+		InheritWinAppVersionFrom = None
+	EndGlobalSection
 EndGlobal
