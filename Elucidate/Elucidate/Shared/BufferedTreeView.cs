@@ -18,6 +18,7 @@ namespace Elucidate.Shared
         private const int TVS_EX_DOUBLEBUFFER = 0x0004;
 
         [DllImport("user32.dll")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
     }
 }

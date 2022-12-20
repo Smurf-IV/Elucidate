@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
 //  <copyright file="RunControl.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2018-2021 Smurf-IV & BlueBlock 2018
+//  Copyright (C) 2018-2022 Smurf-IV & BlueBlock 2018
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -168,7 +168,6 @@ namespace Elucidate.Controls
                     break;
                 case CommandType.Scrub:
                     command.Append(@"scrub");
-                    defaultOption = @" -p100 -o0";
                     break;
                 case CommandType.Fix:
                     command.Append(@"fix");
@@ -650,12 +649,15 @@ namespace Elucidate.Controls
         }
 
         [DllImport(@"kernel32.dll")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         private static extern IntPtr OpenThread(ThreadAccess dwDesiredAccess, bool bInheritHandle, uint dwThreadId);
 
         [DllImport(@"kernel32.dll")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         private static extern uint SuspendThread(IntPtr hThread);
 
         [DllImport("kernel32.dll")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         private static extern int ResumeThread(IntPtr hThread);
 
         public static void Suspend(this Process process)

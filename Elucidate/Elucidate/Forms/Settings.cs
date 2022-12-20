@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Settings.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
+//  Copyright (C) 2010-2022 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -278,7 +278,7 @@ namespace Elucidate.Forms
                 Log.Warn($"Data source not added. Path does not exist. Attempted to add [{newPath}]");
                 KryptonMessageBox.Show(this,
                     $"Path does not exist.\nAttempted to add:\n [{newPath}]",
-                    "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    "Source not added", MessageBoxButtons.OK, KryptonMessageBoxIcon.Exclamation);
                 return;
             }
 
@@ -299,7 +299,7 @@ namespace Elucidate.Forms
 
                         KryptonMessageBox.Show(this,
                             $"Attempted to add:\n [{newPath}]\n\nWhich is on the same device as the existing device path:\n [{coveragePath.FullPath}]",
-                            "Source not added", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            "Source not added", MessageBoxButtons.OK, KryptonMessageBoxIcon.Exclamation);
 
                         return;
                     }
@@ -533,7 +533,7 @@ namespace Elucidate.Forms
             {
                 if (DialogResult.Yes == KryptonMessageBox.Show(this,
                         "Changing a 'Name' will require a 'Full Sync' to be run.\nDo you wish to continue?",
-                        @"Name Change Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
+                        @"Name Change Warning", MessageBoxButtons.YesNo, KryptonMessageBoxIcon.Question))
                 {
                     DataGridViewCell cell = selected.Cells[1];
                     snapShotSources.driveGrid.CurrentCell = cell;
@@ -732,7 +732,7 @@ namespace Elucidate.Forms
                             @"Failed to read the config file.",
                             @"Config Read Error:",
                             MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                            KryptonMessageBoxIcon.Error);
                         return;
                     }
 
@@ -791,7 +791,7 @@ namespace Elucidate.Forms
                         @"Configuration errors still exist.",
                         "Unable to save configuration",
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
+                        KryptonMessageBoxIcon.Exclamation);
                     return;
                 }
 
@@ -865,7 +865,7 @@ namespace Elucidate.Forms
                         writeResult,
                         "Config Write Error:",
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                        KryptonMessageBoxIcon.Error);
                 }
                 else
                 {
@@ -927,7 +927,7 @@ namespace Elucidate.Forms
                     "You have made changes that have not been saved.\n\nDo you wish to discard and exit?",
                     "Settings have changed..",
                     MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question)
+                    KryptonMessageBoxIcon.Question)
                 )
             {
                 e.Cancel = true;

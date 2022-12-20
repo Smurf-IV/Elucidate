@@ -159,6 +159,7 @@ namespace Elucidate.Shared
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         private static extern IntPtr GetActiveWindow();
 
     }

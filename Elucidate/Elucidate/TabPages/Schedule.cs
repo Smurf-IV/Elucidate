@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Schedule.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2022 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ namespace Elucidate.TabPages
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        private string TaskNameSelected { get; set; } = string.Empty;
+        private string TaskNameSelected { get; set; }
         private const string TASK_FOLDER = @"Elucidate";
 
         public Schedule()

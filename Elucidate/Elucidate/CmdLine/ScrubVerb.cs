@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ScrubVerb.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2018 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2018-2022 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ using CommandLine;
 
 namespace Elucidate.CmdLine
 {
-    [Verb("scrub", HelpText = "Defaults to 100% (-p100) of all of blocks (older than 0 days = -o0).\r\nBlocks alre" +
+    [Verb("scrub", HelpText = "Defaults to 8% of all of blocks (oldest unchecked first).\r\nBlocks alre" +
                               "ady marked as bad are always checked.\r\nUse \"Additional Command\" to override the " +
                               "default of 100% of 0 days")]
     internal class ScrubVerb : StdOptions
