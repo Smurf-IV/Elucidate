@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="CalculateBlockSize.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2022 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@ namespace Elucidate
         private static void FindAndAddDisplaySizes(string path, ref ulong min, ref ulong max)
         {
             // ReSharper disable once UnusedVariable
-            Util.SourcePathFreeBytesAvailable(path, out var freeBytesAvailable, out var pathUsedBytes, out var rootBytesNotCoveredByPath);
+            Util.SourcePathFreeBytesAvailable(path, out var freeBytesAvailable, out var pathUsedBytes, out var _);
 
             min += pathUsedBytes;
             max += pathUsedBytes;

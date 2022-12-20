@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
 //  <copyright file="Program.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2011-2021 Smurf-IV
+//  Copyright (C) 2011-2022 Smurf-IV
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -115,7 +115,7 @@ namespace Elucidate
             }
             else
             {
-                KryptonMessageBox.Show($@"{mutexName} is already running", mutexName, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                KryptonMessageBox.Show($@"{mutexName} is already running", mutexName, MessageBoxButtons.OK, KryptonMessageBoxIcon.Stop);
                 Log.Error($@"{mutexName} is already running");
             }
         }

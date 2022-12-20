@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="StorageUtil.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2022 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -216,13 +216,16 @@ namespace Elucidate.HelperClasses
 
         #region DllImport
 
-        [DllImport(@"kernel32.dll", SetLastError = true)]
+        [DllImport(@"kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         private static extern bool GetVolumeNameForVolumeMountPoint(string lpszFileName, [Out] StringBuilder lpszVolLpszVolumePathName, int cchBufferLength);
 
-        [DllImport(@"kernel32.dll", SetLastError = true)]
+        [DllImport(@"kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         private static extern bool GetVolumePathName(string lpszVolumeMountPoint, [Out] StringBuilder lpszVolumeName, int cchBufferLength);
 
         [DllImport(@"kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GetDiskFreeSpaceEx(string lpDirectoryName, out ulong lpFreeBytesAvailable, out ulong lpTotalNumberOfBytes, out ulong lpTotalNumberOfFreeBytes);
 

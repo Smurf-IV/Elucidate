@@ -422,7 +422,7 @@
             // btnScrub
             // 
             this.btnScrub.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.cam_48;
-            this.btnScrub.CommandLinkTextValues.Description = "Scrubs the array, checking for silent\r\nand IO errors (default -p100 -o0)";
+            this.btnScrub.CommandLinkTextValues.Description = "Scrubs the array, checking for silent\r\nand IO errors (default oldest 8%)";
             this.btnScrub.CommandLinkTextValues.Heading = "Scr&ub";
             this.btnScrub.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnScrub.Enabled = false;

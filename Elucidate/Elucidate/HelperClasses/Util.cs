@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="CoveragePath.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2018-2021 Smurf-IV & BlueBlock 2018
+//  Copyright (C) 2018-2022 Smurf-IV & BlueBlock 2018
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -183,7 +183,7 @@ namespace Elucidate
             }
             catch (Exception ex)
             {
-                KryptonMessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                KryptonMessageBox.Show(ex.Message, @"Error", MessageBoxButtons.OK, KryptonMessageBoxIcon.Error);
             }
             finally
             {
@@ -195,6 +195,7 @@ namespace Elucidate
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true,
             CallingConvention = CallingConvention.Winapi)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool GetDiskFreeSpaceExW(string lpDirectoryName, out ulong lpFreeBytesAvailable,
             out ulong lpTotalNumberOfBytes, out ulong lpTotalNumberOfFreeBytes);

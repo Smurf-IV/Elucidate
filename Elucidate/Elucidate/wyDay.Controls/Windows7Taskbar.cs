@@ -68,6 +68,7 @@ namespace Elucidate.wyDay.Controls
 
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         internal static extern int SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
     }
 }

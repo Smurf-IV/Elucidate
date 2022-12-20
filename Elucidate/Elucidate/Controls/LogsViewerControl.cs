@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="LogsViewerControl.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2018-2021  Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
+//  Copyright (C) 2018-2022  Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,13 +41,9 @@ namespace Elucidate.Controls
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         public enum LexerNameEnum { ScanRaid, NLog }
-
         public LexerNameEnum LexerToUse { get; set; } = LexerNameEnum.NLog;
 
         private readonly FileSystemWatcher logFileWatcher = new();
-
-        private string selectedDirectoryTitle;
-
         private readonly string snapraidErrorSearchTerm = @"error: ";
         private readonly string snapraidWarningSearchTerm = @"WARNING";
         private readonly string elucidateErrorSearchTerm = @"] ERROR ";
@@ -104,7 +100,8 @@ namespace Elucidate.Controls
             }
             else
             {
-                this.selectedDirectoryTitle = selectedDirectoryTitle;
+                // TODO:
+                //this.selectedDirectoryTitle = selectedDirectoryTitle;
             }
 
             string errorSearchTerm;

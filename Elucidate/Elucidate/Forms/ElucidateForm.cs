@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ElucidateForm.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2021 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2022 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -117,7 +117,7 @@ namespace Elucidate
                         $"There are warnings for the configuration file:{Environment.NewLine} - {string.Join(" - ", srConfig.ConfigWarnings)}",
                         "Configuration File Warnings",
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
+                        KryptonMessageBoxIcon.Warning);
                 }
                 else
                 {
@@ -208,7 +208,7 @@ namespace Elucidate
                 sb.ToString(),
                 @"Delete All SnapRAID Files",
                 MessageBoxButtons.YesNoCancel,
-                MessageBoxIcon.Warning);
+                KryptonMessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
             {
