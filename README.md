@@ -81,7 +81,7 @@ Elucidate is a Windows GUI front-end for the command-line SnapRAID application.
 
 ![Starting View](./Images/starting_view.png)
 
-![Settings Form](./Images/Settings_Form.png)
+![Settings Form](./Images/Settings_Form.PNG)
 
 
 ## Can you Help ? 
