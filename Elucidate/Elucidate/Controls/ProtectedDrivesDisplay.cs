@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
 //  <copyright file="ProtectedDrivesDisplay.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2019-2021 Smurf-IV
+//  Copyright (C) 2019-2025 Smurf-IV
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,188 +36,186 @@ using Elucidate.Objects;
 
 using NLog;
 
-namespace Elucidate.Controls
+namespace Elucidate.Controls;
+
+internal partial class ProtectedDrivesDisplay : UserControl
 {
-    internal partial class ProtectedDrivesDisplay : UserControl
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    private CancellationTokenSource cancelTokenSrc;
+
+    private volatile int useWaitCursor;
+
+    internal ProtectedDrivesDisplay()
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-        private CancellationTokenSource cancelTokenSrc;
+        InitializeComponent();
+        cancelTokenSrc = new CancellationTokenSource();
+    }
 
-        private volatile int useWaitCursor;
+    internal void StopProcessing()
+    {
+        // have to stop "any" processes that might be refreshing as this is now closing
+        cancelTokenSrc.Cancel();
+    }
 
-        internal ProtectedDrivesDisplay()
+    private void IncrementWaitCursor()
+    {
+        if (Interlocked.Increment(ref useWaitCursor) == 1)
         {
-            InitializeComponent();
-            cancelTokenSrc = new CancellationTokenSource();
+            BeginInvoke((MethodInvoker)(() => UseWaitCursor = true));
         }
+    }
 
-        internal void StopProcessing()
+    private void DecrementWaitCursor()
+    {
+        if (Interlocked.Decrement(ref useWaitCursor) <= 0)
         {
-            // have to stop "any" processes that might be refreshing as this is now closing
-            cancelTokenSrc.Cancel();
+            BeginInvoke((MethodInvoker)(() => UseWaitCursor = false));
         }
+    }
 
-        private void IncrementWaitCursor()
+    /// <summary>
+    /// Take an existing config file and populate the Grid
+    /// </summary>
+    /// <param name="srConfig"></param>
+    /// <param name="excludeParity"></param>
+    public void RefreshGrid(ConfigFileHelper srConfig, bool excludeParity)
+    {
+        Interlocked.Exchange(ref useWaitCursor, 0);
+        IncrementWaitCursor();
+        // have to stop "any" processes that might be refreshing as this is a new list
+        cancelTokenSrc.Cancel();
+        while (driveGrid.Rows.Count > 1)    // Got to leave the "New" edit row
         {
-            if (Interlocked.Increment(ref useWaitCursor) == 1)
+            driveGrid.Rows.RemoveAt(0);
+        }
+        var pathsOfInterest = srConfig.GetPathsOfInterest();
+        cancelTokenSrc = new CancellationTokenSource();
+        if (excludeParity)
+        {
+            foreach (CoveragePath coveragePath in pathsOfInterest.Where(static s => s.PathType == PathTypeEnum.Source))
             {
-                BeginInvoke((MethodInvoker)(() => UseWaitCursor = true));
+                AddCoverage(coveragePath);
             }
         }
-
-        private void DecrementWaitCursor()
+        else
         {
-            if (Interlocked.Decrement(ref useWaitCursor) <= 0)
-            {
-                BeginInvoke((MethodInvoker)(() => UseWaitCursor = false));
-            }
+            pathsOfInterest.ForEach(AddCoverage);
         }
 
-        /// <summary>
-        /// Take an existing config file and populate the Grid
-        /// </summary>
-        /// <param name="srConfig"></param>
-        /// <param name="excludeParity"></param>
-        public void RefreshGrid(ConfigFileHelper srConfig, bool excludeParity)
+        DecrementWaitCursor();
+    }
+
+    public void AddCoverage(CoveragePath coveragePath)
+    {
+        var row = (DataGridViewRow)driveGrid.RowTemplate.Clone()!;
+        row.CreateCells(driveGrid, coveragePath.FullPath, coveragePath.Name, null, @"Processing");
+        row.Tag = coveragePath;
+        driveGrid.Rows.Add(row);
+    }
+
+    private void driveGrid_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+    {
+        if (!cancelTokenSrc.IsCancellationRequested)
         {
-            Interlocked.Exchange(ref useWaitCursor, 0);
-            IncrementWaitCursor();
-            // have to stop "any" processes that might be refreshing as this is a new list
-            cancelTokenSrc.Cancel();
-            while (driveGrid.Rows.Count > 1)    // Got to leave the "New" edit row
+            for (var index = e.RowIndex; index < e.RowIndex + e.RowCount; index++)
             {
-                driveGrid.Rows.RemoveAt(0);
+                // Get data to perform drive usage display
+                DataGridViewRow row = driveGrid.Rows[index];
+                StartDriveUsage(row, cancelTokenSrc.Token);
             }
-            var pathsOfInterest = srConfig.GetPathsOfInterest();
-            cancelTokenSrc = new CancellationTokenSource();
-            if (excludeParity)
+        }
+    }
+
+    private void StartDriveUsage(DataGridViewRow row, CancellationToken token)
+    {
+        if (row.Tag is CoveragePath coveragePath)
+        {
+            var dirInfo = new DirectoryInfo(coveragePath.DirectoryPath, PathFormat.FullPath);
+            var driveInfo = new DriveInfo(dirInfo.Root.FullName);
+            if (coveragePath.PathType == PathTypeEnum.Parity)
             {
-                foreach (CoveragePath coveragePath in pathsOfInterest.Where(static s => s.PathType == PathTypeEnum.Source))
-                {
-                    AddCoverage(coveragePath);
-                }
+                var totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
+                var protectedUse = File.Exists(coveragePath.FullPath) ? new FileInfo(coveragePath.FullPath).Length : 0L;
+                row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
+                row.Cells[3].Value = $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
             }
             else
             {
-                pathsOfInterest.ForEach(AddCoverage);
-            }
-
-            DecrementWaitCursor();
-        }
-
-        public void AddCoverage(CoveragePath coveragePath)
-        {
-            DataGridViewRow row = (DataGridViewRow)driveGrid.RowTemplate.Clone();
-            row.CreateCells(driveGrid, coveragePath.FullPath, coveragePath.Name, null, @"Processing");
-            row.Tag = coveragePath;
-            driveGrid.Rows.Add(row);
-        }
-
-        private void driveGrid_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            if (!cancelTokenSrc.IsCancellationRequested)
-            {
-                for (var index = e.RowIndex; index < e.RowIndex + e.RowCount; index++)
-                {
-                    // Get data to perform drive usage display
-                    DataGridViewRow row = driveGrid.Rows[index];
-                    StartDriveUsage(row, cancelTokenSrc.Token);
-                }
+                // Start background processing
+                IncrementWaitCursor();
+                Task.Run(() => ProcessProtectedSpace(row, driveInfo, dirInfo, token), token);
             }
         }
+    }
 
-        private void StartDriveUsage(DataGridViewRow row, CancellationToken token)
+    private void ProcessProtectedSpace(DataGridViewRow row, DriveInfo driveInfo,
+        DirectoryInfo dirInfo, CancellationToken token)
+    {
+        var totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
+
+        var protectedUse = DirSize(dirInfo, token);
+        if (!token.IsCancellationRequested)
         {
-            if (row.Tag is CoveragePath coveragePath)
-            {
-                var dirInfo = new DirectoryInfo(coveragePath.DirectoryPath, PathFormat.FullPath);
-                var driveInfo = new DriveInfo(dirInfo.Root.FullName);
-                if (coveragePath.PathType == PathTypeEnum.Parity)
-                {
-                    var totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
-                    var protectedUse = File.Exists(coveragePath.FullPath) ? new FileInfo(coveragePath.FullPath).Length : 0L;
-                    row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
-                    row.Cells[3].Value = $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
-                }
-                else
-                {
-                    // Start background processing
-                    IncrementWaitCursor();
-                    Task.Run(() => ProcessProtectedSpace(row, driveInfo, dirInfo, token), token);
-                }
-            }
-
-        }
-
-        private void ProcessProtectedSpace(DataGridViewRow row, DriveInfo driveInfo,
-            DirectoryInfo dirInfo, CancellationToken token)
-        {
-            var totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
-
-            var protectedUse = DirSize(dirInfo, token);
-            if (!token.IsCancellationRequested)
-            {
-                BeginInvoke((MethodInvoker)delegate
+            BeginInvoke((MethodInvoker)delegate
+           {
+               try
                {
-                   try
-                   {
-                       row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
-                       row.Cells[3].Value =
-                           $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
-                   }
-                   catch
-                   {
-                       // Do nothing
-                       // Might be caused by fast closure
-                   }
-               });
-            }
-
-            DecrementWaitCursor();
+                   row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
+                   row.Cells[3].Value =
+                       $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
+               }
+               catch
+               {
+                   // Do nothing
+                   // Might be caused by fast closure
+               }
+           });
         }
 
-        /// <summary>
-        /// Recursive and allow cancellation
-        /// </summary>
-        /// <param name="dir"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        private static ulong DirSize(DirectoryInfo dir, CancellationToken token)
+        DecrementWaitCursor();
+    }
+
+    /// <summary>
+    /// Recursive and allow cancellation
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    private static ulong DirSize(DirectoryInfo dir, CancellationToken token)
+    {
+        try
         {
-            try
+            if (token.IsCancellationRequested)
             {
-                if (token.IsCancellationRequested)
-                {
-                    return 0UL;
-                }
-
-                return dir.EnumerateFiles().AsParallel().Sum(static fi => (ulong)fi.Length)
-                       + dir.EnumerateDirectories()
-                           .Where(static d => (d.Attributes & System.IO.FileAttributes.System) == 0 
-                                              && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
-                           .AsParallel()
-                           .Sum(info => DirSize(info, token));
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                Log.Warn(ex, @"No Access to [{0}]", dir.FullName);
-            }
-            catch (Exception ex)
-            {
-                Log.Warn(ex);
+                return 0UL;
             }
 
-            return 0UL;
+            return dir.EnumerateFiles().AsParallel().Sum(static fi => (ulong)fi.Length)
+                   + dir.EnumerateDirectories()
+                       .Where(static d => (d.Attributes & System.IO.FileAttributes.System) == 0 
+                                          && (d.Attributes & System.IO.FileAttributes.Hidden) == 0)
+                       .AsParallel()
+                       .Sum(info => DirSize(info, token));
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Log.Warn(ex, @"No Access to [{0}]", dir.FullName);
+        }
+        catch (Exception ex)
+        {
+            Log.Warn(ex);
         }
 
-        private void DriveGrid_MouseDown(object sender, MouseEventArgs e)
+        return 0UL;
+    }
+
+    private void DriveGrid_MouseDown(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Right)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                DataGridView.HitTestInfo hti = driveGrid.HitTest(e.X, e.Y);
-                driveGrid.ClearSelection();
-                driveGrid.Rows[hti.RowIndex].Selected = true;
-            }
+            DataGridView.HitTestInfo hti = driveGrid.HitTest(e.X, e.Y);
+            driveGrid.ClearSelection();
+            driveGrid.Rows[hti.RowIndex].Selected = true;
         }
     }
 }

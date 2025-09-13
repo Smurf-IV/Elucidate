@@ -1,44 +1,44 @@
 ﻿using System.ComponentModel;
 using System.Windows.Forms;
+
 using Elucidate.Controls;
 using Elucidate.TabPages;
 
-namespace Elucidate
+namespace Elucidate;
+
+sealed partial class ElucidateForm
 {
-    sealed partial class ElucidateForm
+    /// <summary>
+    /// Required designer variable.
+    /// </summary>
+    private IContainer components = null;
+
+    /// <summary>
+    /// Clean up any resources being used.
+    /// </summary>
+    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+    protected override void Dispose(bool disposing)
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        if (disposing && (components != null))
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
+            components.Dispose();
         }
+        base.Dispose(disposing);
+    }
 
-        #region Windows Form Designer generated code
+    #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        /// <remarks>
-        /// for some reason the following is removed each time the desgner is saved !!!
-        ///             this.tpCoverage = new Elucidate.Controls.ProtectedDrivesDisplay();
-        /// </remarks>
-        private void InitializeComponent()
-        {
+    /// <summary>
+    /// Required method for Designer support - do not modify
+    /// the contents of this method with the code editor.
+    /// </summary>
+    /// <remarks>
+    /// for some reason the following is removed each time the desgner is saved !!!
+    ///             this.tpCoverage = new Elucidate.Controls.ProtectedDrivesDisplay();
+    /// </remarks>
+    private void InitializeComponent()
+    {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ElucidateForm));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabCoveragePage = new Krypton.Navigator.KryptonPage();
             this.tabSchedulePage = new Krypton.Navigator.KryptonPage();
@@ -83,6 +83,16 @@ namespace Elucidate
             this.kryptonPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // tpCoverage
+            // 
+            this.tpCoverage.AllowDrop = true;
+            this.tpCoverage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tpCoverage.Location = new System.Drawing.Point(4, 4);
+            this.tpCoverage.Margin = new System.Windows.Forms.Padding(5);
+            this.tpCoverage.Name = "tpCoverage";
+            this.tpCoverage.Size = new System.Drawing.Size(1171, 623);
+            this.tpCoverage.TabIndex = 0;
+            // 
             // tabCoveragePage
             // 
             this.tabCoveragePage.AutoHiddenSlideSize = new System.Drawing.Size(200, 200);
@@ -97,16 +107,6 @@ namespace Elucidate
             this.tabCoveragePage.Text = "  Coverage  ";
             this.tabCoveragePage.ToolTipTitle = "Page ToolTip";
             this.tabCoveragePage.UniqueName = "83F1AC53801E4FDCCBA828F2D020A11A";
-            // 
-            // tpCoverage
-            // 
-            this.tpCoverage.AllowDrop = true;
-            this.tpCoverage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tpCoverage.Location = new System.Drawing.Point(4, 4);
-            this.tpCoverage.Margin = new System.Windows.Forms.Padding(5);
-            this.tpCoverage.Name = "tpCoverage";
-            this.tpCoverage.Size = new System.Drawing.Size(1171, 623);
-            this.tpCoverage.TabIndex = 0;
             // 
             // tabSchedulePage
             // 
@@ -143,7 +143,7 @@ namespace Elucidate
             this.tabCommonOperations.Margin = new System.Windows.Forms.Padding(0);
             this.tabCommonOperations.MinimumSize = new System.Drawing.Size(62, 62);
             this.tabCommonOperations.Name = "tabCommonOperations";
-            this.tabCommonOperations.Size = new System.Drawing.Size(1179, 310);
+            this.tabCommonOperations.Size = new System.Drawing.Size(1179, 311);
             this.tabCommonOperations.Text = "  Common SnapRaid  ";
             this.tabCommonOperations.ToolTipTitle = "Page ToolTip";
             this.tabCommonOperations.UniqueName = "C7A4A748B4E3458CC28B53AD5B684A5E";
@@ -155,7 +155,7 @@ namespace Elucidate
             this.logPanel.Location = new System.Drawing.Point(0, 0);
             this.logPanel.Margin = new System.Windows.Forms.Padding(4);
             this.logPanel.Name = "logPanel";
-            this.logPanel.Size = new System.Drawing.Size(1179, 310);
+            this.logPanel.Size = new System.Drawing.Size(1179, 311);
             this.logPanel.TabIndex = 11;
             // 
             // commonTab
@@ -164,7 +164,7 @@ namespace Elucidate
             this.commonTab.Location = new System.Drawing.Point(0, 0);
             this.commonTab.Margin = new System.Windows.Forms.Padding(4);
             this.commonTab.Name = "commonTab";
-            this.commonTab.Size = new System.Drawing.Size(1179, 310);
+            this.commonTab.Size = new System.Drawing.Size(1179, 311);
             this.commonTab.TabIndex = 0;
             // 
             // tabControl
@@ -172,12 +172,24 @@ namespace Elucidate
             this.tabControl.Button.ButtonDisplayLogic = Krypton.Navigator.ButtonDisplayLogic.None;
             this.tabControl.Button.CloseButtonAction = Krypton.Navigator.CloseButtonAction.None;
             this.tabControl.Button.CloseButtonDisplay = Krypton.Navigator.ButtonDisplay.Hide;
+            this.tabControl.Button.ContextButtonAction = Krypton.Navigator.ContextButtonAction.SelectPage;
+            this.tabControl.Button.ContextButtonDisplay = Krypton.Navigator.ButtonDisplay.Logic;
+            this.tabControl.Button.ContextMenuMapImage = Krypton.Navigator.MapKryptonPageImage.Small;
+            this.tabControl.Button.ContextMenuMapText = Krypton.Navigator.MapKryptonPageText.TextTitle;
+            this.tabControl.Button.NextButtonAction = Krypton.Navigator.DirectionButtonAction.ModeAppropriateAction;
+            this.tabControl.Button.NextButtonDisplay = Krypton.Navigator.ButtonDisplay.Logic;
+            this.tabControl.Button.PreviousButtonAction = Krypton.Navigator.DirectionButtonAction.ModeAppropriateAction;
+            this.tabControl.Button.PreviousButtonDisplay = Krypton.Navigator.ButtonDisplay.Logic;
+            this.tabControl.ControlKryptonFormFeatures = false;
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl.Group.GroupBackStyle = Krypton.Toolkit.PaletteBackStyle.PanelClient;
+            this.tabControl.Group.GroupBorderStyle = Krypton.Toolkit.PaletteBorderStyle.ControlClient;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl.Name = "tabControl";
+            this.tabControl.NavigatorMode = Krypton.Navigator.NavigatorMode.BarTabGroup;
+            this.tabControl.Owner = null;
             this.tabControl.PageBackStyle = Krypton.Toolkit.PaletteBackStyle.PanelClient;
             this.tabControl.Pages.AddRange(new Krypton.Navigator.KryptonPage[] {
             this.tabCommonOperations,
@@ -186,7 +198,7 @@ namespace Elucidate
             this.tabSchedulePage,
             this.tabRecoverFiles});
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1181, 346);
+            this.tabControl.Size = new System.Drawing.Size(1181, 347);
             this.tabControl.StateCommon.Tab.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl.TabIndex = 4;
             this.tabControl.SelectedPageChanged += new System.EventHandler(this.tabControl_SelectedPageChanged);
@@ -348,33 +360,34 @@ namespace Elucidate
             this.kryptonPanel1.Location = new System.Drawing.Point(0, 32);
             this.kryptonPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonPanel1.Name = "kryptonPanel1";
-            this.kryptonPanel1.Size = new System.Drawing.Size(1181, 346);
+            this.kryptonPanel1.Size = new System.Drawing.Size(1181, 347);
             this.kryptonPanel1.TabIndex = 5;
             // 
             // kryptonManager1
             // 
-            this.kryptonManager1.GlobalPaletteMode = Krypton.Toolkit.PaletteModeManager.Office2010Blue;
+            this.kryptonManager1.GlobalPaletteMode = Krypton.Toolkit.PaletteMode.Office2010Blue;
             // 
             // liveRunLogControl1
             // 
             this.liveRunLogControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.liveRunLogControl1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.liveRunLogControl1.Location = new System.Drawing.Point(0, 378);
+            this.liveRunLogControl1.Location = new System.Drawing.Point(0, 379);
             this.liveRunLogControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.liveRunLogControl1.Name = "liveRunLogControl1";
-            this.liveRunLogControl1.Size = new System.Drawing.Size(1181, 75);
+            this.liveRunLogControl1.Size = new System.Drawing.Size(1181, 80);
             this.liveRunLogControl1.TabIndex = 6;
             // 
             // ElucidateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1181, 453);
+            this.ClientSize = new System.Drawing.Size(1181, 459);
             this.Controls.Add(this.kryptonPanel1);
             this.Controls.Add(this.liveRunLogControl1);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = global::Elucidate.Properties.Resources.ElucidateIco;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -408,35 +421,34 @@ namespace Elucidate
             this.ResumeLayout(false);
             this.PerformLayout();
 
-        }
-
-        #endregion
-        private ToolTip toolTip1;
-        private Krypton.Navigator.KryptonNavigator tabControl;
-        private Krypton.Navigator.KryptonPage tabCommonOperations;
-        private Krypton.Toolkit.KryptonPanel logPanel;
-        private Krypton.Navigator.KryptonPage tabSchedulePage;
-        private Schedule tpSchedule;
-        private Krypton.Navigator.KryptonPage tabCoveragePage;
-        private Krypton.Navigator.KryptonPage tabLogs;
-        private LogsViewerControl logsViewerControl;
-        private Krypton.Navigator.KryptonPage tabRecoverFiles;
-        private Recover recover1;
-        private ToolStripMenuItem helpToolStripMenuItem;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem dangerZoneToolStripMenuItem;
-        private ToolStripMenuItem deleteAllSnapRAIDRaidFilesToolStripMenuItem;
-        private ToolStripMenuItem fileToolStripMenuItem;
-        private ProtectedDrivesDisplay tpCoverage;
-        private CommonTab commonTab;
-        private ToolStripMenuItem changeLogToolStripMenuItem;
-        private ToolStripMenuItem editConfigDirectlyToolStripMenuItem;
-        private ToolStripMenuItem showMeTheLatestReleaseStatsToolStripMenuItem;
-        private Krypton.Toolkit.KryptonPanel kryptonPanel1;
-        private Krypton.Toolkit.KryptonManager kryptonManager1;
-        private ToolStripMenuItem changeTheThemeToolStripMenuItem;
-        private ToolStripComboBox themeComboBox;
-        internal RunControl liveRunLogControl1;
     }
+
+    #endregion
+    private ToolTip toolTip1;
+    private Krypton.Navigator.KryptonNavigator tabControl;
+    private Krypton.Navigator.KryptonPage tabCommonOperations;
+    private Krypton.Toolkit.KryptonPanel logPanel;
+    private Krypton.Navigator.KryptonPage tabSchedulePage;
+    private Schedule tpSchedule;
+    private Krypton.Navigator.KryptonPage tabCoveragePage;
+    private Krypton.Navigator.KryptonPage tabLogs;
+    private LogsViewerControl logsViewerControl;
+    private Krypton.Navigator.KryptonPage tabRecoverFiles;
+    private Recover recover1;
+    private ToolStripMenuItem helpToolStripMenuItem;
+    private MenuStrip menuStrip1;
+    private ToolStripMenuItem dangerZoneToolStripMenuItem;
+    private ToolStripMenuItem deleteAllSnapRAIDRaidFilesToolStripMenuItem;
+    private ToolStripMenuItem fileToolStripMenuItem;
+    private ProtectedDrivesDisplay tpCoverage;
+    private CommonTab commonTab;
+    private ToolStripMenuItem changeLogToolStripMenuItem;
+    private ToolStripMenuItem editConfigDirectlyToolStripMenuItem;
+    private ToolStripMenuItem showMeTheLatestReleaseStatsToolStripMenuItem;
+    private Krypton.Toolkit.KryptonPanel kryptonPanel1;
+    private Krypton.Toolkit.KryptonManager kryptonManager1;
+    private ToolStripMenuItem changeTheThemeToolStripMenuItem;
+    private ToolStripComboBox themeComboBox;
+    internal RunControl liveRunLogControl1;
 }
 

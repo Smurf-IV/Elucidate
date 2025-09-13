@@ -83,8 +83,8 @@
             // 
             // btnCheckForMissing
             // 
-            this.btnCheckForMissing.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.database_warning_48;
-            this.btnCheckForMissing.CommandLinkTextValues.Description = "Check the snapshot for missing files\r\n(default --filter-mising)";
+            this.btnCheckForMissing.CommandLinkImageValue.Image = global::Elucidate.Properties.Resources.database_remove_48;
+            this.btnCheckForMissing.CommandLinkTextValues.Description = "Check the snapshot for missing files\r\n(default --filter-missing)";
             this.btnCheckForMissing.CommandLinkTextValues.Heading = "Discover &Missing";
             this.btnCheckForMissing.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnCheckForMissing.Enabled = false;
