@@ -201,6 +201,13 @@ namespace Elucidate.Controls
                 {
                     command.Append(defaultOption);
                 }
+				
+				// Escape square brackets in any -f filter for Windows CMD
+				if (addCmd.Contains("-f "))
+				{
+					addCmd = System.Text.RegularExpressions.Regex.Replace(addCmd, @"(?<!\^)\[", "^[");
+					addCmd = System.Text.RegularExpressions.Regex.Replace(addCmd, @"(?<!\^)\]", "^]");
+				}
 
                 command.Append(' ').Append(addCmd);
             }
@@ -283,7 +290,17 @@ namespace Elucidate.Controls
                 do
                 {
                     var restore = batchPaths.Pop();
-                    sbPaths.Append(" -f \"").Append(restore).Append('"');
+
+			// Escape square brackets for Windows CMD
+			if (!string.IsNullOrEmpty(restore))
+			{
+				restore = System.Text.RegularExpressions.Regex.Replace(restore, @"(?<!\^)\[", "^[");
+				restore = System.Text.RegularExpressions.Regex.Replace(restore, @"(?<!\^)\]", "^]");
+			}
+
+            sbPaths.Append(" -f \"").Append(restore).Append('"');
+
+
                 } while ((sbPaths.Length < MAX_COMMAND_ARG_LENGTH)
                          && (batchPaths.Count > 0)
                 );

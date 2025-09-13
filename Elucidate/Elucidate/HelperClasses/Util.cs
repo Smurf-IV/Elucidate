@@ -105,9 +105,19 @@ namespace Elucidate
             }
 
             args.AppendFormat("-c \"{0}\" ", Properties.Settings.Default.ConfigFileLocation).Append(command);
+			
+			// Convert to string for final processing
+			var finalArgs = args.ToString();
 
-            return args.ToString();
-        }
+			// Escape square brackets for Windows CMD
+			if (finalArgs.Contains("-f "))
+			{
+				finalArgs = System.Text.RegularExpressions.Regex.Replace(finalArgs, @"(?<!\^)\[", "^[");
+				finalArgs = System.Text.RegularExpressions.Regex.Replace(finalArgs, @"(?<!\^)\]", "^]");
+			}
+
+			return finalArgs;
+		}
 
         public static double RoundUpToDecimalPlace(double numToRound, int decimalPlace)
         {
