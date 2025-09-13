@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ElucidateForm.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2022 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2025 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,329 +42,328 @@ using Krypton.Toolkit;
 using NLog;
 
 // ReSharper disable once CheckNamespace
-namespace Elucidate
+namespace Elucidate;
+
+public sealed partial class ElucidateForm : KryptonForm
 {
-    public sealed partial class ElucidateForm : KryptonForm
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+    private readonly ConfigFileHelper srConfig = new ();
+    private readonly LiveLog liveLog = new ();
+
+    public ElucidateForm()
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        // For some reason the designer keeps removing the following !!
+        tpCoverage = new Controls.ProtectedDrivesDisplay();
+        Icon = Properties.Resources.ElucidateIco;
 
-        private readonly ConfigFileHelper srConfig = new ();
-        private readonly LiveLog liveLog = new ();
+        InitializeComponent();
 
-        public ElucidateForm()
+        if (Properties.Settings.Default.UpdateRequired)
         {
-            // For some reason the designer keeps removing the following !!
-            tpCoverage = new Controls.ProtectedDrivesDisplay();
-            Icon = Properties.Resources.ElucidateIco;
+            // Thanks go to http://cs.rthand.com/blogs/blog_with_righthand/archive/2005/12/09/246.aspx
+            Properties.Settings.Default.Upgrade();
+            Properties.Settings.Default.UpdateRequired = false;
+            Properties.Settings.Default.Save();
+        }
+        WindowLocation.GeometryFromString(Properties.Settings.Default.WindowLocation, this);
+        if (Enum.TryParse(Properties.Settings.Default.Theme, out PaletteMode value))
+        {
+            RecalcNonClient();
+            kryptonManager1.GlobalPaletteMode = value;
+        }
 
-            InitializeComponent();
+        liveLog.Show(); // go modeless
+        liveRunLogControl1.TaskStarted += LiveRunLogControl_TaskStarted;
 
-            if (Properties.Settings.Default.UpdateRequired)
+        recover1.RunLogControl = liveRunLogControl1;
+        commonTab.RunLogControl = liveRunLogControl1;
+        // Hook into changes in the global palette
+        KryptonManager.GlobalPaletteChanged += OnPaletteChanged;
+        ThemeManager.PropagateThemeSelector(themeComboBox);
+        themeComboBox.Text = ThemeManager.ReturnPaletteModeAsString(PaletteMode.Office2007Blue, kryptonManager1);
+    }
+
+    private void LiveRunLogControl_TaskStarted(object sender, EventArgs e)
+    {
+        BeginInvoke((MethodInvoker)(() => liveLog.BringToFront()));
+    }
+
+    private void ElucidateForm_Load(object sender, EventArgs e)
+    {
+        TextExtra = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+    }
+
+    private void ElucidateForm_Shown(object sender, EventArgs e)
+    {
+        var args = Environment.GetCommandLineArgs().Skip(1).ToArray();
+        if (args.Contains(@"-H")
+            || args.Contains(@"--help")
+        )
+        {
+            commonTab.PerformArgs(args);
+            commonTab.SetCommonButtonsEnabledState(false); // Prevent button pushing !
+        }
+        else
+        {
+
+            LoadConfigFile();
+
+            // display any warnings from the config validation
+            if (srConfig.HasWarnings)
             {
-                // Thanks go to http://cs.rthand.com/blogs/blog_with_righthand/archive/2005/12/09/246.aspx
-                Properties.Settings.Default.Upgrade();
-                Properties.Settings.Default.UpdateRequired = false;
-                Properties.Settings.Default.Save();
+                KryptonMessageBox.Show(
+                    this,
+                    $"There are warnings for the configuration file:{Environment.NewLine} - {string.Join(" - ", srConfig.ConfigWarnings)}",
+                    "Configuration File Warnings",
+                    KryptonMessageBoxButtons.OK,
+                    KryptonMessageBoxIcon.Warning);
             }
-            WindowLocation.GeometryFromString(Properties.Settings.Default.WindowLocation, this);
-            if (Enum.TryParse(Properties.Settings.Default.Theme, out PaletteModeManager value))
-            {
-                RecalcNonClient();
-                kryptonManager1.GlobalPaletteMode = value;
-            }
-
-            liveLog.Show(); // go modeless
-            liveRunLogControl1.TaskStarted += LiveRunLogControl_TaskStarted;
-
-            recover1.RunLogControl = liveRunLogControl1;
-            commonTab.RunLogControl = liveRunLogControl1;
-            // Hook into changes in the global palette
-            KryptonManager.GlobalPaletteChanged += OnPaletteChanged;
-            ThemeManager.PropagateThemeSelector(themeComboBox);
-            themeComboBox.Text = ThemeManager.ReturnPaletteModeManagerAsString(PaletteModeManager.Office2007Blue, kryptonManager1);
-        }
-
-        private void LiveRunLogControl_TaskStarted(object sender, EventArgs e)
-        {
-            BeginInvoke((MethodInvoker)(() => liveLog.BringToFront()));
-        }
-
-        private void ElucidateForm_Load(object sender, EventArgs e)
-        {
-            TextExtra = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-        }
-
-        private void ElucidateForm_Shown(object sender, EventArgs e)
-        {
-            var args = Environment.GetCommandLineArgs().Skip(1).ToArray();
-            if (args.Contains(@"-H")
-                || args.Contains(@"--help")
-            )
+            else
             {
                 commonTab.PerformArgs(args);
-                commonTab.SetCommonButtonsEnabledState(false); // Prevent button pushing !
             }
-            else
+        }
+    }
+
+    #region Main Menu Toolbar Handlers
+    private void EditSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (liveRunLogControl1.IsRunning)
+        {
+            SystemSounds.Beep.Play();
+            return;
+        }
+
+        using (var settingsForm = new Settings())
+        {
+            settingsForm.ShowDialog(this);
+        }
+
+        LoadConfigFile(false);
+    }
+
+    private void deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        Log.Info(@"Generate list of file for MessageBiox and deletion code");
+        var parityFiles = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(srConfig.ParityFile1))
+        {
+            parityFiles.Add(srConfig.ParityFile1);
+        }
+
+        if (!string.IsNullOrWhiteSpace(srConfig.ParityFile2))
+        {
+            parityFiles.Add(srConfig.ParityFile2);
+        }
+
+        if (!string.IsNullOrWhiteSpace(srConfig.ZParityFile))
+        {
+            parityFiles.Add(srConfig.ZParityFile);
+        }
+
+        if (!string.IsNullOrWhiteSpace(srConfig.ParityFile3))
+        {
+            parityFiles.Add(srConfig.ParityFile3);
+        }
+
+        if (!string.IsNullOrWhiteSpace(srConfig.ParityFile4))
+        {
+            parityFiles.Add(srConfig.ParityFile4);
+        }
+
+        if (!string.IsNullOrWhiteSpace(srConfig.ParityFile5))
+        {
+            parityFiles.Add(srConfig.ParityFile5);
+        }
+
+        if (!string.IsNullOrWhiteSpace(srConfig.ParityFile6))
+        {
+            parityFiles.Add(srConfig.ParityFile6);
+        }
+
+
+        var sb = new StringBuilder();
+
+        sb.AppendLine(@"Are you sure you want to remove the files below?");
+
+        sb.AppendLine(@"This action cannot be undone.");
+
+        sb.AppendLine();
+
+        foreach (var file in parityFiles)
+        {
+            sb.AppendLine($@"Parity File: {file}");
+        }
+
+        var contentFiles = srConfig.ContentFiles.ToList();
+        foreach (var file in contentFiles)
+        {
+            sb.AppendLine($@"Content File: {file}");
+        }
+
+        DialogResult result = KryptonMessageBox.Show(
+            this,
+            sb.ToString(),
+            @"Delete All SnapRAID Files",
+            KryptonMessageBoxButtons.YesNoCancel,
+            KryptonMessageBoxIcon.Warning);
+
+        if (result == DialogResult.Yes)
+        {
+            try
             {
-
-                LoadConfigFile();
-
-                // display any warnings from the config validation
-                if (srConfig.HasWarnings)
+                foreach (var file in parityFiles)
                 {
-                    KryptonMessageBox.Show(
-                        this,
-                        $"There are warnings for the configuration file:{Environment.NewLine} - {string.Join(" - ", srConfig.ConfigWarnings)}",
-                        "Configuration File Warnings",
-                        MessageBoxButtons.OK,
-                        KryptonMessageBoxIcon.Warning);
+                    File.Delete(file);
                 }
-                else
+
+                foreach (var file in contentFiles)
                 {
-                    commonTab.PerformArgs(args);
+                    File.Delete(file);
                 }
+
+                KryptonMessageBox.Show(this, @"The SnapRAID files have been removed", @"Files Removed");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex);
             }
         }
+    }
 
-        #region Main Menu Toolbar Handlers
-        private void EditSnapRAIDConfigToolStripMenuItem_Click(object sender, EventArgs e)
+    private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        Process.Start(@"https://github.com/Smurf-IV/Elucidate/blob/master/docs/Documentation.md");
+    }
+
+    private void changeLogToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        Process.Start(@"https://github.com/Smurf-IV/Elucidate/commits");
+    }
+
+    private void editConfigDirectlyToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        if (liveRunLogControl1.IsRunning)
         {
-            if (liveRunLogControl1.IsRunning)
-            {
-                SystemSounds.Beep.Play();
-                return;
-            }
-
-            using (var settingsForm = new Settings())
-            {
-                settingsForm.ShowDialog(this);
-            }
-
-            LoadConfigFile(false);
+            SystemSounds.Beep.Play();
+            return;
         }
-
-        private void deleteAllSnapRAIDRaidFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        using (var process = new Process
         {
-            Log.Info(@"Generate list of file for MessageBiox and deletion code");
-            var parityFiles = new List<string>();
-
-            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile1))
-            {
-                parityFiles.Add(srConfig.ParityFile1);
-            }
-
-            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile2))
-            {
-                parityFiles.Add(srConfig.ParityFile2);
-            }
-
-            if (!string.IsNullOrWhiteSpace(srConfig.ZParityFile))
-            {
-                parityFiles.Add(srConfig.ZParityFile);
-            }
-
-            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile3))
-            {
-                parityFiles.Add(srConfig.ParityFile3);
-            }
-
-            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile4))
-            {
-                parityFiles.Add(srConfig.ParityFile4);
-            }
-
-            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile5))
-            {
-                parityFiles.Add(srConfig.ParityFile5);
-            }
-
-            if (!string.IsNullOrWhiteSpace(srConfig.ParityFile6))
-            {
-                parityFiles.Add(srConfig.ParityFile6);
-            }
-
-
-            var sb = new StringBuilder();
-
-            sb.AppendLine(@"Are you sure you want to remove the files below?");
-
-            sb.AppendLine(@"This action cannot be undone.");
-
-            sb.AppendLine();
-
-            foreach (var file in parityFiles)
-            {
-                sb.AppendLine($@"Parity File: {file}");
-            }
-
-            var contentFiles = srConfig.ContentFiles.ToList();
-            foreach (var file in contentFiles)
-            {
-                sb.AppendLine($@"Content File: {file}");
-            }
-
-            DialogResult result = KryptonMessageBox.Show(
-                this,
-                sb.ToString(),
-                @"Delete All SnapRAID Files",
-                MessageBoxButtons.YesNoCancel,
-                KryptonMessageBoxIcon.Warning);
-
-            if (result == DialogResult.Yes)
-            {
-                try
-                {
-                    foreach (var file in parityFiles)
-                    {
-                        File.Delete(file);
-                    }
-
-                    foreach (var file in contentFiles)
-                    {
-                        File.Delete(file);
-                    }
-
-                    KryptonMessageBox.Show(this, @"The SnapRAID files have been removed", @"Files Removed");
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex);
-                }
-            }
+            StartInfo = new ProcessStartInfo(@"Wordpad.exe", Properties.Settings.Default.ConfigFileLocation)
+        })
+        {
+            process.Start();
+            //Wait for the window to finish loading.
+            process.WaitForInputIdle();
+            //Wait for the process to end.
+            process.WaitForExit();
         }
+        LoadConfigFile(true);
+    }
 
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+    private void showMeTheLatestReleaseStatsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        Process.Start(@"https://www.somsubhra.com/github-release-stats/?username=Smurf-IV&repository=Elucidate");
+    }
+    #endregion Menu Handlers
+
+    private void OnPaletteChanged(object sender, EventArgs e)
+    {
+        // persist our geometry string.
+        RecalcNonClient();
+        Properties.Settings.Default.Theme = kryptonManager1.GlobalPaletteMode.ToString();
+        Properties.Settings.Default.Save();
+    }
+
+    private void LoadConfigFile(bool launchEditSnapRAID = true)
+    {
+        srConfig.LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
+
+        Properties.Settings.Default.ConfigFileIsValid = srConfig.IsValid;
+        var exists = File.Exists(Properties.Settings.Default.SnapRAIDFileLocation);
+
+        commonTab.SetCommonButtonsEnabledState(srConfig.IsValid && exists);
+
+        if (srConfig.IsValid
+            && exists
+            )
         {
-            Process.Start(@"https://github.com/Smurf-IV/Elucidate/blob/master/docs/Documentation.md");
-        }
-
-        private void changeLogToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start(@"https://github.com/Smurf-IV/Elucidate/commits");
-        }
-
-        private void editConfigDirectlyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (liveRunLogControl1.IsRunning)
-            {
-                SystemSounds.Beep.Play();
-                return;
-            }
-            using (var process = new Process
-            {
-                StartInfo = new ProcessStartInfo(@"Wordpad.exe", Properties.Settings.Default.ConfigFileLocation)
-            })
-            {
-                process.Start();
-                //Wait for the window to finish loading.
-                process.WaitForInputIdle();
-                //Wait for the process to end.
-                process.WaitForExit();
-            }
-            LoadConfigFile(true);
-        }
-
-        private void showMeTheLatestReleaseStatsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Process.Start(@"https://www.somsubhra.com/github-release-stats/?username=Smurf-IV&repository=Elucidate");
-        }
-        #endregion Menu Handlers
-
-        private void OnPaletteChanged(object sender, EventArgs e)
-        {
-            // persist our geometry string.
-            RecalcNonClient();
-            Properties.Settings.Default.Theme = kryptonManager1.GlobalPaletteMode.ToString();
-            Properties.Settings.Default.Save();
-        }
-
-        private void LoadConfigFile(bool launchEditSnapRAID = true)
-        {
-            srConfig.LoadConfigFile(Properties.Settings.Default.ConfigFileLocation);
-
-            Properties.Settings.Default.ConfigFileIsValid = srConfig.IsValid;
-            var exists = File.Exists(Properties.Settings.Default.SnapRAIDFileLocation);
-
-            commonTab.SetCommonButtonsEnabledState(srConfig.IsValid && exists);
-
-            if (srConfig.IsValid
-                && exists
-                )
-            {
-                BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(Properties.Settings.Default.ConfigFileLocation); });
-                if (tabControl.SelectedPage == tabCoveragePage)
-                {
-                    tpCoverage.RefreshGrid(srConfig, false);
-                }
-            }
-            else
-            {
-                srConfig.ConfigErrors.Add(@"Please Edit the Settings and ensure no errors when saving!");
-                Log.Fatal("The config file is not valid.[{0}]\n{1}", Properties.Settings.Default.ConfigFileLocation,
-                    string.Join($@"{Environment.NewLine} - ", srConfig.ConfigErrors));
-                if (launchEditSnapRAID)
-                {
-                    BeginInvoke((MethodInvoker)delegate
-                   {
-                       EditSnapRAIDConfigToolStripMenuItem_Click(this, EventArgs.Empty);
-                   });
-                }
-            }
-        }
-
-        private void SetElucidateFormTitle(string filePath)
-        {
-            var newTitle = "Elucidate";
-
-            if (!string.IsNullOrEmpty(filePath))
-            {
-                newTitle += $" - {filePath}";
-            }
-
-            Text = newTitle;
-        }
-
-        private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            tpCoverage.StopProcessing();
-            Properties.Settings.Default.LogWindowLocation = WindowLocation.GeometryToString(liveLog);
-            Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
-            Properties.Settings.Default.Save();
-        }
-
-        private void tabControl_SelectedPageChanged(object sender, EventArgs e)
-        {
-            Log.Trace(@"tabControl_SelectedPageChanged - IN");
-            KryptonPage currentTab = tabControl.SelectedPage;
-            tpCoverage.StopProcessing();
-
-            if (currentTab == tabCommonOperations)
-            {
-                //tabCommonOperations.Reset();
-            }
-            else if (currentTab == tabLogs)
-            {
-                // tabLogs.Reset();
-            }
-            else if (currentTab == tabCoveragePage)
+            BeginInvoke((MethodInvoker)delegate { SetElucidateFormTitle(Properties.Settings.Default.ConfigFileLocation); });
+            if (tabControl.SelectedPage == tabCoveragePage)
             {
                 tpCoverage.RefreshGrid(srConfig, false);
             }
-            else if (currentTab == tabSchedulePage)
-            {
-                //tpSchedule.Reset();
-            }
-            else if (currentTab == tabRecoverFiles)
-            {
-                //  tabCoveragePage.Reset();
-            }
-            Log.Trace(@"tabControl_SelectedPageChanged - OUT");
         }
-
-        private void themeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        else
         {
-            ThemeManager.SetTheme(themeComboBox.Text, kryptonManager1);
-
+            srConfig.ConfigErrors.Add(@"Please Edit the Settings and ensure no errors when saving!");
+            Log.Fatal("The config file is not valid.[{0}]\n{1}", Properties.Settings.Default.ConfigFileLocation,
+                string.Join($@"{Environment.NewLine} - ", srConfig.ConfigErrors));
+            if (launchEditSnapRAID)
+            {
+                BeginInvoke((MethodInvoker)delegate
+               {
+                   EditSnapRAIDConfigToolStripMenuItem_Click(this, EventArgs.Empty);
+               });
+            }
         }
+    }
+
+    private void SetElucidateFormTitle(string filePath)
+    {
+        var newTitle = "Elucidate";
+
+        if (!string.IsNullOrEmpty(filePath))
+        {
+            newTitle += $" - {filePath}";
+        }
+
+        Text = newTitle;
+    }
+
+    private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        tpCoverage.StopProcessing();
+        Properties.Settings.Default.LogWindowLocation = WindowLocation.GeometryToString(liveLog);
+        Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
+        Properties.Settings.Default.Save();
+    }
+
+    private void tabControl_SelectedPageChanged(object sender, EventArgs e)
+    {
+        Log.Trace(@"tabControl_SelectedPageChanged - IN");
+        KryptonPage currentTab = tabControl.SelectedPage;
+        tpCoverage.StopProcessing();
+
+        if (currentTab == tabCommonOperations)
+        {
+            //tabCommonOperations.Reset();
+        }
+        else if (currentTab == tabLogs)
+        {
+            // tabLogs.Reset();
+        }
+        else if (currentTab == tabCoveragePage)
+        {
+            tpCoverage.RefreshGrid(srConfig, false);
+        }
+        else if (currentTab == tabSchedulePage)
+        {
+            //tpSchedule.Reset();
+        }
+        else if (currentTab == tabRecoverFiles)
+        {
+            //  tabCoveragePage.Reset();
+        }
+        Log.Trace(@"tabControl_SelectedPageChanged - OUT");
+    }
+
+    private void themeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ThemeManager.SetTheme(themeComboBox.Text, kryptonManager1);
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
 //  <copyright file="Program.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2011-2022 Smurf-IV
+//  Copyright (C) 2011-2025 Smurf-IV
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -35,125 +35,124 @@ using Krypton.Toolkit;
 
 using NLog;
 
-namespace Elucidate
+namespace Elucidate;
+
+internal static class Program
 {
-    internal static class Program
+    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+    /// <summary>
+    /// The main entry point for the application.
+    /// </summary>
+    [STAThread]
+    private static void Main()
     {
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main()
+        try
         {
-            try
-            {
-                ExceptionlessClient.Default.Register();
-                // Include the username if available (E.G., Environment.UserName or IIdentity.Name)
-                ExceptionlessClient.Default.Configuration.IncludeUserName = false;
-                // Include the MachineName in MachineInfo.
-                ExceptionlessClient.Default.Configuration.IncludeMachineName = true;
-                // Include Ip Addresses in MachineInfo and RequestInfo.
-                ExceptionlessClient.Default.Configuration.IncludeIpAddress = false;
-                // Include Cookies, please note that DataExclusions are applied to all Cookie keys when enabled.
-                ExceptionlessClient.Default.Configuration.IncludeCookies = false;
-                // Include Form/POST Data, please note that DataExclusions are only applied to Form data keys when enabled.
-                ExceptionlessClient.Default.Configuration.IncludePostData = false;
-                // Include Query String information, please note that DataExclusions are applied to all Query String keys when enabled.
-                ExceptionlessClient.Default.Configuration.IncludeQueryString = false;
+            ExceptionlessClient.Default.Register();
+            // Include the username if available (E.G., Environment.UserName or IIdentity.Name)
+            ExceptionlessClient.Default.Configuration.IncludeUserName = false;
+            // Include the MachineName in MachineInfo.
+            ExceptionlessClient.Default.Configuration.IncludeMachineName = true;
+            // Include Ip Addresses in MachineInfo and RequestInfo.
+            ExceptionlessClient.Default.Configuration.IncludeIpAddress = false;
+            // Include Cookies, please note that DataExclusions are applied to all Cookie keys when enabled.
+            ExceptionlessClient.Default.Configuration.IncludeCookies = false;
+            // Include Form/POST Data, please note that DataExclusions are only applied to Form data keys when enabled.
+            ExceptionlessClient.Default.Configuration.IncludePostData = false;
+            // Include Query String information, please note that DataExclusions are applied to all Query String keys when enabled.
+            ExceptionlessClient.Default.Configuration.IncludeQueryString = false;
 
-                ExceptionlessClient.Default.Configuration.SetVersion(Assembly.GetExecutingAssembly().GetName().Version);
+            ExceptionlessClient.Default.Configuration.SetVersion(Assembly.GetExecutingAssembly().GetName().Version);
 
-                AppDomain.CurrentDomain.UnhandledException += static (_, e) => LogUnhandledException(e.ExceptionObject);
-                //if (FileUtil.IsDirectoryCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)))
-                //{
-                //    FileUtil.SetDirectoryAsCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation));
-                //}
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    Log.Fatal(ex, @"Failed to attach unhandled exception handler...");
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-            try
-            {
-                Log.Info(@"=====================================================================");
-                Log.Info(@"File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
-                CheckAndRunSingleApp();
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Exception has not been caught by the rest of the application!");
-                KryptonMessageBox.Show(ex.Message, "Uncaught Exception - Exiting !");
-            }
-            finally
-            {
-                Log.Info(@"File Closing");
-                Log.Info(@"=====================================================================");
-            }
+            AppDomain.CurrentDomain.UnhandledException += static (_, e) => LogUnhandledException(e.ExceptionObject);
+            //if (FileUtil.IsDirectoryCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation)))
+            //{
+            //    FileUtil.SetDirectoryAsCompressed(Path.GetDirectoryName(Properties.Settings.Default.ConfigFileLocation));
+            //}
         }
-
-        private static void CheckAndRunSingleApp()
-        {
-            var mutexName = $"{Path.GetFileName(Application.ExecutablePath)} [{Environment.UserName}]";
-
-            // ReSharper disable once UnusedVariable
-            using var appUserMutex = new Mutex(true, mutexName, out var grantedOwnership);
-            if (grantedOwnership)
-            {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-
-                Application.Run(new ElucidateForm());
-            }
-            else
-            {
-                KryptonMessageBox.Show($@"{mutexName} is already running", mutexName, MessageBoxButtons.OK, KryptonMessageBoxIcon.Stop);
-                Log.Error($@"{mutexName} is already running");
-            }
-        }
-
-        private static void LogUnhandledException(object exceptionObject)
+        catch (Exception ex)
         {
             try
             {
-                Log.Fatal("Unhandled exception.\r\n{0}", exceptionObject);
-                var cs = Assembly.GetExecutingAssembly().GetName().Name;
-                try
-                {
-                    if (!EventLog.SourceExists(cs))
-                    {
-                        EventLog.CreateEventSource(cs, @"Application");
-                    }
-                }
-                catch (Exception sex)
-                {
-                    Log.Warn(sex);
-                    cs = @"Application";    // https://stackoverflow.com/questions/25725151/write-to-windows-application-event-log-without-registering-an-event-source
-                }
-                EventLog.WriteEntry(cs, exceptionObject.ToString(), EventLogEntryType.Error);
-                if (exceptionObject is Exception ex)
-                {
-                    Log.Fatal(ex, "Exception details");
-                    EventLog.WriteEntry(cs, ex.ToString(), EventLogEntryType.Error);
-                }
-                else
-                {
-                    Log.Fatal("Unexpected exception.");
-                }
+                Log.Fatal(ex, @"Failed to attach unhandled exception handler...");
             }
             catch
             {
                 // ignored
             }
         }
-
+        try
+        {
+            Log.Info(@"=====================================================================");
+            Log.Info(@"File Re-opened: Ver :" + Assembly.GetExecutingAssembly().GetName().Version);
+            CheckAndRunSingleApp();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Exception has not been caught by the rest of the application!");
+            KryptonMessageBox.Show(ex.Message, "Uncaught Exception - Exiting !");
+        }
+        finally
+        {
+            Log.Info(@"File Closing");
+            Log.Info(@"=====================================================================");
+        }
     }
+
+    private static void CheckAndRunSingleApp()
+    {
+        var mutexName = $"{Path.GetFileName(Application.ExecutablePath)} [{Environment.UserName}]";
+
+        // ReSharper disable once UnusedVariable
+        using var appUserMutex = new Mutex(true, mutexName, out var grantedOwnership);
+        if (grantedOwnership)
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            Application.Run(new ElucidateForm());
+        }
+        else
+        {
+            KryptonMessageBox.Show($@"{mutexName} is already running", mutexName, KryptonMessageBoxButtons.OK, KryptonMessageBoxIcon.Stop);
+            Log.Error($@"{mutexName} is already running");
+        }
+    }
+
+    private static void LogUnhandledException(object exceptionObject)
+    {
+        try
+        {
+            Log.Fatal("Unhandled exception.\r\n{0}", exceptionObject);
+            var cs = Assembly.GetExecutingAssembly().GetName().Name;
+            try
+            {
+                if (!EventLog.SourceExists(cs))
+                {
+                    EventLog.CreateEventSource(cs, @"Application");
+                }
+            }
+            catch (Exception sex)
+            {
+                Log.Warn(sex);
+                cs = @"Application";    // https://stackoverflow.com/questions/25725151/write-to-windows-application-event-log-without-registering-an-event-source
+            }
+            EventLog.WriteEntry(cs, exceptionObject.ToString(), EventLogEntryType.Error);
+            if (exceptionObject is Exception ex)
+            {
+                Log.Fatal(ex, "Exception details");
+                EventLog.WriteEntry(cs, ex.ToString(), EventLogEntryType.Error);
+            }
+            else
+            {
+                Log.Fatal("Unexpected exception.");
+            }
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
 }

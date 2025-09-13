@@ -25,7 +25,6 @@
 #endregion
 
 using System.Reflection;
-using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -35,9 +34,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Elucidate")]
 [assembly: AssemblyDescription("SnapRAID GUI Implementation")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Smurf-IV & BlueBlock")]
+[assembly: AssemblyCompany("Smurf-IV & BlueBlock & Boskys")]
 [assembly: AssemblyProduct("Elucidate")]
-[assembly: AssemblyCopyright("Copyright © BlueBlock 2018 / Copyright © Simon Coghlan (Aka Smurf-IV) 2010-2021")]
+[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2010-2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -56,8 +55,8 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2025.09.08.0")]
-[assembly: AssemblyFileVersion("25.09.08.0")]
+[assembly: AssemblyVersion("2025.9.13.21")]
+[assembly: AssemblyFileVersion("25.9.13.21")]
 // TODO: Add more relevant hints here
 [assembly: Dependency(@"System", LoadHint.Always)]
 [assembly: Dependency(@"System.Drawing", LoadHint.Always)]
