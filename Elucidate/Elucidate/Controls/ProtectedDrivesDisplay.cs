@@ -132,12 +132,13 @@ internal partial class ProtectedDrivesDisplay : UserControl
         {
             var dirInfo = new DirectoryInfo(coveragePath.DirectoryPath, PathFormat.FullPath);
             var driveInfo = new DriveInfo(dirInfo.Root.FullName);
-            if (coveragePath.PathType == PathTypeEnum.Parity)
+            if (coveragePath.PathType == PathTypeEnum.Parity
+                || dirInfo.FullName == driveInfo.Name)
             {
                 var totalUsed = driveInfo.TotalSize - driveInfo.AvailableFreeSpace;
-                var protectedUse = File.Exists(coveragePath.FullPath) ? new FileInfo(coveragePath.FullPath).Length : 0L;
+                var protectedUse = File.Exists(coveragePath.FullPath) ? new FileInfo(coveragePath.FullPath).Length : (dirInfo.FullName == driveInfo.Name)? totalUsed:0L;
                 row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
-                row.Cells[3].Value = $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
+                row.Cells[3].Value = $@"{ByteSize.FromBytes(protectedUse).ToBinaryString()}  :  {ByteSize.FromBytes(totalUsed).ToBinaryString()}  :  {ByteSize.FromBytes(driveInfo.TotalSize).ToBinaryString()}";
             }
             else
             {
@@ -162,7 +163,7 @@ internal partial class ProtectedDrivesDisplay : UserControl
                {
                    row.Cells[2].Value = $@"{protectedUse}:{totalUsed}:{driveInfo.TotalSize}";
                    row.Cells[3].Value =
-                       $@"{new ByteSize(protectedUse)} : {new ByteSize(totalUsed)} : {new ByteSize(driveInfo.TotalSize)}";
+                       $@"{ByteSize.FromBytes(protectedUse).ToBinaryString()}  :  {ByteSize.FromBytes(totalUsed).ToBinaryString()}  :  {ByteSize.FromBytes(driveInfo.TotalSize).ToBinaryString()}";
                }
                catch
                {
@@ -185,7 +186,9 @@ internal partial class ProtectedDrivesDisplay : UserControl
     {
         try
         {
-            if (token.IsCancellationRequested)
+            if (token.IsCancellationRequested
+                || dir.EntryInfo.IsMountPoint
+                || dir.EntryInfo.IsSymbolicLink)
             {
                 return 0UL;
             }

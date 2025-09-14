@@ -58,4 +58,11 @@
       </Reference>
       <Reference Include="System.Management" />
     </ItemGroup>
+
+  <PropertyGroup>
+    <PostBuildEvent>
+      md Y:\Smurf-IV\Elucidate\Elucidate\Elucidate\bin\Debug
+      xcopy Z:\GitHub\Smurf-IV\Elucidate\Elucidate\Elucidate\bin\Debug\*.* Y:\Smurf-IV\Elucidate\Elucidate\Elucidate\bin\Debug /I /C /Y /D /E
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

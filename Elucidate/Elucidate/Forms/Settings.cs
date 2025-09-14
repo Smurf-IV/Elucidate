@@ -105,8 +105,6 @@ public partial class Settings : KryptonForm
         }
 
         parityTextBoxesList = (parityTextBoxes = grpParityLocations.Panel.Controls.OfType<KryptonTextBox>().OrderBy(static c => c.TabIndex)).ToList();
-
-        labelParity3_CheckedChanged(this, EventArgs.Empty);
     }
 
     private void Settings_Load(object sender, EventArgs e)
@@ -639,13 +637,11 @@ public partial class Settings : KryptonForm
 
     private void findExeFile_Click(object sender, EventArgs e)
     {
-        using var ofd = new OpenFileDialog()
-        {
-            InitialDirectory = Path.GetFullPath(snapRAIDFileLocation.Text),
-            Filter = @"Snap Raid application|SnapRAID.exe",
-            CheckFileExists = true,
-            RestoreDirectory = true
-        };
+        using var ofd = new OpenFileDialog();
+        ofd.InitialDirectory = Path.GetFullPath(snapRAIDFileLocation.Text);
+        ofd.Filter = @"Snap Raid application|SnapRAID.exe";
+        ofd.CheckFileExists = true;
+        ofd.RestoreDirectory = true;
         Log.Info(@"snapRAIDFileLocation from [{0}]", ofd.InitialDirectory);
 
         if (DialogResult.OK == ofd.ShowDialog())
@@ -664,13 +660,11 @@ public partial class Settings : KryptonForm
 
     private void findConfigFile_Click(object sender, EventArgs e)
     {
-        using var ofd = new OpenFileDialog()
-        {
-            InitialDirectory = Path.GetFullPath(configFileLocation.Text),
-            Filter = @"Snap Raid Config|*.conf*|All Files|*.*",
-            CheckFileExists = true,
-            RestoreDirectory = true
-        };
+        using var ofd = new OpenFileDialog();
+        ofd.InitialDirectory = Path.GetFullPath(configFileLocation.Text);
+        ofd.Filter = @"Snap Raid Config|*.conf*|All Files|*.*";
+        ofd.CheckFileExists = true;
+        ofd.RestoreDirectory = true;
         Log.Trace(@"configFileLocation from [{0}]", ofd.InitialDirectory);
 
         if (DialogResult.OK == ofd.ShowDialog())
@@ -760,6 +754,7 @@ public partial class Settings : KryptonForm
                 }
                 else
                 {
+                    labelParity3.Checked = false;
                     parityLocation3.Text = cfg.ParityFile3;
                 }
 

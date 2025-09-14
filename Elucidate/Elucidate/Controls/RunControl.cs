@@ -310,9 +310,9 @@ public partial class RunControl : UserControl
 
         int exitCode;
 
-        using (var process = new Process
+        using (var process = new Process())
         {
-            StartInfo = new ProcessStartInfo(appPath, args)
+            process.StartInfo = new ProcessStartInfo(appPath, args)
             {
                 UseShellExecute = false, // We're redirecting !
                 RedirectStandardOutput = true,
@@ -320,10 +320,8 @@ public partial class RunControl : UserControl
                 StandardOutputEncoding = Encoding.UTF8, // SnapRAID uses UTF-8 for output
                 WindowStyle = ProcessWindowStyle.Hidden,
                 CreateNoWindow = true
-            },
-            EnableRaisingEvents = true
-        })
-        {
+            };
+            process.EnableRaisingEvents = true;
             Log.Info(@"Using: [{0}]", process.StartInfo.FileName);
             Log.Info(@"with: [{0}]", process.StartInfo.Arguments);
 

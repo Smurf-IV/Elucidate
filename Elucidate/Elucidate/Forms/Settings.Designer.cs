@@ -36,7 +36,10 @@ namespace Elucidate.Forms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Settings));
+            this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DRUnit_NewNode = new System.Windows.Forms.ToolStripMenuItem();
+            this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drivesAndDirectoriesMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.refreshStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,9 +63,6 @@ namespace Elucidate.Forms
             this.labelParity1 = new Krypton.Toolkit.KryptonLabel();
             this.parityLocation1 = new Krypton.Toolkit.KryptonTextBox();
             this.findParity1 = new Krypton.Toolkit.KryptonButton();
-            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SnapShotsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grpSnapShotSources = new Krypton.Toolkit.KryptonGroupBox();
             this.splitContainer1 = new Krypton.Toolkit.KryptonSplitContainer();
             this.driveAndDirTreeView = new Elucidate.Shared.BufferedTreeView();
@@ -89,12 +89,12 @@ namespace Elucidate.Forms
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
             this.kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
+            this.SnapShotsMenu.SuspendLayout();
             this.drivesAndDirectoriesMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations.Panel)).BeginInit();
             this.grpParityLocations.Panel.SuspendLayout();
             this.grpParityLocations.SuspendLayout();
-            this.SnapShotsMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grpSnapShotSources)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grpSnapShotSources.Panel)).BeginInit();
             this.grpSnapShotSources.Panel.SuspendLayout();
@@ -119,6 +119,38 @@ namespace Elucidate.Forms
             this.kryptonPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // snapShotSources
+            // 
+            this.snapShotSources.AllowDrop = true;
+            this.snapShotSources.ContextMenuStrip = this.SnapShotsMenu;
+            this.snapShotSources.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.snapShotSources.Location = new System.Drawing.Point(0, 0);
+            this.snapShotSources.Margin = new System.Windows.Forms.Padding(4);
+            this.snapShotSources.Name = "snapShotSources";
+            this.snapShotSources.Size = new System.Drawing.Size(654, 320);
+            this.snapShotSources.TabIndex = 0;
+            this.snapShotSources.KeyUp += new System.Windows.Forms.KeyEventHandler(this.snapShotSourcesTreeView_KeyUp);
+            // 
+            // SnapShotsMenu
+            // 
+            this.SnapShotsMenu.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.SnapShotsMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.SnapShotsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removeToolStripMenuItem,
+            this.DRUnit_NewNode,
+            this.editNameToolStripMenuItem});
+            this.SnapShotsMenu.Name = "unitsMenu";
+            this.SnapShotsMenu.Size = new System.Drawing.Size(177, 76);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(176, 24);
+            this.removeToolStripMenuItem.Text = "&Delete";
+            this.removeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
+            // 
             // DRUnit_NewNode
             // 
             this.DRUnit_NewNode.Name = "DRUnit_NewNode";
@@ -126,6 +158,13 @@ namespace Elucidate.Forms
             this.DRUnit_NewNode.Size = new System.Drawing.Size(176, 24);
             this.DRUnit_NewNode.Text = "&New Node";
             this.DRUnit_NewNode.Click += new System.EventHandler(this.DRUnit_NewNode_MenuItem_Click);
+            // 
+            // editNameToolStripMenuItem
+            // 
+            this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
+            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(176, 24);
+            this.editNameToolStripMenuItem.Text = "&Edit Name";
+            this.editNameToolStripMenuItem.Click += new System.EventHandler(this.editName_Click);
             // 
             // drivesAndDirectoriesMenu
             // 
@@ -180,6 +219,8 @@ namespace Elucidate.Forms
             // 
             // grpParityLocations.Panel
             // 
+            this.grpParityLocations.Panel.Controls.Add(this.parityLocation2);
+            this.grpParityLocations.Panel.Controls.Add(this.parityLocation1);
             this.grpParityLocations.Panel.Controls.Add(this.findParity6);
             this.grpParityLocations.Panel.Controls.Add(this.findParity5);
             this.grpParityLocations.Panel.Controls.Add(this.findParity4);
@@ -193,10 +234,8 @@ namespace Elucidate.Forms
             this.grpParityLocations.Panel.Controls.Add(this.labelParity3);
             this.grpParityLocations.Panel.Controls.Add(this.parityLocation3);
             this.grpParityLocations.Panel.Controls.Add(this.labelParity2);
-            this.grpParityLocations.Panel.Controls.Add(this.parityLocation2);
             this.grpParityLocations.Panel.Controls.Add(this.findParity2);
             this.grpParityLocations.Panel.Controls.Add(this.labelParity1);
-            this.grpParityLocations.Panel.Controls.Add(this.parityLocation1);
             this.grpParityLocations.Panel.Controls.Add(this.findParity1);
             this.grpParityLocations.Size = new System.Drawing.Size(658, 200);
             this.grpParityLocations.TabIndex = 1;
@@ -529,33 +568,6 @@ namespace Elucidate.Forms
             this.findParity1.Values.Text = "...";
             this.findParity1.Click += new System.EventHandler(this.findParity1_Click);
             // 
-            // removeToolStripMenuItem
-            // 
-            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(176, 24);
-            this.removeToolStripMenuItem.Text = "&Delete";
-            this.removeToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
-            // 
-            // SnapShotsMenu
-            // 
-            this.SnapShotsMenu.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.SnapShotsMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.SnapShotsMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.removeToolStripMenuItem,
-            this.DRUnit_NewNode,
-            this.editNameToolStripMenuItem});
-            this.SnapShotsMenu.Name = "unitsMenu";
-            this.SnapShotsMenu.Size = new System.Drawing.Size(177, 76);
-            // 
-            // editNameToolStripMenuItem
-            // 
-            this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
-            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(176, 24);
-            this.editNameToolStripMenuItem.Text = "&Edit Name";
-            this.editNameToolStripMenuItem.Click += new System.EventHandler(this.editName_Click);
-            // 
             // grpSnapShotSources
             // 
             this.grpSnapShotSources.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -572,20 +584,9 @@ namespace Elucidate.Forms
             this.grpSnapShotSources.TabIndex = 0;
             this.grpSnapShotSources.Values.Heading = "S&nap Shot Sources";
             // 
-            // snapShotSources
-            // 
-            this.snapShotSources.AllowDrop = true;
-            this.snapShotSources.ContextMenuStrip = this.SnapShotsMenu;
-            this.snapShotSources.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.snapShotSources.Location = new System.Drawing.Point(0, 0);
-            this.snapShotSources.Margin = new System.Windows.Forms.Padding(4);
-            this.snapShotSources.Name = "snapShotSources";
-            this.snapShotSources.Size = new System.Drawing.Size(654, 320);
-            this.snapShotSources.TabIndex = 0;
-            this.snapShotSources.KeyUp += new System.Windows.Forms.KeyEventHandler(this.snapShotSourcesTreeView_KeyUp);
-            // 
             // splitContainer1
             // 
+            this.splitContainer1.Cursor = System.Windows.Forms.Cursors.Default;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 65);
             this.splitContainer1.Name = "splitContainer1";
@@ -648,7 +649,7 @@ namespace Elucidate.Forms
             // 
             // btnGetRecommended
             // 
-            this.btnGetRecommended.Location = new System.Drawing.Point(175, 1);
+            this.btnGetRecommended.Location = new System.Drawing.Point(190, 1);
             this.btnGetRecommended.Name = "btnGetRecommended";
             this.btnGetRecommended.Size = new System.Drawing.Size(137, 24);
             this.btnGetRecommended.TabIndex = 2;
@@ -683,9 +684,14 @@ namespace Elucidate.Forms
             0,
             0,
             0});
-            this.numAutoSaveGB.Location = new System.Drawing.Point(95, 30);
+            this.numAutoSaveGB.Location = new System.Drawing.Point(110, 30);
             this.numAutoSaveGB.Maximum = new decimal(new int[] {
             2147483647,
+            0,
+            0,
+            0});
+            this.numAutoSaveGB.Minimum = new decimal(new int[] {
+            0,
             0,
             0,
             0});
@@ -720,7 +726,7 @@ namespace Elucidate.Forms
             0,
             0,
             0});
-            this.numBlockSizeKB.Location = new System.Drawing.Point(95, 3);
+            this.numBlockSizeKB.Location = new System.Drawing.Point(110, 3);
             this.numBlockSizeKB.Maximum = new decimal(new int[] {
             16384,
             0,
@@ -776,6 +782,7 @@ namespace Elucidate.Forms
             // 
             // exludedFilesView
             // 
+            this.exludedFilesView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.exludedFilesView.ColumnHeadersHeight = 36;
             this.exludedFilesView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ExcludedFilesPatterns});
@@ -789,6 +796,9 @@ namespace Elucidate.Forms
             this.exludedFilesView.ShowCellToolTips = false;
             this.helpProvider1.SetShowHelp(this.exludedFilesView, true);
             this.exludedFilesView.Size = new System.Drawing.Size(658, 85);
+            this.exludedFilesView.StateCommon.BackStyle = Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.exludedFilesView.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exludedFilesView.StateCommon.HeaderColumn.Content.Hint = Krypton.Toolkit.PaletteTextHint.AntiAlias;
             this.exludedFilesView.TabIndex = 2;
             this.exludedFilesView.TabStop = false;
             this.exludedFilesView.Text = "&Exclude Patterns:";
@@ -812,7 +822,7 @@ namespace Elucidate.Forms
             this.btnSave.Location = new System.Drawing.Point(872, 34);
             this.btnSave.Name = "btnSave";
             this.helpProvider1.SetShowHelp(this.btnSave, true);
-            this.btnSave.Size = new System.Drawing.Size(127, 27);
+            this.btnSave.Size = new System.Drawing.Size(136, 27);
             this.btnSave.TabIndex = 7;
             this.toolTip1.SetToolTip(this.btnSave, "Save these settings to the config file.");
             this.btnSave.Values.Text = "&Save settings";
@@ -826,7 +836,7 @@ namespace Elucidate.Forms
             this.btnReset.Location = new System.Drawing.Point(872, 2);
             this.btnReset.Name = "btnReset";
             this.helpProvider1.SetShowHelp(this.btnReset, true);
-            this.btnReset.Size = new System.Drawing.Size(127, 27);
+            this.btnReset.Size = new System.Drawing.Size(136, 27);
             this.btnReset.TabIndex = 3;
             this.toolTip1.SetToolTip(this.btnReset, "Reset the values to the config file.");
             this.btnReset.Values.Text = "Reset to &last config";
@@ -888,13 +898,13 @@ namespace Elucidate.Forms
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(3, 37);
+            this.label1.Location = new System.Drawing.Point(23, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(157, 24);
+            this.label1.Size = new System.Drawing.Size(106, 24);
             this.label1.TabIndex = 4;
             this.label1.TabStop = false;
             this.label1.Target = this.configFileLocation;
-            this.label1.Values.Text = "SnapRAID &Config file:";
+            this.label1.Values.Text = "SR &Config file:";
             // 
             // findConfigFile
             // 
@@ -967,13 +977,13 @@ namespace Elucidate.Forms
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Settings_FormClosing);
             this.Load += new System.EventHandler(this.Settings_Load);
             this.Shown += new System.EventHandler(this.Settings_Shown);
+            this.SnapShotsMenu.ResumeLayout(false);
             this.drivesAndDirectoriesMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations.Panel)).EndInit();
             this.grpParityLocations.Panel.ResumeLayout(false);
             this.grpParityLocations.Panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grpParityLocations)).EndInit();
             this.grpParityLocations.ResumeLayout(false);
-            this.SnapShotsMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grpSnapShotSources.Panel)).EndInit();
             this.grpSnapShotSources.Panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grpSnapShotSources)).EndInit();
