@@ -250,11 +250,9 @@ public sealed partial class ElucidateForm : KryptonForm
             SystemSounds.Beep.Play();
             return;
         }
-        using (var process = new Process
+        using (var process = new Process())
         {
-            StartInfo = new ProcessStartInfo(@"Wordpad.exe", Properties.Settings.Default.ConfigFileLocation)
-        })
-        {
+            process.StartInfo = new ProcessStartInfo(@"Notepad.exe", Properties.Settings.Default.ConfigFileLocation);
             process.Start();
             //Wait for the window to finish loading.
             process.WaitForInputIdle();
@@ -266,7 +264,7 @@ public sealed partial class ElucidateForm : KryptonForm
 
     private void showMeTheLatestReleaseStatsToolStripMenuItem_Click(object sender, EventArgs e)
     {
-        Process.Start(@"https://www.somsubhra.com/github-release-stats/?username=Smurf-IV&repository=Elucidate");
+        Process.Start(@"https://github.com/Smurf-IV/Elucidate/pulse");
     }
     #endregion Menu Handlers
 

@@ -33,6 +33,7 @@ namespace Elucidate.Controls
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tsStartTime = new Krypton.Toolkit.KryptonLabel();
+            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.runWithoutCaptureMenuItem = new Krypton.Toolkit.KryptonCheckBox();
             this.checkBoxDisplayOutput = new Krypton.Toolkit.KryptonCheckBox();
             this.comboBoxProcessStatus = new Krypton.Toolkit.KryptonComboBox();
@@ -41,7 +42,6 @@ namespace Elucidate.Controls
             this.checkBoxCommandLineOptions = new Krypton.Toolkit.KryptonCheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
-            this.toolStripProgressBar1 = new Elucidate.Shared.TextOverProgressBar();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.comboBoxProcessStatus)).BeginInit();
             this.tableLayoutPanelAdditionalCommands.SuspendLayout();
@@ -82,18 +82,34 @@ namespace Elucidate.Controls
             this.tsStartTime.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this.tsStartTime.MinimumSize = new System.Drawing.Size(170, 22);
             this.tsStartTime.Name = "tsStartTime";
-            this.tsStartTime.Size = new System.Drawing.Size(201, 31);
-            this.tsStartTime.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsStartTime.Size = new System.Drawing.Size(192, 31);
+            this.tsStartTime.StateCommon.ShortText.Font = new System.Drawing.Font("Tahoma", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsStartTime.StateCommon.ShortText.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
-            this.tsStartTime.StateCommon.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Near;
+            this.tsStartTime.StateCommon.ShortText.TextV = Krypton.Toolkit.PaletteRelativeAlign.Center;
             this.tsStartTime.TabIndex = 0;
             this.tsStartTime.TabStop = false;
             this.tsStartTime.Values.Text = "2000-01-01 00:00:00Z";
             // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.ContainerControl = this;
+            this.toolStripProgressBar1.DisplayText = "";
+            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
+            this.toolStripProgressBar1.Location = new System.Drawing.Point(708, 3);
+            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.ShowInTaskbar = true;
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(382, 35);
+            this.toolStripProgressBar1.Step = 3;
+            this.toolStripProgressBar1.TabIndex = 4;
+            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
+            // 
             // runWithoutCaptureMenuItem
             // 
             this.runWithoutCaptureMenuItem.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.runWithoutCaptureMenuItem.Location = new System.Drawing.Point(508, 3);
+            this.runWithoutCaptureMenuItem.Location = new System.Drawing.Point(499, 3);
             this.runWithoutCaptureMenuItem.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.runWithoutCaptureMenuItem.MinimumSize = new System.Drawing.Size(122, 22);
             this.runWithoutCaptureMenuItem.Name = "runWithoutCaptureMenuItem";
@@ -108,7 +124,7 @@ namespace Elucidate.Controls
             this.checkBoxDisplayOutput.Checked = true;
             this.checkBoxDisplayOutput.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDisplayOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBoxDisplayOutput.Location = new System.Drawing.Point(342, 3);
+            this.checkBoxDisplayOutput.Location = new System.Drawing.Point(333, 3);
             this.checkBoxDisplayOutput.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.checkBoxDisplayOutput.MinimumSize = new System.Drawing.Size(86, 22);
             this.checkBoxDisplayOutput.Name = "checkBoxDisplayOutput";
@@ -133,11 +149,11 @@ namespace Elucidate.Controls
             "Idle",
             "Pause",
             "Abort"});
-            this.comboBoxProcessStatus.Location = new System.Drawing.Point(211, 6);
+            this.comboBoxProcessStatus.Location = new System.Drawing.Point(202, 6);
             this.comboBoxProcessStatus.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxProcessStatus.Name = "comboBoxProcessStatus";
             this.comboBoxProcessStatus.Size = new System.Drawing.Size(120, 29);
-            this.comboBoxProcessStatus.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxProcessStatus.StateCommon.ComboBox.Content.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxProcessStatus.StateCommon.ComboBox.Content.TextH = Krypton.Toolkit.PaletteRelativeAlign.Near;
             this.comboBoxProcessStatus.StateCommon.Item.Content.ShortText.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxProcessStatus.TabIndex = 1;
@@ -210,22 +226,6 @@ namespace Elucidate.Controls
             this.kryptonPanel1.Name = "kryptonPanel1";
             this.kryptonPanel1.Size = new System.Drawing.Size(1093, 79);
             this.kryptonPanel1.TabIndex = 4;
-            // 
-            // toolStripProgressBar1
-            // 
-            this.toolStripProgressBar1.ContainerControl = this;
-            this.toolStripProgressBar1.DisplayText = "";
-            this.toolStripProgressBar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripProgressBar1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripProgressBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
-            this.toolStripProgressBar1.Location = new System.Drawing.Point(717, 3);
-            this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(0);
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.ShowInTaskbar = true;
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(373, 35);
-            this.toolStripProgressBar1.Step = 3;
-            this.toolStripProgressBar1.TabIndex = 4;
-            this.toolStripProgressBar1.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // RunControl
             // 

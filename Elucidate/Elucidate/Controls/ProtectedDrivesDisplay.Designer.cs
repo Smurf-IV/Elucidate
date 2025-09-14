@@ -45,7 +45,7 @@
             this.kryptonPanel1.Controls.Add(this.driveGrid);
             this.kryptonPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.kryptonPanel1.Location = new System.Drawing.Point(0, 0);
-            this.kryptonPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.kryptonPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonPanel1.Name = "kryptonPanel1";
             this.kryptonPanel1.Size = new System.Drawing.Size(537, 357);
             this.kryptonPanel1.TabIndex = 0;
@@ -56,6 +56,7 @@
             this.driveGrid.AllowUserToResizeColumns = false;
             this.driveGrid.AllowUserToResizeRows = false;
             this.driveGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.driveGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.driveGrid.ColumnHeadersHeight = 36;
             this.driveGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colPath,
@@ -65,7 +66,7 @@
             this.driveGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.driveGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.driveGrid.Location = new System.Drawing.Point(0, 0);
-            this.driveGrid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.driveGrid.Margin = new System.Windows.Forms.Padding(4);
             this.driveGrid.MultiSelect = false;
             this.driveGrid.Name = "driveGrid";
             this.driveGrid.RowHeadersVisible = false;
@@ -73,6 +74,9 @@
             this.driveGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.driveGrid.ShowEditingIcon = false;
             this.driveGrid.Size = new System.Drawing.Size(537, 357);
+            this.driveGrid.StateCommon.BackStyle = Krypton.Toolkit.PaletteBackStyle.GridBackgroundList;
+            this.driveGrid.StateCommon.HeaderColumn.Content.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.driveGrid.StateCommon.HeaderColumn.Content.Hint = Krypton.Toolkit.PaletteTextHint.AntiAlias;
             this.driveGrid.TabIndex = 0;
             this.driveGrid.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.driveGrid_RowsAdded);
             this.driveGrid.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DriveGrid_MouseDown);
@@ -85,7 +89,7 @@
             this.colPath.MinimumWidth = 6;
             this.colPath.Name = "colPath";
             this.colPath.ReadOnly = true;
-            this.colPath.Width = 70;
+            this.colPath.Width = 75;
             // 
             // colName
             // 
@@ -93,7 +97,7 @@
             this.colName.HeaderText = "Name";
             this.colName.MinimumWidth = 6;
             this.colName.Name = "colName";
-            this.colName.Width = 82;
+            this.colName.Width = 84;
             // 
             // colDriveSpace
             // 
@@ -107,7 +111,7 @@
             this.colDetails.HeaderText = "Prot : Used : Max";
             this.colDetails.MinimumWidth = 6;
             this.colDetails.Name = "colDetails";
-            this.colDetails.Width = 152;
+            this.colDetails.Width = 167;
             // 
             // ProtectedDrivesDisplay
             // 
@@ -115,7 +119,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.kryptonPanel1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ProtectedDrivesDisplay";
             this.Size = new System.Drawing.Size(537, 357);
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).EndInit();
