@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="AssemblyInfo.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2010-2022 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
+//  Copyright (C) 2010-2026 Simon Coghlan (Aka Smurf-IV) & BlueBlock 2018
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Smurf-IV & BlueBlock & Boskys")]
 [assembly: AssemblyProduct("Elucidate")]
-[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2010-2025")]
+[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2010-2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -55,8 +55,8 @@ using System.Runtime.InteropServices;
 //      Build Number  - Increment
 //      Revision      - Day
 //
-[assembly: AssemblyVersion("2025.9.14.43")]
-[assembly: AssemblyFileVersion("25.9.14.43")]
+[assembly: AssemblyVersion("2026.3.29.45")]
+[assembly: AssemblyFileVersion("26.3.29.45")]
 // TODO: Add more relevant hints here
 [assembly: Dependency(@"System", LoadHint.Always)]
 [assembly: Dependency(@"System.Drawing", LoadHint.Always)]

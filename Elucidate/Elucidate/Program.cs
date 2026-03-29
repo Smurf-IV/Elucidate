@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
 //  <copyright file="Program.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2011-2025 Smurf-IV
+//  Copyright (C) 2011-2026 Smurf-IV
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,17 +29,23 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
+using Elucidate.Forms;
+
 using Exceptionless;
 
 using Krypton.Toolkit;
 
 using NLog;
 
+
 namespace Elucidate;
 
 internal static class Program
 {
-    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    private static Logger _log;
+    private static Logger Log => _log ??= LogManager.GetCurrentClassLogger();
+    private static LiveLog _liveLog;
+    private static LiveLog LiveLog => _liveLog ??= new LiveLog();
 
     /// <summary>
     /// The main entry point for the application.
@@ -47,6 +53,13 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+
+        // Initialize the logger after setting compatible text rendering
+        LiveLog.Show(); // go modeless and be ready to catch all logging
+        _ = Log;
+
         try
         {
             ExceptionlessClient.Default.Register();
@@ -108,9 +121,6 @@ internal static class Program
         using var appUserMutex = new Mutex(true, mutexName, out var grantedOwnership);
         if (grantedOwnership)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
             Application.Run(new ElucidateForm());
         }
         else

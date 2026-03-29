@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ElucidateForm.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2010-2025 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2010-2026 Simon Coghlan (Aka Smurf-IV)
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,7 +49,6 @@ public sealed partial class ElucidateForm : KryptonForm
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
     private readonly ConfigFileHelper srConfig = new ();
-    private readonly LiveLog liveLog = new ();
 
     public ElucidateForm()
     {
@@ -73,20 +72,12 @@ public sealed partial class ElucidateForm : KryptonForm
             kryptonManager1.GlobalPaletteMode = value;
         }
 
-        liveLog.Show(); // go modeless
-        liveRunLogControl1.TaskStarted += LiveRunLogControl_TaskStarted;
-
         recover1.RunLogControl = liveRunLogControl1;
         commonTab.RunLogControl = liveRunLogControl1;
         // Hook into changes in the global palette
         KryptonManager.GlobalPaletteChanged += OnPaletteChanged;
         ThemeManager.PropagateThemeSelector(themeComboBox);
         themeComboBox.Text = ThemeManager.ReturnPaletteModeAsString(PaletteMode.Office2007Blue, kryptonManager1);
-    }
-
-    private void LiveRunLogControl_TaskStarted(object sender, EventArgs e)
-    {
-        BeginInvoke((MethodInvoker)(() => liveLog.BringToFront()));
     }
 
     private void ElucidateForm_Load(object sender, EventArgs e)
@@ -325,7 +316,6 @@ public sealed partial class ElucidateForm : KryptonForm
     private void ElucidateForm_FormClosing(object sender, FormClosingEventArgs e)
     {
         tpCoverage.StopProcessing();
-        Properties.Settings.Default.LogWindowLocation = WindowLocation.GeometryToString(liveLog);
         Properties.Settings.Default.WindowLocation = WindowLocation.GeometryToString(this);
         Properties.Settings.Default.Save();
     }

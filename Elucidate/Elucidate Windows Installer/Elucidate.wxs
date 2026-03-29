@@ -89,6 +89,14 @@
                 </File>
             </Component>
             <Component>
+	            <File Source="$(var.MgtSource)\NLog.config" KeyPath="yes" />
+            </Component>
+            <Component>
+	            <File Source="$(var.MgtSource)\NLog.Windows.Forms.dll" KeyPath="yes" >
+		            <netfx:NativeImage Id="ngen.NLog.Windows.Forms" Platform="all" Priority="2" AppBaseDirectory="ClientDIR" />
+	            </File>
+            </Component>
+            <Component>
                 <File Source="$(var.MgtSource)\System.Buffers.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.System.Buffers" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
@@ -123,9 +131,14 @@
                     <netfx:NativeImage Id="ngen.System.Threading.Tasks.Extensions" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
                 </File>
             </Component>
+            <Component>
+	            <File Source="$(var.MgtSource)\System.ValueTuple.dll" KeyPath="yes" >
+		            <netfx:NativeImage Id="ngen.System.ValueTuple" Platform="64bit" Priority="2" AppBaseDirectory="ClientDIR" />
+	            </File>
+            </Component>
 
 
-            <!-- Text and help files-->
+			<!-- Text and help files-->
             <Component>
                 <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
             </Component>

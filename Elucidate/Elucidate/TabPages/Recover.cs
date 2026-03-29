@@ -201,52 +201,53 @@ namespace Elucidate.TabPages
         {
             try
             {
+                // Disabled for now.. Needs a ful re-think on how to do this!
                 lock (this)
                 {
-                    while (LiveLog.LogQueueRecover.TryDequeue(out var log))
-                    {
-                        var matchedMissing = false;
-                        // use regex to parse log line and get the FilePath
-                        Match matches = Recoverable.Match(log);
-                        if (!matches.Success)
-                        {
-                            matches = Damaged.Match(log);
-                        }
-                        if (!matches.Success)
-                        {
-                            matches = Missing.Match(log);
-                            matchedMissing = true;
-                        }
+                    //while (LiveLog.logRTB.TryDequeue(out var log))
+                    //{
+                    //    var matchedMissing = false;
+                    //    // use regex to parse log line and get the FilePath
+                    //    Match matches = Recoverable.Match(log);
+                    //    if (!matches.Success)
+                    //    {
+                    //        matches = Damaged.Match(log);
+                    //    }
+                    //    if (!matches.Success)
+                    //    {
+                    //        matches = Missing.Match(log);
+                    //        matchedMissing = true;
+                    //    }
 
-                        if (!matches.Success)
-                        {
-                            // nothing to do, the string did not match regex but it contained "[recoverable ", odd
-                            Group logEntryTimestamp = matches.Groups["FilePath"];
-                            if (!logEntryTimestamp.Success)
-                            {
-                                return; // paranoid, just check
-                            }
+                    //    if (!matches.Success)
+                    //    {
+                    //        // nothing to do, the string did not match regex but it contained "[recoverable ", odd
+                    //        Group logEntryTimestamp = matches.Groups["FilePath"];
+                    //        if (!logEntryTimestamp.Success)
+                    //        {
+                    //            return; // paranoid, just check
+                    //        }
 
-                            Log.Error(@"Unable to retrieve the recoverable file path from log entry at [{0}]", logEntryTimestamp.Value);
-                            return;
-                        }
+                    //        Log.Error(@"Unable to retrieve the recoverable file path from log entry at [{0}]", logEntryTimestamp.Value);
+                    //        return;
+                    //    }
 
-                        Group groupFilePath = matches.Groups["FilePath"];
+                    //    Group groupFilePath = matches.Groups["FilePath"];
 
-                        if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value))
-                        {
-                            return; // nothing to do, path is an empty string
-                        }
+                    //    if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value))
+                    //    {
+                    //        return; // nothing to do, path is an empty string
+                    //    }
 
-                        var filePath = groupFilePath.Value;
-                        filePath = filePath.Trim(new char[] { '"' });
-                        if (!matchedMissing)
-                        {
-                            filePath = @"/" + filePath;
-                        }
+                    //    var filePath = groupFilePath.Value;
+                    //    filePath = filePath.Trim(new char[] { '"' });
+                    //    if (!matchedMissing)
+                    //    {
+                    //        filePath = @"/" + filePath;
+                    //    }
 
-                        treeView1.Invoke(new Action(() => treeView1.Nodes.Add(filePath, filePath)));
-                    }
+                    //    treeView1.Invoke(new Action(() => treeView1.Nodes.Add(filePath, filePath)));
+                    //}
                 }
             }
             catch
@@ -266,44 +267,44 @@ namespace Elucidate.TabPages
                 lock (this)
                 {
                     //read out of the file until the EOF
-                    while (LiveLog.LogQueueRecover.TryDequeue(out var log))
-                    {
-                        // use regex to parse log line and get the FilePath
-                        Match matches = Recovered.Match(log);
-                        if (!matches.Success)
-                        {
-                            // nothing to do, the string did not match regex but it contained "[recovered ", odd
-                            Group logEntryTimestamp = matches.Groups["FilePath"];
-                            if (!logEntryTimestamp.Success)
-                            {
-                                return; // paranoid, just check
-                            }
+                    //while (LiveLog.LogQueueRecover.TryDequeue(out var log))
+                    //{
+                    //    // use regex to parse log line and get the FilePath
+                    //    Match matches = Recovered.Match(log);
+                    //    if (!matches.Success)
+                    //    {
+                    //        // nothing to do, the string did not match regex but it contained "[recovered ", odd
+                    //        Group logEntryTimestamp = matches.Groups["FilePath"];
+                    //        if (!logEntryTimestamp.Success)
+                    //        {
+                    //            return; // paranoid, just check
+                    //        }
 
-                            Log.Error(@"Unable to retrieve the recovered file path from log entry at [{0}]", logEntryTimestamp.Value);
-                            return;
-                        }
-                        Group groupFilePath = matches.Groups["FilePath"];
-                        if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value))
-                        {
-                            return; // nothing to do, path is an empty string
-                        }
+                    //        Log.Error(@"Unable to retrieve the recovered file path from log entry at [{0}]", logEntryTimestamp.Value);
+                    //        return;
+                    //    }
+                    //    Group groupFilePath = matches.Groups["FilePath"];
+                    //    if (!groupFilePath.Success || string.IsNullOrEmpty(groupFilePath.Value))
+                    //    {
+                    //        return; // nothing to do, path is an empty string
+                    //    }
 
-                        var filePath = groupFilePath.Value;
-                        filePath = filePath.Trim(new char[] { '"' });
+                    //    var filePath = groupFilePath.Value;
+                    //    filePath = filePath.Trim(new char[] { '"' });
 
-                        var node = treeView1.Nodes.Find($"/{filePath}", false);
-                        if (node.Length <= 0)
-                        {
-                            node = treeView1.Nodes.Find(filePath, false);
-                            if (node.Length <= 0)
-                            {
-                                continue;
-                            }
-                        }
+                    //    var node = treeView1.Nodes.Find($"/{filePath}", false);
+                    //    if (node.Length <= 0)
+                    //    {
+                    //        node = treeView1.Nodes.Find(filePath, false);
+                    //        if (node.Length <= 0)
+                    //        {
+                    //            continue;
+                    //        }
+                    //    }
 
-                        node[0].Text = $@"{node[0].Name} (RECOVERED)";
-                        node[0].BackColor = Color.Green;
-                    }
+                    //    node[0].Text = $@"{node[0].Name} (RECOVERED)";
+                    //    node[0].BackColor = Color.Green;
+                    //}
                 }
             }
             catch

@@ -1,7 +1,7 @@
 ﻿#region Copyright (C)
 //  <copyright file="RunControl.cs" company="Smurf-IV">
 //
-//  Copyright (C) 2018-2025 Smurf-IV & BlueBlock 2018  & Boskys 2025
+//  Copyright (C) 2018-2026 Smurf-IV & BlueBlock 2018  & Boskys 2025
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -75,8 +75,6 @@ public partial class RunControl : UserControl
 
         IsRunning = false;
 
-        comboBoxProcessStatus.Enabled = false;
-
         checkBoxDisplayOutput.Checked = Properties.Settings.Default.IsDisplayOutputEnabled;
     }
 
@@ -133,7 +131,6 @@ public partial class RunControl : UserControl
         actionWorker.ProgressChanged += actionWorker_ProgressChanged;
         actionWorker.RunWorkerCompleted += actionWorker_RunWorkerCompleted;
         comboBoxProcessStatus.Text = @"Stopped";
-        comboBoxProcessStatus.Enabled = false;
     }
 
     internal void StartSnapRaidProcess(CommandType commandToRun, Stack<string> paths = null)
@@ -648,6 +645,7 @@ public partial class RunControl : UserControl
 // Taken from https://stackoverflow.com/questions/71257/suspend-process-in-c-sharp
 public static class ProcessExtension
 {
+    // ReSharper disable UnusedMember.Local
     [Flags]
     private enum ThreadAccess
     {
@@ -661,6 +659,7 @@ public static class ProcessExtension
         Impersonate = (0x0100),
         DirectImpersonation = (0x0200)
     }
+    // ReSharper restore UnusedMember.Local
 
     [DllImport(@"kernel32.dll")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]

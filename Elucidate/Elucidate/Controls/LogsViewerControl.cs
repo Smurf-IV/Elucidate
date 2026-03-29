@@ -239,7 +239,7 @@ public partial class LogsViewerControl : UserControl
         listBoxViewLogFiles.BeginInvoke((MethodInvoker)delegate { UpdateLogFileList(comboBoxLogType.SelectedItem.ToString()); });
     }
 
-    private void logViewToolStripMenuItem_Click(object sender, EventArgs e)
+    private void logViewToolStripMenuItem_Click(object _, EventArgs e)
     {
         // if (_liveRunLogControl.ActionWorker.IsBusy) { return; }
 

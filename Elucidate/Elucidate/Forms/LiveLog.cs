@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="LiveLog.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020-2021 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020-2026 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,41 +24,17 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
-using System.Collections.Concurrent;
-
-using Elucidate.Controls;
-
 using Krypton.Toolkit;
 
 namespace Elucidate.Forms
 {
     public partial class LiveLog : KryptonForm
     {
-        private static ListBoxLog ListBoxLog;
-
         public LiveLog()
         {
             Icon = Properties.Resources.ElucidateIco;
             InitializeComponent();
-            ListBoxLog ??= new ListBoxLog(rtbLiveLog);
             WindowLocation.GeometryFromString(Properties.Settings.Default.LogWindowLocation, this);
-        }
-
-        public static ConcurrentQueue<string> LogQueueRecover { get; } = new ConcurrentQueue<string>();
-
-        // ReSharper disable UnusedMember.Global
-        // This is used by the logging to force all to the output window
-        public static void LogMethod(string levelUppercase, string message)
-        {
-            if (message.Contains(@"[damaged ") // this is the -a option
-            || message.Contains(@"Missing file '") // this is the -a option
-            || message.Contains(@"[recover") // this is without the -a option or part of the recovery
-            )
-            {
-                LogQueueRecover.Enqueue(message);
-            }
-
-            ListBoxLog?.LogMethod(levelUppercase, message);
         }
 
         // Sort out shutdown sequence when FormClosing is overridden
@@ -76,8 +52,11 @@ namespace Elucidate.Forms
 
         private void LiveLog_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
         {
+            Properties.Settings.Default.LogWindowLocation = WindowLocation.GeometryToString(this);
+
             // Do not allow user to close this form !
             e.Cancel = !systemShutdown;
         }
+
     }
 }
